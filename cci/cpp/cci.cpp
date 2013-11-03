@@ -6,6 +6,8 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	return 0;
+    //1.1
+	bool result = is_unique_chars(""); 
+    return 0;
 }
 
