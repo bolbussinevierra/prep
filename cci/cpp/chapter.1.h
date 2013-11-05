@@ -1,3 +1,46 @@
+//
+// helpers
+//
+#include <iostream>
+using namespace std;
+
+void print_matrix(int **m, int n)
+{   
+    for(int i  =  0; i < n; ++i)
+    {
+        cout<< "\n";
+        for(int j  =  0;  j < n;  ++j)
+        {
+            printf("%d ",m[i][j]);
+            //cout <<  m[i][j];
+        }
+    }
+    cout << "\n-------------------------" << endl;
+}
+
+void fill_matrix(int **m, int n)
+{
+    for(int i = 0; i < n; ++i)
+    {
+        m[i] = new int[n];
+    }
+
+    int value = 1;
+    for(int i  =  0; i < n; ++i)
+    {
+        for(int j  =  0;  j < n;  ++j)
+        {
+            m[i][j] = value++;
+        }
+    }
+
+}
+//
+// helpers
+//
+
+
+
 bool is_unique_chars(char * str)
 {
     if (str == NULL) return true;
@@ -24,4 +67,26 @@ bool is_unique_chars(char * str)
         set[bit_group] = set_check | (1 << bit_pos);
     }
     return true;
+}
+//
+// 1.6
+//
+void rotate_matrix_90(int ** m, int n)
+{
+    print_matrix(m, n);
+    for (int layer = 0; layer < n/2; ++layer)
+    {
+        int start = layer;
+        int end = n - 1 - layer;
+        for (int i = start; i < end; ++i)
+        {
+            int offset = i - start;
+            int top = m[start][i];
+            m[start][i] = m[end - offset][start];
+            m[end - offset][start] = m[end][end - offset];
+            m[end][end - offset] = m[i][end];
+            m[i][end] = top;
+        }
+    }
+    print_matrix(m, n);
 }
