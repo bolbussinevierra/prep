@@ -27,6 +27,9 @@
     <ClInclude Include="chapter.1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="chapter.2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
