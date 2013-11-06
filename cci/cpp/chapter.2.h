@@ -88,3 +88,58 @@ void  RemoveDuplicatesNoBuffer(Node *head){
         current = current->next;
     }
 }
+//
+// 2.2
+//
+Node* GetKthToLast(Node* head, int k){
+    if (!head || (k <= 0)) return NULL;
+
+    Node* runner = head;
+    for(int i = 0; i < k - 1; ++i){
+        if (!runner) return NULL;
+        runner = runner->next;
+    }
+    if (!runner) return NULL;
+
+    while (runner->next){
+        head = head->next;
+        runner = runner->next;
+    }
+    return head;
+}
+//
+// 2.4
+//
+Node* PartitionList(Node* head, int x) {
+    if (!head) return NULL;
+
+    Node* beforeList = NULL;
+    Node* afterList = NULL;
+
+    while (head) {
+        // free the node at the front of the list
+        Node * next = head->next;
+        head->next = NULL;
+
+        if (head->data < x) {
+            head->next = beforeList;
+            beforeList = head;
+        } else {
+            head->next = afterList;
+            afterList = head;
+        }
+        head = next;
+    }
+
+    if (!beforeList) return afterList;
+
+    Node* newHead = beforeList;
+    while (beforeList->next) {
+        beforeList = beforeList->next;
+    }
+
+    beforeList->next = afterList;
+    return newHead;
+}
+
+

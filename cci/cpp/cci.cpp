@@ -18,12 +18,28 @@ int _tmain(int argc, _TCHAR* argv[])
 #endif
 
     //2.1
-    int data[] = {2,2,2,2,2,2};
+    int data[] = {13,6,5,4,1,0,3,3,2,1};
     Node* ll = MakeList(data, ARRAY_SIZE(data));
+#if 0
     PrintList(ll);
-    // RemoveDuplicates(ll);
-    RemoveDuplicatesNoBuffer(ll);
+    RemoveDuplicates(ll);
+    // RemoveDuplicatesNoBuffer(ll);
     PrintList(ll);
+#endif
+
+#if 0
+    // 2.2
+    int k = 1;
+    Node * kNode = GetKthToLast(ll,k); 
+    if (kNode){
+        printf("%d-th element is %d", k, kNode->data); 
+    }
+#endif
+
+    // 2.4
+    PrintList(ll);
+    PrintList(PartitionList(ll, 4));
+
     return 0;
 }
 
