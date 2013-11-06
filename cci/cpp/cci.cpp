@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "chapter.1.h"
 #include "chapter.2.h"
+#include "chapter.3.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -17,10 +18,11 @@ int _tmain(int argc, _TCHAR* argv[])
     rotate_matrix_90(someArray, 5);
 #endif
 
+#if 0
     //2.1
     int data[] = {13,6,5,4,1,0,3,3,2,1};
     Node* ll = MakeList(data, ARRAY_SIZE(data));
-#if 0
+    
     PrintList(ll);
     RemoveDuplicates(ll);
     // RemoveDuplicatesNoBuffer(ll);
@@ -36,10 +38,34 @@ int _tmain(int argc, _TCHAR* argv[])
     }
 #endif
 
+#if 0
     // 2.4
     PrintList(ll);
     PrintList(PartitionList(ll, 4));
+#endif
 
+#if 0
+    //
+    // 2.6
+    //
+    int data26[] = {0,1,12,3,4,5,6,7,8,9};
+    Node* ll26 = MakeList(data26, ARRAY_SIZE(data26));
+    PrintList(ll26);
+    MakeCycleAt(ll26, 2);
+    Node* start = FindCycleStart(ll26);
+#endif
+
+#if 0
+    //
+    // 2.7 - the O(2n) non-runner method must just be more straightforward
+    //
+    int data27[] = {0,1};
+    Node* ll27 = MakeList(data27, ARRAY_SIZE(data27));
+    PrintList(ll27);
+    IsPalindrome(ll27);
+#endif
+
+    cin.get(); // pause console before exit
     return 0;
 }
 

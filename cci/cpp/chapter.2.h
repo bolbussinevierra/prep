@@ -4,9 +4,11 @@
 #include <iostream>
 #include <memory>
 #include <map>
+#include <stack>
+#include <assert.h>
 using namespace std;
 
-#define ARRAY_SIZE(array) sizeof(array)/sizeof(array[0])
+#define ARRAY_SIZE(array) sizeof(array)/sizeof(array[0]) 
 
 struct Node
 {
@@ -44,6 +46,25 @@ Node* MakeList(int data[], int n)
         }
     }
     return head;
+}
+
+void MakeCycleAt(Node* head, int at){
+    Node* cycle = head;
+    Node* end = head;
+
+    int pos = 0;
+    while (head->next) {
+        if (pos == at) {
+            cycle = head;
+        }
+        pos++;
+        head = head->next;
+    }
+    end = head;
+
+    // make the cycle
+    end->next = cycle;
+    printf("Made cycle with cycle.start.data = %d\n", end->next->data);
 }
 //
 // helpers
@@ -141,5 +162,61 @@ Node* PartitionList(Node* head, int x) {
     beforeList->next = afterList;
     return newHead;
 }
+//
+// 2. 6
+//
+Node* FindCycleStart(Node* head) {
+    if (!head) return NULL;
+    Node* slow = head;
+    Node* fast = head;
+    do {
+        slow = slow->next;
+        if (!fast->next) return NULL;
+        fast = fast->next->next;
+    } while (slow && fast && (fast != slow));
 
+    if (!fast) return NULL;
+    
+    slow = head;    // reassign back to the front of the list
+    while (slow != fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    printf("Found cycle with data = %d\n", slow->data);
+    return slow;
+}
 
+//
+// 2.7
+//
+bool IsPalindrome(Node* head){
+
+    assert(head);
+
+    Node *slow = head;
+    Node *fast = head;
+    stack<int> s;
+
+    while (fast && fast->next) {
+        s.push(slow->data);
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    // if list is odd, fast will be valid and slow is pointing to the middle
+    // (or only) element. We need to ask it to skip
+    if (fast) slow = slow->next;
+    
+    while (!s.empty() && slow) {
+        int data = s.top();
+        if (data != slow->data) {
+           break;
+        }
+        s.pop();
+        slow = slow->next;
+    }
+    
+    bool result = s.empty() && (slow == NULL);
+    printf("is%spalindrome!", result ? " " : " not ");
+    return result;
+}
