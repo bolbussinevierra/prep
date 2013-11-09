@@ -86,7 +86,7 @@ def is_balanced(root):
 
 
 #
-# 4.2 - O(N)   
+# 4.1 - O(N)   
 #
 def measure_height_2(root):
     if not root:
@@ -117,7 +117,7 @@ def _path_exists_dfs(a,b):
     return False
 
 #
-# 4.3 -
+# 4.2 -
 #
 def path_exists_bfs(a,b):
     if not a or not b: return False
