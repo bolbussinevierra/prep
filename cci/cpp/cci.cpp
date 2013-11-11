@@ -5,6 +5,7 @@
 #include "chapter.1.h"
 #include "chapter.2.h"
 #include "chapter.3.h"
+#include "chapter.4.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -65,6 +66,15 @@ int _tmain(int argc, _TCHAR* argv[])
     IsPalindrome(ll27);
 #endif
 
+#if 1
+    int data44[] = {1,2,3,4,5,6};
+    TreeNode* tree = MakeOptimalBST(data44, ARRAY_SIZE(data44));
+    vector<LinkedListNode*> result;
+    GetLevelsLinkedLists(tree, result);
+    for (int i = 0; i < result.size(); ++i){
+        PrintList(result[i]);
+    }
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }

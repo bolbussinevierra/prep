@@ -8,7 +8,23 @@ class node(object):
         self.right = None 
         self.adjacent = [self.left, self.right]
 
-    def insert(self, data):
+    def __str__(self, depth=0):
+        ret = ""
+
+        # Print right branch
+        if self.right != None:
+            ret += self.right.__str__(depth + 1)
+
+        # Print own value
+        ret += "\n" + ("     "*depth) + str(self.data)
+
+        # Print left branch
+        if self.left != None:
+            ret += self.left.__str__(depth + 1)
+
+        return ret
+
+    def insert(self, data): # OPTIMAL FOR BST FROM SORTED ARRAY
         if data < self.data:
             if self.left is None:
                 self.left = node(data)
@@ -143,4 +159,22 @@ def path_exists_dfs(a,b):
     reset_visit(a)
     return _path_exists_dfs(a,b)
                 
+
+#
+# 4.3 - actual answer!!!~
+#
+def _optimal_mst(array, start, end):
+    if end < start:
+        return None
+
+    mid = (start + end)/2
+    n = node(array[mid])
+    n.left = _optimal_mst(array, start, mid-1)
+    n.right = _optimal_mst(array, mid+1, end)
+    return n
+
+def optimal_mst(values):
+    return _optimal_mst(values, 0, len(values)-1)
+
+
     
