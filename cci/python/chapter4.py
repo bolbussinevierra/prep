@@ -6,6 +6,7 @@ class node(object):
         self.data = data
         self.left = None
         self.right = None 
+        self.parent = None
         self.adjacent = [self.left, self.right]
 
     def __str__(self, depth=0):
@@ -86,6 +87,14 @@ def bfs_tree(root):
             bfs_list.append(n.left)
         if n.right:
             bfs_list.append(n.right)
+
+def in_order(root):
+    if not root:
+        return
+
+    in_order(root.left)
+    print root.data
+    in_order(root.right)
 
 #
 # 4.1 - O(N^2)
@@ -171,10 +180,46 @@ def _optimal_mst(array, start, end):
     n = node(array[mid])
     n.left = _optimal_mst(array, start, mid-1)
     n.right = _optimal_mst(array, mid+1, end)
+    
+    # UNNNECCESARY - needed for 4.6 below
+    n.adjacent[0] = n.left
+    n.adjacent[1] = n.right
+    if n.left: n.left.parent = n         
+    if n.right: n.right.parent = n
+    
     return n
 
 def optimal_mst(values):
     return _optimal_mst(values, 0, len(values)-1)
 
+
+#
+# 4.6
+#    
+def leftmost(node):
+    if not node:
+        return None
+
+    while (node.left):
+        node = node.left
+
+    return node
+
+def in_order_succ(node):
+    if not node:
+        return None
+
+    if node.right:
+        return leftmost(node.right)
+    
+    else:
+        child = node
+        parent = child.parent;
+        # keep going until child is not right side of parent.
+        # if we were already on far right, we will return null
+        while (parent and child == parent.right):
+            child = parent
+            parent = child.parent
+        return parent
 
     
