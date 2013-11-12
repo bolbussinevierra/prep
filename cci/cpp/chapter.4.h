@@ -50,6 +50,10 @@ TreeNode* MakeOptimalBST(int * items, int n){
 //
 // helpers
 //
+
+//
+// 4.4
+//
 HRESULT GetLevelsLinkedLists(TreeNode * root, vector<LinkedListNode*>& result){
     assert(root);
     LinkedListNode* head = new LinkedListNode(root);
@@ -89,4 +93,35 @@ HRESULT GetLevelsLinkedLists(TreeNode * root, vector<LinkedListNode*>& result){
         }
     }
     return S_OK;
+}
+
+//
+// 4.5
+//
+bool _IsBST(TreeNode* root, int& lastValue, bool& lastValueSet){
+    if (!root)
+        return true;
+
+    if (!_IsBST(root->left, lastValue, lastValueSet))
+        return false;
+
+    if (!lastValueSet) {
+        lastValueSet = true;
+    }
+    else if (root->value <= lastValue) {
+        return false;
+    }
+    lastValue = root->value;
+    printf("lastSeen = %d ", lastValue); 
+
+    if (!_IsBST(root->right, lastValue, lastValueSet))
+        return false;
+
+    return true;
+}
+bool IsBST(TreeNode* root){
+    int lastValue = 0;
+    bool lastValueSet = false;
+    printf("\n");
+    return _IsBST(root, lastValue, lastValueSet);
 }

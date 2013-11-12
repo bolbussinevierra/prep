@@ -66,7 +66,7 @@ int _tmain(int argc, _TCHAR* argv[])
     IsPalindrome(ll27);
 #endif
 
-#if 1
+#if 0
     int data44[] = {1,2,3,4,5,6};
     TreeNode* tree = MakeOptimalBST(data44, ARRAY_SIZE(data44));
     vector<LinkedListNode*> result;
@@ -75,6 +75,17 @@ int _tmain(int argc, _TCHAR* argv[])
         PrintList(result[i]);
     }
 #endif 
+#if 1
+    int data45[] = {1,2,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(data45, ARRAY_SIZE(data45));
+    vector<LinkedListNode*> result;
+    GetLevelsLinkedLists(tree, result);
+    for (int i = 0; i < result.size(); ++i){
+        PrintList(result[i]);
+    }
+    printf("IsBST=%d\n", IsBST(tree)); 
+#endif 
+
     cin.get(); // pause console before exit
     return 0;
 }
