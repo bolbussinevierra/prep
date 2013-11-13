@@ -221,5 +221,53 @@ def in_order_succ(node):
             child = parent
             parent = child.parent
         return parent
+#
+# 4.7 BTB - common ancestor
+#
+def node_in_tree(root, a):
+    if not root: return False
+    if root.data == a: return True
+    return node_in_tree(root.left, a) or node_in_tree(root.right, a)
+
+def _common_ancestor(root, a, b):
+    if not root: return None
+    if (root.data == a) or (root.data == b):
+        return root
+    else:
+        rl = _common_ancestor(root.left, a, b)
+        rr = _common_ancestor(root.right, a, b)
+
+        if rl and rr: # found in different subtrees
+            return root
+        else:
+            return rl if rl else rr
 
     
+def common_ancestor(root, a, b):
+    if (not node_in_tree(root, a)) or (not node_in_tree(root, b)):
+        return None
+    return _common_ancestor(root, a, b).data    
+    
+#
+# 4.8
+#
+def match_tree(r1, r2):
+    if (not r1) and (not r2):
+        return True
+
+    if (not r1) or (not r2):
+        return False
+    
+    return (r1.data == r2.data and match_tree(r1.left, r2.left) and match_tree(r1.right, r2.right)) 
+
+def is_subtree(tree1, tree2):
+    if not tree2:
+        return True
+
+    if not tree1:
+        return False
+
+    if tree1.data == tree2.data:
+        if match_tree(tree1, tree2): 
+            return True
+    return is_subtree(tree1.left, tree2) or is_subtree(tree1.right, tree2)
