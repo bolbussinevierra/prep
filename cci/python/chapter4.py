@@ -271,3 +271,54 @@ def is_subtree(tree1, tree2):
         if match_tree(tree1, tree2): 
             return True
     return is_subtree(tree1.left, tree2) or is_subtree(tree1.right, tree2)
+
+#
+# 4.9
+#
+def depth(root):
+    if not root:
+        return 0
+    return 1 + max(depth(root.left), depth(root.right))
+
+def _find_sum(root, sum, path, level):
+    if not root:
+        return
+
+    path[level] = root.data
+    
+    sum_to = 0
+    for i in range(level,-1, -1):
+        sum_to += path[i]
+        if sum_to == sum:
+            print path[i:level+1]
+    
+    _find_sum(root.left, sum, path, level+1)
+    _find_sum(root.right, sum, path, level+1)
+
+def find_sum(root, sum):
+    path = [None]*depth(root)
+    _find_sum(root, sum, path, 0)
+
+
+#
+# 4.9 - extra credit - find from root
+#
+def find_sum_from_root(root, sum):
+    path = [None]*depth(root)
+    _find_sum_from_root(root, sum, path, 0)
+
+def _find_sum_from_root(root, sum, path, level):
+    if not root:
+        return 
+
+    path[level] = root.data
+    
+    sum_to = 0
+    for i in range(0, level+1):
+        sum_to += path[i]
+    
+    if sum_to == sum: 
+        print path[0:level+1]
+
+    _find_sum_from_root(root.left, sum, path, level+1)
+    _find_sum_from_root(root.right, sum, path, level+1)
