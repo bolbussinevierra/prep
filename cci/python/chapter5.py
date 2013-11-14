@@ -36,8 +36,6 @@ def print_binary(num):
             num -= 1
         else:
             binary_string += '0'
-        
-        print "bs = " + binary_string
 
     return binary_string
 
@@ -52,3 +50,49 @@ def print_binary_int(num):
         q = q / 2
 
     return '0' + str(r) + binary_string
+
+#
+# 5.3
+# a) super simple approach
+def count_ones(num):
+    q = num / 2
+    r = num % 2
+    number_ones = 0
+    while (q > 0):
+        if r == 1: number_ones +=1
+        r = q % 2
+        q = q /2
+
+    if r == 1: number_ones += 1
+    return number_ones
+
+def next_larger(num):
+    if num <= 0: return None
+    
+    number_ones = count_ones(num)
+
+    num +=1
+    while (number_ones != count_ones(num)):
+        num += 1
+
+    return num
+    
+def next_smaller(num):
+    if num <= 0: return None
+
+    number_ones = count_ones(num)
+    num -=1
+    while (number_ones != count_ones(num)) and num:
+        num -= 1
+
+    return num if num > 0 else None
+
+#
+# 5.3
+# b) bit fiddling approach
+
+
+
+
+
+    
