@@ -164,9 +164,44 @@ def getprev(num):
 
     return num
 
+#
+# 5.5 a) basic &ing solution
+#
+def bitdiff(a, b):
+    diff = 0 
+    while (a | b):
+        if (a & 1) != (b & 1):
+            diff += 1
+        a >>= 1 
+        b >>= 1 
     
+    return diff
         
+#
+# 
+# 5.5 b) XOR solution - count ones in xor
+#
+def bitdiff2(a,b):
+    r = a ^ b 
+    diff = 0 
+    while (r): # in C - for(int r = a^b; r != 0; r = r >> 1)
+        diff += r & 1 
+        r >>= 1 
 
+    return diff
+        
+#
+# 
+# 5.5 c) XOR solution - with interesting least significant bit clearing
+#
+def bitdiff3(a,b):
+    r = a^b
+    diff = 0
+    while (r): # in C for(int r = a^b; r != 0; r = r & (r - 1))
+        diff +=1
+        r = r & (r-1) 
+
+    return diff
 
 
     
