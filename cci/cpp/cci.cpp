@@ -6,6 +6,7 @@
 #include "chapter.2.h"
 #include "chapter.3.h"
 #include "chapter.4.h"
+#include "chapter.9.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -75,7 +76,7 @@ int _tmain(int argc, _TCHAR* argv[])
         PrintList(result[i]);
     }
 #endif 
-#if 1
+#if 0
     int data45[] = {1,2,4,5,6,7};
     TreeNode* tree = MakeOptimalBST(data45, ARRAY_SIZE(data45));
     vector<LinkedListNode*> result;
@@ -85,7 +86,11 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     printf("IsBST=%d\n", IsBST(tree)); 
 #endif 
-
+#if 1
+    for (int i = 4; i >=0; --i) {
+        printf("WAYS(%d)=%d\n",i, ways(i));
+    }
+#endif
     cin.get(); // pause console before exit
     return 0;
 }

@@ -203,5 +203,3 @@ def bitdiff3(a,b):
 
     return diff
 
-
-    
