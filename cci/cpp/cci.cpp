@@ -86,11 +86,32 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     printf("IsBST=%d\n", IsBST(tree)); 
 #endif 
-#if 1
+#if 0
+    //
+    // 9.1
+    //
     for (int i = 4; i >=0; --i) {
         printf("WAYS(%d)=%d\n",i, ways(i));
     }
 #endif
+#if 0
+    //
+    // 9.2
+    //
+    int width = 3;
+    int height = 3;
+    printf("compute_paths(width=%d, height=%d) is %d", width, height, compute_paths(width, height)); 
+    printf("\n FindPathTo=%d\n", FindPathTo(width, height));
+
+#endif
+#if 1
+    //
+    // 9.3
+    //
+    int items93[] = {1,2,3,4,5,6,7,8,9,10};
+    Subsets(items93, ARRAY_SIZE(items93));
+
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }

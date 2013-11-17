@@ -69,7 +69,7 @@ HRESULT GetLevelsLinkedLists(TreeNode * root, vector<LinkedListNode*>& result){
         head = NULL;
         tail = NULL;
 
-        for (int i = 0; i < parents.size(); i++){
+        for (size_t i = 0; i < parents.size(); i++){
             if (parents[i]->left){
                 if (!head) {
                     head = new LinkedListNode(parents[i]->left);
