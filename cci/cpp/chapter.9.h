@@ -99,26 +99,21 @@ bool FindPathTo(int ex, int ey) {
 //
 // 9.3
 //
-void Subsets(vector<int> items, int start, vector<vector<int>>& sets) {
+void Subsets(vector<int>& items, int start, vector<vector<int>>& sets) {
     if(start == items.size()){
         vector<int> empty;
         sets.push_back(empty);
     } else {
-        vector<vector<int>> otherSets;
-        Subsets(items, start+1, otherSets);
-        for (size_t i = 0; i < otherSets.size(); ++i) {
-            sets.push_back(otherSets[i]);       // add each previous set
-            vector<int> cloneSet(otherSets[i]); // clone the previous et
+        Subsets(items, start+1, sets); // get the rest of the sets
+        size_t existingSets = sets.size();
+        for (size_t i = 0; i < existingSets; ++i) {
+            vector<int> cloneSet(sets[i]); // clone the previous et
             cloneSet.push_back(items[start]);   // add the new item
             sets.push_back(cloneSet);           // add the cloned and expanded set to list
         }
     }
 }
-
-void Subsets(int arr[], int length) {
-    vector<int> items(arr, arr+length);
-    vector<vector<int>> sets;
-    Subsets(items, 0, sets);
+void PrintSets(vector<vector<int>>& sets) {
     for (size_t i = 0; i < sets.size(); ++i) {
         vector<int> set = sets[i];
         if (set.empty()) {
@@ -131,5 +126,29 @@ void Subsets(int arr[], int length) {
         }
         printf("\n");
     }
+}
+void SubsetsIterative(int arr[], int length) {
+    vector<vector<int>> sets;
+    vector<int> empty;
+    sets.push_back(empty);
+    
+    for (int i = 0; i < length; ++i) {
+        size_t existingSets = sets.size();
+        for (size_t v = 0; v < existingSets; ++v) {
+            vector<int> newSet(sets[v]);
+            newSet.push_back(arr[i]);
+            sets.push_back(newSet);
+        }
+    }
+
+    PrintSets(sets);
+    printf("Items=[%d], Subsets=[%d]\n", length, sets.size());
+}
+
+void Subsets(int arr[], int length) {
+    vector<int> items(arr, arr+length);
+    vector<vector<int>> sets;
+    Subsets(items, 0, sets);
+    PrintSets(sets);
     printf("Items=[%d], Subsets=[%d]\n", length, sets.size());
 }
