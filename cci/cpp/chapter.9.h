@@ -127,6 +127,34 @@ void PrintSets(vector<vector<int>>& sets) {
         printf("\n");
     }
 }
+
+void MapBinaryToSet(int binSet, vector<int>& items, vector<int>& set) {
+    for (size_t i = 0; i < items.size(); ++i) {
+        if ((1 << i) & binSet) {
+            set.push_back(items[i]);
+        }
+    }
+}
+
+void SubsetsBinary(vector<int>& items, vector<vector<int>>& sets) {
+    assert(32 >= items.size()); // limited by size of integer .. can use long (or long ass int array)
+    int maxSets = (1 << items.size());  // 2^(n)
+
+    for (int i = 0; i < maxSets; ++i) {
+        vector<int> newSet; // empty set added when i == 0 (empty newSet)
+        MapBinaryToSet(i, items, newSet);
+        sets.push_back(newSet);
+    }
+}
+
+void SubsetsBinary(int arr[], int length) {
+    vector<int> items(arr, arr+length);
+    vector<vector<int>> sets;
+    SubsetsBinary(items, sets);
+    PrintSets(sets);
+    printf("Items=[%d], Subsets=[%d]\n", length, sets.size());
+}
+
 void SubsetsIterative(int arr[], int length) {
     vector<vector<int>> sets;
     vector<int> empty;

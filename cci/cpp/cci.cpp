@@ -109,8 +109,9 @@ int _tmain(int argc, _TCHAR* argv[])
     // 9.3
     //
     int items93[] = {1,2,3,4,5,6,7,8,9,10};
-    Subsets(items93, ARRAY_SIZE(items93));
-    SubsetsIterative(items93, ARRAY_SIZE(items93));
+    // Subsets(items93, ARRAY_SIZE(items93));
+    // SubsetsIterative(items93, ARRAY_SIZE(items93));
+    SubsetsBinary(items93, ARRAY_SIZE(items93));
 #endif 
     cin.get(); // pause console before exit
     return 0;
