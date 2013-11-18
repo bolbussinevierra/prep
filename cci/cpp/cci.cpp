@@ -104,15 +104,20 @@ int _tmain(int argc, _TCHAR* argv[])
     printf("\n FindPathTo=%d\n", FindPathTo(width, height));
 
 #endif
-#if 1
+#if 0
     //
-    // 9.3
+    // 9.4
     //
     int items93[] = {1,2,3,4,5,6,7,8,9,10};
     // Subsets(items93, ARRAY_SIZE(items93));
     // SubsetsIterative(items93, ARRAY_SIZE(items93));
     SubsetsBinary(items93, ARRAY_SIZE(items93));
 #endif 
+#if 0
+    string s("abcdefgh");
+    GetPermutations(s);
+    GetPermutationsIter(s);
+#endif
     cin.get(); // pause console before exit
     return 0;
 }

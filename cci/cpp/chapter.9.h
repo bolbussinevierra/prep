@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <string>
 
 using namespace std;
 
@@ -179,4 +180,81 @@ void Subsets(int arr[], int length) {
     Subsets(items, 0, sets);
     PrintSets(sets);
     printf("Items=[%d], Subsets=[%d]\n", length, sets.size());
+}
+
+//
+// 9.5
+//
+void PrintPermutations(vector<string>& p) {
+    for (size_t i = 0; i < p.size(); ++i) {
+        printf("%s\n", p[i].c_str());
+    }
+    printf("Permulations=[%d]\n", p.size());
+}
+
+void Combine(string& s, char c, int at, string& out) {
+    size_t from = 0;
+    size_t to = 0;
+    while (to < s.size() + 1) {
+        if (to == at) {
+            out[to++] = c;
+        }
+        else {
+            out[to++] = s[from++];
+        }
+    }
+}
+
+void Expand(string& s, char c, vector<string>& out) {
+    size_t newLen = s.size() + 1;
+    for (size_t at = 0; at < newLen; ++at) {
+        string newS;
+        newS.resize(newLen);
+        Combine(s, c, at, newS);
+        out.push_back(newS);
+    }
+}
+
+void GetPermutations(string& s, size_t start, vector<string>& perms){
+    assert(start < s.length());
+    if (start == s.length() - 1) {
+        string newP;
+        newP.push_back(s[start]);
+        perms.push_back(newP);
+    }
+    else {
+        vector<string> otherPerms;
+        GetPermutations(s, start+1, otherPerms);
+        for (size_t i = 0; i < otherPerms.size(); ++i) {
+            Expand(otherPerms[i], s[start], perms);
+        }
+    }
+}
+void GetPermutationsIter(string& s, vector<string>& out) {
+    for(size_t start=0; start < s.size(); ++start) {
+        if (start == 0) {
+            string newP;
+            newP.push_back(s[start]);
+            out.push_back(newP);
+        }
+        else {
+            vector<string> newPerms;
+            for (size_t i=0; i < out.size(); ++i) {
+                Expand(out[i], s[start], newPerms);
+            }
+            out.swap(newPerms);
+        }
+    }
+}
+
+void GetPermutations(string& s) {
+    vector<string> perms;
+    GetPermutations(s, 0, perms);
+    PrintPermutations(perms);
+}
+
+void GetPermutationsIter(string& s) {
+    vector<string> perms;
+    GetPermutationsIter(s, perms);
+    PrintPermutations(perms);
 }
