@@ -308,3 +308,20 @@ void PrintParens(int count) {
     combo_num = 0;
     PrintParen(count, count, str, 0);
 }
+
+//
+// 9.7
+//
+bool PaintFill(
+    int ** screen, int width, int height, int x, int y, int oColor, int nColor) {
+    if (x >= width || y >= height || x < 0 || y < 0) return false;
+    int color = screen[x][y];
+    if (color == oColor) {
+        screen[x][y] = nColor;
+        PaintFill(screen, width, height, x+1, y, oColor, nColor);
+        PaintFill(screen, width, height, x-1, y, oColor, nColor);
+        PaintFill(screen, width, height, x, y-1, oColor, nColor);
+        PaintFill(screen, width, height, x, y+1, oColor, nColor);
+    }
+    return true;
+}
