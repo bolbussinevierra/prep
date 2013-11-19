@@ -185,11 +185,11 @@ void Subsets(int arr[], int length) {
 //
 // 9.5
 //
-void PrintPermutations(vector<string>& p) {
+void PrintVector(vector<string>& p, char* title) {
     for (size_t i = 0; i < p.size(); ++i) {
         printf("%s\n", p[i].c_str());
     }
-    printf("Permulations=[%d]\n", p.size());
+    printf("%s=[%d]\n", title, p.size());
 }
 
 void Combine(string& s, char c, int at, string& out) {
@@ -230,6 +230,7 @@ void GetPermutations(string& s, size_t start, vector<string>& perms){
         }
     }
 }
+
 void GetPermutationsIter(string& s, vector<string>& out) {
     for(size_t start=0; start < s.size(); ++start) {
         if (start == 0) {
@@ -250,11 +251,60 @@ void GetPermutationsIter(string& s, vector<string>& out) {
 void GetPermutations(string& s) {
     vector<string> perms;
     GetPermutations(s, 0, perms);
-    PrintPermutations(perms);
+    PrintVector(perms, "Permutations");
 }
 
 void GetPermutationsIter(string& s) {
     vector<string> perms;
     GetPermutationsIter(s, perms);
-    PrintPermutations(perms);
+    PrintVector(perms, "Permutations");
+}
+
+//
+// 9.6
+//
+
+struct trace {
+    int _depth;
+    const char * _title;
+    int _lr;
+    int _rr;
+    const char * _s;
+    int _ct;
+    void print() {
+        printf("depth:%d, title=%s | lr=%d, rr=%d, ct=%d, s=%s \n",
+            _depth, _title, _lr, _rr, _ct, _s);
+    }
+    void set(int depth, char* title, int lr, int rr, int ct, const char*s){
+        _depth = depth;
+        _title = title;
+        _lr = lr;
+        _rr=rr;
+        _ct = ct;
+        _s = s;
+    }
+};
+
+int combo_num = 0;
+void PrintParen(int leftRem, int rightRem, string& str, int count) {             
+    if (leftRem == 0 && rightRem == 0) {
+        printf("%d:%s \n", ++combo_num, str.c_str());
+    }
+    else {
+        if (leftRem > 0) {
+            str[count] = '(';
+            PrintParen(leftRem-1, rightRem, str, count+1);
+        }
+        if (rightRem > leftRem) {
+            str[count] = ')';
+            PrintParen(leftRem, rightRem-1, str, count+1);
+        }
+    }
+}
+
+void PrintParens(int count) {
+    string str;
+    str.resize(count*2);
+    combo_num = 0;
+    PrintParen(count, count, str, 0);
 }

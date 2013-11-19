@@ -114,9 +114,18 @@ int _tmain(int argc, _TCHAR* argv[])
     SubsetsBinary(items93, ARRAY_SIZE(items93));
 #endif 
 #if 0
+    //
+    // 9.5
+    //
     string s("abcdefgh");
     GetPermutations(s);
     GetPermutationsIter(s);
+#endif
+#if 1
+    //
+    // 9.6
+    //
+    PrintParens(4);
 #endif
     cin.get(); // pause console before exit
     return 0;
