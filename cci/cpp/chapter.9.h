@@ -325,3 +325,54 @@ bool PaintFill(
     }
     return true;
 }
+
+//
+// 9.8
+// pre-ample - try to calculate the WAYS to make change. Note that if we did 
+// this exactly how we count the ways to go up steps it would not work because
+// it double counts combinations of change we consider the same. For example
+// 1penny, 1 nickel is exactly the same as 1 nickel and I penny - this are not two
+// ways to make change but rather just one way to make change. However if we were talking
+// about going up the stairs (5 steps and then 1 step) would indeed be different from
+// (1 step and then 5 steps)
+int CountWaysToMakeChangeBroken(int n) {
+    if (n < 0) {
+        return 0;
+    }
+    else if (n == 0) {
+        return 1;
+    }
+    else {
+        return CountWaysToMakeChangeBroken(n - 25) + 
+               CountWaysToMakeChangeBroken(n - 10) +
+               CountWaysToMakeChangeBroken(n - 5) + 
+               CountWaysToMakeChangeBroken(n - 1);
+    }
+}
+
+int CountWaysToMakeChangeRecursive(int n, int denom) {
+    printf("n=%d, denom=%d\n", n, denom); 
+    int nextDenom = 0;
+    switch (denom) {
+        case 25:
+            nextDenom = 10;
+            break;
+        case 10:
+            nextDenom = 5;
+            break;
+        case 5:
+            nextDenom = 1;
+            break;
+        case 1:
+            //printf("returning 1\n"); 
+            return 1;
+    }
+
+    int ways = 0;
+    for (int i = 0; denom*i <= n; ++i) {
+        //printf("i=%d\n", i); 
+        ways += CountWaysToMakeChangeRecursive(n - i*denom, nextDenom);
+    }
+    //printf("ways=%d\n", ways); 
+    return ways;
+}
