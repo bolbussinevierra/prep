@@ -140,12 +140,18 @@ int _tmain(int argc, _TCHAR* argv[])
     //printf("Ways to change make for [%d cents] is %d \n", amount, CountWaysToMakeChangeBroken(amount));
     CountWaysToMakeChangeRecursive(50, 25);
 #endif
-#if 1
+#if 0
     //
     // 10.3
     //
     FindNumber();
 #endif
+#if 1
+    //
+    // 10.4
+    //
+    CheckDuplicates(_getArray());
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }

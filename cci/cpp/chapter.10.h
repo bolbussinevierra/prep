@@ -10,7 +10,7 @@ public:
     Scanner():
         totalCount(60000),
         missingValue(17869),
-        handedOutCount(0) {}
+        handedOutCount(-1) {}
 
     bool HasInt() {
         //printf("totalCount = {%d}, handedCount = {%d}\n", totalCount, handedOutCount); 
@@ -35,12 +35,12 @@ public:
 // 10.3 (10 MB case)
 //
 // 10MB is 2^23 bytes
-int bitVectSize = (1 << 20); // 2^20 BITS (2^17 bytes)
-int countBlocks = (1 << 12);  // 2^32 / 2^20
-int* blocks = new int[countBlocks]; // space so far 2^2 * 2^12 = 2^14
-BYTE* bitVect = new BYTE[bitVectSize/8]; // space so far = 2^14 + 2^17
-
 void FindNumber() {
+    int bitVectSize = (1 << 20); // 2^20 BITS (2^17 bytes)
+    int countBlocks = (1 << 12);  // 2^32 / 2^20
+    vector<int> blocks(countBlocks); // space so far 2^2 * 2^12 = 2^14
+    vector<BYTE> bitVect(bitVectSize/8);
+
     Scanner s;
     while (s.HasInt()) {
         blocks[s.getNext() / bitVectSize]++;
@@ -76,6 +76,34 @@ void FindNumber() {
         }
     }
 }
+
+//
+// 10.4
+//
+vector<int> _getArray() {
+    vector<int> arr(32000);
+    for (size_t i = 0; i < arr.size(); ++i) {
+        // make 1423 a duplicate
+        arr[i] = ((i == 1423) ? arr[i-1] : i + 1);
+    }
+    return arr;
+}
+void CheckDuplicates(vector<int>& arr) {
+    assert(arr.size() == 32000);
+    vector<BYTE> set(arr.size());
+
+    for (size_t i = 0; i < arr.size(); ++i) {
+        int n = arr[i] - 1; // arr has values 1+1 but bitset tracks 0+
+        if ((set[n/8] & 1 << (n%8)) != 0) {
+            printf("%d is a duplicate! \n", n+1);
+        }
+        else {
+            set[n/8] |= 1 << (n%8);
+        }
+    }
+}
+
+
 
 
 
