@@ -8,6 +8,7 @@
 #include "chapter.4.h"
 #include "chapter.9.h"
 #include "chapter.10.h"
+#include "chapter.11.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -146,12 +147,20 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     FindNumber();
 #endif
-#if 1
+#if 0
     //
     // 10.4
     //
     CheckDuplicates(_getArray());
-#endif 
+#endif
+#if 1
+    //
+    // 11.1
+    //
+    int a111[] = {5,7,9,89,0,0};
+    int b111[] = {1,4};
+    MergeSorted(a111, 4, b111, 2);
+#endif
     cin.get(); // pause console before exit
     return 0;
 }

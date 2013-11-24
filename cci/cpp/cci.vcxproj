@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="chapter.1.h" />
     <ClInclude Include="chapter.10.h" />
+    <ClInclude Include="chapter.11.h" />
     <ClInclude Include="chapter.2.h" />
     <ClInclude Include="chapter.3.h" />
     <ClInclude Include="chapter.4.h" />
