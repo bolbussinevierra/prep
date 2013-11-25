@@ -65,7 +65,7 @@ void _merge(T array[], int left, int mid, int right) {
     while (iLeft < leftSide.size() && iRight < rightSide.size()) {
         if (leftSide[iLeft] < rightSide[iRight]) {
             array[iWrite++] = leftSide[iLeft++];
-        }c
+        }
         else {
             array[iWrite++] = rightSide[iRight++];
         }
@@ -90,6 +90,29 @@ void _mergesort(T array[], int left, int right) {
     }
 }
 
+string SortChars(string& s) {
+    char* key = new char[s.size()]; 
+    s.copy(key, s.size());
+    key[s.size()] = '\0';
+
+    _quicksort(key, 0, s.size()-1);
+    
+    string value(key, s.size());
+    return value;
+}
+
+void GroupAnagrams(vector<string>& list) {
+    map<string, vector<string>> hashSet;
+    for (size_t i = 0; i < list.size(); ++i) {
+        string key = SortChars(list[i]);
+        hashSet[key].push_back(list[i]);
+    }
+    map<string, vector<string>>::iterator iter;
+    list.clear();
+    for(iter = hashSet.begin(); iter != hashSet.end(); ++iter) {
+        list.insert(list.end(), iter->second.begin(), iter->second.end());
+    }
+}
 //
 // 11.1
 //

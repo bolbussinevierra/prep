@@ -161,7 +161,7 @@ int _tmain(int argc, _TCHAR* argv[])
     int b111[] = {1,4};
     MergeSorted(a111, AS(a111)-AS(b111), b111, AS(b111));
 #endif
-#if 1
+#if 0
     int qs[] = {5,6,7,90,23,1,4,5};
     _quicksort(qs, 0, AS(qs)-1);
     _P(qs, AS(qs));
@@ -170,6 +170,18 @@ int _tmain(int argc, _TCHAR* argv[])
     _mergesort(ms, 0, AS(ms)-1);
     _P(ms, AS(ms));
 
+#endif
+#if 1
+    //
+    // 11.2
+    //
+    const char* a112[] = {"cat", "acre", "act", "race", "care", "tac"};
+    vector<string> v;
+    for(int i=0; i < AS(a112); ++i) {
+        v.push_back(string(a112[i]));
+    }
+    GroupAnagrams(v);
+    PrintVector(v, "anagrams");
 #endif
     cin.get(); // pause console before exit
     return 0;
