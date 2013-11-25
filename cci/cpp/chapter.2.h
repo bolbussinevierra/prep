@@ -8,7 +8,7 @@
 #include <assert.h>
 using namespace std;
 
-#define ARRAY_SIZE(array) sizeof(array)/sizeof(array[0]) 
+#define AS(array) sizeof(array)/sizeof(array[0]) 
 
 struct Node
 {
