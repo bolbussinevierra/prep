@@ -192,14 +192,18 @@ int _tmain(int argc, _TCHAR* argv[])
     int l = 12;
     printf("found %d at index = %d\n", l, search(a113, l, 0, AS(a113)-1));
 #endif
-#if 1
+#if 0
     //
     // 11.5
     //
     char* target = "ball";
     char* a115[] = {"at","","","","ball","","","car","","","dad","",""}; 
     printf("found '%s' at index = %d\n", target, FindString(a115, AS(a115), target));
-
+#endif
+#if 1
+    //
+    // 11.6
+    //
 #endif
     cin.get(); // pause console before exit
     return 0;
