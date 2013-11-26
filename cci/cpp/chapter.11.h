@@ -206,3 +206,53 @@ int search(int a[], int lookup, int left, int right) {
     }
     return -1;
 }
+
+//
+// 11.5
+//
+bool IsEmpty(char* s) {
+    return !s || 0==strlen(s);
+}
+
+int FindString(char* s[], char* target, int first, int last) {
+    if (last < first) return -1;
+
+    int mid = (first + last)/2;
+    if (IsEmpty(s[mid])) {
+        int left = mid-1;
+        int right = mid+1;
+     
+        while (true) {
+            if (left >= first && !IsEmpty(s[left])) {
+                mid = left;
+                break;
+            }
+            else if (right <= last && !IsEmpty(s[right])) {
+                mid = right;
+                break;
+            }
+            else if (left < first && right > last) {
+                return -1;
+            }
+            left--;
+            right++;
+        }
+    }
+
+    if (strcmp(s[mid], target) == 0) {
+        return mid;
+    }
+    else if (strcmp(s[mid], target) < 0) {
+        return FindString(s, target, mid+1, last);
+    }
+    else {
+        return FindString(s, target, first, mid-1);
+    }
+}
+
+int FindString(char* s[], int len, char* target) {
+    if (len <= 0 || !target || IsEmpty(target)) {
+        return -1;
+    }
+    return FindString(s, target, 0, len-1);
+}
