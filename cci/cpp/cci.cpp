@@ -171,7 +171,7 @@ int _tmain(int argc, _TCHAR* argv[])
     _P(ms, AS(ms));
 
 #endif
-#if 1
+#if 0
     //
     // 11.2
     //
@@ -182,6 +182,15 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     GroupAnagrams(v);
     PrintVector(v, "anagrams");
+#endif
+#if 0
+    //
+    // 11.3
+    //
+    int a113[] = {0,1,2,3,4,5,6,7,8,12,16};
+    rotate(a113, AS(a113), 0);
+    int l = 12;
+    printf("found %d at index = %d\n", l, search(a113, l, 0, AS(a113)-1));
 #endif
     cin.get(); // pause console before exit
     return 0;

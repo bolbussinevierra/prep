@@ -7,6 +7,30 @@ using namespace std;
 //
 //
 //
+void _P(int a[], int lenA, char* title) {
+    printf("%s:", title);
+    for (int i = 0; i < lenA; ++i) {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+}
+
+void rotate(int a[], int len, int rotCount) {
+    if (rotCount == 0) return;
+    _P(a, len, "bef_rotate");
+    vector<int> temp(len);
+    for (int i = 0; i < len; ++i) {
+        int newPos = (i + rotCount) % len;
+        if (newPos < 0) {
+            newPos = len + newPos; // if rotCount was negative, make it positive
+        }
+        temp[newPos] = a[i]; // mod can handle negative math
+    }
+    copy(temp.begin(), temp.end(), a);
+    _P(a, len, "aft_rotate");
+    return;
+}
+
 void _P(int a[], int lenA) {
     for (int i = 0; i < lenA; ++i) {
         printf("%d ", a[i]);
@@ -140,4 +164,45 @@ void MergeSorted(int a[], int countA, int b[], int countB) {
     }
 
     _P(a, countA + countB);
+}
+
+//
+// 11.3
+//
+int search(int a[], int lookup, int left, int right) {
+    int mid = (left + right)/2;
+    if (a[mid] == lookup) return mid;
+
+    // check if left is properly ordered. if yes and lookup is on left, search
+    // left else go right
+    if (a[left] < a[mid]) {
+        if (lookup >= a[left] && lookup <= a[mid]) {
+            return search(a, lookup, left, mid-1);
+        }else {
+            return search(a, lookup, mid+1, right);
+        }
+    }
+    else if(a[mid] < a[left]) { // right hand side is proper
+        if (lookup >= a[mid] && lookup <= a[right]) {
+            return search(a, lookup, mid+1, right);
+        }
+        else {
+            return search(a, lookup, left, mid-1);
+        }
+    }
+    else if (a[mid] == a[left]) {
+        if (a[mid] != a[right]) {
+            return search(a, lookup, mid+1, right);
+        }
+        else { // have to search both sides
+            int result = search(a, lookup, left, mid-1);
+            if (result == -1) {
+                return search(a, lookup, mid+1, right);
+            }
+            else {
+                return result;
+            }
+        }
+    }
+    return -1;
 }
