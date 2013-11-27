@@ -204,6 +204,15 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     // 11.6
     //
+    Location l = {-1,-1};
+    int a116[4][5] = 
+    { {1, 22, 23, 24, 25},
+      {12,33, 34, 35, 36},
+      {13,44, 45, 46, 46},
+      {14,55, 56, 57, 58}}; 
+    int find = 35;
+    bool found = SearchMatrix(a116,find,5,4,&l);
+    printf("Found=%d for elem=%d at location (row=%d, col=%d)", found, find, l.row, l.col);  
 #endif
     cin.get(); // pause console before exit
     return 0;

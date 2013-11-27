@@ -256,3 +256,34 @@ int FindString(char* s[], int len, char* target) {
     }
     return FindString(s, target, 0, len-1);
 }
+
+//
+// 11.6
+// 
+struct Location {
+    int row;
+    int col;
+};
+
+bool SearchMatrix(int m[][5], int target, int width, int height, Location* l) {
+    if (! (width > 0 && height > 0)) return false;
+
+    // start at bottom left
+    int col = 0;
+    int row = height - 1;
+
+    while (col < width && row >=0) {
+        if (m[row][col]==target) {
+            (*l).row = row;
+            (*l).col = col;
+            return true;
+        }
+        else if (m[row][col] < target) {
+            col++;
+        }
+        else {
+            row--;
+        }
+    }
+    return false;
+}
