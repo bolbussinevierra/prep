@@ -214,7 +214,7 @@ int _tmain(int argc, _TCHAR* argv[])
     bool found = SearchMatrix(a116,find,5,4,&l);
     printf("Found=%d for elem=%d at location (row=%d, col=%d)", found, find, l.row, l.col);  
 #endif
-#if 1
+#if 0
     //
     // 11.7
     //
@@ -224,6 +224,12 @@ int _tmain(int argc, _TCHAR* argv[])
     BuildCircusTower(v117);
   
 #endif
+#if 1
+    //
+    // 11.8
+    //
+#endif 
+
     cin.get(); // pause console before exit
     return 0;
 }
