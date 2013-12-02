@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm> 
 #include <map>
 #include <string>
 #include <windows.h>
@@ -286,4 +287,71 @@ bool SearchMatrix(int m[][5], int target, int width, int height, Location* l) {
         }
     }
     return false;
+}
+
+//
+// 11.7
+//
+struct htwt {
+    int height;
+    int weight;
+
+    void print() {
+        printf("{h:%d, w:%d} ",height, weight);
+    }
+};
+
+bool operator>=(htwt lhs, htwt rhs) {
+    return lhs.weight >= rhs.weight;
+}
+
+template <class t>
+void printpath(vector<t>& v, vector<int>path, int end)
+{
+    if(end > -1) {
+        printpath(v, path, path[end]);
+        v[end].print();
+    }
+}
+
+template <class t>
+void LIS(vector<t>& a) {
+    vector<int> DP(a.size());
+    vector<int> prev(a.size());
+    int maxSeen=0;
+    int bestEnd=0;
+
+    for (int i = 0; i < a.size(); ++i) {
+        DP[i] = 1;
+        prev[i] = -1;
+
+        for (int j = i-1; j >=0; --j) {
+            if ((DP[j]+1 > DP[i]) && (a[i] >= a[j])) {
+                DP[i] = DP[j]+1;
+                prev[i] = j;
+            }
+
+            // maxSeen?
+            if (DP[i] > maxSeen) {
+                bestEnd = i;
+                maxSeen = DP[i];
+            }
+        }
+    }
+
+    // print results max seen and previous
+    printf("LIS = %d\n", maxSeen);
+    printpath(a, prev, bestEnd);
+    printf("\n");
+}
+
+bool HeightSorter(htwt a, htwt b) {
+    return a.height < b.height;
+}
+
+void BuildCircusTower(vector<htwt>& v) {
+    // sort the list by height and then get the longest increasing subsequence
+    // by weight   
+    sort(v.begin(), v.end(), HeightSorter); 
+    LIS(v);  
 }

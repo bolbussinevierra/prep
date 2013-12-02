@@ -200,7 +200,7 @@ int _tmain(int argc, _TCHAR* argv[])
     char* a115[] = {"at","","","","ball","","","car","","","dad","",""}; 
     printf("found '%s' at index = %d\n", target, FindString(a115, AS(a115), target));
 #endif
-#if 1
+#if 0
     //
     // 11.6
     //
@@ -213,6 +213,16 @@ int _tmain(int argc, _TCHAR* argv[])
     int find = 35;
     bool found = SearchMatrix(a116,find,5,4,&l);
     printf("Found=%d for elem=%d at location (row=%d, col=%d)", found, find, l.row, l.col);  
+#endif
+#if 1
+    //
+    // 11.7
+    //
+    htwt a117[] = {{65,100},{70,150},{56,90},{75,190},{60,95},{68,110}};
+    int len = AS(a117);
+    vector<htwt> v117(a117, a117+len);
+    BuildCircusTower(v117);
+  
 #endif
     cin.get(); // pause console before exit
     return 0;
