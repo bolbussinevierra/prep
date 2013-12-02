@@ -366,7 +366,7 @@ private:
     auto_ptr<RankNode> m_right;
     int m_data;
 public:
-    RankNode(int data):m_data(data) {}
+    RankNode(int data):m_data(data), m_leftSize(0) {}
 
     void Insert(int number) {
         if (number <= m_data) {
@@ -400,11 +400,16 @@ private:
     auto_ptr<RankNode> m_root;
 public:
     void Track(int number) {
-        if (m_root.get()) {
+        if (!m_root.get()) {
             m_root.reset(new RankNode(number));
         } 
         else {
             m_root->Insert(number);
         }
+    }
+
+    int GetRank(int number) {
+        if (!m_root.get()) return -1;
+        return m_root->GetRank(number);
     }
 };

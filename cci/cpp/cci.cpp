@@ -228,6 +228,18 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     // 11.8
     //
+    Rank r;
+    r.Track(6);
+    r.Track(9);
+    r.Track(12);
+    r.Track(57);
+    r.Track(0);
+    r.Track(5);
+    r.Track(112);
+    r.Track(1);
+    int locate=57;
+    printf("GetRank(%d)=%d", locate, r.GetRank(locate));
+
 #endif 
 
     cin.get(); // pause console before exit
