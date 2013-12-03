@@ -9,6 +9,7 @@
 #include "chapter.9.h"
 #include "chapter.10.h"
 #include "chapter.11.h"
+#include "chapter.13.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -224,7 +225,7 @@ int _tmain(int argc, _TCHAR* argv[])
     BuildCircusTower(v117);
   
 #endif
-#if 1
+#if 0
     //
     // 11.8
     //
@@ -241,7 +242,13 @@ int _tmain(int argc, _TCHAR* argv[])
     printf("GetRank(%d)=%d", locate, r.GetRank(locate));
 
 #endif 
-
+#if 1
+    //
+    // 13.09
+    //
+    void* mem = aligned_malloc(10, 16);
+    aligned_free(mem);
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }

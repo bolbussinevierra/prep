@@ -321,7 +321,7 @@ void LIS(vector<t>& a) {
     int maxSeen=0;
     int bestEnd=0;
 
-    for (int i = 0; i < a.size(); ++i) {
+    for (size_t i = 0; i < a.size(); ++i) {
         DP[i] = 1;
         prev[i] = -1;
 
