@@ -69,3 +69,33 @@ bool IsWinningMove(Move m, vector<vector<Type>>& b) {
         (MoveInSecondaryDiagonal(m, b.size()) && CheckSecondaryDiagonal(m, b)));
     
 }
+
+//
+//
+// 17.3
+int CountZerosBest(int num) {
+    if (num < 0) return -1;
+    int count = 0;
+    for (int i = 5; num / i > 0; i *= 5) {
+        count += num / i;
+    }
+    return count;
+}
+
+int CountFactorsOf5(int num) {
+    int count = 0;
+    while (num % 5 == 0) { // while still divisible by 5
+        count++;
+        num /= 5;
+    }
+    return count;
+}
+
+int CountZerosGood(int num) {
+    if (num < 0) return -1;
+    int count = 0;
+    for (int i = 2; i <= num; ++i) {
+        count += CountFactorsOf5(i);
+    }
+    return count;
+}

@@ -250,7 +250,7 @@ int _tmain(int argc, _TCHAR* argv[])
     void* mem = aligned_malloc(10, 16);
     aligned_free(mem);
 #endif
-#if 1
+#if 0
     //
     // 17.2
     //
@@ -270,6 +270,15 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     Move m = {0, 3, O};
     cout << m.value << " has made a winning move?=" << IsWinningMove(m, b); 
+#endif
+#if 1
+    //
+    // 17.3
+    //
+    cout << "countZerosGood(20)=" << CountZerosGood(20) << endl;
+    cout << "countZerosBest(20)=" << CountZerosBest(20) << endl;
+    cout << "countZerosGood(25)=" << CountZerosGood(25) << endl;
+    cout << "countZerosBest(25)=" << CountZerosBest(25) << endl;
 #endif
     cin.get(); // pause console before exit
     return 0;
