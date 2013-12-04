@@ -10,6 +10,7 @@
 #include "chapter.10.h"
 #include "chapter.11.h"
 #include "chapter.13.h"
+#include "chapter.17.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -242,13 +243,34 @@ int _tmain(int argc, _TCHAR* argv[])
     printf("GetRank(%d)=%d", locate, r.GetRank(locate));
 
 #endif 
-#if 1
+#if 0
     //
     // 13.09
     //
     void* mem = aligned_malloc(10, 16);
     aligned_free(mem);
-#endif 
+#endif
+#if 1
+    //
+    // 17.2
+    //
+#define BS 4
+    Type _b[BS][BS] = 
+    {
+        { X,     X,     X,     O },
+        { Empty, X,     O,     Empty },
+        { Empty, O,     Empty, Empty },
+        { O,     Empty, Empty, Empty }
+    };
+    vector<vector<Type>> b(BS, vector<Type>(BS));
+    for (size_t row = 0; row < BS; ++row) {
+        for (size_t col = 0; col < BS; ++col) {
+            b[row][col] = _b[row][col];
+        }
+    }
+    Move m = {0, 3, O};
+    cout << m.value << " has made a winning move?=" << IsWinningMove(m, b); 
+#endif
     cin.get(); // pause console before exit
     return 0;
 }
