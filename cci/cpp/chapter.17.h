@@ -1,8 +1,10 @@
 #include <iostream>
 #include <assert.h>
+
 //
 // 17.2
 //
+
 enum Type {
     X,
     O,
