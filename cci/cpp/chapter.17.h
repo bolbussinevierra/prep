@@ -99,3 +99,22 @@ int CountZerosGood(int num) {
     }
     return count;
 }
+
+//
+// 17.4
+//
+int invert(int bit) { return 1^bit; }
+int get_sign(int n) { return invert((n >> 31) & 1); }
+
+int safe_max_opt(int a, int b) {
+    int sa = get_sign(a);
+    int sb = get_sign(b);
+    int sd = get_sign(a - b);
+
+    int use_sa = sa^sb;
+    int s = (use_sa*sa) + (invert(use_sa) * sd);
+    int inv_s = invert(s);
+
+    return (a * s) + (b * inv_s);
+}
+

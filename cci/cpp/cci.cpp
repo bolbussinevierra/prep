@@ -271,7 +271,7 @@ int _tmain(int argc, _TCHAR* argv[])
     Move m = {0, 3, O};
     cout << m.value << " has made a winning move?=" << IsWinningMove(m, b); 
 #endif
-#if 1
+#if 0
     //
     // 17.3
     //
@@ -279,6 +279,14 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "countZerosBest(20)=" << CountZerosBest(20) << endl;
     cout << "countZerosGood(25)=" << CountZerosGood(25) << endl;
     cout << "countZerosBest(25)=" << CountZerosBest(25) << endl;
+#endif
+#if 0
+    //
+    // 17.4
+    //
+    cout << "max of 0, 1 = " << safe_max_opt(0,1) << endl;
+    cout << "max of 1, 1 = " << safe_max_opt(1,1) << endl;
+    cout << "max of -1, -2 = " << safe_max_opt(-1, -2) << endl;
 #endif
     cin.get(); // pause console before exit
     return 0;
