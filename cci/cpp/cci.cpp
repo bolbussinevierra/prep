@@ -296,13 +296,15 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<int> v(a176, a176+AS(a176));
     GetSortRange(v);
 #endif 
-#if 1
+#if 0
     //
     // 17.8
     //
     int a178[] = {2, -8, 3, -2, 4, -10};
+    int a178b[] = {-2, -8, -3, -2, -4, -10};
     vector<int> v(a178, a178+AS(a178));
     PrintMaxSumNaive(v);
+    PrintMaxSumBest(v);
 #endif
     cin.get(); // pause console before exit
     return 0;

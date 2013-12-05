@@ -190,6 +190,37 @@ void GetSortRange(vector<int> const& a) {
 //
 // 17.8
 //
+void PrintMaxSumBest(vector<int> const& v) {
+    int bestStart = -1;
+    int bestEnd = -1;
+    int bestSum = 0;
+    int sum = 0;
+    int leastNegativeItem = -1; // if v is all negative, best sum is this item
+
+    for (size_t i=0; i < v.size(); ++i) {
+        if (sum == 0) bestStart = i;
+        sum += v[i];
+        if ((v[i] < 0) && 
+            (leastNegativeItem < 0 || v[leastNegativeItem] < v[i])) {
+            leastNegativeItem = i;
+        }
+        if (bestSum < sum) {
+            bestSum = sum;
+            bestEnd = i;
+        }
+        else if (sum < 0) {
+            sum = 0;
+        }
+    }
+    if ((bestSum == 0) && (leastNegativeItem != -1)) {
+        cout << "v contained all negative items. best sum =" 
+             << v[leastNegativeItem] << endl;
+    }
+    else {
+        cout << "BestSum=" << bestSum << " start=" << bestStart 
+             << " end=" << bestEnd << endl;
+    }
+}
 int _SumRange(vector<int> const& v, int start, int end) {
     int sum = 0;
     for (int i = start; i <= end; ++i) {
