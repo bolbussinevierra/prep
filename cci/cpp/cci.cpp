@@ -306,6 +306,16 @@ int _tmain(int argc, _TCHAR* argv[])
     PrintMaxSumNaive(v);
     PrintMaxSumBest(v);
 #endif
+#if 0
+    //
+    // 17.9
+    //
+    char* a179[] = {"FOO", "bar", "CALYpso", "Calypso", "Bar"};
+    vector<string> v(a179, a179+AS(a179));
+    SetupFrequencyTable(v);
+    string lookup("Calypso");
+    cout << "Frequency of " << lookup << " is=" << LookupWord(lookup) << endl;
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }

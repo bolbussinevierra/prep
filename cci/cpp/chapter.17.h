@@ -1,5 +1,7 @@
 #include <iostream>
 #include <assert.h>
+#include <algorithm>
+#include <string>
 
 //
 // 17.2
@@ -247,6 +249,44 @@ void PrintMaxSumNaive(vector<int> const& v) {
 
     cout << "BestSum=" << bestSum << " start=" << bestStart << " end=" << bestEnd << endl;
 }
+
+//
+// 17.9
+// 
+map<string, int> ft;
+void Trim(string& w) {
+}
+
+void SetupFrequencyTable(vector<string>& book) {
+    for (int i = 0; i < book.size(); ++i) {
+        string word(book[i]);
+        std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+        Trim(word);
+        ft[word]++;
+    }
+}
+
+int LookupWord(string& w) {
+    if (w.empty()) return -1;
+    if (ft.empty()) return -1;
+
+    string lookup(w);
+    std::transform(w.begin(), w.end(), lookup.begin(), ::tolower);
+    Trim(lookup);
+
+    map<string, int>::iterator iter = ft.find(lookup);
+    if (iter == ft.end()) {
+        return 0;
+    }
+    else {
+        return ft[lookup];
+    }
+}
+
+
+
+
+        
 
 
 
