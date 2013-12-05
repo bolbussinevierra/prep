@@ -288,6 +288,14 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "max of 1, 1 = " << safe_max_opt(1,1) << endl;
     cout << "max of -1, -2 = " << safe_max_opt(-1, -2) << endl;
 #endif
+#if 1
+    //
+    // 17.6
+    //
+    int a176[] = {1,2,4,7,10,11,7,12,6,7,16,18,19};
+    vector<int> v(a176, a176+AS(a176));
+    GetSortRange(v);
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }

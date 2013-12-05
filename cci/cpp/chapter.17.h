@@ -117,4 +117,76 @@ int safe_max_opt(int a, int b) {
 
     return (a * s) + (b * inv_s);
 }
+//
+// 17.6
+//
+int GetLeftEnd(vector<int> const& a) {
+    for (int i = 1; i < a.size(); ++i) {
+        if (a[i] < a[i-1]) {
+            return i-1;
+        }
+    }
+    return a.size() - 1;
+}
+
+int GetRightStart(vector<int> const& a) {
+    for (int i = a.size() - 2; i >= 0; --i) {
+        if (a[i] > a[i+1]) {
+            return i+1;
+        }
+    }
+    return 0;
+}
+
+void GetMinMaxInRange(vector<int> const& a, int start, int end, 
+                      int& minI, int& maxI) {
+    minI = start;
+    maxI = start;
+
+    for (int i = start; i <= end; ++i) {
+        if (a[i] < a[minI]) {
+            minI = i;
+        }
+        if (a[i] > a[maxI]) {
+            maxI = i;
+        }
+    }
+}
+    
+void GetSortRange(vector<int> const& a) {
+    assert(a.size() > 1);
+
+    int el = GetLeftEnd(a);
+    int sr = GetRightStart(a);
+
+    if (el == a.size() - 1) return; // sorted
+   
+    int minI = -1;
+    int maxI = -1;
+    GetMinMaxInRange(a, el+1, sr-1, minI, maxI);
+    cout << "middle_min=" << a[minI] << " middle_max=" << a[maxI] << endl;
+
+    // adjust the left;
+    int i=0;
+    for (i = el; i >=0; --i) {
+        if (a[i] <= a[minI]) {
+            minI = i+1;
+            break;
+        }
+    }
+    if (i == -1) minI=0;
+
+    // adjust the right
+    for (i = sr; i < a.size(); ++i) {
+        if (a[i] >= a[maxI]) {
+            maxI = i-1;
+            break;
+        }
+    }
+    if (i == a.size()) maxI = a.size() - 1;
+
+    cout << "m=" << minI << " n=" << maxI << endl;
+}
+
+
 
