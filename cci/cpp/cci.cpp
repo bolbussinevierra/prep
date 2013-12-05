@@ -288,7 +288,7 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "max of 1, 1 = " << safe_max_opt(1,1) << endl;
     cout << "max of -1, -2 = " << safe_max_opt(-1, -2) << endl;
 #endif
-#if 1
+#if 0
     //
     // 17.6
     //
@@ -296,6 +296,14 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<int> v(a176, a176+AS(a176));
     GetSortRange(v);
 #endif 
+#if 1
+    //
+    // 17.8
+    //
+    int a178[] = {2, -8, 3, -2, 4, -10};
+    vector<int> v(a178, a178+AS(a178));
+    PrintMaxSumNaive(v);
+#endif
     cin.get(); // pause console before exit
     return 0;
 }

@@ -187,6 +187,36 @@ void GetSortRange(vector<int> const& a) {
 
     cout << "m=" << minI << " n=" << maxI << endl;
 }
+//
+// 17.8
+//
+int _SumRange(vector<int> const& v, int start, int end) {
+    int sum = 0;
+    for (int i = start; i <= end; ++i) {
+        sum += v[i];
+    }
+    return sum;
+}
+
+void PrintMaxSumNaive(vector<int> const& v) {
+    int bestStart = -1;
+    int bestEnd = -1;
+    int bestSum = INT_MIN;
+
+    for (int i = 0; i < v.size(); ++i) {
+        for (int j = i; j >= 0; --j) {
+            int sum = _SumRange(v, j, i);
+            if (sum > bestSum) {
+                bestSum = sum;
+                bestStart = j;
+                bestEnd = i;
+            }
+        }
+    }
+
+    cout << "BestSum=" << bestSum << " start=" << bestStart << " end=" << bestEnd << endl;
+}
+
 
 
 
