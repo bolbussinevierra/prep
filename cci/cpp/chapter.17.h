@@ -2,6 +2,9 @@
 #include <assert.h>
 #include <algorithm>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include "chapter.11.h"
 
 //
 // 17.2
@@ -287,22 +290,104 @@ int LookupWord(string& w) {
 // 17.12
 //
 // This is order N if there are no duplicates. If there are duplicates
-// then it goes up by a factor related to the number of duplicates
-void PrintPairSum_O_N_withHash(vector<int>& v, int sum) {
-    map<int, int> hm;
+// then it goes up linearly by a factor related to the number of duplicates
+void CorrectWithoutDuplicateLogic_PrintPairSum_O_N_withHash(vector<int>& v, int sum) {
+    unordered_map<int, int> hm;
     for (int i = 0; i < v.size(); ++i) {
-        int complement = sum - v[i]; // this can overflow. Be ready to address that
-        map<int, int>::iterator it = hm.find(complement);
+        int complement = sum - v[i]; // can overflow. Be ready to address that
+        unordered_map<int, int>::iterator it = hm.find(complement);
         if (it != hm.end()) {
             int duplicates = it->second;
             while (duplicates > 0) {
-                cout << "{ " << v[i] << "," << complement << "}" << endl;
+                cout << "{" << v[i] << "," << complement << "}" << endl;
                 duplicates--;
             }
         }
         hm[v[i]]++;
     }
 }
+//
+// if we need to print duplicates for the numbers, we would need to do a a 
+// binary search on the remaining right hand side modified to take a hash set
+// for items already found
+//
+void Correct_PrintPairSum_O_NLogN_InPlace_NoDuplicates(int a[], int len, int sum) {
+    // sort the array nlogn
+    _mergesort(a, 0, len-1);
+
+    int start = 0;
+    int end = len - 1;
+
+    while (start < end) {
+        int pairSum = a[start] + a[end];
+
+        if (sum == pairSum) {
+            cout << "{" << a[start] << "," << a[end] << "}" << endl;
+            start++;
+            end--;
+        }
+        else if (pairSum < sum) {
+            start++;
+        }
+        else {
+            end--;
+        }
+    }
+}
+
+int ModifiedBinSearch(int a[], int target, int start, int last) {
+ 
+    if (start > last) return false;
+
+    int mid = (start + last)/2;
+    if (a[mid] == target) {
+        // check immediate left and right for all dupes. Note that all dupes
+        // of target MUST be bounded by start and last (proof - if this was 
+        // not true, there was a dupe of target at start-1 or last+1. But
+        // start-1 / last+1 was the mid in the the previous recursion stack 
+        // and so we would have found it already so that cannot be true. Proof by
+        // contradiction.
+        int count = 1; 
+        int left = mid - 1;
+        int right = mid + 1;
+        while (left >= start) {
+            if (a[left]==target)  {
+                count++;
+            }
+            left--;
+        }
+        while (right <= last) {
+            if (a[right]==target) {
+                count++;
+            }
+            right++;
+        }
+        return count;
+    }
+    else if (target < a[mid]) 
+    {
+        return ModifiedBinSearch(a, target, start, mid-1);
+    }
+    else {
+        return ModifiedBinSearch(a, target, mid+1, last);
+    }
+}
+
+void WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(
+    int a[], int len, int sum) {
+    
+    // sort the array nlogn
+    _mergesort(a, 0, len-1);
+
+    for (int i = 0; i < len; ++i) {
+        int complement = sum - a[i];
+        int complements_count = ModifiedBinSearch(a, complement, i+1, len-1);
+        for (int j = 1; j <=complements_count; ++j) {
+            cout << "{" << a[i] << "," << complement << "}" << endl;
+        }
+    }
+}
+
 
         
 

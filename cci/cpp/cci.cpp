@@ -320,10 +320,14 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     // 17.12
     //
-    int a1712[] = {1,2,1,2,1,2};
+    int a1712[] = {1,2,1,2,1,2,2};
     vector<int> v(a1712, a1712+AS(a1712));
-    cout << "ArraySize=" << AS(a1712) << endl;
-    PrintPairSum_O_N_withHash(v, 3);
+    cout << "O(N) with Hash: ArraySize=" << AS(a1712) << endl;
+    CorrectWithoutDuplicateLogic_PrintPairSum_O_N_withHash(v, 3);
+    cout << "O(NLogN, NoDupeHandled) ArraySize=" << AS(a1712) << endl;
+    Correct_PrintPairSum_O_NLogN_InPlace_NoDuplicates(a1712, AS(a1712), 3);
+    cout << "O(NLogN  DupesHandled) ArraySize=" << AS(a1712) << endl;
+    WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(a1712, AS(a1712), 3);
 #endif
     cin.get(); // pause console before exit
     return 0;
