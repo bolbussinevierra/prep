@@ -283,8 +283,26 @@ int LookupWord(string& w) {
     }
 }
 
-
-
+//
+// 17.12
+//
+// This is order N if there are no duplicates. If there are duplicates
+// then it goes up by a factor related to the number of duplicates
+void PrintPairSum_O_N_withHash(vector<int>& v, int sum) {
+    map<int, int> hm;
+    for (int i = 0; i < v.size(); ++i) {
+        int complement = sum - v[i]; // this can overflow. Be ready to address that
+        map<int, int>::iterator it = hm.find(complement);
+        if (it != hm.end()) {
+            int duplicates = it->second;
+            while (duplicates > 0) {
+                cout << "{ " << v[i] << "," << complement << "}" << endl;
+                duplicates--;
+            }
+        }
+        hm[v[i]]++;
+    }
+}
 
         
 

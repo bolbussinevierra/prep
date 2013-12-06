@@ -316,6 +316,15 @@ int _tmain(int argc, _TCHAR* argv[])
     string lookup("Calypso");
     cout << "Frequency of " << lookup << " is=" << LookupWord(lookup) << endl;
 #endif 
+#if 1
+    //
+    // 17.12
+    //
+    int a1712[] = {1,2,1,2,1,2};
+    vector<int> v(a1712, a1712+AS(a1712));
+    cout << "ArraySize=" << AS(a1712) << endl;
+    PrintPairSum_O_N_withHash(v, 3);
+#endif
     cin.get(); // pause console before exit
     return 0;
 }
