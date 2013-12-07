@@ -388,6 +388,86 @@ void WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(
     }
 }
 
+//
+// 17.13
+//
+struct BiNode {
+    BiNode* node1;
+    BiNode* node2;
+    int data;
+
+    BiNode(int data):data(data), node1(nullptr), node2(nullptr) {}
+
+    void Print() {
+        _PrintInOrder();
+        cout << endl;
+    }
+
+    static BiNode* MakeFromSortedArray(int a[], int first, int last) {
+        if (first > last) return nullptr;
+
+        int mid = (first + last)/2;
+        BiNode* root = new BiNode(a[mid]);
+        root->node1 = MakeFromSortedArray(a, first, mid-1);
+        root->node2 = MakeFromSortedArray(a, mid+1, last);
+        return root;
+    }
+
+private:
+    void _PrintInOrder() {
+        if (node1) node1->_PrintInOrder();
+        cout << data << " " ;
+        if (node2) node2->_PrintInOrder();
+    }
+};
+
+void _PrintAsList(BiNode* first, BiNode* last) {
+    cout << "List Forward:" << endl;
+    while (first) {
+        cout << first->data << " ";
+        first = first->node2;
+    }
+    cout << endl;
+
+    cout << "List Backward:" << endl;
+    while (last) {
+        cout << last->data << " ";
+        last = last->node1;
+    }
+    cout << endl;
+}
+
+void BST2DLL(BiNode* root, BiNode *& head, BiNode *& tail) {
+    if (!root) return;
+
+    BiNode* lh = nullptr, *lt = nullptr;
+    BiNode* rh = nullptr, *rt = nullptr;
+    BST2DLL(root->node1, lh, lt);
+    BST2DLL(root->node2, rh, rt);
+
+    if (lh) {
+        head = lh; 
+        lt->node2 = root; // join left list to head. 
+        root->node1 = lt;
+        tail = root;            // root is now the last element
+    }
+
+    if (!head) { // left list was empty
+        head = root;
+        tail = root;
+    }
+
+    if (rh) {
+        tail->node2 = rh;
+        rh->node1 = tail;
+        tail = rt;
+    }
+    return;
+}
+
+
+
+
 
         
 

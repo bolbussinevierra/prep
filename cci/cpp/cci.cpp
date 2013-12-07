@@ -316,7 +316,7 @@ int _tmain(int argc, _TCHAR* argv[])
     string lookup("Calypso");
     cout << "Frequency of " << lookup << " is=" << LookupWord(lookup) << endl;
 #endif 
-#if 1
+#if 0
     //
     // 17.12
     //
@@ -329,6 +329,18 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "O(NLogN  DupesHandled) ArraySize=" << AS(a1712) << endl;
     WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(a1712, AS(a1712), 3);
 #endif
+#if 1
+    //
+    // 17.13
+    //
+    int a1713[] = {1,2,3,4,5,6,7,8,9,10};
+    BiNode* root = BiNode::MakeFromSortedArray(a1713, 0, AS(a1713)-1);
+    cout << "Made a tree with the following inOrderT" << endl;
+    root->Print();
+    BiNode* head = nullptr, *tail = nullptr;
+    BST2DLL(root, head, tail);
+    _PrintAsList(head, tail);
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }
