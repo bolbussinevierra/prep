@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "chapter.11.h"
-
+#pragma warning (disable: 4018)
 //
 // 17.2
 //
@@ -465,7 +465,20 @@ void BST2DLL(BiNode* root, BiNode *& head, BiNode *& tail) {
     return;
 }
 
+BiNode* DLL2BST(BiNode *& list, int start, int last) {
+    if (start > last) return nullptr;
 
+    int mid = (start+last)/2;
+    BiNode* left = DLL2BST(list, start, mid-1);
+    
+    BiNode* root = list;
+    root->node1 = left;
+    list = list->node2;
+    BiNode* right = DLL2BST(list, mid+1, last);
+    
+    root->node2 = right;
+    return root;
+}
 
 
 

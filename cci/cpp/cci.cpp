@@ -333,13 +333,16 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     // 17.13
     //
-    int a1713[] = {1,2,3,4,5,6,7,8,9,10};
+    int a1713[] = {1,2,3,4,5};
     BiNode* root = BiNode::MakeFromSortedArray(a1713, 0, AS(a1713)-1);
     cout << "Made a tree with the following inOrderT" << endl;
     root->Print();
     BiNode* head = nullptr, *tail = nullptr;
     BST2DLL(root, head, tail);
     _PrintAsList(head, tail);
+    cout << "now turning list back to BST" << endl;
+    BiNode* headAgain = DLL2BST(head, 0, AS(a1713)-1);
+    headAgain->Print();
 #endif 
     cin.get(); // pause console before exit
     return 0;
