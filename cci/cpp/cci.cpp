@@ -353,6 +353,8 @@ int _tmain(int argc, _TCHAR* argv[])
     Item items[] = {{6,30}, {3,14}, {4,16}, {2,9}};
     vector<Item> v(items, items+AS(items));
     KnapsackRepeats(10, v);
+    Knapsack0_1NoRepeats(10, v);
+        
 #endif 
     cin.get(); // pause console before exit
     return 0;
