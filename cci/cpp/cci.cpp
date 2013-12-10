@@ -11,6 +11,7 @@
 #include "chapter.11.h"
 #include "chapter.13.h"
 #include "chapter.17.h"
+#include "dp.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -329,7 +330,7 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "O(NLogN  DupesHandled) ArraySize=" << AS(a1712) << endl;
     WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(a1712, AS(a1712), 3);
 #endif
-#if 1
+#if 0
     //
     // 17.13
     //
@@ -343,6 +344,15 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "now turning list back to BST" << endl;
     BiNode* headAgain = DLL2BST(head, 0, AS(a1713)-1);
     headAgain->Print();
+#endif 
+    /*
+        Dynamic programming problems
+    */
+#if 1
+    /* Knapsack problem */
+    Item items[] = {{6,30}, {3,14}, {4,16}, {2,9}};
+    vector<Item> v(items, items+AS(items));
+    KnapsackRepeats(10, v);
 #endif 
     cin.get(); // pause console before exit
     return 0;
