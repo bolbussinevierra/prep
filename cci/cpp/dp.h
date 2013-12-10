@@ -12,7 +12,7 @@ Solves Knapsack problem with a dynamic problem allowing for duplicate
 items
 */
 void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
-    if  (C==0 || R[C] == -1) {
+    if  (C == 0 || R[C] == -1) {
         cout << "Printing Optimal Knapsack:" << endl;
         return;
     }
