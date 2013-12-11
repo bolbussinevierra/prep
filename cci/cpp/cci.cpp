@@ -346,15 +346,26 @@ int _tmain(int argc, _TCHAR* argv[])
     headAgain->Print();
 #endif 
     /*
-        Dynamic programming problems
-    */
-#if 1
+     *
+     *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS
+     *
+     *
+     */
+#if 0
     /* Knapsack problem */
     Item items[] = {{6,30}, {3,14}, {4,16}, {2,9}};
     vector<Item> v(items, items+AS(items));
     KnapsackRepeats(10, v);
     Knapsack0_1NoRepeats(10, v);
-        
+#endif
+#if 1
+    /* Making Change */
+    int coins[] = {1, 5, 25};
+    int limits[] = {60, 1, 3};
+    vector<int> vCoins(coins, coins+AS(coins));
+    vector<int> vLimits(limits, limits+AS(limits));
+    MakingChangeInfiniteCoins(65, vCoins);   
+    MakingChangeLimitedCoins(65, vCoins, vLimits);
 #endif 
     cin.get(); // pause console before exit
     return 0;

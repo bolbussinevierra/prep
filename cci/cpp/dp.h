@@ -63,32 +63,129 @@ void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
     //}
     //cout << endl;
 
-    if  (C == 0 || R[C] == -1) {
+    if  (C == 0 || R[C] == INT_MIN) {
         cout << "Printing Optimal Knapsack:" << endl;
         return;
     }
     PrintKnapsack(C - items[R[C]].weight, R, items);
     cout << "{w:" << items[R[C]].weight << ", v:" << items[R[C]].value << "} ";
 }
-
 void KnapsackRepeats(int C, vector<Item> const& items) {
-    vector<int> DP(C+1, 0); // DP table;
-    vector<int> R(C+1, -1); // item picked for each C. So we can generate solution
+    vector<int> dp(C+1, 0); // DP table;
+    vector<int> R(C+1, INT_MIN); // item picked for each C. So we can generate solution
 
-    DP[0] = 0;
     for (int c = 1; c <= C; ++c) {
-        DP[c] = DP[c-1]; // Best value as at least this much if new items not added
+        dp[c] = dp[c-1]; // Best value as at least this much if new items not added
         for (int i = 0; i < items.size(); ++i) {
             if (items[i].weight <= c) {
-                int temp = DP[c - items[i].weight] + items[i].value;
-                if (temp > DP[c]) {
-                    DP[c] = temp;
+                int temp = dp[c - items[i].weight] + items[i].value;
+                if (temp > dp[c]) {
+                    dp[c] = temp;
                     R[c] = i;
                 }
             }
         }
     }
 
-    cout << "KnapsacksRepeats(" << C << ")=" << DP[C] << endl;
+    cout << "KnapsacksRepeats(" << C << ")=" << dp[C] << endl;
     PrintKnapsack(C, R, items); cout << endl;
+}
+
+void PrintSelection(int C, vector<int> const& R, vector<int> const& items) {
+    if (C==0 || R[C] == -1) {
+        cout << "Selected coins:\n";
+    }
+    else {
+        PrintSelection(C-items[R[C]], R, items);
+        cout << items[R[C]] << " ";
+    }
+}
+
+void MakingChangeLimitedCoins(
+    int C, vector<int> const& coins, vector<int> const& limits) {
+
+    assert(C >= 0);
+    assert(coins.size() == limits.size());
+    vector<bool> is_possible(C+1, false);
+    vector<int> dp(C+1, -1);
+    vector<int> R(C+1, -1); //record of coin used for weight each change sum
+                            // so result can be reconstructed
+    // need to track how many coins we have used up in getting to a particular
+    // sum state. 
+    vector<vector<int>> track(C+1, vector<int>(limits.size()));
+
+    dp[0] = 0;
+    is_possible[0] = true;
+    track[0].assign(limits.begin(), limits.end());
+    for (int c = 0; c <= C; ++c) {
+        for (int i = 0; i < coins.size(); ++i) {
+            if (is_possible[c]) {
+                if (track[c][i] > 0 ) { // we have not used up all of i
+                    int next_sum = c+coins[i];
+                    if (next_sum <= C) {
+                        is_possible[next_sum] = true;
+                        if (-1 == dp[next_sum] ||
+                            dp[c]+1 < dp[next_sum]) 
+                        {
+                            dp[next_sum] = dp[c]+1;
+                            R[next_sum] = i;
+                            track[next_sum].assign(track[c].begin(), track[c].end());
+                            track[next_sum][i]--;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (is_possible[C]) {
+        cout << "MakingChangeLimitedCoins(" << C << ")=" << dp[C] << endl;
+        PrintSelection(C, R, coins); cout << endl;
+    }
+    else {
+        cout << "MakingChangeLimitedCoins(" << C << ")=Not possible! \n";
+    }
+}
+
+void MakingChangeInfiniteCoins(int C, vector<int> const& coins) {
+    /*
+    For us coins, the greedy algorithm always works (pick the biggest coin
+    first and use that till you can't anymore and then move to the next)
+
+    Also, coins always contain a denomination of 1 which guarantees that change
+    can be made for any amount. However, here we implement a generic solution
+    that does not assume change can be made since this might be useful for 
+    other kinds of problems
+
+    However, if we want a general solution that works on all kinds of
+    denominations we need to use dynamic programming
+    */
+    assert(C >= 0);
+    vector<bool> is_possible(C+1, false);
+    vector<int> dp(C+1, -1);
+    vector<int> R(C+1, -1); //record of coin used for weight each change sum
+                            // so result can be reconstructed
+
+    dp[0] = 0;
+    is_possible[0] = true;
+    for (int c = 0; c <= C; ++c) {
+        for (int i = 0; i < coins.size(); ++i) {
+            if (is_possible[c]) {
+                if (c + coins[i] <= C) {
+                    is_possible[c+coins[i]] = true;
+                    if (-1 == dp[c+coins[i]] ||
+                        dp[c]+1 < dp[c+coins[i]]) {
+                            dp[c+coins[i]] = dp[c]+1;
+                            R[c+coins[i]] = i;
+                    }
+                }
+            }
+        }
+    }
+    if (is_possible[C]) {
+        cout << "MakingChangeInfiniteCoins(" << C << ")=" << dp[C] << endl;
+        PrintSelection(C, R, coins); cout << endl;
+    }
+    else {
+        cout << "MakingChangeInfiniteCoins(" << C << ")=Not possible! \n";
+    }
 }
