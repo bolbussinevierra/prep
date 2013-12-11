@@ -358,7 +358,7 @@ int _tmain(int argc, _TCHAR* argv[])
     KnapsackRepeats(10, v);
     Knapsack0_1NoRepeats(10, v);
 #endif
-#if 1
+#if 0
     /* Making Change */
     int coins[] = {1, 5, 25};
     int limits[] = {60, 1, 3};
@@ -366,7 +366,14 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<int> vLimits(limits, limits+AS(limits));
     MakingChangeInfiniteCoins(65, vCoins);   
     MakingChangeLimitedCoins(65, vCoins, vLimits);
+#endif
+#if 1
+    /* Box Stacking */
+    Box boxes[] = { {4, 6, 7}, {1, 2, 3}, {4, 5, 6}, {10, 12, 32} };
+    vector<Box> vBoxes(boxes, boxes+AS(boxes));
+    StackBoxes(vBoxes);
 #endif 
+
     cin.get(); // pause console before exit
     return 0;
 }

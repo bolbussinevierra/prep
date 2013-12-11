@@ -100,7 +100,9 @@ void PrintSelection(int C, vector<int> const& R, vector<int> const& items) {
         cout << items[R[C]] << " ";
     }
 }
-
+/*
+ -MAKING CHANGE-
+*/
 void MakingChangeLimitedCoins(
     int C, vector<int> const& coins, vector<int> const& limits) {
 
@@ -188,4 +190,82 @@ void MakingChangeInfiniteCoins(int C, vector<int> const& coins) {
     else {
         cout << "MakingChangeInfiniteCoins(" << C << ")=Not possible! \n";
     }
+}
+
+/*
+ -- BOX STACKING --
+*/
+struct Box {
+    double h;
+    double w;
+    double l;
+    double BaseArea() const { return w*l; }
+    static bool Greater(Box const& a, Box const& b) {
+        return a.BaseArea() > b.BaseArea();
+    }
+
+    void Print() const {
+        cout << h << " x (" << w << " x " << l << ")\n";
+    }
+};
+void AddRotations(vector<Box> const& in, vector<Box>& out) {
+    out.reserve(in.size() * 3);
+    for (int i = 0; i < in.size(); ++i) {
+        out.push_back(in[i]);
+        Box r;
+        r.h = in[i].w;
+        r.l = max(in[i].h, in[i].l);
+        r.w = min(in[i].h, in[i].l);
+        out.push_back(r);
+        r.h = in[i].l;
+        r.l = max(in[i].h, in[i].w);
+        r.w = min(in[i].h, in[i].w);
+        out.push_back(r);
+    }
+}
+void PrintBoxStack(vector<int> const& prev, int bestEnd, vector<Box> const& b) {
+    if (-1 == bestEnd) {
+        return;
+    }
+    PrintBoxStack(prev, prev[bestEnd], b);
+    b[bestEnd].Print();
+}
+void StackBoxes(vector<Box> const& b) {
+    if (b.empty()) {
+        cout << "Error! No boxes to stack \n";
+        return;
+    }
+
+    vector<Box> rotB;
+    AddRotations(b, rotB);
+
+    std::sort(rotB.begin(), rotB.end(), Box::Greater);
+
+    vector<double> dp(rotB.size()); 
+    vector<int> prev(rotB.size(), -1);
+
+    int bestEnd = -1;
+    double maxSeen = 0;
+
+    // Find the Longest Increasing Subsequence or a list of sorted in descending
+    // order of base area
+    for (int i = 0; i < rotB.size(); ++i) {
+        dp[i] = rotB[i].h; // dp[i] is at least the height of the i-box in trivial case
+        for (int j = i - 1; j >=0; --j) {
+            if ((rotB[j].w > rotB[i].w) && 
+                (rotB[j].l > rotB[i].l) &&
+                (dp[j] + rotB[i].h > dp[i])) 
+            {
+                dp[i] = dp[j] + rotB[i].h;
+                prev[i] = j;
+
+                if (maxSeen < dp[i]) {
+                    maxSeen = dp[i];
+                    bestEnd = i;
+                }
+            }
+        }
+    }
+    cout << "StackHeight=" << maxSeen << endl;
+    PrintBoxStack(prev, bestEnd, rotB);
 }
