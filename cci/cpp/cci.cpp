@@ -367,11 +367,22 @@ int _tmain(int argc, _TCHAR* argv[])
     MakingChangeInfiniteCoins(65, vCoins);   
     MakingChangeLimitedCoins(65, vCoins, vLimits);
 #endif
-#if 1
+#if 0
     /* Box Stacking */
     Box boxes[] = { {4, 6, 7}, {1, 2, 3}, {4, 5, 6}, {10, 12, 32} };
     vector<Box> vBoxes(boxes, boxes+AS(boxes));
     StackBoxes(vBoxes);
+#endif
+#if 1
+    // clever fib - we only need to keep around the last two values by
+    // overwriting the smallest one (n-2 term) on each calculation
+    int fib[2] = {0,1};
+    int counter = 0;
+    for (int i = 2; i <= 20; ++i) {
+        fib[counter++ % 2] = fib[0] + fib[1];
+    }
+    cout << fib[0] << endl;
+
 #endif 
 
     cin.get(); // pause console before exit
