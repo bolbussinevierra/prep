@@ -239,6 +239,16 @@ void StackBoxes(vector<Box> const& b) {
     vector<Box> rotB;
     AddRotations(b, rotB);
 
+    // sort in decreasing order of base area. This guarantees all boxes that
+    // *COULD* go ontop of a box at position i are at positions greater than i
+    // Proof of this follows from contradiction: Assume that there is a box
+    // that could go ontop of box at position i after sorting that occurs at 
+    // a position less than i. Lets call this box J. That would mean box J
+    // has a smaller w and l than box i. This would mean that it has a smaller
+    // area than box i. However this contradicts that stated starting assumption
+    // that both box i and j occur in order sorted in DECREASING order of area
+    // where no box with a smaller area than box i can occur before it in the
+    // order. QED
     std::sort(rotB.begin(), rotB.end(), Box::Greater);
 
     vector<double> dp(rotB.size()); 
