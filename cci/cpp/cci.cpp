@@ -373,7 +373,7 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<Box> vBoxes(boxes, boxes+AS(boxes));
     StackBoxes(vBoxes);
 #endif
-#if 1
+#if 0
     /*
      * LONGEST COMMON SUBSEQUENCE 
      *
