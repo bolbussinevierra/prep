@@ -279,3 +279,53 @@ void StackBoxes(vector<Box> const& b) {
     cout << "StackHeight=" << maxSeen << endl;
     PrintBoxStack(prev, bestEnd, rotB);
 }
+/*
+ * LCS - LONGEST COMMON SUBSEQUENCE
+ *
+ */
+
+template <class t>
+void PrintLCS(
+    vector<vector<int>> const& dp, 
+    int i, int j, 
+    vector<t> const& a,
+    vector<t> const& b) 
+{
+    if (0 == i || 0 == j) {
+        return;
+    }
+    else if (dp[i][j] == dp[i-1][j-1]+1 && a[i-1] == b[j-1]) {
+        PrintLCS(dp, i-1, j-1, a, b);
+        cout << a[i-1];     // note that d[p][..] corresponds to item a[p-1]
+    }
+    else if (dp[i][j] == dp[i-1][j]) {
+        PrintLCS(dp, i-1, j, a, b);
+    }
+    else {
+        PrintLCS(dp, i, j-1, a, b);
+    }
+}
+
+template <class t>
+int _LCS(vector<t> const& a, vector<t> const& b) {
+    
+    vector<vector<int>> dp (a.size()+1, vector<int>(b.size()+1));
+
+    for (int i = 0; i <= a.size(); ++i) {
+        for (int j = 0; j <= b.size(); ++j) {
+            if (0 == i || 0 == j) {
+                dp[i][j] = 0;
+            }
+            else if (a[i-1] == b[j-1]) {
+                dp[i][j] = dp[i-1][j-1]+1;
+            }
+            else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+    cout << "LCS=" << dp[a.size()][b.size()] << endl;
+    cout << "LCS contains:\n";
+    PrintLCS(dp, a.size(), b.size(), a, b);
+    return dp[a.size()][b.size()];
+}

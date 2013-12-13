@@ -374,6 +374,20 @@ int _tmain(int argc, _TCHAR* argv[])
     StackBoxes(vBoxes);
 #endif
 #if 1
+    /*
+     * LONGEST COMMON SUBSEQUENCE 
+     *
+     */
+    char* S1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
+    char* S2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
+    vector<char> vS1(S1, S1+strlen(S1));
+    vector<char> vS2(S2, S2+strlen(S2));
+    _LCS(vS1, vS2);
+#endif 
+    /*
+     * RANDOM EXPERIMENTS IN AWESOME
+     */
+#if 0
     // clever fib - we only need to keep around the last two values by
     // overwriting the smallest one (n-2 term) on each calculation
     int fib[2] = {0,1};
