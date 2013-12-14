@@ -329,3 +329,81 @@ int _LCS(vector<t> const& a, vector<t> const& b) {
     PrintLCS(dp, a.size(), b.size(), a, b);
     return dp[a.size()][b.size()];
 }
+
+/*
+ *
+ * EDIT DISTANCE
+ *
+ */
+#define INSERT_COST 1
+#define DELETE_COST 1
+#define REPLACE_COST 1
+int min3(int a, int b, int c) { return min(min(a, b), c); }
+
+typedef vector<vector<int>> table2d_t;
+
+void print_edit_guide(
+    table2d_t const& t, 
+    int i, 
+    int j, 
+    string const& a, 
+    string const& b) 
+{
+    if (0==i || 0==j) {
+        if (!(i == 0 && j == 0)) {
+            
+            int tmp = max(i, j);
+            string start_msg = (i > j) ? "From a Delete[" : "Into a Insert[";
+            string end_msg = (i > j) ? "]": "] from b";
+            string const& c =  (i > j) ? a : b;
+            string const& n = (tmp == i) ? "a" : "b";
+            
+            cout << start_msg;
+
+            for (int k = 1; k <= tmp; ++k) {
+                cout << c[k-1];
+            }
+            cout << end_msg << endl;
+        }
+    } 
+    else if (a[i-1] == b[j-1]) {
+        print_edit_guide(t, i-1, j-1, a, b);
+        cout << "Match [" << a[i-1] << " with " << b[j-1] << "]\n";
+    } 
+    else if (t[i-1][j] + DELETE_COST == t[i][j]) {
+        print_edit_guide(t, i-1, j, a, b);
+        cout << "Delete [" << a[i-1] << " from a]\n";
+    } 
+    else if (t[i][j-1] + INSERT_COST == t[i][j]) {
+        print_edit_guide(t, i, j-1, a, b);
+        cout << "Insert [" << b[j-1] << " into a]\n";
+    }
+    else if (t[i-1][j-1] + REPLACE_COST == t[i][j]) {
+        print_edit_guide(t, i-1, j-1, a, b);
+        cout << "Replace [" << a[i-1] << " in a with " << b[j-1] << " from b]\n";
+    }
+}
+
+int get_edit_distance(string const&a, string const&b) {
+    cout << "a (len=" << a.size() << "): " << a.c_str() << endl;
+    cout << "b (len=" << b.size() << "): " << b.c_str() << endl;
+    table2d_t t(a.size()+1, vector<int>(b.size()+1));
+    for (int i = 0; i <= a.size(); ++i) {
+        for (int j = 0; j <= b.size(); ++j) {
+            if (0==i || 0==j) {
+                t[i][j] = max(i, j);
+            }
+            else if (a[i-1] == b[j-1]) { // note that t[i][..] corresponds to a[i-1]
+                t[i][j] = t[i-1][j-1];
+            }
+            else {
+                t[i][j] = min3(t[i-1][j] + DELETE_COST, // deleted last of a
+                               t[i][j-1] + INSERT_COST, // inserted last of b into a
+                               t[i-1][j-1] + REPLACE_COST); // moved last of b into a
+            }
+        }
+    }
+    cout << "edit_distance=" << t[a.size()][b.size()] << endl;
+    print_edit_guide(t, a.size(), b.size(), a, b);
+    return t[a.size()][b.size()];
+}

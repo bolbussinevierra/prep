@@ -384,6 +384,13 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<char> vS2(S2, S2+strlen(S2));
     _LCS(vS1, vS2);
 #endif 
+#if 0
+    string S1 = "EXPONENTIAL";
+    string S2 = "POLYNOMIAL";
+    //string S1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
+    //string S2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
+    get_edit_distance(S1, S2);
+#endif
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */
