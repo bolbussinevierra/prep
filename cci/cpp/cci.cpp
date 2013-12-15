@@ -391,6 +391,15 @@ int _tmain(int argc, _TCHAR* argv[])
     //string S2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
     get_edit_distance(S1, S2);
 #endif
+#if 0
+    /*
+     * BALANCED PARTITION
+     */ 
+    int a[] = {3,2,1,1,2,1};
+    vector<int> v(a, a+AS(a));
+    balanced_partition(v);
+#endif 
+
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */

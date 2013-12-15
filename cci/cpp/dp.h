@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <numeric>
+#include <hash_set>
 #pragma once
 using namespace std;
 
@@ -406,4 +409,66 @@ int get_edit_distance(string const&a, string const&b) {
     cout << "edit_distance=" << t[a.size()][b.size()] << endl;
     print_edit_guide(t, a.size(), b.size(), a, b);
     return t[a.size()][b.size()];
+}
+
+/*
+ BALANCED PARTITION
+*/
+typedef vector<vector<bool>> ss_table;
+void print_s1(ss_table const& t, int bss, int bse, vector<int> const& a, 
+              hash_set<int>& s1) 
+{
+    if (0 == bss || 0 == bse) {
+        cout << "s1=\""; 
+        return;
+    }
+    else if (t[bss][bse-1]) {
+        print_s1(t, bss, bse-1, a, s1);
+    }
+    else if (bss >= a[bse-1] && t[bss-a[bse-1]][bse-1]) {
+        print_s1(t, bss-a[bse-1], bse-1, a, s1);
+        s1.insert(bse-1);
+        cout << a[bse-1] << " ";
+    }
+    else {
+        assert(false);
+    }
+}
+
+int balanced_partition(vector<int> const& a) {
+    int sum = accumulate(a.begin(), a.end(), 0);
+    int half_sum = sum / 2;
+    ss_table t(half_sum+1, vector<bool>(a.size()+1));
+
+    for (int i = 1; i <= half_sum; ++i) t[i][0] = false; // exclude t[0][0] which is true
+    for (int i= 0; i <= a.size(); ++i) t[0][i] = true;
+
+    int best_subset_sum = 0;
+    int best_subset_end = 0;
+
+    for (int i = 1; i <= half_sum; ++i) {
+        for (int j = 1; j <= a.size(); ++j) {
+            t[i][j] = t[i][j-1] || (i >= a[j-1] ? t[i-a[j-1]][j-1] : false );
+            if (t[i][j] && (best_subset_sum < i)) {
+                best_subset_sum = i;
+                best_subset_end = j;
+            }
+        }
+    }
+    int min_diff = sum-2*(best_subset_sum);
+    cout << "minimized_difference=" << min_diff << endl;
+    hash_set<int> s1;
+    
+    print_s1(t, best_subset_sum, best_subset_end, a, s1); 
+    cout << "\"" << endl;
+
+    cout << "s2=\"";
+    for (int i = 0; i < a.size(); ++i) {
+        if (s1.end() == s1.find(i)) {
+            cout << a[i] << " ";
+        }
+    }
+    cout << "\"" << endl;
+
+    return min_diff;
 }
