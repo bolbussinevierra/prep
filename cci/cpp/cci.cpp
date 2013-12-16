@@ -356,9 +356,18 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     //
     // 18.2
+    //
+    //
     Card cards[] = {{0,1}, {0,2}, {0, 3}, {0,4}, {0,5}}; 
     vector<Card> v(cards, cards+AS(cards));
-    ShuffleDeck(v);
+    ShuffleDeck_Mine(v);
+#endif
+#if 0
+    //
+    // 18.3
+    //
+    int a183[] = {1,2,3,4,5};
+    PickM_MineBeter(vector<int>(a183, a183+AS(a183)), 3);
 #endif
     /*
      *

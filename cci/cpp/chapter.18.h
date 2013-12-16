@@ -53,10 +53,61 @@ void PrintCards(vector<Card> const& cards) {
     cout << endl;
 }
 
-void ShuffleDeck(vector<Card>& cards) {
+void ShuffleDeck_Mine(vector<Card>& cards) {
     PrintCards(cards);
+    int last = cards.size() - 1;
     for (int i = 0; i < cards.size(); ++i) {
-        _swap(&cards[i], &cards[random(0,i)]);
+        int k = random(0, last); 
+        _swap(&cards[k], &cards[last]);
+        last--;
     }
     PrintCards(cards);
+}
+
+
+void ShuffleDeck_CCI(vector<Card>& cards) {
+    PrintCards(cards);
+    for (int i = 0; i < cards.size(); ++i) {
+        int k = random(0,i); // NOTE: upper range is i and not end of the array! i.e increasing range
+        _swap(&cards[i], &cards[k]);
+    }
+    PrintCards(cards);
+}
+
+//
+// 18.3
+//
+void PickM_MineBeter(vector<int>& n, int m) {
+    // Think of this as picking from a bag where the partition [last, n]
+    // will contain that items that have ALREADY BEEN picked are in hand
+    int last = n.size() - 1;
+    for (int i = 0; i < m; ++i) {
+        int k = random(0, last);
+        _swap(&n[k], &n[last]);
+        last--;
+    }
+    // last is at -1 off of the start of set m after the above look so we need
+    // to bump it forward 1
+    for (int i = last+1; i < n.size(); ++i) {
+        cout << n[i] << " ";
+    }
+}
+
+void PickM_CCI(vector<int> const&n, int m) {
+    vector<int> vm(m);
+    for (int i = 0; i < m; ++i) {
+        vm[i] = n[i];
+    }
+    
+    for (int i = m; i < n.size(); ++i) {
+        int k = random(0, i);
+        if (k < m) {
+            vm[i] = n[k];
+        }
+    }
+
+    for (int i = 0; i < vm.size(); ++i) {
+        cout << vm[i] << " ";
+    }
+
 }
