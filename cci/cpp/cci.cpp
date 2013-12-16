@@ -11,6 +11,7 @@
 #include "chapter.11.h"
 #include "chapter.13.h"
 #include "chapter.17.h"
+#include "chapter.18.h"
 #include "dp.h"
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -345,6 +346,20 @@ int _tmain(int argc, _TCHAR* argv[])
     BiNode* headAgain = DLL2BST(head, 0, AS(a1713)-1);
     headAgain->Print();
 #endif 
+#if 0
+    //
+    // 18.1
+    //
+    badd(5,-4);
+#endif 
+#if 1
+    //
+    //
+    // 18.2
+    Card cards[] = {{0,1}, {0,2}, {0, 3}, {0,4}, {0,5}}; 
+    vector<Card> v(cards, cards+AS(cards));
+    ShuffleDeck(v);
+#endif
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS
