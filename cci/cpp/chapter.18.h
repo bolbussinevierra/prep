@@ -77,7 +77,7 @@ void ShuffleDeck_CCI(vector<Card>& cards) {
 //
 // 18.3
 //
-void PickM_MineBeter(vector<int>& n, int m) {
+void PickM_MineBetter(vector<int>& n, int m) {
     // Think of this as picking from a bag where the partition [last, n]
     // will contain that items that have ALREADY BEEN picked are in hand
     int last = n.size() - 1;

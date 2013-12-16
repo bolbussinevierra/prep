@@ -352,7 +352,7 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     badd(5,-4);
 #endif 
-#if 1
+#if 0
     //
     //
     // 18.2
@@ -367,7 +367,7 @@ int _tmain(int argc, _TCHAR* argv[])
     // 18.3
     //
     int a183[] = {1,2,3,4,5};
-    PickM_MineBeter(vector<int>(a183, a183+AS(a183)), 3);
+    PickM_MineBetter(vector<int>(a183, a183+AS(a183)), 3);
 #endif
     /*
      *
