@@ -369,6 +369,13 @@ int _tmain(int argc, _TCHAR* argv[])
     int a183[] = {1,2,3,4,5};
     PickM_MineBetter(vector<int>(a183, a183+AS(a183)), 3);
 #endif
+#if 1
+    //
+    // 18.4
+    // 
+    int n = 22;
+    cout << "Twos between 0 and " << n << "=" << CountTwosBruteForce(n) << endl;
+#endif 
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS

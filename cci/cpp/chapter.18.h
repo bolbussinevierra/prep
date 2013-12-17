@@ -111,3 +111,24 @@ void PickM_CCI(vector<int> const&n, int m) {
     }
 
 }
+//
+// 18.4
+//
+int _CountTwos(int n) {
+    int count = 0;
+    while (n > 0) {
+        if (n % 10 == 2) {
+            count++;
+        }
+        n /= 10;
+    }
+    return count;
+}
+
+int CountTwosBruteForce(int n) {
+    int count = 0;
+    for (int i=2; i <=n; ++i) {
+        count += _CountTwos(i);
+    }
+    return count;
+}
