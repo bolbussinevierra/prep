@@ -130,5 +130,33 @@ int CountTwosBruteForce(int n) {
     for (int i=2; i <=n; ++i) {
         count += _CountTwos(i);
     }
-    return count;
+    return count; 
+}
+//
+// 18.5
+//
+int MinDist(string const& a, string const& b, vector<string> const& words) {
+    int min = INT_MAX;
+    int w1_pos = -1;
+    int w2_pos = -1;
+    for (int i = 0; i < words.size(); ++i) {
+        if (0 == _stricmp(a.c_str(), words[i].c_str())) {
+            w1_pos = i;
+            if (w2_pos != -1) {
+                int distance = w1_pos - w2_pos;
+                if (min > distance) {
+                    min = distance;
+                }
+            }
+        } else if (0 == _stricmp(b.c_str(), words[i].c_str())) {
+            w2_pos = i;
+            if (w1_pos != -1) {
+                int distance = w2_pos - w1_pos;
+                if (min > distance) {
+                    min = distance;
+                }
+            }
+        }
+    }
+    return min;
 }
