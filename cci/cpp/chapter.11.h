@@ -50,34 +50,39 @@ void _swap(T* a, T* b) {
 
 template <class T>
 int _qs_partition(T array[], int left, int right) {
-    T pivot = array[(left + right)/2];
+    // use the middle element as the pivot. Move it to the left
+    // end to get it out of the way. Well remember to move it back
+    // at the end
+    int m = (left + right) / 2;
+    _swap(&array[left], &array[m]);
+    T p = array[left];
+    int cache = left;
+    
+    left++; // skip over the pivot
     while (left <= right) {
-        while (array[left] < pivot) {
-            left++;
-        }
-        while (array[right] > pivot) {
-            right--;
-        }
-
+        while (array[left] <= p) left++;
+        while (array[right] > p) right--;
         if (left <= right) {
             _swap(&array[left], &array[right]);
-            left++; 
+            left++;
             right--;
         }
     }
-    return left;
+    // restore the pivot to its correct position (before the right half
+    // of partition)
+    _swap(&array[cache], &array[right]);
+    return right;
 }
 
 template<class T>
 void _quicksort(T array[], int left, int right) {
-    int pivotPoint = _qs_partition(array, left, right);
-    if (pivotPoint-1 > left) {
-        _quicksort(array, left, pivotPoint-1);
-    }
-    if (right > pivotPoint) {
-        _quicksort(array, pivotPoint, right);
+    if (left < right) {
+        int p = _qs_partition(array, left, right);
+        _quicksort(array, left, p-1);
+        _quicksort(array, p+1, right);
     }
 }
+
 template<class T>
 void _merge(T array[], int left, int mid, int right) {
     int leftLen = (mid - left) + 1; // [left, mid] 

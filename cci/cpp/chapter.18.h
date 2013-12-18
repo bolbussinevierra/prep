@@ -164,11 +164,17 @@ int MinDist(string const& a, string const& b, vector<string> const& words) {
 // 18.6
 //
 int _partition(vector<int>& a, int left, int right) {
+    // use the middle element as the pivot. Move it to the left
+    // end to get it out of the way. Well remember to move it back
+    // at the end
     int m = (left + right) / 2;
-    int p = a[m];
+    _swap(&a[left], &a[m]);
+    int p = a[left];
+    int cache = left;
     
+    left++; // skip over the pivot
     while (left <= right) {
-        while (a[left] < p) left++;
+        while (a[left] <= p) left++;
         while (a[right] > p) right--;
         if (left <= right) {
             _swap(&a[left], &a[right]);
@@ -176,7 +182,10 @@ int _partition(vector<int>& a, int left, int right) {
             right--;
         }
     }
-    return left;
+    // restore the pivot to its correct position (before the right half
+    // of partition)
+    _swap(&a[cache], &a[right]);
+    return right;
 }
 
 int _get_index_of_nth(vector<int>& a, int n, int left, int right) {
