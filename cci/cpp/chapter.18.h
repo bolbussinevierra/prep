@@ -190,19 +190,32 @@ int _partition(vector<int>& a, int left, int right) {
 
 int _get_index_of_nth(vector<int>& a, int n, int left, int right) {
     int pivot_index = _partition(a, left, right);
-    if (pivot_index == n - 1) { // note that n is 1 indexed but a is 0 indexed
+
+    int left_size = pivot_index - left + 1;
+    if (left_size == n) { // pivot is the right 
         return pivot_index;
     } 
-    else if (pivot_index > n - 1) {
+    else if (left_size > n) {
         return _get_index_of_nth(a, n, left, pivot_index-1);
     }
     else {
-        return _get_index_of_nth(a, (n - pivot_index - 1), pivot_index+1, right);
+        return _get_index_of_nth(a, n - left_size, pivot_index+1, right);
     }
 }
 
 void _test_print_nth(vector<int>& a, int n) {
     cout << n << " smallest=" << a[_get_index_of_nth(a, n, 0, a.size()-1)];
+    cout << endl;
+}
+
+void print_n_smallest(vector<int>& a, int n) {
+    if (n <= 0) return;
+
+    int nth = _get_index_of_nth(a, n, 0, a.size() -1);
+    cout << n << " smallest:";
+    for (int i = 0; i <= nth; ++i) {
+        cout << a[i] << " ";
+    }
     cout << endl;
 }
 

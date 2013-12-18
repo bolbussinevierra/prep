@@ -165,7 +165,7 @@ int _tmain(int argc, _TCHAR* argv[])
     int b111[] = {1,4};
     MergeSorted(a111, AS(a111)-AS(b111), b111, AS(b111));
 #endif
-#if 1
+#if 0
     int qs[] = {5,6,7,90,23,1,4,5};
     _quicksort(qs, 0, AS(qs)-1);
     _P(qs, AS(qs));
@@ -387,17 +387,17 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     // 18.6
     //
-    int a186[] = {5,4,3,1,2,9,8,7,6,10};
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 1);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 2);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 3);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 4);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 5);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 6);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 7);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 8);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 9);
-    _test_print_nth(vector<int>(a186, a186+AS(a186)), 10);
+    int a186[] = {5,4,3,1,1,2,9,8,7,7,6,10};
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 1);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 2);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 3);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 4);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 5);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 6);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 7);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 8);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 9);
+    print_n_smallest(vector<int>(a186, a186+AS(a186)), 10);
 #endif 
     /*
      *
