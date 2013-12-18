@@ -383,6 +383,13 @@ int _tmain(int argc, _TCHAR* argv[])
     char* s185[] = {"foo", "cow", "boy", "bar", "cow", "foo" };
     cout << "MinDist=" << MinDist("foo", "bar", vector<string>(s185, s185+AS(s185)));
 #endif
+#if 1
+    //
+    // 18.6
+    //
+    int a186[] = {5,4,3,1,2,9,8,7,6,10};
+    _test_print_nth(vector<int>(a186, a186+AS(a186)), 1);
+#endif 
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS

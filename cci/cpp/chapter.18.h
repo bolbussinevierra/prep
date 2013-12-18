@@ -160,3 +160,40 @@ int MinDist(string const& a, string const& b, vector<string> const& words) {
     }
     return min;
 }
+//
+// 18.6
+//
+int _partition(vector<int>& a, int left, int right) {
+    int m = (left + right) / 2;
+    int p = a[m];
+    
+    while (left <= right) {
+        while (a[left] < p) left++;
+        while (a[right] > p) right--;
+        if (left <= right) {
+            _swap(&a[left], &a[right]);
+            left++;
+            right--;
+        }
+    }
+    return left;
+}
+
+int _get_index_of_nth(vector<int>& a, int n, int left, int right) {
+    int pivot_index = _partition(a, left, right);
+    if (pivot_index == n - 1) { // note that n is 1 indexed but a is 0 indexed
+        return pivot_index;
+    } 
+    else if (pivot_index > n - 1) {
+        return _get_index_of_nth(a, n, left, pivot_index-1);
+    }
+    else {
+        return _get_index_of_nth(a, (n - pivot_index - 1), pivot_index+1, right);
+    }
+}
+
+void _test_print_nth(vector<int>& a, int n) {
+    cout << n << " smallest=" << a[_get_index_of_nth(a, n, 0, a.size()-1)];
+    cout << endl;
+}
+
