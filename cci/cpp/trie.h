@@ -12,18 +12,17 @@ struct TrieNode {
 
     explicit TrieNode(char c, bool is_end=false)
         :letter(c), is_end(is_end) { }
-
-    
 };
 
 class Trie {
 public:
-    Trie() { }
-    HRESULT Initialize() { 
-        root.reset(new TrieNode(""));
-        return S_OK;
-    }
+    Trie() { root.reset(new TrieNode(' ')); }
+    
 
+    void Insert(string const& w) {
+        TrieNode * current = root.get();
+        for (int i = 0; i < w.
+    }
 private:
     unique_ptr<TrieNode> root;
 };
