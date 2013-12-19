@@ -218,4 +218,90 @@ void print_n_smallest(vector<int>& a, int n) {
     }
     cout << endl;
 }
+//
+// 18.7
+//
+bool _IsLonger(string const& lhs, string const& rhs) {
+    return lhs.size() > rhs.size();
+}
+
+void _MakeDict(vector<string>& const words, unordered_set<string>& dict) {
+    for (int i = 0; i < words.size(); ++i) {
+        string s;
+        s.resize(words[i].size());
+        std::transform(words[i].begin(), words[i].end(), s.begin(), ::tolower);
+        dict.insert(s);
+    }
+}
+
+bool _InDict(string const& w, unordered_set<string> const& dict) {
+    string s;
+    s.resize(w.size());
+    std::transform(w.begin(), w.end(), s.begin(), ::tolower);
+    return dict.end() != dict.find(s);
+}
+
+void _PrintWords(string const& w, vector<int> const& prev, int end_pos) {
+    if (end_pos == -1) {
+        cout << "Words=";
+        return;
+    }
+    int start_pos = prev[end_pos];
+    int end_of_prev_words = start_pos - 1;
+    _PrintWords(w, prev, end_of_prev_words);
+    cout << w.substr(start_pos, end_pos-start_pos+1) << " ";
+}
+
+bool _CanBreakWord(string const& w, unordered_set<string> const& dict) {
+    // t[i] is true IFF w.subst(0,i) can be broken up into words that
+    // are in dict
+    vector<bool> t(w.size()+1, false);
+    vector<int> prev(w.size()+1, -1); // so we can regenerate solution
+                                    // prev[i] = j means word ending at position i
+                                    // started at j
+
+    for (int i = 1; i <= w.size(); ++i) {
+        // note that we don't allow a word to claim to  be a compoundword
+        // of itself
+        string prefix = w.substr(0, i);
+        if (!t[i] && (prefix != w) && _InDict(prefix, dict)) {
+            prev[i-1] = 0;
+            t[i] = true;
+        }
+        if (i == w.size() && t[i]) {
+            cout << w << " Resolves! \n";
+            _PrintWords(w, prev, w.size()-1);
+            return true;
+        }
+
+        if (t[i]) {
+            for (int j = i+1; j <= w.size(); ++j) {
+                if (!t[j] && _InDict(w.substr(i, j-i), dict)) {
+                    prev[(i+(j-i))-1]=i;
+                    t[j] = true;
+                }
+                if (j == w.size() && t[j]) {
+                    cout << w << " Resolves! \n";
+                    _PrintWords(w, prev, w.size()-1);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+string LongestCompoundWord_DP(vector<string>& a) {
+    std::sort(a.begin(), a.end(), _IsLonger);
+    
+    unordered_set<string> dict;
+    _MakeDict(a, dict);
+
+    for (int i = 0; i < a.size(); ++i) {
+        if (_CanBreakWord(a[i], dict)) {
+            return a[i];
+        }
+    }
+    return "";
+}
 

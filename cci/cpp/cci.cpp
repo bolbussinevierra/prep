@@ -398,6 +398,14 @@ int _tmain(int argc, _TCHAR* argv[])
     print_n_smallest(vector<int>(a186, a186+AS(a186)), 8);
     print_n_smallest(vector<int>(a186, a186+AS(a186)), 9);
     print_n_smallest(vector<int>(a186, a186+AS(a186)), 10);
+#endif
+#if 1
+    //
+    // 18.7
+    //
+    char* a187[] = { "cat", "cats", "catsdogcats", "catxdogcatsrat", "dog", "dogcatsdog",
+        "hippopotamuses", "rat", "ratcatdogcat" };
+    LongestCompoundWord_DP(vector<string>(a187, a187+AS(a187)));
 #endif 
     /*
      *
