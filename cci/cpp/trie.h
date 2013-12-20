@@ -72,6 +72,17 @@ public:
         return current->is_end;
     }
 
+    bool IsSubstring(string const& w) {
+        TrieNode* current(root.get());
+        for (char const& c : w) {
+            if (!current->IsChild(c)) {
+                return false;
+            }
+            current = current->Get(c);
+        }
+        return true;
+    }
+
     void GetAllPrefixes(string const& w, vector<string>& prefixes) {
         TrieNode* current = root.get();
         string prefix;

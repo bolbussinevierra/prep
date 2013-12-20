@@ -399,7 +399,7 @@ int _tmain(int argc, _TCHAR* argv[])
     print_n_smallest(vector<int>(a186, a186+AS(a186)), 9);
     print_n_smallest(vector<int>(a186, a186+AS(a186)), 10);
 #endif
-#if 1
+#if 0
     //
     // 18.7
     //
@@ -408,8 +408,14 @@ int _tmain(int argc, _TCHAR* argv[])
     LongestCompoundWord_DP(vector<string>(a187, a187+AS(a187)));
     LongestCompoundWord_Trie(vector<string>(a187, a187+AS(a187)));
     LongestCompoundWord_Memo(vector<string>(a187, a187+AS(a187)));
-
 #endif 
+#if 0
+    //
+    // 18.8
+    // 
+    char* a188[] = { "cat", "dog", "ass", "assk" };
+    SearchStringIn("catfragdogasbass", vector<string>(a188, a188+AS(a188)));
+#endif
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS

@@ -414,5 +414,26 @@ string LongestCompoundWord_Memo(vector<string>& a) {
     }
     return "";
 }
+//
+// 18.8
+//
+void SearchStringIn(string const& s, vector<string> const& t) {
+    if (t.empty()) return;
+
+    Trie trie;
+    for (int i = 0; i < s.length(); ++i) {
+        trie.Insert(s.substr(i));
+    }
+
+    // check if any of them are substrings of any prefix
+    for (string const& p : t) {
+        if (trie.IsSubstring(p)) {
+            cout << p << " is in " << s << endl;
+        }
+        else {
+            cout << p << " is NOT in " << s << endl;
+        }
+    }
+}
 
 
