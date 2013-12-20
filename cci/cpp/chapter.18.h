@@ -1,7 +1,9 @@
 #include <iostream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-
+#include "trie.h"
+#include <deque>
+#pragma once
 //
 // 18.1
 //
@@ -225,7 +227,7 @@ bool _IsLonger(string const& lhs, string const& rhs) {
     return lhs.size() > rhs.size();
 }
 
-void _MakeDict(vector<string>& const words, unordered_set<string>& dict) {
+void _MakeDict(vector<string> const&  words, unordered_set<string>& dict) {
     for (int i = 0; i < words.size(); ++i) {
         string s;
         s.resize(words[i].size());
@@ -290,18 +292,85 @@ bool _CanBreakWord(string const& w, unordered_set<string> const& dict) {
     }
     return false;
 }
-
+// O(|a|*|w|^2)
 string LongestCompoundWord_DP(vector<string>& a) {
     std::sort(a.begin(), a.end(), _IsLonger);
     
     unordered_set<string> dict;
     _MakeDict(a, dict);
 
-    for (int i = 0; i < a.size(); ++i) {
-        if (_CanBreakWord(a[i], dict)) {
-            return a[i];
+    for (string &s : a) {
+        if (_CanBreakWord(s, dict)) {
+            return s;
         }
     }
     return "";
 }
+// O(kN)
+string LongestCompoundWord_Trie(vector<string>& a) {
+    // Create a Trie and insert all the words into it
+    Trie trie;
+    for (string &s : a) {
+        trie.Insert(s);
+    }
+ 
+    // for each word qeuee it up for processing together with its valid suffices.
+    // This takes O(|a| * k) where k is the maximum number of valid words in a compound word
+    struct WordTracker {
+        string word;
+        vector<string> sub_words; // confirmed subwords
+        string remainder_suffix; // candidate suffix portions not yet processed
+        explicit WordTracker(string const& s):word(s) {}
+        WordTracker() {}
+        void swap(WordTracker& rhs) {
+            word.swap(rhs.word);
+            sub_words.swap(rhs.sub_words);
+            remainder_suffix.swap(rhs.remainder_suffix);
+        }
+    };
 
+    deque<WordTracker> queue;
+    for (string &s : a) {
+        vector<string> prefixes;
+        trie.GetAllPrefixes(s, prefixes);
+        for (string &p: prefixes) {
+            WordTracker wt(s); 
+            wt.sub_words.push_back(p);
+            wt.remainder_suffix = s.substr(p.size());
+            queue.push_back(wt);
+        }
+    }
+
+    // process the queue by trying to reduce all suffices down to nothing.
+    // this should be O(|w|*|max # sub_words|)
+    WordTracker longest_word;
+    while (!queue.empty()) {
+        WordTracker& wt = queue.front();
+        if (trie.Contains(wt.remainder_suffix)) {
+            if (longest_word.word.empty() || (longest_word.word.size() < wt.word.size())) {
+                wt.sub_words.push_back(wt.remainder_suffix); // remainder suffix is a valid word
+                longest_word.swap(wt);
+            }
+        }
+        else { // reduce the suffix down even further
+            vector<string> prefixes;
+            trie.GetAllPrefixes(wt.remainder_suffix, prefixes);
+            for (string& p: prefixes) {
+                WordTracker wt_next(wt.word);
+                // get the already identified subwords and add the new one and then
+                // reduce the remainder suffix down by the new prefix
+                wt_next.sub_words.swap(wt.sub_words);
+                wt_next.sub_words.push_back(p);
+                wt_next.remainder_suffix = wt.remainder_suffix.substr(p.size());
+                queue.push_back(wt_next);
+            }
+        }
+        queue.pop_front();
+    }
+    cout << "\nLongestWord (Trie) =" << longest_word.word << endl;
+    cout << "Words=";
+    for (string s : longest_word.sub_words) {
+        cout << s << " ";
+    }
+    return longest_word.word;
+}
