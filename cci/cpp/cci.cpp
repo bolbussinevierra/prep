@@ -407,6 +407,7 @@ int _tmain(int argc, _TCHAR* argv[])
         "hippopotamuses", "rat", "ratcatdogcat" };
     LongestCompoundWord_DP(vector<string>(a187, a187+AS(a187)));
     LongestCompoundWord_Trie(vector<string>(a187, a187+AS(a187)));
+    LongestCompoundWord_Memo(vector<string>(a187, a187+AS(a187)));
 
 #endif 
     /*

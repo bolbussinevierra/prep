@@ -307,6 +307,19 @@ string LongestCompoundWord_DP(vector<string>& a) {
     return "";
 }
 // O(kN)
+struct WordTracker {
+    string word;
+    vector<string> sub_words; // confirmed subwords
+    string remainder_suffix; // candidate suffix portions not yet processed
+    explicit WordTracker(string const& s):word(s) {}
+    WordTracker() {}
+    void swap(WordTracker& rhs) {
+        word.swap(rhs.word);
+        sub_words.swap(rhs.sub_words);
+        remainder_suffix.swap(rhs.remainder_suffix);
+    }
+};
+
 string LongestCompoundWord_Trie(vector<string>& a) {
     // Create a Trie and insert all the words into it
     Trie trie;
@@ -316,19 +329,6 @@ string LongestCompoundWord_Trie(vector<string>& a) {
  
     // for each word qeuee it up for processing together with its valid suffices.
     // This takes O(|a| * k) where k is the maximum number of valid words in a compound word
-    struct WordTracker {
-        string word;
-        vector<string> sub_words; // confirmed subwords
-        string remainder_suffix; // candidate suffix portions not yet processed
-        explicit WordTracker(string const& s):word(s) {}
-        WordTracker() {}
-        void swap(WordTracker& rhs) {
-            word.swap(rhs.word);
-            sub_words.swap(rhs.sub_words);
-            remainder_suffix.swap(rhs.remainder_suffix);
-        }
-    };
-
     deque<WordTracker> queue;
     for (string &s : a) {
         vector<string> prefixes;
@@ -372,5 +372,47 @@ string LongestCompoundWord_Trie(vector<string>& a) {
     for (string s : longest_word.sub_words) {
         cout << s << " ";
     }
+    cout << endl;
     return longest_word.word;
 }
+//
+// MEMOIZATION APPROACH
+//
+bool _CanBreakWord(string const& s, unordered_set<string> const& dict, 
+                   unordered_map<string, bool>& memo, bool original_word=false) {
+    if (memo.end() != memo.find(s)) {
+        return memo[s];
+    }
+    else if (_InDict(s, dict) && !original_word) {
+        return true;
+    }
+    else {
+        for (int i = 1; i < s.size(); ++i) {
+            string left = s.substr(0,i);
+            string right = s.substr(i);
+            if (_InDict(left, dict) && _CanBreakWord(right, dict, memo)) {
+                return true;
+            }
+        }
+    }
+    memo[s] = false;
+    return false;
+}
+
+string LongestCompoundWord_Memo(vector<string>& a) {
+    std::sort(a.begin(), a.end(), _IsLonger);
+
+    unordered_set<string> dict;
+    _MakeDict(a, dict);
+
+    unordered_map<string, bool> memo;
+    for (string &s: a) {
+        if (_CanBreakWord(s, dict, memo, true)) {
+            cout << s << " Resolves! (Memo Approach) \n";
+            return s;
+        }
+    }
+    return "";
+}
+
+
