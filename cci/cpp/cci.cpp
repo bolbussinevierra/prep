@@ -416,6 +416,13 @@ int _tmain(int argc, _TCHAR* argv[])
     char* a188[] = { "cat", "dog", "ass", "assk" };
     SearchStringIn("catfragdogasbass", vector<string>(a188, a188+AS(a188)));
 #endif
+#if 1
+    vector<int> test;
+    for (int i = 0; i < 50; ++i) {
+        test.push_back(i);
+        cout << test.capacity() << endl;
+    }
+#endif 
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS

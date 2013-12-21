@@ -1,8 +1,9 @@
 #include <iostream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include "trie.h"
 #include <deque>
+#include "heap.h"
+#include "trie.h"
 #pragma once
 //
 // 18.1
@@ -434,6 +435,12 @@ void SearchStringIn(string const& s, vector<string> const& t) {
             cout << p << " is NOT in " << s << endl;
         }
     }
+}
+//
+// 18.9
+//
+void Test() {
+    // MinHeap p;
 }
 
 
