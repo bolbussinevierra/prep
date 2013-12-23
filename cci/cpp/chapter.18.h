@@ -439,8 +439,11 @@ void SearchStringIn(string const& s, vector<string> const& t) {
 //
 // 18.9
 //
-void Test() {
-    // MinHeap p;
+void test_heap(vector<int>const & v) {
+    unique_ptr<heap> p(new max_heap());
+
+
+
 }
 
 
