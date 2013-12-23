@@ -9,7 +9,23 @@ public:
         items.reserve(size); 
     }
     virtual ~heap() {}
-    
+
+public:
+    void sort() {
+        if (items.size() <= 1) return;
+        for (int last = items.size()-1; last > 0; ) {
+            // put the current largest priority item at the back by swapping it with the last item
+            _swap(&items[0], &items[last]);
+            last--; // take out the last position from the heap.
+
+            // restore heap property for remaining items
+            heapify_down(0, last);
+        }
+        print();
+    }
+
+    int size() { return items.size(); }
+
     void insert(int i) {
         items.push_back(i);
         heapify_up(items.size() - 1);
@@ -59,52 +75,10 @@ public:
     }
 
 private:
-    virtual void heapify_up(int current) = 0;   // after adding item
-    virtual void heapify_down(int current, int last) = 0; // after removing item
-    
-protected:
-    int parent(int i) { 
-        assert(i > 0);
-        return (i - 1)/2; 
-    }
-    
-    int left(int i) {
-        assert(i >= 0);
-        return (2*i) + 1;
-    }
-    
-    int right(int i) {
-        assert(i >= 0); 
-        return (2*i) + 2;
-    }
-    
-    vector<int> items;
-};
-
-class min_heap : public heap {
-};
-
-class max_heap : public heap {  
-public:
-    void sort() {
-        if (items.size() <= 1) return;
-        int high = items.size()-1;
-        while (high > 0) {
-            // put the current max item at the back by swapping it with the last item
-            _swap(&items[0], &items[high]);
-            high--; // declare the last item dead.
-
-            // restore heap property for remaining items
-            heapify_down(0, high);
-        }
-        print();
-    }
-
-private:
     void heapify_up(int current) {
         int p = parent(current);
         while (p >= 0) {
-            if (items[current] > items[p]) {
+            if (greater_priority(items[current], items[p])) {
                 _swap(&items[current], &items[p]);
                 current = p;
                 p = parent(current);
@@ -115,26 +89,54 @@ private:
         }
     }
 
+protected:
     void heapify_down(int current, int last) {
         if (current >= last) return;      // got to the end
         if (left(current) > last) return; // current has no children
 
-        int largest = current;
+        int has_priority = current;
         int l = left(current);
-        if (items[l] > items[current]) {
-            largest = l;
+        if (greater_priority(items[l],  items[current])) {
+            has_priority = l;
         }
         
         int r = right(current);
-        if ((r <= last) && (items[r] > items[largest])) {
-            largest = r;
+        if ((r <= last) && greater_priority(items[r], items[has_priority])) {
+            has_priority = r;
         }
         
-        // if the largest node was not the root, swap its value with the root
-        // and recurse down the child that was the largest
-        if (largest != current) {
-            _swap(&items[current], &items[largest]);
-            heapify_down(largest, last);
+        // if the highest priority node was not the root, swap its value with the root
+        // and recurse down the child that had the priority
+        if (has_priority != current) {
+            _swap(&items[current], &items[has_priority]);
+            heapify_down(has_priority, last);
         }
     }        
+private:
+    virtual bool greater_priority(int lhs, int rhs) = 0;
+    
+protected:
+    int parent(int i) { 
+        return (i - 1)/2; 
+    }
+    
+    int left(int i) {
+        return (2*i) + 1;
+    }
+    
+    int right(int i) { 
+        return (2*i) + 2;
+    }
+    
+    vector<int> items;
+};
+
+class min_heap : public heap {
+private:
+    bool greater_priority(int lhs, int rhs) { return lhs < rhs; }
+};
+
+class max_heap : public heap {  
+private:
+    bool greater_priority(int lhs, int rhs) { return lhs > rhs; }
 };

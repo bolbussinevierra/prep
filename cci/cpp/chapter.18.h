@@ -440,9 +440,25 @@ void SearchStringIn(string const& s, vector<string> const& t) {
 // 18.9
 //
 void test_heap(vector<int>const & v) {
-    unique_ptr<heap> p(new max_heap());
-    p->make_heap(v);
-    static_cast<max_heap*>(p.get())->sort();
+    /*unique_ptr<heap> max_h(new max_heap());
+    max_h->make_heap(v);
+    max_h->insert(60);
+    cout << "-----" << endl;
+    max_h->print_tree();
+    max_h->extract_top();
+    cout << "-----" << endl;
+    max_h->print_tree();
+    *///static_cast<max_heap*>(max_h.get())->sort();
+    cout << "-----" << endl;
+    unique_ptr<heap> min_h(new min_heap());
+    min_h->make_heap(v);
+    min_h->insert(-60);
+    cout << "-----" << endl;
+    min_h->print_tree();
+    min_h->extract_top();
+    cout << "-----" << endl;
+    min_h->print_tree();
+    //static_cast<min_heap*>(min_h.get())->sort();
 }
 
 
