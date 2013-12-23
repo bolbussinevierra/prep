@@ -8,7 +8,7 @@ public:
     explicit heap(int size = 20) { 
         items.reserve(size); 
     }
-    ~heap() {}
+    virtual ~heap() {}
     
     void insert(int i) {
         items.push_back(i);
@@ -51,10 +51,10 @@ public:
         if (root >= items.size()) return;
         
         print_tree(right(root), indent + 1);
-        for (int i = 0; i <= indent; ++i) {
+        for (int i = 1; i <= indent; ++i) {
             cout << "  ";
         }
-        cout << root << endl;
+        cout << items[root] << endl;
         print_tree(left(root), indent + 1);
     }
 
@@ -90,9 +90,10 @@ public:
         if (items.size() <= 1) return;
         int high = items.size()-1;
         while (high > 0) {
-            // swap the back item with the front
+            // put the current max item at the back by swapping it with the last item
             _swap(&items[0], &items[high]);
-            high--;
+            high--; // declare the last item dead.
+
             // restore heap property for remaining items
             heapify_down(0, high);
         }

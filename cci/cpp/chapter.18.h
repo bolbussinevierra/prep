@@ -441,9 +441,8 @@ void SearchStringIn(string const& s, vector<string> const& t) {
 //
 void test_heap(vector<int>const & v) {
     unique_ptr<heap> p(new max_heap());
-
-
-
+    p->make_heap(v);
+    static_cast<max_heap*>(p.get())->sort();
 }
 
 

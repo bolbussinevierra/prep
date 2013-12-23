@@ -417,12 +417,13 @@ int _tmain(int argc, _TCHAR* argv[])
     SearchStringIn("catfragdogasbass", vector<string>(a188, a188+AS(a188)));
 #endif
 #if 1
-    vector<int> test;
-    for (int i = 0; i < 50; ++i) {
-        test.push_back(i);
-        cout << test.capacity() << endl;
-    }
+    //
+    // 18.9
+    //
+    int a189[] = {3,8,9,4,7,1,4,8,4,7,12,5};
+    test_heap(vector<int>(a189, a189+AS(a189)));
 #endif 
+
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS
