@@ -420,8 +420,7 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     // 18.9
     //
-    int a189[] = {3,8,9,4,7,1,4,8,4,7,12,5};
-    test_heap(vector<int>(a189, a189+AS(a189)));
+    OnlineMedianAlgorithm();
 #endif 
 
     /*

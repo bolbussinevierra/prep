@@ -439,26 +439,53 @@ void SearchStringIn(string const& s, vector<string> const& t) {
 //
 // 18.9
 //
-void test_heap(vector<int>const & v) {
-    /*unique_ptr<heap> max_h(new max_heap());
-    max_h->make_heap(v);
-    max_h->insert(60);
-    cout << "-----" << endl;
-    max_h->print_tree();
-    max_h->extract_top();
-    cout << "-----" << endl;
-    max_h->print_tree();
-    *///static_cast<max_heap*>(max_h.get())->sort();
-    cout << "-----" << endl;
-    unique_ptr<heap> min_h(new min_heap());
-    min_h->make_heap(v);
-    min_h->insert(-60);
-    cout << "-----" << endl;
-    min_h->print_tree();
-    min_h->extract_top();
-    cout << "-----" << endl;
-    min_h->print_tree();
-    //static_cast<min_heap*>(min_h.get())->sort();
+double GetMedian(heap* maxh, heap* minh) {
+    if (maxh->empty()) return 0;
+    if (maxh->size() == minh->size()) {
+        return ((double) maxh->peek_top() + (double) minh->peek_top()) / 2.0;
+    }
+    else {
+        return maxh->peek_top();
+    }
 }
+
+void TrackNumber(int num, heap* maxh, heap* minh) {
+/* Note - always keep maxh at least as big as minh and at most
+   only one item larger */
+    if (maxh->empty()) {
+        maxh->insert(num);
+    }
+    else if (maxh->size() == minh->size()) {
+        if (num <= GetMedian(maxh, minh)) {
+            maxh->insert(num);
+        }
+        else {
+            int min_top = minh->extract_top();
+            maxh->insert(min_top);
+            minh->insert(num);
+        }
+    }
+    else { // maxh heap is always the larger one if they are arent equal but keep it no more
+           // than one item larger
+        if (num <= GetMedian(maxh, minh)) {
+            int max_top = maxh->extract_top();
+            minh->insert(max_top);
+            maxh->insert(num);
+        }
+        else {
+            minh->insert(num);
+        }
+    }
+}
+
+void OnlineMedianAlgorithm() {
+    unique_ptr<heap> maxh(new max_heap());
+    unique_ptr<heap> minh(new min_heap());
+    for (int i = 1; i <= 10; ++i) {
+        TrackNumber(i, maxh.get(), minh.get());
+        cout << " added: " << i << endl;
+        cout << "median: " << GetMedian(maxh.get(), minh.get()) << endl;
+    }
+};
 
 

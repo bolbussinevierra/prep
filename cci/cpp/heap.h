@@ -10,7 +10,8 @@ public:
     }
     virtual ~heap() {}
 
-public:
+    bool empty() { return items.empty(); }
+
     void sort() {
         if (items.size() <= 1) return;
         for (int last = items.size()-1; last > 0; ) {
