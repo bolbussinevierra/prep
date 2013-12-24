@@ -416,11 +416,29 @@ int _tmain(int argc, _TCHAR* argv[])
     char* a188[] = { "cat", "dog", "ass", "assk" };
     SearchStringIn("catfragdogasbass", vector<string>(a188, a188+AS(a188)));
 #endif
-#if 1
+#if 0
     //
     // 18.9
     //
     OnlineMedianAlgorithm();
+#endif
+#if 1
+    //
+    // 18.10
+    //
+    list<string> path;
+    HRESULT hr = CalculateTransform("Damp", "Like", path);
+    if (SUCCEEDED(hr)) {
+        cout << "CalculateTransform Succeeded!" << endl;
+    } else {
+        cout << "CalculateTransform Failed!" << endl;
+    }
+    cout << "Transform:";
+    for (string const& s : path) {
+        cout << s << " ";
+    }
+    cout << endl;
+    
 #endif 
 
     /*

@@ -2,6 +2,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include <deque>
+#include <queue>
 #include "heap.h"
 #include "trie.h"
 #pragma once
@@ -330,7 +331,7 @@ string LongestCompoundWord_Trie(vector<string>& a) {
  
     // for each word qeuee it up for processing together with its valid suffices.
     // This takes O(|a| * k) where k is the maximum number of valid words in a compound word
-    deque<WordTracker> queue;
+    deque<WordTracker> queue; // TODO: should have been a std::queue
     for (string &s : a) {
         vector<string> prefixes;
         trie.GetAllPrefixes(s, prefixes);
@@ -487,5 +488,96 @@ void OnlineMedianAlgorithm() {
         cout << "median: " << GetMedian(maxh.get(), minh.get()) << endl;
     }
 };
+//
+// 18.10
+//
+typedef unordered_set<string> hash_map;
+bool _visited(string const& s, hash_map const& hm) {
+    return hm.end() != hm.find(s); 
+}
+
+bool _in_dict(string const& s, hash_map const& dict) {
+    return dict.end() != dict.find(s);
+}
+
+hash_map _get_dict() {
+    hash_map dict;
+    dict.insert("DAMP");
+    dict.insert("CAMP");
+    dict.insert("LAMP");
+    dict.insert("LIMP");
+    dict.insert("LIME");
+    dict.insert("MIME");
+    dict.insert("LIKE");
+    return dict;
+}
+vector<string> GetAdjacentWords(string const& w) {
+    vector<string> adjacent_words;
+    for (int i = 0; i < w.length(); ++i) {
+        string t(w);
+        for (char c = 'A'; c <= 'Z'; ++c) {
+            if (w[i] != c) {
+                t[i] = c;
+                adjacent_words.push_back(t);
+            }
+        }
+    }
+    return adjacent_words;
+}
+void _unpack_path(unordered_map<string, string> const& prev, list<string>& path, string const& end) {
+    path.push_front(end);
+    auto it = prev.find(end);
+    while (it->second != "") {
+        path.push_front(it->second);
+        it = prev.find(it->second);
+    }
+}
+
+HRESULT CalculateTransform(string const& w1, string const& w2, hash_map const& dict, 
+                           list<string>& path) {
+    if ((w1.length() != w2.length()) || w1.empty() || dict.empty()) {
+        return E_UNEXPECTED;
+    }
+
+    if (w1 == w2) {
+        path.push_back(w1);
+        return S_OK; // no work to do
+    }
+
+    string start(w1.size(), ' ');
+    string end(w2.size(), ' ');
+    std::transform(w1.begin(), w1.end(), start.begin(), ::toupper);
+    std::transform(w2.begin(), w2.end(), end.begin(), ::toupper);
+
+    queue<string> bfs; 
+    bfs.push(start);
+    
+    hash_map visited;
+    visited.insert(start);
+
+    unordered_map<string, string> prev;
+    prev[start] = "";
+
+    while (!bfs.empty()) {
+        for (string const& s : GetAdjacentWords(bfs.front())) {
+            if (s == end) {
+                prev[s] = bfs.front();
+                _unpack_path(prev, path, s);
+                return S_OK;
+            }
+            else if (_in_dict(s, dict) && !_visited(s, visited)) {
+                visited.insert(s);
+                bfs.push(s);
+                prev[s] = bfs.front();
+            }
+        }
+        bfs.pop();
+    }
+    return E_FAIL;
+}
 
 
+HRESULT CalculateTransform(string const& w1, string const& w2, list<string>& path) {
+    hash_map dict = _get_dict();
+    return CalculateTransform(w1, w2, dict, path);
+}
