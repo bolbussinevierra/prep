@@ -422,7 +422,7 @@ int _tmain(int argc, _TCHAR* argv[])
     //
     OnlineMedianAlgorithm();
 #endif
-#if 1
+#if 0
     //
     // 18.10
     //
@@ -438,7 +438,28 @@ int _tmain(int argc, _TCHAR* argv[])
         cout << s << " ";
     }
     cout << endl;
-    
+#endif 
+#if 1
+    //
+    // 18.11
+    //
+#define DIM 3
+    int s1811[DIM][DIM] = 
+    { 
+        {1,0,1},
+        {0,0,1},
+        {0,0,1}
+    };
+    vector<vector<int>> v(DIM, vector<int>(DIM));
+    for (int i = 0; i < DIM; ++i) {
+        v[i].assign(s1811[i], s1811[i] + DIM);
+    }
+    result res;
+    if (GetSquare(v, res)) {
+        cout << "Found Square! \n" ;
+        cout << " TL=" << res.tlr << "," << res.tlc << endl;
+        cout << " size=" << res.size << endl;
+    }
 #endif 
 
     /*

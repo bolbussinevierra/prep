@@ -581,3 +581,80 @@ HRESULT CalculateTransform(string const& w1, string const& w2, list<string>& pat
     hash_map dict = _get_dict();
     return CalculateTransform(w1, w2, dict, path);
 }
+
+//
+// 18.11
+//
+struct result {
+    int tlr;
+    int tlc;
+    int size;
+};
+
+typedef vector<vector<int>> square;
+struct square_data {
+    int br;
+    int bd;
+};
+typedef vector<vector<square_data>> processed_square;
+typedef processed_square PS;
+#define BLACK 0
+
+void ProcessSquare(square const& m, PS& pm) {
+    for (int r = m.size() - 1; r >= 0; --r) {
+        for (int c = m.size() - 1; c >= 0; --c) {
+            int br = 0;
+            int bd = 0;
+            if (m[r][c] == BLACK) {
+                br++;
+                bd++;
+                if (c+1 < pm.size()) {
+                    br += pm[r][c+1].br;
+                }
+                if (r+1 < pm.size()) {
+                    bd += pm[r+1][c].bd;
+                }
+            }
+            square_data data = {br, bd};
+            pm[r][c] = data;
+        }
+    }
+}
+
+bool IsSquare(int r, int c, PS const& pm, int size) {
+    square_data tl = pm[r][c];
+    square_data tr = pm[r][c+size-1];
+    square_data bl = pm[r+size-1][c];
+
+    if (tl.br < size || tl.bd < size) return false;
+    if (tr.bd < size || bl.br < size ) return false;
+    return true;
+}
+bool FoundSquare(PS const& pm, int size, result& res) {
+    // number of sub squares of size s  is count_squares
+    // in each dimension (s across and s down)
+    int count_squares = pm.size() - size + 1; 
+    for (int r = 0; r < count_squares; ++r) {
+        for (int c = 0; c < count_squares; ++c) {
+            if (IsSquare(r, c, pm, size)) {
+                res.tlr = r;
+                res.tlc = c;
+                res.size = size;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool GetSquare(square const& m, result& res) {
+    PS pm(m.size(), vector<square_data>(m[0].size()));
+    ProcessSquare(m, pm);
+    for (int i = m.size(); i > 0; --i) {
+        if (FoundSquare(pm, i, res)) {
+            return true;
+        }
+    }
+    return false;
+}
+
