@@ -439,7 +439,7 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     cout << endl;
 #endif 
-#if 1
+#if 0
     //
     // 18.11
     //
