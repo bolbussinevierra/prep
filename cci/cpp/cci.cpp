@@ -461,6 +461,28 @@ int _tmain(int argc, _TCHAR* argv[])
         cout << " size=" << res.size << endl;
     }
 #endif 
+#if 1
+    //
+    // 18.12
+    //
+#define DIM_ROW 4
+#define DIM_COL 5
+    int s1812[DIM_ROW][DIM_COL] = 
+    { 
+        {1,  2, -1,-4, -20},
+        {-8,-3,  4, 2, 1},
+        { 3, 8, 10, 1, 3},
+        {-4,-1, 1, 7, -6}
+    };
+    vector<vector<int>> v(DIM_ROW, vector<int>(DIM_COL));
+    for (int i = 0; i < DIM_ROW; ++i) {
+        v[i].assign(s1812[i], s1812[i] + DIM_COL);
+    }
+    Rect res;
+    int max_sum = Kadane2D(v, res);
+    cout << "Maximum_Sum=" << max_sum << endl;
+    cout << "t=" << res.t << " l=" << res.l << " b=" << res.b << " r=" << res.r << endl;   
+#endif 
 
     /*
      *

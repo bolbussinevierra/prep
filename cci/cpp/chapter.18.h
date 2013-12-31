@@ -657,4 +657,83 @@ bool GetSquare(square const& m, result& res) {
     }
     return false;
 }
+//
+// 18.12
+//
+typedef vector<vector<int>> matrix;
+struct Rect { int t; int b; int l; int r; };
+
+void Clear(vector<int>& k) {
+    for (int &i : k) i = 0; 
+}
+
+int Kadane(vector<int> const& k, int &first, int& last) {
+    int max_sum = INT_MIN;
+    int sum = 0;
+    int local_start = 0;
+    last = -1; // will be useful in flagging all negative case
+
+    for (int i = 0; i < k.size(); ++i) {
+        sum += k[i];
+
+        // make sure we check negative case first!
+        if (sum < 0) {
+            sum = 0;
+            local_start = i+1;
+        }
+        else if (sum > max_sum) {
+            max_sum = sum;
+            first = local_start;
+            last = i;
+        }
+        
+    }
+
+    // found at least one non-negative value
+    if (last != -1) {
+        return max_sum;
+    }
+
+    // else we have hit the all negative case. Find the largest negative
+    // number
+    int largest_negative = k[0];
+    first = last = 0;
+    for (int i = 1; i < k.size(); ++i) {
+        if (k[i] > largest_negative) {
+            largest_negative = k[i];
+            first = last = i;
+        }
+    }
+    return largest_negative;
+}
+
+int Kadane2D(matrix const& m, Rect& result) {
+    assert(!m.empty() && !m[0].empty());
+
+    int max_sum = INT_MIN;
+    int const c_rows = m.size();
+    int const c_cols = m[0].size();
+    vector<int> k(c_rows);
+    
+    for (int left = 0; left < c_cols; ++left) {
+        Clear(k);
+        for (int right = left; right < c_cols; ++right) {
+            
+            for (int i = 0; i < c_rows; ++i) {
+                k[i] += m[i][right];
+            }
+            int row_start = 0, row_last = 0;
+            int sum = Kadane(k, row_start, row_last);
+
+            if (sum > max_sum) {
+                max_sum = sum;
+                result.t = row_start;
+                result.b = row_last;
+                result.l = left;
+                result.r = right;
+            }
+        }
+    }
+    return max_sum;
+}
 
