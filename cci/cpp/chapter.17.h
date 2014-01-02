@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "chapter.11.h"
+#include "trie.h"
+#include <tuple>
 #pragma warning (disable: 4018)
 //
 // 17.2
@@ -480,7 +482,113 @@ BiNode* DLL2BST(BiNode *& list, int start, int last) {
     return root;
 }
 
+//
+// 17.14
+//
+string& MakeUpper(string &s) { 
+    std::transform(s.begin(), s.end(), s.begin(), ::toupper); 
+    return s;
+}
 
+void SetDict(Trie& dict) {
+    dict.Insert("ca");
+}
+
+struct ParseResult { 
+    int invalid; 
+    string parsed; 
+    ParseResult():invalid(INT_MAX) {}
+    ParseResult(int invalid, string& parsed):invalid(invalid), parsed(parsed) {}
+    static ParseResult& Min(ParseResult& lhs, ParseResult& rhs) {
+        return lhs.invalid < rhs.invalid  ? lhs : rhs;
+    }
+    static void _PrintIndent(int indent) {
+        for (int i = 0; i < indent; ++i) {
+            cout << " ";
+        }
+    }
+    void Print(char* c=" ", int indent=0) {
+        
+        if (!isspace(c[0])) {
+            _PrintIndent(indent);
+            cout << c << endl;
+        }
+        
+        _PrintIndent(indent);
+        cout << "inv:" << invalid << " parsed:" << parsed << endl;
+    }
+};
+
+struct PrintScope {
+    int indent;
+    char* message;
+    void _print_indent() {
+        for (int i = 0; i < indent; ++i) {
+            cout << " ";
+        }
+    }
+    PrintScope(int indent, char*message):indent(indent),message(message) {
+        _print_indent();
+        cout << "Entering " << message << endl;
+    }
+    ~PrintScope() {
+        _print_indent();
+        cout << "Leaving " << message << endl;
+    }
+};
+
+ParseResult ParseWords(string const& w, int f, int l, Trie const& dict, int indent=0) {
+    PrintScope sp(indent, __FUNCTION__);
+    if (l >= w.size()) {
+        ParseResult tmp(l - f, f < w.size() ? MakeUpper(w.substr(f)) : "");
+        tmp.Print("gone over end", indent);
+        return tmp;
+    }
+
+    string current_word = w.substr(f, l+1);
+    bool valid_partial = dict.IsSubstring(current_word);
+    bool valid_exact = valid_partial && dict.Contains(current_word);
+
+    /* break off current word */
+    ParseResult bestExact = ParseWords(w, l+1, l+1, dict, indent+1);
+    if (valid_exact) {
+        ParseResult::_PrintIndent(indent);
+        cout << "valid_exact=true" << endl;
+        string tmp = current_word + " " + bestExact.parsed;
+        bestExact.parsed.assign(tmp);
+    }
+    else {
+        ParseResult::_PrintIndent(indent);
+        cout << "valid_exact=false" << endl;
+        bestExact.invalid += current_word.size();
+        string tmp = MakeUpper(current_word) + " " + bestExact.parsed;
+        bestExact.parsed.assign(tmp);
+    }
+
+    /* extend current word */
+    ParseResult best;
+    if (valid_partial) {
+        ParseResult::_PrintIndent(indent);
+        cout << "valid_partial=true" << endl;
+        ParseResult bestExtend = ParseWords(w, f, l+1, dict, indent+1);
+        best = ParseResult::Min(bestExact, bestExtend);
+    }
+    else {
+        ParseResult::_PrintIndent(indent);
+        cout << "valid_partial=false" << endl;
+        best = bestExact;
+    }
+
+    best.Print(" ", indent);
+    return best;
+}
+
+ParseResult ParseWords(string const& w) {
+    Trie dict;
+    SetDict(dict);
+    ParseResult result = ParseWords(w, 0, 0, dict);
+    return result;
+}
 
         
 

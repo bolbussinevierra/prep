@@ -346,6 +346,11 @@ int _tmain(int argc, _TCHAR* argv[])
     BiNode* headAgain = DLL2BST(head, 0, AS(a1713)-1);
     headAgain->Print();
 #endif 
+#if 1
+    string w("cat");
+    ParseWords(w);
+#endif 
+
 #if 0
     //
     // 18.1
@@ -461,7 +466,7 @@ int _tmain(int argc, _TCHAR* argv[])
         cout << " size=" << res.size << endl;
     }
 #endif 
-#if 1
+#if 0
     //
     // 18.12
     //

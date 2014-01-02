@@ -61,7 +61,7 @@ public:
         current->is_end = true; 
     }
 
-    bool Contains(string const& w) {
+    bool Contains(string const& w) const {
         TrieNode* current = root.get();
         for (char const& c : w) {
             if (!current->IsChild(c)) {
@@ -72,7 +72,7 @@ public:
         return current->is_end;
     }
 
-    bool IsSubstring(string const& w) {
+    bool IsSubstring(string const& w) const {
         TrieNode* current(root.get());
         for (char const& c : w) {
             if (!current->IsChild(c)) {
