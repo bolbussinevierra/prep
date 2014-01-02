@@ -422,14 +422,16 @@ string LongestCompoundWord_Memo(vector<string>& a) {
 void SearchStringIn(string const& s, vector<string> const& t) {
     if (t.empty()) return;
 
+    // insert all the suffices of s into a trie
     Trie trie;
     for (int i = 0; i < s.length(); ++i) {
         trie.Insert(s.substr(i));
     }
 
-    // check if any of them are substrings of any prefix
+    // check if any of the strings in p is a PREFIX of any of the SUFFIXES
+    // that have been added to the trie
     for (string const& p : t) {
-        if (trie.IsSubstring(p)) {
+        if (trie.IsPrefix(p)) {
             cout << p << " is in " << s << endl;
         }
         else {

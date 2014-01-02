@@ -491,7 +491,8 @@ string& MakeUpper(string &s) {
 }
 
 void SetDict(Trie& dict) {
-    dict.Insert("ca");
+    dict.Insert("cat");
+    dict.Insert("dog");
 }
 
 struct ParseResult { 
@@ -514,6 +515,8 @@ struct ParseResult {
             cout << c << endl;
         }
         
+        if (parsed.empty()) return;
+
         _PrintIndent(indent);
         cout << "inv:" << invalid << " parsed:" << parsed << endl;
     }
@@ -522,71 +525,79 @@ struct ParseResult {
 struct PrintScope {
     int indent;
     char* message;
-    void _print_indent() {
+    char* opt;
+    static void _print_indent(int indent) {
         for (int i = 0; i < indent; ++i) {
             cout << " ";
         }
     }
-    PrintScope(int indent, char*message):indent(indent),message(message) {
-        _print_indent();
-        cout << "Entering " << message << endl;
+    PrintScope(int indent, char*message, char* opt=" "):indent(indent),message(message), opt(opt) {
+        _print_indent(indent);
+        cout << "Entering " << message;
+        if (!isspace(opt[0])) {
+            cout << opt ;
+        } 
+        cout << endl;
     }
     ~PrintScope() {
-        _print_indent();
-        cout << "Leaving " << message << endl;
+        _print_indent(indent);
+        cout << "Leaving " << message;
+        if (!isspace(opt[0])) {
+            cout << opt ;
+        } 
+        cout << endl;
+    }
+
+    static void PrintRecursionTree(int indent, int f, int l) {
+        _print_indent(indent);
+        cout << "f=" << f << " l=" << l << endl;
     }
 };
 
-ParseResult ParseWords(string const& w, int f, int l, Trie const& dict, int indent=0) {
-    PrintScope sp(indent, __FUNCTION__);
+typedef unordered_map<int, ParseResult> Cache;
+ParseResult ParseWords(string const& w, int f, int l, Trie const& dict, Cache& cache, int indent=0) {
     if (l >= w.size()) {
         ParseResult tmp(l - f, f < w.size() ? MakeUpper(w.substr(f)) : "");
-        tmp.Print("gone over end", indent);
         return tmp;
     }
 
-    string current_word = w.substr(f, l+1);
-    bool valid_partial = dict.IsSubstring(current_word);
+    if (cache.find(f) != cache.end()) {
+        return cache[f];
+    }
+
+    string current_word = w.substr(f, l-f+1);
+    bool valid_partial = dict.IsPrefix(current_word);
     bool valid_exact = valid_partial && dict.Contains(current_word);
 
-    /* break off current word */
-    ParseResult bestExact = ParseWords(w, l+1, l+1, dict, indent+1);
+    // jump past current word (insert space after current word) 
+    ParseResult bestExact = ParseWords(w, l+1, l+1, dict, cache, indent+1);
     if (valid_exact) {
-        ParseResult::_PrintIndent(indent);
-        cout << "valid_exact=true" << endl;
-        string tmp = current_word + " " + bestExact.parsed;
-        bestExact.parsed.assign(tmp);
+        bestExact.parsed.swap(current_word + " " + bestExact.parsed);
     }
     else {
-        ParseResult::_PrintIndent(indent);
-        cout << "valid_exact=false" << endl;
         bestExact.invalid += current_word.size();
-        string tmp = MakeUpper(current_word) + " " + bestExact.parsed;
-        bestExact.parsed.assign(tmp);
+        bestExact.parsed.swap(MakeUpper(current_word) + " " + bestExact.parsed);
     }
 
-    /* extend current word */
+    // extend current word using another letter
     ParseResult best;
     if (valid_partial) {
-        ParseResult::_PrintIndent(indent);
-        cout << "valid_partial=true" << endl;
-        ParseResult bestExtend = ParseWords(w, f, l+1, dict, indent+1);
+        ParseResult bestExtend = ParseWords(w, f, l+1, dict, cache, indent+1);
         best = ParseResult::Min(bestExact, bestExtend);
     }
     else {
-        ParseResult::_PrintIndent(indent);
-        cout << "valid_partial=false" << endl;
         best = bestExact;
     }
 
-    best.Print(" ", indent);
+    cache[f] = best;
     return best;
 }
 
 ParseResult ParseWords(string const& w) {
     Trie dict;
     SetDict(dict);
-    ParseResult result = ParseWords(w, 0, 0, dict);
+    Cache cache;
+    ParseResult result = ParseWords(w, 0, 0, dict, cache);
     return result;
 }
 

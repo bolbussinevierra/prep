@@ -72,7 +72,7 @@ public:
         return current->is_end;
     }
 
-    bool IsSubstring(string const& w) const {
+    bool IsPrefix(string const& w) const {
         TrieNode* current(root.get());
         for (char const& c : w) {
             if (!current->IsChild(c)) {

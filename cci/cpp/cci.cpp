@@ -347,8 +347,9 @@ int _tmain(int argc, _TCHAR* argv[])
     headAgain->Print();
 #endif 
 #if 1
-    string w("cat");
-    ParseWords(w);
+    string w("ycatxdog");
+    ParseResult result = ParseWords(w);
+    cout << "inv:" << result.invalid << " parsed:" <<  result.parsed << endl;
 #endif 
 
 #if 0
