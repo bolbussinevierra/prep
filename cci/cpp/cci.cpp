@@ -13,6 +13,7 @@
 #include "chapter.17.h"
 #include "chapter.18.h"
 #include "dp.h"
+#include "hm.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
