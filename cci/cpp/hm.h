@@ -1,17 +1,17 @@
 #include <vector>
 #include <list>
-#include <tuple>
 using namespace std;
 
-unsigned int get_key(string const& s) {
-    unsigned int key = 997;
+// using djb2
+unsigned long get_hash(string const& s) {
+    unsigned long key = 997;
     for (char const& c : s) {
-        key = key * 101 + c;
+        key = (key * 101) + c;
     }
     return key;
 }
 
-unsigned int get_key(unsigned int i) {
+unsigned long get_hash(unsigned int i) {
     return i;
 }
 
@@ -51,7 +51,7 @@ protected:
         bool empty;
 
         entry(key const& k, value const& v):k(k), val(v), empty(false) {}
-        entry():k(0), empty(true) {}
+        entry():empty(true) {}
         
         void print() {
             if (empty) {
@@ -68,15 +68,25 @@ protected:
     static const int initial_capacity = 31;
     unsigned int m_used;
 
+    void __debug_print_collision(entry const& e1, entry const& e2) {
+        if (get_hash(e1.k) == get_hash(e2.k)) {
+            cout << "key=" << e1.k << " hash collided with key=" << e2.k << endl;
+        }
+    }
+
 private: // overrides to allow for template methods
     virtual void put_at(int index, entry const& entry) = 0;
     virtual void put(entry const& entry) = 0;
-    virtual int hash(int key) const = 0;
+    virtual int get_index_for_hash(long key) const = 0;
     virtual bool find_index(key const& k, int& index, value& val) const = 0;
 };
 
+/*
+ * MAP_OA: Uses open addressing / linear probbing for collision detection
+ */
+
 template<typename key, typename value>
-class map_oa : public map_base<key, value> { // uses open addressing / linear probing for collision mitigation
+class map_oa : public map_base<key, value> { 
 public:
     map_oa():m_table(initial_capacity) {};
     
@@ -87,24 +97,26 @@ public:
             cout << endl;
         }
     }
+
 private:
-    int hash(int key) const {
+    int get_index_for_hash(long key) const {
         return key % m_table.size();
     }
 
     void put_at(int index, entry const& entry) {
         m_table[index] = entry;
     }
-
+    
     void put(entry const& entry) {    
         if (m_used == m_table.size()) {
             grow(); // double the size of the table and rehash all items
         }
         
         // calculate the index 
-        int index = hash(get_key(entry.k));
+        int index = get_index_for_hash(get_hash(entry.k));
    
         while(!m_table[index].empty) {
+            __debug_print_collision(entry, m_table[index]);
             index = (index+1) % m_table.size();
         }
         m_table[index] = entry;
@@ -112,22 +124,26 @@ private:
     }
 
     void grow() {
+        cout << ">>> GROWING (x2)" << endl;
+
         // copy all the current entries
-        vector<entry> current(m_table.begin(), m_table.end());
-
-        // clear the current m_table
         int current_size = m_table.size();
+        vector<entry> current(m_table.begin(), m_table.end());
+        
+        // clear the current table and double it in size
         m_table.clear();
-        m_table.resize(current_size << 1); // multiply size by 2;
+        m_table.resize(current_size << 1); 
 
-        // re-insert all the values into the new table
+        // re-insert all the values into the new table. We set m_used to 0
+        // since insert will increment it for each insert
+        m_used = 0;
         for (entry const& e : current) {
             insert(e.k, e.val);
         }
     }
 
     virtual bool find_index(key const& k, int& index, value& val) const {
-        int i = hash(get_key(k));
+        int i = get_index_for_hash(get_hash(k));
         int count_checked = 0;
         while (count_checked++ < m_used && !m_table[i].empty && m_table[i].k != k)
         {
@@ -145,6 +161,10 @@ private:
 
     vector<entry> m_table; 
 };
+
+/*
+ * MAP_CH: Uses chaining probbing for collision detection
+ */
 
 //template <typename key, typename value>
 //class map_ch : public my_map { // uses chaining for collision mitigation

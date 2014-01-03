@@ -561,12 +561,19 @@ int _tmain(int argc, _TCHAR* argv[])
 
 #endif 
 #if 1
+#define COUNT 50
     map_oa<string, int> test;
-    for (int i = 0; i < 50; ++i) {
+    for (int i = 0; i < COUNT; ++i) {
         string key_string = to_string(i);
         test.insert(key_string, i);
     }
+    assert(test.size() == COUNT);
     test.print();
+    for (int i = 0; i < COUNT; ++i) {
+        string key_string = to_string(i);
+        int result;
+        assert(test.find(key_string, result));
+    }
 
 #endif 
     cin.get(); // pause console before exit
