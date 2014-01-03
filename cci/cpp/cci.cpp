@@ -347,7 +347,7 @@ int _tmain(int argc, _TCHAR* argv[])
     BiNode* headAgain = DLL2BST(head, 0, AS(a1713)-1);
     headAgain->Print();
 #endif 
-#if 1
+#if 0
     string w("ycatxdog");
     ParseResult result = ParseWords(w);
     cout << "inv:" << result.invalid << " parsed:" <<  result.parsed << endl;
@@ -560,7 +560,15 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << fib[0] << endl;
 
 #endif 
+#if 1
+    unique_ptr<my_map<string, int>> test(new map_oa<string, int>());
+    for (int i = 0; i < 50; ++i) {
+        string key_string = to_string(i);
+        test->insert(key_string, i);
+    }
+    test->print();
 
+#endif 
     cin.get(); // pause console before exit
     return 0;
 }
