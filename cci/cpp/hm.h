@@ -17,10 +17,8 @@ unsigned int get_key(unsigned int i) {
 
 
 template <typename key, typename value> 
-struct my_map
+struct map_base
 {
-    virtual ~my_map() {}
-
     void insert(key const& k, value const& v) {
         int index;
         value ignore;
@@ -65,7 +63,8 @@ protected:
         }
     };
 
-    my_map():m_used(0) {}
+    map_base():m_used(0) {}
+    ~map_base() {}
     static const int initial_capacity = 31;
     unsigned int m_used;
 
@@ -77,7 +76,7 @@ private: // overrides to allow for template methods
 };
 
 template<typename key, typename value>
-class map_oa : public my_map<key, value> { // uses open addressing / linear probing for collision mitigation
+class map_oa : public map_base<key, value> { // uses open addressing / linear probing for collision mitigation
 public:
     map_oa():m_table(initial_capacity) {};
     

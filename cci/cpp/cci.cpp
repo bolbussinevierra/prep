@@ -561,12 +561,12 @@ int _tmain(int argc, _TCHAR* argv[])
 
 #endif 
 #if 1
-    unique_ptr<my_map<string, int>> test(new map_oa<string, int>());
+    map_oa<string, int> test;
     for (int i = 0; i < 50; ++i) {
         string key_string = to_string(i);
-        test->insert(key_string, i);
+        test.insert(key_string, i);
     }
-    test->print();
+    test.print();
 
 #endif 
     cin.get(); // pause console before exit
