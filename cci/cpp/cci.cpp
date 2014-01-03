@@ -560,9 +560,10 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << fib[0] << endl;
 
 #endif 
-#if 1
+#if 0
 #define COUNT 50
-    map_oa<string, int> test;
+    map_ch<string, int> test;
+    // map_oa<string, int> test;
     for (int i = 0; i < COUNT; ++i) {
         string key_string = to_string(i);
         test.insert(key_string, i);

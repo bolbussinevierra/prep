@@ -2,7 +2,7 @@
 #include <list>
 using namespace std;
 
-// using djb2
+// Paul Larson's hashing algorthm (MSR)
 unsigned long get_hash(string const& s) {
     unsigned long key = 997;
     for (char const& c : s) {
@@ -25,7 +25,7 @@ struct map_base
         if (find_index(k, index, ignore)) {
             // object with this key already exists, overwrite it
             entry overwrite(k,v);
-            put_at(index, overwrite);
+            replace_at(index, overwrite);
         }
         else {
             // insert a new entry
@@ -55,10 +55,10 @@ protected:
         
         void print() {
             if (empty) {
-                cout << "empty";
+                cout << "[___]";
             } 
             else {
-                cout << "key:" << k << " value:" << val;
+                cout << "[key:" << k << " val:" << val << "]";
             }
         }
     };
@@ -75,8 +75,8 @@ protected:
     }
 
 private: // overrides to allow for template methods
-    virtual void put_at(int index, entry const& entry) = 0;
-    virtual void put(entry const& entry) = 0;
+    virtual void replace_at(int index, entry const& item) = 0;
+    virtual void put(entry const& item) = 0;
     virtual int get_index_for_hash(long key) const = 0;
     virtual bool find_index(key const& k, int& index, value& val) const = 0;
 };
@@ -103,23 +103,22 @@ private:
         return key % m_table.size();
     }
 
-    void put_at(int index, entry const& entry) {
-        m_table[index] = entry;
+    void replace_at(int index, entry const& item) {
+        m_table[index] = item;
     }
     
-    void put(entry const& entry) {    
+    void put(entry const& item) {    
         if (m_used == m_table.size()) {
             grow(); // double the size of the table and rehash all items
         }
         
         // calculate the index 
-        int index = get_index_for_hash(get_hash(entry.k));
+        int index = get_index_for_hash(get_hash(item.k));
    
         while(!m_table[index].empty) {
-            __debug_print_collision(entry, m_table[index]);
             index = (index+1) % m_table.size();
         }
-        m_table[index] = entry;
+        m_table[index] = item;
         m_used++;
     }
 
@@ -135,10 +134,10 @@ private:
         m_table.resize(current_size << 1); 
 
         // re-insert all the values into the new table. We set m_used to 0
-        // since insert will increment it for each insert
+        // since put will increment it for each insert
         m_used = 0;
         for (entry const& e : current) {
-            insert(e.k, e.val);
+            put(e);
         }
     }
 
@@ -166,10 +165,98 @@ private:
  * MAP_CH: Uses chaining probbing for collision detection
  */
 
-//template <typename key, typename value>
-//class map_ch : public my_map { // uses chaining for collision mitigation
-//
-//private:
-//    vector<list<pair<key, value>>> m_table(capacity);
-//
-//};
+template<typename key, typename value>
+class map_ch : public map_base<key, value> { 
+public:
+    map_ch():m_table(initial_capacity) {};
+    
+    virtual void print() {
+        for (int i = 0; i < m_table.size(); ++i) {
+            cout << "[" << i << "] ";
+            for (auto it = m_table[i].begin(); it != m_table[i].end(); ++it) {
+                it->print();
+            }
+            cout << endl;
+        }
+    }
+
+private:
+    int get_index_for_hash(long key) const {
+        return key % m_table.size();
+    }
+
+    void replace_at(int index, entry const& item) {
+        list<entry>& chain = m_table[index];
+        
+        // find the item on the chain that shares the same key and overwrite 
+        // its value
+        for (entry& e : chain) {
+            if (e.k == item.k) {
+                e.val = item.val;
+            }
+        }
+    }
+
+    void put(entry const& item) {    
+        // double the size of the table and rehash all items. We want to keep
+        // an average of one item in each chain
+        if (m_used == m_table.size()) {
+            grow(); 
+        }
+        
+        // calculate the index 
+        int index = get_index_for_hash(get_hash(item.k));
+        
+        // add item to the chain at index
+        m_table[index].push_back(item);
+        m_used++;
+    }
+
+    void grow() {
+        cout << ">>> GROWING (x2)" << endl;
+
+        // copy all the current entries
+        int current_size = m_table.size();
+        vector<list<entry>> current(m_table.begin(), m_table.end());
+        
+        // clear the current table and double it in size
+        m_table.clear();
+        m_table.resize(current_size << 1); 
+
+        // re-insert all the values into the new table. We set m_used to 0
+        // since put will increment it for each insert
+        m_used = 0;
+        for (list<entry> const& chain : current) {
+            for (entry const& e : chain) {
+                put(e);
+            }
+        }
+    }
+
+    bool find_index(key const& k, int& index, value& val) const {
+        int i = get_index_for_hash(get_hash(k));
+        
+        // check all the items hashed to the list at i
+        auto list_it = m_table[i].begin();
+        bool found = false;
+        for (; list_it != m_table[i].end(); ++list_it) {
+            
+            // found it!
+            if (!list_it->empty && list_it->k == k) {
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            index = i;
+            val = list_it->val;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    vector<list<entry>> m_table;
+};
