@@ -81,10 +81,6 @@ class map_oa : public my_map<key, value> { // uses open addressing / linear prob
 public:
     map_oa():m_table(initial_capacity) {};
     
-    virtual bool find(key const& k, value& result) {
-        return false;
-    }
-
     virtual void print() {
         for (int i = 0; i < m_table.size(); ++i) {
             cout << "[" << i << "] ";
