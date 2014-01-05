@@ -511,7 +511,7 @@ HRESULT largest_submatrix_all_ones(matrix const& v, Rect& result){
 
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
-
+           // if (col > 0 && t[row][col] != 
         }
     }
 
