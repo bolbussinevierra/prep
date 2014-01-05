@@ -474,12 +474,23 @@ int balanced_partition(vector<int> const& a) {
     return min_diff;
 }
 
-rect2 CloseRectangles(unordered_map<int, rect2>& rectangles, int col) {
-    rect2 max_rect = {-1};
+void CloseRectangles(unordered_map<int, rect2>& rectangles, int col, 
+                   rect2& max_rect, 
+                   int height=0) {
+                       //
+                       //
+                       // TODO : fix this loop to close only rectangles less than height
+                       //
     for(auto& it : rectangles) {
-
+        rect2& rect = it.second;
+        if (rect.right_col = -1)  {
+            rect.right_col = col;
+        }
+        if (-1 == max_rect.height || rect.Area() > max_rect.Area()) {
+            max_rect = rect;
+        }
     }
-    return max_rect;
+    rectangles.clear();
 }
 
 /* Largest submatrix composed of all 1's */
@@ -511,21 +522,23 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
     // Next step is to process all the possible rectangles. We already know the heights from the above
     // not we need to find the possible widths.
     unordered_map<int, rect2> rectangles; 
-    rect2 max_rect;
+    rect2 max_rect = {-1};
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
-           if (col > 0 && v[row][col] == 0) {
-               max_rect = CloseRectangles(rectangles, col);
-           }
-           int height = t[row][col];
-           if (height > 0) {
-               if (rectangles.find(height) == rectangles.end()) {
-                   rect2 new_rect = { height, col, -1 }; 
-                   rectangles.insert(make_pair(height, new_rect));
-               }
-           }
+            // TODO: BUG CHECK
+            if ((col > 0) && (t[row][col] > t[row][col-1])) {
+                CloseRectangles(rectangles, col-1, max_rect);
+            }
+            int height = t[row][col];
+            if (height > 0) {
+                if (rectangles.find(height) == rectangles.end()) {
+                    rect2 new_rect = { height, col, -1 }; 
+                    rectangles.insert(make_pair(height, new_rect));
+                }
+            }
+            CloseRectangles(rectangles, cols-1, max_rect, height);
         }
-        max_rect = CloseRectangles(rectangles, cols-1);
+        CloseRectangles(rectangles, cols-1, max_rect); // cols-1 = the last column of each row
     }
     result = max_rect;
     return S_OK;

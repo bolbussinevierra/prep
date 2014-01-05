@@ -544,12 +544,14 @@ int _tmain(int argc, _TCHAR* argv[])
 #endif 
 #if 1
     /* maximum submatrix that is all 1 */ 
-#define DIM_ROW 2
-#define DIM_COL 3
+#define DIM_ROW 4
+#define DIM_COL 6
     int a_matrix[DIM_ROW][DIM_COL] = 
     { 
-        {0, 1, 1},
-        {1, 1, 1},
+        {0,1,1,0,0,0},
+        {0,1,1,1,1,0},
+        {1,1,1,1,1,0}, 
+        {1,0,1,1,0,0},
     };
 
     matrix v(DIM_ROW, vector<int>(DIM_COL));
