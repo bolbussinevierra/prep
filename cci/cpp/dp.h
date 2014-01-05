@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <numeric>
 #include <hash_set>
+#include "utils.h"
 #pragma once
 using namespace std;
 
@@ -471,4 +472,48 @@ int balanced_partition(vector<int> const& a) {
     cout << "\"" << endl;
 
     return min_diff;
+}
+
+/* Largest submatrix composed of all 1's */
+// solution inspired by: http://stackoverflow.com/questions/7770945/largest-rectangular-sub-matrix-with-the-same-number
+HRESULT largest_submatrix_all_ones(matrix const& v, Rect& result){
+    // PARAM CHECK
+
+    matrix t(v.size(), vector<int>(v[0].size()));
+
+    // if v[i,j]=1, let t[i,j] represent the count of contigous 1's below (same column) t[i,j] upto 
+    // and including it. so note that we are calculating bottom row up. if v[i,j]=0. then t[i,j]=0
+    int const rows = v.size();
+    int const cols = v[0].size();
+    
+    // bottom row is as it appears in v. The rest of the rows are calculated from those below
+    // this step is O(N) where N is the number of entries in the matrix
+    t[rows-1].assign(v[rows-1].begin(), v[rows-1].end());
+    for (int row = rows - 2; row >= 0; --row) {
+        for (int col = 0; col < cols; ++col) {
+            if (1 == v[row][col]) {
+                t[row][col] = t[row+1][col] + 1; // note that row below is (row+1)
+            } 
+            else {
+                t[row][col] = 0;
+            }
+        }
+    }
+        
+    // next step is to process all the possible rectangles. We already know the heights from the above
+    // not we need to find the possible widths.
+    // we need to keep a data structure to process rectangles. This will be an array of lists. array[i]
+    // will contain the list of rectangles of height i that are undergoing processing
+    // note that max_height of a rectangle is number of rows (i.e ranges from 1 to row). 
+    // index 0 is not used (no rectangles of height 0)
+    vector<list<Rect>> rectangles(rows+1); 
+    int pending_rectangles = 0;
+
+    for (int row = 0; row < rows; ++row) {
+        for (int col = 0; col < cols; ++col) {
+
+        }
+    }
+
+    return S_OK;
 }

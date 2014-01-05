@@ -520,10 +520,8 @@ int _tmain(int argc, _TCHAR* argv[])
     StackBoxes(vBoxes);
 #endif
 #if 0
-    /*
-     * LONGEST COMMON SUBSEQUENCE 
-     *
-     */
+    /* LONGEST COMMON SUBSEQUENCE */
+    
     char* S1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
     char* S2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
     vector<char> vS1(S1, S1+strlen(S1));
@@ -538,14 +536,32 @@ int _tmain(int argc, _TCHAR* argv[])
     get_edit_distance(S1, S2);
 #endif
 #if 0
-    /*
-     * BALANCED PARTITION
-     */ 
+    /* BALANCED PARTITION */
+      
     int a[] = {3,2,1,1,2,1};
     vector<int> v(a, a+AS(a));
     balanced_partition(v);
 #endif 
+#if 1
+    /* maximum submatrix that is all 1 */ 
+#define DIM_ROW 2
+#define DIM_COL 3
+    int a_matrix[DIM_ROW][DIM_COL] = 
+    { 
+        {0, 1, 1},
+        {1, 1, 1},
+    };
 
+    matrix v(DIM_ROW, vector<int>(DIM_COL));
+    for (int i = 0; i < DIM_ROW; ++i) {
+        v[i].assign(a_matrix[i], a_matrix[i] + DIM_COL);
+    }
+    Rect res;
+    if(SUCCEEDED(largest_submatrix_all_ones(v, res))) {
+        cout << "largest submatrix = "; 
+        res.Print();
+    }
+#endif
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */

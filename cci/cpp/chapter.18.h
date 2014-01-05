@@ -5,6 +5,7 @@
 #include <queue>
 #include "heap.h"
 #include "trie.h"
+#include "utils.h"
 #pragma once
 //
 // 18.1
@@ -662,9 +663,6 @@ bool GetSquare(square const& m, result& res) {
 //
 // 18.12
 //
-typedef vector<vector<int>> matrix;
-struct Rect { int t; int b; int l; int r; };
-
 void Clear(vector<int>& k) {
     for (int &i : k) i = 0; 
 }
