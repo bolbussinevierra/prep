@@ -474,9 +474,17 @@ int balanced_partition(vector<int> const& a) {
     return min_diff;
 }
 
+rect2 CloseRectangles(unordered_map<int, rect2>& rectangles, int col) {
+    rect2 max_rect = {-1};
+    for(auto& it : rectangles) {
+
+    }
+    return max_rect;
+}
+
 /* Largest submatrix composed of all 1's */
 // solution inspired by: http://stackoverflow.com/questions/7770945/largest-rectangular-sub-matrix-with-the-same-number
-HRESULT largest_submatrix_all_ones(matrix const& v, Rect& result){
+HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
     // PARAM CHECK
 
     matrix t(v.size(), vector<int>(v[0].size()));
@@ -500,20 +508,25 @@ HRESULT largest_submatrix_all_ones(matrix const& v, Rect& result){
         }
     }
         
-    // next step is to process all the possible rectangles. We already know the heights from the above
+    // Next step is to process all the possible rectangles. We already know the heights from the above
     // not we need to find the possible widths.
-    // we need to keep a data structure to process rectangles. This will be an array of lists. array[i]
-    // will contain the list of rectangles of height i that are undergoing processing
-    // note that max_height of a rectangle is number of rows (i.e ranges from 1 to row). 
-    // index 0 is not used (no rectangles of height 0)
-    vector<list<Rect>> rectangles(rows+1); 
-    int pending_rectangles = 0;
-
+    unordered_map<int, rect2> rectangles; 
+    rect2 max_rect;
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
-           // if (col > 0 && t[row][col] != 
+           if (col > 0 && v[row][col] == 0) {
+               max_rect = CloseRectangles(rectangles, col);
+           }
+           int height = t[row][col];
+           if (height > 0) {
+               if (rectangles.find(height) == rectangles.end()) {
+                   rect2 new_rect = { height, col, -1 }; 
+                   rectangles.insert(make_pair(height, new_rect));
+               }
+           }
         }
+        max_rect = CloseRectangles(rectangles, cols-1);
     }
-
+    result = max_rect;
     return S_OK;
 }

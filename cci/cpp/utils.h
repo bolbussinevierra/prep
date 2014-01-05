@@ -12,3 +12,16 @@ struct Rect {
                endl;
     }
 };
+
+struct rect2 { 
+    int height; 
+    int left; 
+    int right; 
+    int Area() { return height*(right-left); }
+    void Print() {
+        cout << "[area=" << Area() << 
+               " h=" << height <<
+               " r=" << right << " l=" << left << 
+               endl;
+    }
+};

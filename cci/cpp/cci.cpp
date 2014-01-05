@@ -556,8 +556,8 @@ int _tmain(int argc, _TCHAR* argv[])
     for (int i = 0; i < DIM_ROW; ++i) {
         v[i].assign(a_matrix[i], a_matrix[i] + DIM_COL);
     }
-    Rect res;
-    if(SUCCEEDED(largest_submatrix_all_ones(v, res))) {
+    rect2 res;
+    if(SUCCEEDED(LargestSubmatrixOfOnes(v, res))) {
         cout << "largest submatrix = "; 
         res.Print();
     }
