@@ -474,18 +474,18 @@ int balanced_partition(vector<int> const& a) {
     return min_diff;
 }
 
-void CloseAllOpenRectanglesHigherThan(unordered_map<int, rect2>& rectangles, int col, 
-                                   rect2& max_rect, int height) {
+void CloseAllOpenRectanglesHigherThan(unordered_map<int, Rect>& rectangles, int right, 
+                                   Rect& max_rect, int height) {
                        
     // for any given row we have only one rectangle of the given height
     // of max area open at one time
     for(auto it = rectangles.begin(); it != rectangles.end(); ) {
         if (it->first > height) {
-            rect2& rect = it->second;
-            if (rect.right_col = -1)  {
-                rect.right_col = col;
+            Rect& rect = it->second;
+            if (rect.r = -1)  {
+                rect.r = right;
             }
-            if (-1 == max_rect.height || rect.Area() > max_rect.Area()) {
+            if (-1 == max_rect.t || rect.Area() > max_rect.Area()) {
                 max_rect = rect;
             }
             it = rectangles.erase(it);
@@ -496,14 +496,14 @@ void CloseAllOpenRectanglesHigherThan(unordered_map<int, rect2>& rectangles, int
     }
 }
 
-void CloseAllOpenRectangles(unordered_map<int, rect2>& rectangles, int col, 
-                          rect2& max_rect){
-    return CloseAllOpenRectanglesHigherThan(rectangles, col, max_rect, 0);
+void CloseAllOpenRectangles(unordered_map<int, Rect>& rectangles, int right, 
+                          Rect& max_rect){
+    return CloseAllOpenRectanglesHigherThan(rectangles, right, max_rect, 0);
 }
 
 /* Largest submatrix composed of all 1's */
 // solution inspired by: http://stackoverflow.com/questions/7770945/largest-rectangular-sub-matrix-with-the-same-number
-HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
+HRESULT LargestSubmatrixOfOnes(matrix const& v, Rect& result){
     // PARAM CHECK
 
     matrix t(v.size(), vector<int>(v[0].size()));
@@ -529,8 +529,8 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
         
     // Next step is to process all the possible rectangles. We already know the heights from the above
     // not we need to find the possible widths.
-    unordered_map<int, rect2> rectangles; 
-    rect2 max_rect = {-1};
+    unordered_map<int, Rect> rectangles; 
+    Rect max_rect = {-1};
     int final_col = cols-1;
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
@@ -547,7 +547,7 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
             // Note that at the first column, we cannot have any open rectangles
             if (height > 0) {
                 if (rectangles.find(height) == rectangles.end()) {
-                    rect2 new_rect = { height, col, -1 }; 
+                    Rect new_rect = { row, row+height-1,col, -1 }; 
                     rectangles.insert(make_pair(height, new_rect));
                 }
                 int previous_col = col-1;
@@ -560,5 +560,41 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
         CloseAllOpenRectangles(rectangles, final_col, max_rect); 
     }
     result = max_rect;
+    return S_OK;
+}
+
+int Min3(int a, int b, int c) { return min(min(a,b), c); }
+
+void CheckMax(int size, int bottom, int right, Rect& max) {
+    Rect rect = {bottom-size+1, bottom, right-size+1, right};
+    if (-1 == max.t || rect.Area() > max.Area()) {
+        max = rect;
+    }
+}
+
+HRESULT LargestSquareSubmatrixOfOnes(matrix const& v, Rect& result) {
+    int const k_rows = v.size();
+    int const k_cols = v[0].size();
+    matrix t(k_rows, vector<int>(k_cols));
+
+    // copy first row and first col as is
+    t[0].assign(v[0].begin(), v[0].end());
+    for (int row = 0; row < k_rows; ++row) {
+        t[row][0] = v[row][0];
+    }
+
+    Rect max_square = {-1};
+    for (int row = 1; row < k_rows; ++row) {
+        for (int col = 1; col < k_cols; ++col) {
+            if (v[row][col] == 1) {
+                t[row][col] = Min3(t[row-1][col], t[row][col-1], t[row-1][col-1]) + 1;
+                CheckMax(t[row][col], row, col, max_square);
+            }
+            else {
+                t[row][col] = 0;
+            }
+        }
+    }
+    result = max_square;
     return S_OK;
 }

@@ -5,17 +5,14 @@ struct Rect {
     int b; 
     int l; 
     int r; 
-};
-
-struct rect2 { 
-    int height; 
-    int left_col; 
-    int right_col; 
-    int Area() { return height*(right_col-left_col+1); }
+    int Area() { return (b-t+1)*(r-l+1); }
     void Print() {
         cout << "[area=" << Area() 
-             <<  " h=" << height 
-             << " r=" << right_col << " l=" << left_col << "]"
-             <<  endl;
+             << " t=" << t 
+             << " b=" << b
+             << " l=" << l
+             << " r=" << r
+             << "]"
+             << endl;
     }
 };

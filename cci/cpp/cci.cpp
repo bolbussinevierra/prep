@@ -558,9 +558,13 @@ int _tmain(int argc, _TCHAR* argv[])
     for (int i = 0; i < DIM_ROW; ++i) {
         v[i].assign(a_matrix[i], a_matrix[i] + DIM_COL);
     }
-    rect2 res;
+    Rect res;
     if(SUCCEEDED(LargestSubmatrixOfOnes(v, res))) {
         cout << "largest submatrix = "; 
+        res.Print();
+    }
+    if(SUCCEEDED(LargestSquareSubmatrixOfOnes(v, res))) {
+        cout << "largest square submatrix = "; 
         res.Print();
     }
 #endif
