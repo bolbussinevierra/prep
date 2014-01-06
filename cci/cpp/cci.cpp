@@ -543,7 +543,7 @@ int _tmain(int argc, _TCHAR* argv[])
     balanced_partition(v);
 #endif 
 #if 1
-    /* maximum submatrix that is all 1 */ 
+    /* maximum submatrix that is all 1 (not neccesarily square) */ 
 #define DIM_ROW 4
 #define DIM_COL 6
     int a_matrix[DIM_ROW][DIM_COL] = 
@@ -551,7 +551,7 @@ int _tmain(int argc, _TCHAR* argv[])
         {0,1,1,0,0,0},
         {0,1,1,1,1,0},
         {1,1,1,1,1,0}, 
-        {1,0,1,1,0,0},
+        {1,1,1,1,1,0},
     };
 
     matrix v(DIM_ROW, vector<int>(DIM_COL));

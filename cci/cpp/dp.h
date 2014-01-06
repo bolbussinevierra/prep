@@ -474,23 +474,31 @@ int balanced_partition(vector<int> const& a) {
     return min_diff;
 }
 
-void CloseRectangles(unordered_map<int, rect2>& rectangles, int col, 
-                   rect2& max_rect, 
-                   int height=0) {
-                       //
-                       //
-                       // TODO : fix this loop to close only rectangles less than height
-                       //
-    for(auto& it : rectangles) {
-        rect2& rect = it.second;
-        if (rect.right_col = -1)  {
-            rect.right_col = col;
+void CloseAllOpenRectanglesHigherThan(unordered_map<int, rect2>& rectangles, int col, 
+                                   rect2& max_rect, int height) {
+                       
+    // for any given row we have only one rectangle of the given height
+    // of max area open at one time
+    for(auto it = rectangles.begin(); it != rectangles.end(); ) {
+        if (it->first > height) {
+            rect2& rect = it->second;
+            if (rect.right_col = -1)  {
+                rect.right_col = col;
+            }
+            if (-1 == max_rect.height || rect.Area() > max_rect.Area()) {
+                max_rect = rect;
+            }
+            it = rectangles.erase(it);
         }
-        if (-1 == max_rect.height || rect.Area() > max_rect.Area()) {
-            max_rect = rect;
+        else {
+            ++it;
         }
     }
-    rectangles.clear();
+}
+
+void CloseAllOpenRectangles(unordered_map<int, rect2>& rectangles, int col, 
+                          rect2& max_rect){
+    return CloseAllOpenRectanglesHigherThan(rectangles, col, max_rect, 0);
 }
 
 /* Largest submatrix composed of all 1's */
@@ -523,22 +531,33 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, rect2& result){
     // not we need to find the possible widths.
     unordered_map<int, rect2> rectangles; 
     rect2 max_rect = {-1};
+    int final_col = cols-1;
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
-            // TODO: BUG CHECK
-            if ((col > 0) && (t[row][col] > t[row][col-1])) {
-                CloseRectangles(rectangles, col-1, max_rect);
-            }
             int height = t[row][col];
+            
+            // we have run into a gap that cannot be expanded. 
+            if (col > 0 && height == 0) {
+                CloseAllOpenRectangles(rectangles, col-1, max_rect);
+            }
+
+            // if a rectangle of this height does not exist yet, create it
+            // then close all open rectangles that are higher since we now
+            // now they cannot share a base with the rectangle we just created.
+            // Note that at the first column, we cannot have any open rectangles
             if (height > 0) {
                 if (rectangles.find(height) == rectangles.end()) {
                     rect2 new_rect = { height, col, -1 }; 
                     rectangles.insert(make_pair(height, new_rect));
                 }
+                int previous_col = col-1;
+                if (previous_col >= 0) {
+                    CloseAllOpenRectanglesHigherThan(rectangles, previous_col, max_rect, height);
+                }
             }
-            CloseRectangles(rectangles, cols-1, max_rect, height);
         }
-        CloseRectangles(rectangles, cols-1, max_rect); // cols-1 = the last column of each row
+        // At the end of each row (i.e right=final_col) close, all open rectangles
+        CloseAllOpenRectangles(rectangles, final_col, max_rect); 
     }
     result = max_rect;
     return S_OK;
