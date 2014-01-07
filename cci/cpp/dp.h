@@ -616,8 +616,8 @@ HRESULT MinJumps_Greedy_Best_O_N(vector<int> const& v, list<int>& jumps) {
     while (current + v[current] < final) { // if we cant reach end in one hop
         int max_reaching_child = current; // so we can tell if we were able to move forward
         int max_child_range = 0;
-        int current_range = current + v[current];
-        for (int next_child = unseen_pos; next_child <= current_range; ++next_child) {
+        int next_in_range = current + v[current];
+        for (int next_child = unseen_pos; next_child <= next_in_range; ++next_child) {
             int child_range = next_child + v[next_child];
             if (child_range > max_child_range) {
                 max_child_range = child_range;
@@ -632,7 +632,7 @@ HRESULT MinJumps_Greedy_Best_O_N(vector<int> const& v, list<int>& jumps) {
         }
         // we no longer need to consider elements in previous range since we already picked the optimum
         // choice from that range
-        unseen_pos = current_range + 1;
+        unseen_pos = next_in_range + 1;
         current = max_reaching_child;
         jumps.push_back(current);
     }
