@@ -16,3 +16,12 @@ struct Rect {
              << endl;
     }
 };
+
+void PrintJumps(HRESULT hr, list<int> const& lst) {
+    cout << "PATH_EXISTS=" << (SUCCEEDED(hr) ? "Yes" : "No") << endl;
+    cout << "#Jumps=" << lst.size()-1 << endl;
+    for (int i : lst) {
+        cout << i << " ";
+    }
+    cout << endl;
+}

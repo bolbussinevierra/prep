@@ -4,6 +4,7 @@
 #include <numeric>
 #include <hash_set>
 #include "utils.h"
+
 #pragma once
 using namespace std;
 
@@ -596,5 +597,83 @@ HRESULT LargestSquareSubmatrixOfOnes(matrix const& v, Rect& result) {
         }
     }
     result = max_square;
+    return S_OK;
+}
+//
+// MINIMUM JUMPS - GREEDY IS ACTUALLY BEST
+//
+HRESULT MinJumps_Greedy_Best_O_N(vector<int> const& v, list<int>& jumps) {
+    if (v.empty()) return S_OK;
+    if (v.size() == 1) {
+        jumps.push_back(v[0]);
+        return S_OK;
+    }
+    
+    int current = 0;
+    int final = v.size() - 1;
+    jumps.push_back(0);
+    int unseen_pos = 1; // allows us to not revisit any values we have already seen. Guarantees O(N)
+    while (current + v[current] < final) { // if we cant reach end in one hop
+        int max_reaching_child = current; // so we can tell if we were able to move forward
+        int max_child_range = 0;
+        int current_range = current + v[current];
+        for (int next_child = unseen_pos; next_child <= current_range; ++next_child) {
+            int child_range = next_child + v[next_child];
+            if (child_range > max_child_range) {
+                max_child_range = child_range;
+                max_reaching_child = next_child;
+            }
+        }
+
+        // still on the same end? dead end
+        if (max_reaching_child == current) {
+            jumps.clear();
+            return E_FAIL;
+        }
+        // we no longer need to consider elements in previous range since we already picked the optimum
+        // choice from that range
+        unseen_pos = current_range + 1;
+        current = max_reaching_child;
+        jumps.push_back(current);
+    }
+    jumps.push_back(final);
+    return S_OK;
+}
+
+HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
+    if (v.empty()) return S_OK;
+    if (v.size() == 1) {
+        jumps.push_back(v[0]);
+        return S_OK;
+    }
+    
+    // t[i] represents the fewest jumps needed to get to i
+    vector<int> t(v.size(), INT_MAX);
+    vector<int> prev(v.size(), -1);
+
+    t[0] = 0;
+    for (int i = 1; i < v.size(); ++i) {
+        for (int j = 0; j < i; ++j) {
+            if (t[j] != INT_MAX) { // j is not already a dead-end
+                if (i <= j+v[j] && t[i] > t[j] + 1) {
+                    t[i] = t[j] + 1;
+                    prev[i] = j;
+                }
+            }
+        }
+    }
+
+    // check if a path exists
+    int final = v.size() - 1;
+    if (t[final] == INT_MAX) {
+        return E_FAIL;
+    }
+
+    jumps.push_front(final);
+    int p = prev[final];
+    while (p != -1) {
+        jumps.push_front(p);
+        p = prev[p];
+    }
     return S_OK;
 }

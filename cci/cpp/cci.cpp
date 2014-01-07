@@ -542,7 +542,7 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<int> v(a, a+AS(a));
     balanced_partition(v);
 #endif 
-#if 1
+#if 0
     /* maximum submatrix that is all 1 (not neccesarily square) */ 
 #define DIM_ROW 4
 #define DIM_COL 6
@@ -568,6 +568,33 @@ int _tmain(int argc, _TCHAR* argv[])
         res.Print();
     }
 #endif
+#if 1
+    /* MINIMUM NUMBER OF JUMPS - the best algorithm for this is ACTUALLY GREEDY */
+    int arr1[] = {1, 3, 5, 9, 8, 2, 6, 7, 6, 8, 9}; // ans = 0, 1, 3, 9 (indexes)
+    int arr2[] = {2,3,1,1,4}; // ans=0,1,4
+    int arr3[] = {1,1,1,0,1}; // no path
+    int arr4[] = {0,1,1}; // no path
+    int arr5[] = {1,1,1}; // ans=0,1,2
+
+    vector<int> cases[] = {
+        vector<int>(arr1, arr1+AS(arr1)),
+        vector<int>(arr2, arr2+AS(arr2)),
+        vector<int>(arr3, arr3+AS(arr3)),
+        vector<int>(arr4, arr4+AS(arr4)),
+        vector<int>(arr5, arr5+AS(arr5)),
+    };
+
+    for (vector<int> const& v : cases) {
+        list<int> jumps;
+        HRESULT hr = MinJumps_DP_NotIdeal_O_N2(v, jumps);
+        PrintJumps(hr, jumps);
+        jumps.clear();
+        hr = MinJumps_Greedy_Best_O_N(v, jumps);
+        PrintJumps(hr, jumps);
+        cout << "-------------------\n";
+    }
+    
+#endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */
