@@ -568,7 +568,7 @@ int _tmain(int argc, _TCHAR* argv[])
         res.Print();
     }
 #endif
-#if 1
+#if 0
     /* MINIMUM NUMBER OF JUMPS - the best algorithm for this is ACTUALLY GREEDY */
     int arr1[] = {1, 3, 5, 9, 8, 2, 6, 7, 6, 8, 9}; // ans = 0, 1, 3, 9 (indexes)
     int arr2[] = {2,3,1,1,4}; // ans=0,1,4
@@ -594,6 +594,14 @@ int _tmain(int argc, _TCHAR* argv[])
         cout << "-------------------\n";
     }
     
+#endif
+#if 1
+    /* Longest Palindrome Subsequence */
+    string s("BBABCBCAB");
+    string result;
+    int length = LongestPalindromeSubsequence(s, result);
+    cout << "LPS Length=" << length << endl;
+    cout << "LPS String=" << result << endl;
 #endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME

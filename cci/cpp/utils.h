@@ -25,3 +25,4 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
     }
     cout << endl;
 }
+typedef vector<vector<int>> IntTable2D;

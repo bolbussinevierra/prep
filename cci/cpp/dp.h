@@ -677,3 +677,65 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
     }
     return S_OK;
 }
+/* Longest Palindrome Subsequence */
+#define CASE1 1
+#define CASE2 2
+#define CASE3 3
+void GetLPS_DoesntWork(IntTable2D const& back_trace, string const& s, string& lps) {
+    //lps.resize(t[0][s.size() - 1]); // get the length of the lps from the result table
+    int i = 0, j = s.size() - 1;
+    while (i <=j ) { 
+        if (CASE1 == back_trace[i][j]) {
+            lps.push_back(s[i]);
+            i++;
+            j--;
+        }
+        else if (CASE2 == back_trace[i][j]) {
+            i++;
+        }
+        else if (CASE3 == back_trace[i][j]) {
+            j--;
+        }
+        else {
+            assert(false);
+        }
+    }
+}
+int LongestPalindromeSubsequence(string const& s, string &lps) {
+    if (s.empty()) return 0;
+    if (s.size() == 1) {
+        lps.push_back(s[0]);
+        return 1;
+    }
+
+    IntTable2D t(s.size(), vector<int>(s.size()));
+    IntTable2D back_pointer(s.size(), vector<int>(s.size()));
+
+  
+    // gap starts at 1 since we have already taken care of gap=0 (single element strings)
+    for (int gap=0; gap < s.size(); ++gap) {
+        for (int i = 0; i < s.size()-gap; ++i) {
+            int j = i+gap;
+            if (i == j) {
+                t[i][j] = 1; // single characters are palindromes
+                back_pointer[i][j] = CASE1;
+            }
+            else if (s[i] == s[j]) {
+                if (gap == 1) {
+                    t[i][j] = 2; // two elements both the same
+                    back_pointer[i][j] = CASE1;
+                } 
+                else {
+                    t[i][j] = t[i+1][j-1] + 2;
+                    back_pointer[i][j] = CASE1;
+                }
+            }
+            else {
+                t[i][j] = max(t[i+1][j], t[i][j-1]);
+                back_pointer[i][j] = t[i][j] == t[i+1][j] ? CASE2 : CASE3;
+            }
+        }
+    }
+    GetLPS_DoesntWork(back_pointer, s, lps);
+    return t[0][s.size() - 1];        
+}
