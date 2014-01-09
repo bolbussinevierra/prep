@@ -828,3 +828,56 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
     BuildSolution(p, solution, 1, num_matrices, result);
     return t[1][num_matrices];
 }
+/*
+ *
+ * Subset Sum problem - is there an array of items that sums to the given sum
+ *
+ */
+void _GetSubset(BoolTable2D const& t, vector<int> const& v, int items, int sum, vector<int>& result) {
+    if (0 == items) return;
+    if (t[items-1][sum]) {
+        _GetSubset(t, v, items-1, sum, result);
+    }
+    else {
+        _GetSubset(t, v, items-1, sum-v[items-1], result);
+        result.push_back(v[items-1]);
+    }
+}
+
+// iterative implementation of the same function above done for educative purposes
+// HOWEVER!!! THIS WILL GET THE ITEMS BACKWARDS. WOULD NEED TO USE A LIST FOR FOWARDS
+// so prefer above
+void _GetSubset(BoolTable2D const& t, vector<int> const& v, int sum, vector<int>& result) {
+    for (int i = v.size(); i >=1; --i) {
+        if (! t[i-1][sum]) { // because of OR-ing order we need to check this is negative first
+            result.push_back(v[i-1]);
+            sum -= v[i-1];
+        }
+    }
+}
+
+bool SubsetWithSum(vector<int> const& v, int sum, vector<int>& result) {
+    BoolTable2D t(v.size()+1, vector<bool>(sum+1));
+
+    for (int i = 0; i <= v.size(); ++i) {
+        for (int s = 0; s <= sum; ++s) {
+            if (0 == s) // always true
+            {
+                t[i][s] = true;
+            }
+            else if (0 == i) { // always false except the s == 0 case above
+                t[i][s] = false;
+            }
+            else if (s < v[i-1]) { // v is zero indexed so item i is at index i-1
+                t[i][s] = t[i-1][s]; // i-th element is too large to be included
+            }
+            else {
+                t[i][s] = t[i-1][s] || t[i-1][s-v[i-1]]; // v is zero indexed so item i is at index i - 1
+            }
+        }
+    }
+    if (t[v.size()][sum]) {
+        _GetSubset(t, v, v.size(), sum, result);
+    }
+    return t[v.size()][sum];
+}

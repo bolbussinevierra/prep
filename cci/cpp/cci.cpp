@@ -615,8 +615,25 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "Fewest multiplications=" << count << endl;
     cout << "Parenthesization=" << result << endl;
 #endif
-#if 1
-
+#if 0
+    //
+    // Subset Sum - is there a subset of item that sums up to a given value
+    //
+    int set[] = {3, 34, 4, 12, 5, 2};
+    int sum = 9;
+    vector<int> result;
+    vector<int> v(set, set+AS(set));
+    bool has_subset = SubsetWithSum(v, sum, result);
+    if (has_subset) {
+        cout << "There is a subset with sum=" << sum << endl;
+        cout << "The Subset is:";
+        for (int i : result) {
+            cout << i << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "There is no subset with sum=" << sum << endl;
+    }
 #endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
