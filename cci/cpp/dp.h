@@ -763,21 +763,21 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
  * MATRIX CHAIN MULTIPLICATION
  *
  */
-string GetMatrix(vector<int> const& p, int i) {
+string _GetMatrix(vector<int> const& p, int i) {
     ostringstream stream;
     stream << "[" << p[i-1] << "x" << p[i] << "]";
     return stream.str();
 }
 
-void BuildSolution(vector<int> const& p, IntTable2D const& s, int i, int j, string& result) {
+void _BuildSolution(vector<int> const& p, IntTable2D const& s, int i, int j, string& result) {
     if (i == j ) {
-        result.assign(GetMatrix(p, i));
+        result.assign(_GetMatrix(p, i));
         return;
     }
 
     string left, right;
-    BuildSolution(p, s, i, s[i][j], left);
-    BuildSolution(p, s, s[i][j]+1, j, right);
+    _BuildSolution(p, s, i, s[i][j], left);
+    _BuildSolution(p, s, s[i][j]+1, j, right);
     
     result.assign(left + " x " + right);
     
@@ -793,7 +793,7 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
 
     ostringstream stream;
     for (int i = 1; i < p.size(); ++i) {
-        stream << GetMatrix(p, i) << " ";
+        stream << _GetMatrix(p, i) << " ";
     }
     m_print.swap(stream.str());
 
@@ -825,7 +825,7 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
             }
         }
     }
-    BuildSolution(p, solution, 1, num_matrices, result);
+    _BuildSolution(p, solution, 1, num_matrices, result);
     return t[1][num_matrices];
 }
 /*
@@ -861,8 +861,7 @@ bool SubsetWithSum(vector<int> const& v, int sum, vector<int>& result) {
 
     for (int i = 0; i <= v.size(); ++i) {
         for (int s = 0; s <= sum; ++s) {
-            if (0 == s) // always true
-            {
+            if (0 == s) { // always true
                 t[i][s] = true;
             }
             else if (0 == i) { // always false except the s == 0 case above
