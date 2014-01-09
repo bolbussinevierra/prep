@@ -604,7 +604,7 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "LPS Length=" << length << endl;
     cout << "LPS String=" << result << endl;
 #endif
-#if 1
+#if 0
     /* Matrix Multiplication */
     int a[] = {10, 20, 30, 40, 30};
     vector<int> v(a, a+AS(a));
@@ -614,6 +614,9 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "Matrices are: " << m_print << endl;
     cout << "Fewest multiplications=" << count << endl;
     cout << "Parenthesization=" << result << endl;
+#endif
+#if 1
+
 #endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
