@@ -644,7 +644,7 @@ int _tmain(int argc, _TCHAR* argv[])
         SEE Kadane2D() algorithm in the chapter 18 code
      */
 #endif
-#if 1
+#if 0
     /*
      
         DICE THROW PROBLEM - given N dice with M faces and a value x, how many ways are there
