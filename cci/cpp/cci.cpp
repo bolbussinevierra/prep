@@ -636,13 +636,30 @@ int _tmain(int argc, _TCHAR* argv[])
     }
 #endif
 #if 0
-    //
-    // Largest submatrix with the largest sum
-    //
+    /*
+     Largest submatrix with the largest sum
+    */
+
     /*
         SEE Kadane2D() algorithm in the chapter 18 code
      */
 #endif
+#if 1
+    /*
+     
+        DICE THROW PROBLEM - given N dice with M faces and a value x, how many ways are there
+        to throw a sum of x
+
+    */
+    int sum_to = 8;
+    int dice_count = 3;
+    int face_count = 6;
+    cout << "Given dice_count=" << dice_count << endl;
+    cout << "    & face_count=" << face_count << endl;
+    cout << "  ways to sum to=" << sum_to << endl; 
+    cout << "              is=" << WaysToSumDiceTo(sum_to, dice_count, face_count) << endl;
+
+#endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */

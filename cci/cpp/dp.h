@@ -875,3 +875,34 @@ bool SubsetWithSum(vector<int> const& v, int sum, vector<int>& result) {
     }
     return t[v.size()][sum];
 }
+
+/*
+ 
+ DICE THROW PROBLEM - given N dice with M faces, ways to sum to a value x
+
+*/
+int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
+    
+    // sum_to is far too large to be summed even if all dice are rolled to max
+    // face in one throw
+    if (sum_to >= dice_count*face_count) 
+        return (sum_to == dice_count*face_count ? 1: 0);
+
+    // sum_to is far too small to allow the dice to all be thrown even if they all 
+    // land on their smallest face
+    if (sum_to <= dice_count) 
+        return (sum_to == dice_count ? 1 : 0);
+
+    IntTable2D table(dice_count+1, vector<int>(sum_to+1, 0)); // initialize all values to 0
+
+    // dice=1 case Initialize values we can get to in the single through 
+    for (int s = 1; s <= sum_to && s <= face_count; ++s) 
+        table[1][s] = 1;
+
+    for (int d = 2; d <= dice_count; ++d) 
+        for (int s = 1; s <= sum_to; ++s) 
+            for (int k=1; k <= face_count && k <= s; ++k) 
+                table[d][s] += table[d-1][s-k];
+
+    return table[dice_count][sum_to];
+}
