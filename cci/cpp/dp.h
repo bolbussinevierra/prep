@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <numeric>
 #include <hash_set>
+#include <sstream>
+#include <limits>
 #include "utils.h"
 
 #pragma once
@@ -681,12 +683,14 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
 #define CASE1 1
 #define CASE2 2
 #define CASE3 3
-void GetLPS_DoesntWork(IntTable2D const& back_trace, string const& s, string& lps) {
-    //lps.resize(t[0][s.size() - 1]); // get the length of the lps from the result table
+void GetLPS(IntTable2D const& back_trace, string const& s, string& lps) {
+    int current = lps.size()-1;
+    // get the last half of the palindrome (including the middle character if palindrome
+    // is off odd size) from the backtrace table
     int i = 0, j = s.size() - 1;
     while (i <=j ) { 
         if (CASE1 == back_trace[i][j]) {
-            lps.push_back(s[i]);
+            lps[current--] = s[i];
             i++;
             j--;
         }
@@ -700,6 +704,17 @@ void GetLPS_DoesntWork(IntTable2D const& back_trace, string const& s, string& lp
             assert(false);
         }
     }
+
+    // fill in the first half. Since we filled in from the back, current 
+    // is not pointing to the left most empty slot (looking at the string from left to right).
+    // we can use this to know where to stop as we mirror the second half to create the first half
+    // of the palindrom
+    int leftmost_blank_slot = current;
+    int mirroring_reader = lps.size() - 1;
+    int writer = 0;
+    while (writer <= leftmost_blank_slot) { // writing up until where "current" stopped
+        lps[writer++] = lps[mirroring_reader--];
+    }
 }
 int LongestPalindromeSubsequence(string const& s, string &lps) {
     if (s.empty()) return 0;
@@ -709,6 +724,9 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
     }
 
     IntTable2D t(s.size(), vector<int>(s.size()));
+
+    // can use t above to reproduce this if memory is tight by essentially reproducing the 
+    // logic used to create it but this is cleaner
     IntTable2D back_pointer(s.size(), vector<int>(s.size()));
 
   
@@ -736,6 +754,52 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
             }
         }
     }
-    GetLPS_DoesntWork(back_pointer, s, lps);
+    lps.resize(t[0][s.size() - 1]);
+    GetLPS(back_pointer, s, lps);
     return t[0][s.size() - 1];        
+}
+/*
+ *
+ * MATRIX CHAIN MULTIPLICATION
+ *
+ */
+int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
+    if (2 >= p.size()) return 0; // need at least two matrices to multiply
+
+    ostringstream stream;
+    for (int i = 1; i < p.size(); ++i) {
+        stream << "[" << p[i-1] << "x" << p[i] << "] ";
+    }
+    m_print.swap(stream.str());
+
+    /* 
+     * t[i,j] = minimum number of scalar multiplications needed to compute the matrix 
+     * A[i]A[i+1] .... A[j-1]A[j]" = A[i...j] where A[i] is p[i-1]x
+     */
+    int num_matrices = p.size() - 1;
+    IntTable2D t(num_matrices+1, vector<int>(num_matrices+1));
+    IntTable2D solution(num_matrices+1, vector<int>(num_matrices+1));
+
+    // do make the dependency graph of the table work, we need to calculate m for all submatrices of length
+    // l before we calculate the submatrics for l+1
+    for (int gap=0; gap < num_matrices; ++gap) {
+        for(int i = 1; i <= num_matrices-gap; i++) {
+            int j = i+gap;
+            if (i == j) {// no cost to "multiply" one matrix (no multiplication to do)
+                t[i][j] = 0;
+            }
+            else {
+                t[i][j] = numeric_limits<int>::max();
+                for (int k=i; k <= j-1; ++k) {
+                    int count = t[i][k] + t[k+1][j] + p[i-1]*p[k]*p[j];
+                    if (count < t[i][j]) {
+                        t[i][j] = count;
+                        solution[i][j]=k;
+                    }
+                }
+            }
+        }
+    }
+    BuildSolution(p, solution, 0, num_matrices, result);
+    return t[1][num_matrices];
 }

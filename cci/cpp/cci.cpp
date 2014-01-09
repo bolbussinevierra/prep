@@ -595,13 +595,25 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     
 #endif
-#if 1
+#if 0
     /* Longest Palindrome Subsequence */
-    string s("BBABCBCAB");
+    string s("CBABBABD");
     string result;
     int length = LongestPalindromeSubsequence(s, result);
+    cout << "String=" << s << endl;
     cout << "LPS Length=" << length << endl;
     cout << "LPS String=" << result << endl;
+#endif
+#if 1
+    /* Matrix Multiplication */
+    int a[] = {40, 20, 30, 10, 30};
+    vector<int> v(a, a+AS(a));
+    string result;
+    string m_print; // simply to print the matrices
+    int count = MatrixChainOrder(v, m_print, result);
+    cout << "Matrices are: " << m_print << endl;
+    cout << "Fewest multiplications=" << count << endl;
+    cout << "Parenthesization=" << result << endl;
 #endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME

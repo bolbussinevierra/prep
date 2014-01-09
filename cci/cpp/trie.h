@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unordered_map>
-#include <assert.h>;
+#include <assert.h>
 #include <WinError.h>
 #pragma once
 
