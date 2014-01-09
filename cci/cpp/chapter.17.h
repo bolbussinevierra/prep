@@ -239,7 +239,7 @@ int _SumRange(vector<int> const& v, int start, int end) {
 void PrintMaxSumNaive(vector<int> const& v) {
     int bestStart = -1;
     int bestEnd = -1;
-    int bestSum = INT_MIN;
+    int bestSum = numeric_limits<int>::min();
 
     for (int i = 0; i < v.size(); ++i) {
         for (int j = i; j >= 0; --j) {
@@ -498,7 +498,7 @@ void SetDict(Trie& dict) {
 struct ParseResult { 
     int invalid; 
     string parsed; 
-    ParseResult():invalid(INT_MAX) {}
+    ParseResult():invalid(numeric_limits<int>::max()) {}
     ParseResult(int invalid, string& parsed):invalid(invalid), parsed(parsed) {}
     static ParseResult& Min(ParseResult& lhs, ParseResult& rhs) {
         return lhs.invalid < rhs.invalid  ? lhs : rhs;

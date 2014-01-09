@@ -70,7 +70,7 @@ void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
     //}
     //cout << endl;
 
-    if  (C == 0 || R[C] == INT_MIN) {
+    if  (C == 0 || R[C] == numeric_limits<int>::min()) {
         cout << "Printing Optimal Knapsack:" << endl;
         return;
     }
@@ -79,7 +79,7 @@ void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
 }
 void KnapsackRepeats(int C, vector<Item> const& items) {
     vector<int> dp(C+1, 0); // DP table;
-    vector<int> R(C+1, INT_MIN); // item picked for each C. So we can generate solution
+    vector<int> R(C+1, numeric_limits<int>::min()); // item picked for each C. So we can generate solution
 
     for (int c = 1; c <= C; ++c) {
         dp[c] = dp[c-1]; // Best value as at least this much if new items not added
@@ -650,13 +650,13 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
     }
     
     // t[i] represents the fewest jumps needed to get to i
-    vector<int> t(v.size(), INT_MAX);
+    vector<int> t(v.size(), numeric_limits<int>::max());
     vector<int> prev(v.size(), -1);
 
     t[0] = 0;
     for (int i = 1; i < v.size(); ++i) {
         for (int j = 0; j < i; ++j) {
-            if (t[j] != INT_MAX) { // j is not already a dead-end
+            if (t[j] != numeric_limits<int>::max()) { // j is not already a dead-end
                 if (i <= j+v[j] && t[i] > t[j] + 1) {
                     t[i] = t[j] + 1;
                     prev[i] = j;
@@ -667,7 +667,7 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
 
     // check if a path exists
     int final = v.size() - 1;
-    if (t[final] == INT_MAX) {
+    if (t[final] == numeric_limits<int>::max()) {
         return E_FAIL;
     }
 

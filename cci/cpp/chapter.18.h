@@ -141,7 +141,7 @@ int CountTwosBruteForce(int n) {
 // 18.5
 //
 int MinDist(string const& a, string const& b, vector<string> const& words) {
-    int min = INT_MAX;
+    int min = numeric_limits<int>::max();
     int w1_pos = -1;
     int w2_pos = -1;
     for (int i = 0; i < words.size(); ++i) {
@@ -668,7 +668,7 @@ void Clear(vector<int>& k) {
 }
 
 int Kadane(vector<int> const& k, int &first, int& last) {
-    int max_sum = INT_MIN;
+    int max_sum = numeric_limits<int>::min();
     int sum = 0;
     int local_start = 0;
     last = -1; // will be useful in flagging all negative case
@@ -710,7 +710,7 @@ int Kadane(vector<int> const& k, int &first, int& last) {
 int Kadane2D(matrix const& m, Rect& result) {
     assert(!m.empty() && !m[0].empty());
 
-    int max_sum = INT_MIN;
+    int max_sum = numeric_limits<int>::min();
     int const c_rows = m.size();
     int const c_cols = m[0].size();
     vector<int> k(c_rows);
