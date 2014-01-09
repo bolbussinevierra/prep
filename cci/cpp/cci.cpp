@@ -606,7 +606,7 @@ int _tmain(int argc, _TCHAR* argv[])
 #endif
 #if 1
     /* Matrix Multiplication */
-    int a[] = {40, 20, 30, 10, 30};
+    int a[] = {10, 20, 30, 40, 30};
     vector<int> v(a, a+AS(a));
     string result;
     string m_print; // simply to print the matrices

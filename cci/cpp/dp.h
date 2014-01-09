@@ -763,12 +763,37 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
  * MATRIX CHAIN MULTIPLICATION
  *
  */
+string GetMatrix(vector<int> const& p, int i) {
+    ostringstream stream;
+    stream << "[" << p[i-1] << "x" << p[i] << "]";
+    return stream.str();
+}
+
+void BuildSolution(vector<int> const& p, IntTable2D const& s, int i, int j, string& result) {
+    if (i == j ) {
+        result.assign(GetMatrix(p, i));
+        return;
+    }
+
+    string left, right;
+    BuildSolution(p, s, i, s[i][j], left);
+    BuildSolution(p, s, s[i][j]+1, j, right);
+    
+    result.assign(left + " x " + right);
+    
+    // wrap all but the outermost level in parenthesis
+    if (! (i == 1 && j == p.size() - 1)) {
+        result.assign("(" + result + ")");
+    }
+    return;
+}
+
 int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
     if (2 >= p.size()) return 0; // need at least two matrices to multiply
 
     ostringstream stream;
     for (int i = 1; i < p.size(); ++i) {
-        stream << "[" << p[i-1] << "x" << p[i] << "] ";
+        stream << GetMatrix(p, i) << " ";
     }
     m_print.swap(stream.str());
 
@@ -800,6 +825,6 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
             }
         }
     }
-    BuildSolution(p, solution, 0, num_matrices, result);
+    BuildSolution(p, solution, 1, num_matrices, result);
     return t[1][num_matrices];
 }
