@@ -634,7 +634,15 @@ int _tmain(int argc, _TCHAR* argv[])
     } else {
         cout << "There is no subset with sum=" << sum << endl;
     }
-#endif 
+#endif
+#if 0
+    //
+    // Largest submatrix with the largest sum
+    //
+    /*
+        SEE Kadane2D() algorithm in the chapter 18 code
+     */
+#endif
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */
