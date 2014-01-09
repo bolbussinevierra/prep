@@ -683,7 +683,7 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
 #define CASE1 1
 #define CASE2 2
 #define CASE3 3
-void GetLPS(IntTable2D const& back_trace, string const& s, string& lps) {
+void _GetLPS(IntTable2D const& back_trace, string const& s, string& lps) {
     int current = lps.size()-1;
     // get the last half of the palindrome (including the middle character if palindrome
     // is off odd size) from the backtrace table
@@ -755,7 +755,7 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
         }
     }
     lps.resize(t[0][s.size() - 1]);
-    GetLPS(back_pointer, s, lps);
+    _GetLPS(back_pointer, s, lps);
     return t[0][s.size() - 1];        
 }
 /*
