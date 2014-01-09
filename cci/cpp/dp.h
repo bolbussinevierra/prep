@@ -65,11 +65,6 @@ Solves Knapsack problem with a dynamic problem allowing for duplicate
 items
 */
 void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
-    //for (int i = 0; i < R.size(); ++i) {
-    //    cout << R[i] << " ";
-    //}
-    //cout << endl;
-
     if  (C == 0 || R[C] == numeric_limits<int>::min()) {
         cout << "Printing Optimal Knapsack:" << endl;
         return;
