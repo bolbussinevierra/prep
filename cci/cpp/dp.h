@@ -906,3 +906,31 @@ int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
 
     return table[dice_count][sum_to];
 }
+/*
+    ROD CUTTING 
+*/
+int CutRod(vector<int> const& p, vector<int>& cuts) {
+    if (p.empty()) return -1;
+    
+    int n = p.size();
+    vector<int> table(n+1, INT_MIN);
+    vector<int> s(n+1, INT_MAX); // s[i] = j means best first cut to make for length i is at j
+    
+    table[0] = 0;
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= i; ++j) {
+            int rem = i-j; // remainder
+            if (table[i] < p[j-1] + table[rem]) { // p is zero indexed
+                table[i] = p[j-1] + table[rem];
+                s[i] = j;
+            }
+        }
+    }
+    int len = n;
+    while (len > 0) {
+        cuts.push_back(s[len]);
+        len -= s[len];
+    }
+    return table[n];
+}
+

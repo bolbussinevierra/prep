@@ -659,6 +659,23 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "  ways to sum to=" << sum_to << endl; 
     cout << "              is=" << WaysToSumDiceTo(sum_to, dice_count, face_count) << endl;
 
+#endif
+#if 0
+    /*
+     *
+     * ROD CUTTING - Best way to cut a rod to maximize cost
+     *
+     */
+    int arr[] = {1, 5, 8, 9, 10, 17, 17, 20};
+    vector<int> p(arr, arr+AS(arr));
+    vector<int> cuts;
+    int best_price = CutRod(p, cuts);
+    cout << "Best Price=" << best_price << endl;
+    cout << "make cuts at:" ;
+    for (int i : cuts) {
+        cout << i << " ";
+    }
+    
 #endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
