@@ -27,3 +27,21 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
 }
 typedef vector<vector<int>> IntTable2D;
 typedef vector<vector<bool>> BoolTable2D;
+
+template <typename t>
+void Print(char* tag, vector<t> const& items) {
+    cout << tag << ": ";
+    for (t const& i : items) {
+        cout << i << " ";
+    }
+    cout << endl;
+}
+
+template <typename t>
+void Print(char* tag, vector<int> const& indexes, vector<t> const& indexed) {
+    cout << tag << ": ";
+    for (int i : indexes) {
+        cout << indexed[i] << " ";
+    }
+    cout << endl;
+}

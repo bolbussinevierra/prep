@@ -675,8 +675,22 @@ int _tmain(int argc, _TCHAR* argv[])
     for (int i : cuts) {
         cout << i << " ";
     }
-    
-#endif 
+#endif
+#if 1
+    /*
+     * BEST STRATEGY FOR A GAME
+     *
+     */
+    int arr[] = {8, 15, 3, 7};
+    vector<int> coins(arr, arr+AS(arr));
+    vector<int> moves_user;
+    vector<int> moves_opponent;
+    int score = BestStrategyForGame(coins, moves_user, moves_opponent);
+    cout << "winning score=" << score << endl;
+    Print("user1 moves", moves_user, coins);
+    Print("user2 moves", moves_opponent, coins);
+
+#endif
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */

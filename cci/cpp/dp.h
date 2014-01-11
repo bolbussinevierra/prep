@@ -934,3 +934,82 @@ int CutRod(vector<int> const& p, vector<int>& cuts) {
     return table[n];
 }
 
+/*
+ *
+ * BEST STRATEGY FOR THE GAME
+ *
+ */
+#define LEFT  1
+#define RIGHT 2
+struct gm { int coin; int coin_opponent; }; // gm = game_move
+static gm const gm_default = {-1, -1};
+
+gm SaveMove(int score, int left_coin, 
+             int right_coin, int a, int b, int c) {
+    gm s = gm_default;
+    if (score == left_coin + min(a, b)) {
+        s.coin = LEFT;
+        if (0 != a && a == min(a, b)) {
+            s.coin_opponent = LEFT;
+        }
+        else if (0 != b && b == min(a, b)) {
+            s.coin_opponent = RIGHT;
+        }
+    } 
+    else if (score == right_coin + min(b, c)) {
+        s.coin = RIGHT;
+        if (0 != b && b == min(b, c)) {
+            s.coin_opponent = LEFT;
+        }
+        else if (0 != c && c == min(b, c)) {
+            s.coin_opponent = RIGHT;
+        }
+    }
+    return s;
+}
+void RecordMoveAndAdvance(int move, int& i, int& j, vector<int>& moves) {
+    switch(move) {
+        case LEFT:
+            moves.push_back(i);
+            i++;
+        case RIGHT:
+            moves.push_back(j);
+            j--;
+    }
+}
+
+void GetMoves(vector<vector<gm>> const& s, int coins, vector<int>& moves_user, vector<int>& moves_opponent) {
+    int i = 0, j = coins - 1;
+    while(i <= j) {
+        gm move = s[i][j];
+        RecordMoveAndAdvance(move.coin, i, j, moves_user);
+        RecordMoveAndAdvance(move.coin_opponent, i, j, moves_opponent);
+    }
+}
+
+int BestStrategyForGame(vector<int> const& coins, vector<int>& moves_user, 
+                      vector<int>& moves_opponent) {
+    int n = coins.size();
+    if (n % 2 != 0) return -1; // coins must be an even number (could alsdo do n & (n-1) != 0)
+
+    IntTable2D table(n, vector<int>(n, 0));
+    vector<vector<gm>> s(n, vector<gm>(n, gm_default));
+
+    for (int gap = 0; gap < n; ++gap) {
+        for (int i=0; i < n-gap; ++i) {
+            int j = i+gap;
+            int a = (i+2 <= j) ? table[i+2][j] : 0;
+            int b = (i+1 <= j-1) ? table[i+1][j-1] : 0;
+            int c = (i <= j-2) ? table[i][j-2] : 0;
+
+            table[i][j] = max(coins[i] + min(a, b),
+                             coins[j] + min(b, c));
+
+            // save data to recreate the game later
+            s[i][j] = SaveMove(table[i][j], coins[i], coins[j], a, b, c);
+        }
+    }
+
+    GetMoves(s, n, moves_user,  moves_opponent);
+    return table[0][n-1];
+}
