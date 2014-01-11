@@ -1009,7 +1009,9 @@ int BestStrategyForGame(vector<int> const& coins, vector<int>& moves_user,
             s[i][j] = SaveMove(table[i][j], coins[i], coins[j], a, b, c);
         }
     }
-
+    // the only move made by moves_user that is not paired with a following move from
+    // the opponent is the last move made by user. pop it off the moves_user as we already
+    // have a redundant copy in s. 
     GetMoves(s, n, moves_user,  moves_opponent);
     return table[0][n-1];
 }
