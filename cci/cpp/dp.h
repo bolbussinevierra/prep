@@ -939,62 +939,36 @@ int CutRod(vector<int> const& p, vector<int>& cuts) {
  * BEST STRATEGY FOR THE GAME
  *
  */
-#define LEFT  1
-#define RIGHT 2
-struct gm { int coin; int coin_opponent; }; // gm = game_move
-static gm const gm_default = {-1, -1};
 
-gm SaveMove(int score, int left_coin, 
-             int right_coin, int a, int b, int c) {
-    gm s = gm_default;
-    if (score == left_coin + min(a, b)) {
-        s.coin = LEFT;
-        if (0 != a && a == min(a, b)) {
-            s.coin_opponent = LEFT;
-        }
-        else if (0 != b && b == min(a, b)) {
-            s.coin_opponent = RIGHT;
-        }
-    } 
-    else if (score == right_coin + min(b, c)) {
-        s.coin = RIGHT;
-        if (0 != b && b == min(b, c)) {
-            s.coin_opponent = LEFT;
-        }
-        else if (0 != c && c == min(b, c)) {
-            s.coin_opponent = RIGHT;
-        }
-    }
-    return s;
-}
-void RecordMoveAndAdvance(int move, int& i, int& j, vector<int>& moves) {
-    switch(move) {
-        case LEFT:
-            moves.push_back(i);
+
+void GetMoves(IntTable2D const& t, vector<int> const& coins, vector<int>& moves_player_one, vector<int>& moves_player_two) {  
+    int i = 0, j = coins.size() - 1;
+    bool player_ones_turn = true;
+    while (i <= j) {
+        int picked_left = (i+1 <= j) ? t[i+1][j] : 0; // If current player takes coins[i], opponent gets this scenario ...
+        int picked_right = (i <= j-1) ? t[i][j-1] : 0; // If current player takes coin[j], opponent gets this scenario
+        vector<int>& mover = player_ones_turn ? moves_player_one : moves_player_two;
+
+        // current player will pick the value the leaves player_two with least favorable option for his
+        // upcoming move (i.e the smallest coin)
+        if (picked_left <= picked_right) { // opponent is left worse off if I take coin i
+            mover.push_back(coins[i]);
             i++;
-        case RIGHT:
-            moves.push_back(j);
+        } else { // opponent is left worse of if I take coin j
+            mover.push_back(coins[j]);
             j--;
+        }
+        player_ones_turn = !player_ones_turn;
     }
 }
 
-void GetMoves(vector<vector<gm>> const& s, int coins, vector<int>& moves_user, vector<int>& moves_opponent) {
-    int i = 0, j = coins - 1;
-    while(i <= j) {
-        gm move = s[i][j];
-        RecordMoveAndAdvance(move.coin, i, j, moves_user);
-        RecordMoveAndAdvance(move.coin_opponent, i, j, moves_opponent);
-    }
-}
-
-int BestStrategyForGame(vector<int> const& coins, vector<int>& moves_user, 
-                      vector<int>& moves_opponent) {
+int BestStrategyForGame(vector<int> const& coins, vector<int>& moves_player_one, 
+                      vector<int>& moves_player_two) {
     int n = coins.size();
     if (n % 2 != 0) return -1; // coins must be an even number (could alsdo do n & (n-1) != 0)
 
     IntTable2D table(n, vector<int>(n, 0));
-    vector<vector<gm>> s(n, vector<gm>(n, gm_default));
-
+ 
     for (int gap = 0; gap < n; ++gap) {
         for (int i=0; i < n-gap; ++i) {
             int j = i+gap;
@@ -1004,14 +978,8 @@ int BestStrategyForGame(vector<int> const& coins, vector<int>& moves_user,
 
             table[i][j] = max(coins[i] + min(a, b),
                              coins[j] + min(b, c));
-
-            // save data to recreate the game later
-            s[i][j] = SaveMove(table[i][j], coins[i], coins[j], a, b, c);
         }
     }
-    // the only move made by moves_user that is not paired with a following move from
-    // the opponent is the last move made by user. pop it off the moves_user as we already
-    // have a redundant copy in s. 
-    GetMoves(s, n, moves_user,  moves_opponent);
+    GetMoves(table, coins, moves_player_one,  moves_player_two);
     return table[0][n-1];
 }

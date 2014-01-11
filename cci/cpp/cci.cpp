@@ -676,19 +676,19 @@ int _tmain(int argc, _TCHAR* argv[])
         cout << i << " ";
     }
 #endif
-#if 1
+#if 0
     /*
      * BEST STRATEGY FOR A GAME
      *
      */
     int arr[] = {8, 15, 3, 7};
     vector<int> coins(arr, arr+AS(arr));
-    vector<int> moves_user;
-    vector<int> moves_opponent;
-    int score = BestStrategyForGame(coins, moves_user, moves_opponent);
+    vector<int> moves_player_one;
+    vector<int> moves_player_two;
+    int score = BestStrategyForGame(coins, moves_player_one, moves_player_two);
     cout << "winning score=" << score << endl;
-    Print("user1 moves", moves_user, coins);
-    Print("user2 moves", moves_opponent, coins);
+    Print("player_one moves", moves_player_one);
+    Print("player_two moves", moves_player_two);
 
 #endif
     /*
