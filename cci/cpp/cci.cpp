@@ -690,7 +690,30 @@ int _tmain(int argc, _TCHAR* argv[])
     cout << "winning score=" << score << endl;
     Print("player_one moves", moves_player_one);
     Print("player_two moves", moves_player_two);
-
+#endif
+#if 1
+    //
+    // OTHER RANDOM QUESTIONS
+    // 
+    //
+    /*
+    6) design transliteration API.
+    First given an english string, convert it to a corresponding foreign
+    language letter.
+    a -> t1
+    b -> t2
+    Extend the solution to support multi-char matching
+    a -> t1
+    aa -> t2
+    ab -> t3
+    b -> t4
+    abc -> t5
+    if the given string abcaaaabbaabc result should be
+    t5 t2 t2 t4 t4 t2 t4 c
+    */
+    string out;
+    Transliterate("abcaaaabbaabc", out); // worked first time! Gangsta.
+    cout << out; 
 #endif
     /*
      * RANDOM EXPERIMENTS IN AWESOME
