@@ -2,8 +2,8 @@
 #include <unordered_map>
 using namespace std;
 
+// ---------------------------------------------------------------------
 typedef unordered_map<string, string> TranslationTable;
-
 void GetTranslationTable(TranslationTable& dict) {
     dict["a"] = "t1";
     dict["aa"] = "t2";
@@ -66,4 +66,60 @@ HRESULT Transliterate(string const& in, string& out) {
         }
     }
     return S_OK;
+}
+// -----------------------------------------------------------------------------------
+// FINDING A WORD IN A MATRIX. PATH CAN MOVE ANY DIRECTION BUT CANNOT REUSE AN ELEMENT
+// (LETTER COORDINATE M(i,j)) in the path
+
+// We use dfs
+int dr[] = {1, 1,1,-1,-1,-1, 0, 0 }; // 3 in row above, 3 row below, 2  same row;
+int dc[] = {-1,0,1,-1, 0, 1, -1, 1}; 
+static_assert(AS(dr) == AS(dc), "dr and dc should always be same size");
+int const k_count_adjacent = AS(dr);
+
+bool WithinBounds(int x, int size) { return x >=0 && x < size; }
+
+void dfs_find(int char_at, string const& w, int row, int col, 
+             CharTable2D const& table, BoolTable2D& visited, vector<Point>& path) {
+    if (!WithinBounds(row, table.size()) || !WithinBounds(col, table[0].size()))
+        return;
+  
+    if (visited[row][col])   // do not re-use a grid in the same path
+        return;
+    else 
+        visited[row][col]=true;
+
+    // else keep going in dfs manner if we are not at the end of the word
+    if (table[row][col] == w[char_at]) {
+        path[char_at] = make_pair(row, col);
+
+        if (char_at == w.size() - 1) {
+            for_each(path.begin(), path.end(), Print);
+            cout << endl;
+        }
+        else {
+            for (int adj = 0; adj < k_count_adjacent; ++adj) 
+                dfs_find(char_at+1, w, row+dr[adj], col+dc[adj], table, visited, path); 
+        }
+    }
+}
+
+void PrintLetterPaths(string const& w, CharTable2D const& table) {
+    if (w.empty()) return;
+ 
+    int rows = table.size();
+    int cols = table[0].size();
+
+    string lower_w(w.size(), 0);
+    std::transform(w.begin(), w.end(), lower_w.begin(), ::tolower);
+
+    for(int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (table[i][j] == *lower_w.begin()) {
+                vector<Point> path(lower_w.size());
+                BoolTable2D visited(rows, vector<bool>(cols, false));
+                dfs_find(0, lower_w, i, j, table, visited, path);
+            }
+        }
+    }
 }

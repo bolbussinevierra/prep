@@ -27,6 +27,13 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
 }
 typedef vector<vector<int>> IntTable2D;
 typedef vector<vector<bool>> BoolTable2D;
+typedef vector<vector<char>> CharTable2D;
+typedef pair<int, int> Point;
+
+void Print(Point const& p) {
+    cout << "[" << p.first << "," << p.second << "]" << endl;
+}
+
 
 template <typename t>
 void Print(char* tag, vector<t> const& items) {

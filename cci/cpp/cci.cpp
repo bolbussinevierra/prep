@@ -691,7 +691,7 @@ int _tmain(int argc, _TCHAR* argv[])
     Print("player_one moves", moves_player_one);
     Print("player_two moves", moves_player_two);
 #endif
-#if 1
+#if 0
     //
     // OTHER RANDOM QUESTIONS
     // 
@@ -715,6 +715,24 @@ int _tmain(int argc, _TCHAR* argv[])
     Transliterate("abcaaaabbaabc", out); // worked first time! Gangsta.
     cout << out; 
 #endif
+#if 1
+#define ROWS 6
+#define COLS 6
+    char word_table[ROWS][COLS] = { 
+        'a','e','c', 'q', 't', 'q', 
+        'i','a','a','a','h','b',
+        't','i','t','c','n','i',
+        'i','a','s','t','i','i',
+        'h','i','c','a','h','n',
+        'o','r','q','i','n','i'};
+
+    CharTable2D v(ROWS, vector<char>(COLS, 0));
+    for(int r = 0; r < ROWS; ++r)
+        for (int c = 0; c < COLS; ++c) 
+            v[r][c] = word_table[r][c];
+
+    PrintLetterPaths("CAT", v);
+#endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */
