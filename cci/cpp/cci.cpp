@@ -741,6 +741,16 @@ int _tmain(int argc, _TCHAR* argv[])
     */
     ContainsWordDP("AHA", v);
 #endif 
+#if 1
+    /* 
+        Given a list of integers, find a number that does not have a pair
+        1 2 1 3 5 -3 -2 6 2 -3 5 -2
+        Here 3 does not have the pair (6 does not have one either)
+    */
+    int a[] = {1, 2, 1, 3, 5, -3, -2, 6, 2, -3, 5, -2};
+    vector<int> v(a, a+AS(a));
+    PrintNumberMissingPair(v);
+#endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */

@@ -198,3 +198,21 @@ void ContainsWordDP(string const& w, CharTable2D const& table) {
         }
     }
 }
+
+/* 
+    Given a list of integers, find a number that does not have a pair
+    1 2 1 3 5 -3 -2 6 2 -3 5 -2
+    Here 3 does not have the pair (6 does not have one either)
+*/
+
+void PrintNumberMissingPair(vector<int> const& v) {
+    unordered_set<int> set;
+    for (int a : v) {
+        // Toggle Insert and Remove. Whatever is less was missing a pair
+        if (set.find(a) != set.end())
+            set.erase(a);
+        else 
+            set.insert(a);
+    }
+    cout << *set.begin() << " is missing a pair" << endl;
+}
