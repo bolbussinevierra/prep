@@ -189,7 +189,7 @@ int _tmain(int argc, _TCHAR* argv[])
     GroupAnagrams(v);
     PrintVector(v, "anagrams");
 #endif
-#if 1
+#if 0
     //
     // 11.3
     //
