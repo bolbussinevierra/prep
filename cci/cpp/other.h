@@ -216,3 +216,73 @@ void PrintNumberMissingPair(vector<int> const& v) {
     }
     cout << *set.begin() << " is missing a pair" << endl;
 }
+
+ /*
+    Given a M * N array, find one path from a cell to another cell. Rules
+    1) Only up and right traversal is allowed
+    2) Some cells could be marked as “Walls”. There’s no path through
+    through those cells
+
+    SAME AS CCI 9.2
+
+    */
+Point Up(Point const& p) { return make_pair(p.first - 1, p.second); }
+Point Right(Point const& p) { return make_pair(p.first, p.second + 1); }
+int Row(Point const& p) { return p.first; }
+int Col(Point const& p) { return p.second; }
+
+bool IsWall(Point const& p) { 
+    Point walls[] = {
+        make_pair(0,4),
+    };
+    for(Point w : walls) 
+        if (w == p) 
+            return true;
+
+    return false;
+}
+
+// specialize hash for Point
+namespace std {
+    template<>
+    class hash<Point> {
+    public:
+        size_t operator()(Point const& p) const {
+            size_t h = hash<int>()(p.first ^ hash<int>()(p.second));
+            //cout << "hash(Point(" << p.first << "," << p.second << ")) is " << h 
+            //    << endl;
+            return h;
+        }
+    };
+};
+
+typedef unordered_map<Point, bool> PathCache;
+
+
+bool FindPath(Point const& s, Point const& e, list<Point>& path, PathCache& c) {
+    bool success = false;
+    if (c.find(s) != c.end()) {
+        success = c[s];
+    } 
+    else if (s == e) {
+        success = true;
+    }
+    else {
+        if (Row(s) > Row(e) && !IsWall(Up(s))) 
+            success = FindPath(Up(s), e, path, c);
+
+        if (!success && Col(s) < Col(e) && !IsWall(Right(s))) 
+            success = FindPath(Right(s), e, path, c);
+    }
+
+    if (success) 
+        path.push_front(s); // instead of push_back because we will be pushing in reverse order
+
+    c[s] = success;
+    return success;
+}
+
+bool FindPath(Point const& s, Point const& e, list<Point>& path) {
+    PathCache c;
+    return FindPath(s, e, path, c);
+}

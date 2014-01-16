@@ -741,7 +741,7 @@ int _tmain(int argc, _TCHAR* argv[])
     */
     ContainsWordDP("AHA", v);
 #endif 
-#if 1
+#if 0
     /* 
         Given a list of integers, find a number that does not have a pair
         1 2 1 3 5 -3 -2 6 2 -3 5 -2
@@ -750,6 +750,24 @@ int _tmain(int argc, _TCHAR* argv[])
     int a[] = {1, 2, 1, 3, 5, -3, -2, 6, 2, -3, 5, -2};
     vector<int> v(a, a+AS(a));
     PrintNumberMissingPair(v);
+#endif
+#if 0
+    /*
+    Given a M * N array, find one path from a cell to another cell. Rules
+    1) Only up and right traversal is allowed
+    2) Some cells could be marked as “Walls”. There’s no path through
+    through those cells
+
+    SAME AS CCI 9.2
+
+    */
+    list<Point> path;
+    bool success = FindPath(make_pair(5,0), make_pair(0,5), path);
+    if (success) 
+        for_each(path.begin(), path.end(), Print);
+    else 
+        cout << "No Path Possible!" << endl;
+
 #endif 
     /*
      * RANDOM EXPERIMENTS IN AWESOME

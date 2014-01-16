@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <unordered_set>
 
 using namespace std;
 
@@ -62,6 +63,9 @@ bool CanMoveTo(int x, int y) {
 }
 
 
+//
+// SEE OTHER.H VERSION FOR A BETTER VERSION OF THIS!!!
+//
 bool FindPathTo(int ex, int ey, vector<POINT>& path, map<POINT, bool>& cache) {
     POINT p = {ex, ey};
     bool success = false;
