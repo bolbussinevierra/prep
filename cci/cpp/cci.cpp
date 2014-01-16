@@ -189,13 +189,13 @@ int _tmain(int argc, _TCHAR* argv[])
     GroupAnagrams(v);
     PrintVector(v, "anagrams");
 #endif
-#if 0
+#if 1
     //
     // 11.3
     //
-    int a113[] = {0,1,2,3,4,5,6,7,8,12,16};
+    int a113[] = {2,2,2,2,3,4,2};
     rotate(a113, AS(a113), 0);
-    int l = 12;
+    int l = 4;
     printf("found %d at index = %d\n", l, search(a113, l, 0, AS(a113)-1));
 #endif
 #if 0

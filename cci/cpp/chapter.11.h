@@ -178,25 +178,26 @@ void MergeSorted(int a[], int countA, int b[], int countB) {
 // 11.3
 //
 int search(int a[], int lookup, int left, int right) {
+    if (left > right) return -1;
+
     int mid = (left + right)/2;
     if (a[mid] == lookup) return mid;
 
     // check if left is properly ordered. if yes and lookup is on left, search
     // left else go right
     if (a[left] < a[mid]) {
-        if (lookup >= a[left] && lookup <= a[mid]) {
+        //if (lookup >= a[left] && lookup <= a[mid]) {
+        if (lookup < a[mid]) 
             return search(a, lookup, left, mid-1);
-        }else {
+        else 
             return search(a, lookup, mid+1, right);
-        }
     }
     else if(a[mid] < a[left]) { // right hand side is proper
-        if (lookup >= a[mid] && lookup <= a[right]) {
+        //if (lookup >= a[mid] && lookup <= a[right]) {
+        if (lookup > a[mid]) 
             return search(a, lookup, mid+1, right);
-        }
-        else {
+        else 
             return search(a, lookup, left, mid-1);
-        }
     }
     else if (a[mid] == a[left]) {
         if (a[mid] != a[right]) {
