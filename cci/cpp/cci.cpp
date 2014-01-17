@@ -18,6 +18,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+    srand(time(0));
 #if 0
     //1.1
 	bool result = is_unique_chars(""); 
@@ -768,7 +769,25 @@ int _tmain(int argc, _TCHAR* argv[])
     else 
         cout << "No Path Possible!" << endl;
 
-#endif 
+#endif
+#if 0
+    /*
+    How would you clone a doubly linked list which has Next and Random
+    pointer. Next points to the next node whereas the Random node points to
+    any random node
+    */
+    int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    vector<int> v(a, a+AS(a));
+    shared_ptr<Link> original = MakeLinkList(v);
+    shared_ptr<Link> copy1 = CopyList_O_N_Space_O_N_Speed(original.get());
+    shared_ptr<Link> copy2 = CopyList_O_1_Space_O_N_Speed(copy1.get());
+    PrintList(original.get());
+    PrintList(copy1.get());
+    PrintList(copy2.get());
+#endif
+
+
+// -----------------------------------------------------------------------------------
     /*
      * RANDOM EXPERIMENTS IN AWESOME
      */

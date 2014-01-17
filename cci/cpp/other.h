@@ -286,3 +286,114 @@ bool FindPath(Point const& s, Point const& e, list<Point>& path) {
     PathCache c;
     return FindPath(s, e, path, c);
 }
+
+/*
+How would you clone a doubly linked list which has Next and Random
+pointer. Next points to the next node whereas the Random node points to
+any random node
+*/
+struct Link {
+    int data;
+    shared_ptr<Link> next;
+    weak_ptr<Link> random;
+};
+
+shared_ptr<Link> CopyList_O_1_Space_O_N_Speed(Link* original) {
+    if (!original) return nullptr;
+    // 1st Pass:
+    // make new nodes and interleave them between the nodes of the original list
+    // by changing the next pointers ie:
+    //      [1]->[copy of 1]->[2]->[copy of 2]->[3]->[copy of 3] ....
+    // during this pass, we will also set the data of new nodes to match the old node
+    // being copied.
+    Link* node = original;
+    while (node) {
+        shared_ptr<Link> new_node = make_shared<Link>();
+        new_node->data = node->data;
+        new_node->next = node->next;
+        node->next = new_node;
+        node = node->next->next.get(); // skipping the "copy of" node just inserted
+    }
+
+    // 2nd Pass:
+    // now go through and set the random ptr of the new nodes correctly.
+    // i refers to a node on the original list and j the matching node on the new
+    // list
+    shared_ptr<Link> new_head = original->next; // i.e "copy of 1" is head of new list
+    for (Link *i = original; i; i=i->next->next.get()) {
+        Link *j = i->next.get(); // new nodes interleave original nodes
+        j->random = i->random.lock()->next;
+    }
+
+    // 3rd Pass:
+    // Restore the original list
+    Link* new_node = new_head.get();
+    node = original;
+    while (node) {
+        node->next = new_node->next;
+        
+        if (node->next)
+            new_node->next = node->next->next;
+
+        node = node->next.get();
+        new_node = new_node->next.get();
+    }
+
+    return new_head;
+}
+
+shared_ptr<Link> CopyList_O_N_Space_O_N_Speed(Link* head) {
+    if (!head) return nullptr;
+    // create new nodes and make them all the old nodes to a hash map
+    unordered_map<Link*, shared_ptr<Link>> node_map;
+    for (Link * current = head; current; current = current->next.get()) {
+        shared_ptr<Link> node = make_shared<Link>();
+        node->data = current->data;
+        node_map[current] = node;
+    }
+
+    // next pass, copy over the next and random pointer
+    for (Link* current = head; current; current = current->next.get()) {
+        shared_ptr<Link> node = node_map[current];
+        node->next = node_map[current->next.get()];
+        node->random = node_map[current->random.lock().get()];
+    }
+    return node_map[head]; // head of the new list
+}
+
+void PrintList(Link* head) {
+    for (Link * current = head; current; current = current->next.get()) {
+        cout << current->data << "[n:";
+        if (current->next) 
+            cout << current->next->data;
+        else 
+            cout << "_";
+        cout << " r:";
+        if (current->random.lock()) 
+            cout << current->random.lock()->data;
+        else 
+            cout << "_";
+
+        cout << "] ";
+    }
+    cout << endl;
+}
+
+shared_ptr<Link> MakeLinkList(vector<int> const& v) {
+    vector<shared_ptr<Link>> nodes;
+    for (int a : v) {
+        shared_ptr<Link> node = make_shared<Link>();
+        node->data = a;
+        nodes.push_back(node);
+    }
+    // create next and random links
+    for (int i = 0; i < nodes.size(); ++i) {
+        if (i+1 < nodes.size()) 
+            nodes[i]->next = nodes[i+1];
+
+        int r = rand() % nodes.size();
+        nodes[i]->random = nodes[r];
+    }
+
+    return nodes[0];
+};
