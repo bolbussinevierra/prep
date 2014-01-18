@@ -397,3 +397,87 @@ shared_ptr<Link> MakeLinkList(vector<int> const& v) {
 
     return nodes[0];
 };
+
+/*
+    Given a Matix (two dim array) where each element[i][j] is greater
+    than or equal to element[i-1][j-1] how would you efficiently count the
+    number of negatives.
+ */
+Point _binary_find(Point l, Point r, IntTable2D const& m) {
+    while (l.second < r.second) { // cols increase l to r
+        // Point mid = make_pair((l.first + r.first)/2, (l.second + r.second)/2);
+        // Note! rows decrease upwards, and columns increase going right
+        Point mid = make_pair((l.first - (l.first-r.first)/2), 
+                            (l.second + (r.second - l.second)/2));
+
+        if (-1 == m[mid.first][mid.second]) {
+            while (-1 == m[mid.first][mid.second]) // in case there are duplicate -1's
+                mid.first--, mid.second++;
+
+            // mid has gone past the right most -1, back it up one
+            return make_pair(mid.first+1, mid.second-1);
+        }
+        else if (-1 < m[mid.first][mid.second]) {
+            r = make_pair(mid.first+1, mid.second-1);
+        }
+        else {
+            l = make_pair(mid.first-1, mid.second+1);
+        }
+    }
+    // if not found, the value we want is at end (or first) backed up one value
+    // diagnonally
+    assert(make_pair(l.first+1, l.second-1)==make_pair(r.first+1, r.second-1));
+    return make_pair(r.first+1, r.second-1);
+}
+
+int _CountNegatives(Point const& beg, Point const& end, IntTable2D const& m) {
+    // if the value at begin is positive, there can be no negative numbers in that
+    // diagonal
+    if (0 <= m[beg.first][beg.second]) 
+        return 0;
+    // if value at end is negative, then all values in the diagonal must be negative
+    if (0 > m[end.first][end.second]) 
+        return end.second - beg.second + 1; // use cols as they increase beg->end
+
+    // else, we know that value at begin is negative and the last value is postive. Use
+    // binary search to locate the value of the least negative number by using -1 as
+    // search key. Note that there might be duplicates so if we find -1, we will need
+    // to make sure its the right most -1
+    Point negative_end = _binary_find(beg, end, m);
+    return negative_end.second - beg.second + 1; // use cols as they increase beg->end
+}
+
+int CountNegatives(IntTable2D const& m) {
+    if (0 == m.size() || 0 == m[0].size()) return 0;
+
+    int const k_rows = m.size();
+    int const k_cols = m[0].size();
+    int negatives = 0;
+
+    // check all the diagonals of the matrix, there are ROW+COL-1 diagonals in a matrix
+    int count_diagnonals = k_rows+k_cols - 1;
+    for (int d = 1; d <= count_diagnonals; ++d) {
+        
+        // START ROW of the diagonal goes row by row for the first "k_rows" diagnonals
+        // and then is on the last row for all the other diagnonals
+        // START COL of the diagonal is 0 for the first "k_rows" diagonals and then is
+        // on (d-k_rows) column after that
+        int sr = min(d-1, k_rows-1);
+        int sc = max(0, d-k_rows);
+
+        // END ROW of the diagonal is 0 for the first "k_cols" diagonals and then is
+        // on (d-k_cols) rows after that
+        // END COL of the diagnonal goes colum by column for the first "k_cols" diagnonals
+        // and then is on the last column for the last of them
+        int er = max(0, d-k_cols);
+        int ec = min(d-1, k_cols-1);
+
+        // count the negatives in each diagonal by using modified binary search
+        // heuristic
+        negatives += _CountNegatives(make_pair(sr, sc), make_pair(er, ec), m); 
+    }
+    return negatives;
+}
+    
+
+

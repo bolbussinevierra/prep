@@ -785,6 +785,29 @@ int _tmain(int argc, _TCHAR* argv[])
     PrintList(copy1.get());
     PrintList(copy2.get());
 #endif
+#if 0
+    /*
+    Given a Matix (two dim array) where each element[i][j] is greater
+    than or equal to element[i-1][j-1] how would you efficiently count the
+    number of negatives.
+    */
+#define DIM_ROW 4
+#define DIM_COL 3
+    int a_matrix[DIM_ROW][DIM_COL] = 
+    { 
+        { 0 ,  1,   0},
+        { -1, -2,  -1},
+        { -2, -1,   0}, 
+        { -1, -3,   6},
+    };
+    int ans = ;
+
+    matrix v(DIM_ROW, vector<int>(DIM_COL));
+    for (int i = 0; i < DIM_ROW; ++i) {
+        v[i].assign(a_matrix[i], a_matrix[i] + DIM_COL);
+    }
+    cout << "expected=" << ans << " got=" << CountNegatives(v) << endl;
+#endif 
 
 
 // -----------------------------------------------------------------------------------
