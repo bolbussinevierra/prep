@@ -834,7 +834,13 @@ int _tmain(int argc, _TCHAR* argv[])
     vector<int> v = GetPrimesUpto(1000);
     for_each(v.begin(), v.end(), [](int n){ cout << n << endl;});
 #endif 
-
+#if 0
+    /* Given a byte array, how would you eliminate duplicate entries */
+    byte a[] = {'1','1','1','4','3','4','5','1','6','7','9','3'};
+    vector<byte> v(a, a+AS(a));
+    RemoveByteDuplicates(v);
+    for_each(v.begin(), v.end(), [](byte n) { cout << n << endl;});
+#endif 
 // -----------------------------------------------------------------------------------
     /*
      * RANDOM EXPERIMENTS IN AWESOME

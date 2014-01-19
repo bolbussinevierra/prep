@@ -519,3 +519,16 @@ vector<int> GetPrimesUpto(int num) {
     }
     return primes;
 }
+
+/* Given a byte array, how would you eliminate duplicate entries */
+void RemoveByteDuplicates(vector<byte>& v) {
+    vector<byte> fixed;
+    unordered_set<byte> set;
+    for (byte b : v) {
+        if (set.find(b) == set.end()) {
+            fixed.push_back(b);
+            set.insert(b);
+        }
+    }
+    v.swap(fixed);
+}
