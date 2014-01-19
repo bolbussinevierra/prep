@@ -822,6 +822,12 @@ int _tmain(int argc, _TCHAR* argv[])
     }
 
 #endif
+#if 1
+    /* range of numbers that has the maximum sum */
+    /*
+        See Kadane Implementation in Chapter.18.h
+    */
+#endif 
 
 // -----------------------------------------------------------------------------------
     /*
