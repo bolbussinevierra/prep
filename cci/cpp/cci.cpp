@@ -808,7 +808,20 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     cout << "expected=" << ans << " got=" << CountNegatives(v) << endl;
 #endif 
+#if 0
+    /* design a stack with min */
+    stack_with_min<int> s;
+    for (int i = 1; i < 10; ++i) {
+        s.push(rand() % 7);
+        cout << " Added=" << s.top() << " min=" << s.min() << endl;
+    }
+    for (int i = 1; i < 10; i++) {
+        int value = s.top();
+        s.pop();
+        cout << "Popped=" << value << " min=" << s.min() << endl;
+    }
 
+#endif
 
 // -----------------------------------------------------------------------------------
     /*

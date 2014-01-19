@@ -478,6 +478,29 @@ int CountNegatives(IntTable2D const& m) {
     }
     return negatives;
 }
-    
+/* design a stack with min */
+template <typename T>
+class stack_with_min {
+public:
+    void pop() {
+        if (m_mins.top() == m_stack.top())
+            m_mins.pop();
+        return m_stack.pop();
+    }
+
+    T top() { return m_stack.top(); }
+    bool empty() { return m_stack.empty(); }
+    size_t size() { return m_stack.size(); }
+    void push(T const& value) {
+        if (m_mins.empty() || value <= m_mins.top())
+            m_mins.push(value);
+        return m_stack.push(value);
+    }
+    T min() { return m_mins.empty() ? numeric_limits<int>::max() : m_mins.top(); }
+
+private:
+    stack<T> m_stack;
+    stack<T> m_mins;
+};
 
 
