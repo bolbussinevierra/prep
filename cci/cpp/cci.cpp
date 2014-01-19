@@ -822,11 +822,17 @@ int _tmain(int argc, _TCHAR* argv[])
     }
 
 #endif
-#if 1
+#if 0
     /* range of numbers that has the maximum sum */
     /*
         See Kadane Implementation in Chapter.18.h
     */
+#endif 
+#if 0
+    /* Implement a function that can calculate the prime numbers upto number N */
+    /* Loose bound on performance is O(nlogn) (n/2 + n/3 + n/4 ...) = n(1/2 + 1/3 + ..) */
+    vector<int> v = GetPrimesUpto(1000);
+    for_each(v.begin(), v.end(), [](int n){ cout << n << endl;});
 #endif 
 
 // -----------------------------------------------------------------------------------

@@ -503,4 +503,19 @@ private:
     stack<T> m_mins;
 };
 
-
+/* Implement a function that can calculate the prime numbers upto number N */
+/* Loose bound on performance is O(nlogn) (n/2 + n/3 + n/4 ...) = n(1/2 + 1/3 + ..) */
+vector<int> GetPrimesUpto(int num) {
+    vector<bool> sieve(num+1, true);
+    sieve[0] = false;
+    sieve[1] = false;
+    vector<int> primes;
+    for (int i = 2; i <= num; ++i) {
+        if (sieve[i]) {
+            primes.push_back(i);
+            for (int j = i*i; j <= num; j += i) 
+                sieve[j] = false;
+        }
+    }
+    return primes;
+}
