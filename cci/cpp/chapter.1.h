@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-void print_matrix(int **m, int n)
+void _PrintMatrix(int **m, int n)
 {   
     for(int i  =  0; i < n; ++i)
     {
@@ -18,7 +18,7 @@ void print_matrix(int **m, int n)
     cout << "\n-------------------------" << endl;
 }
 
-void fill_matrix(int **m, int n)
+void _FillMatrix(int **m, int n)
 {
     for(int i = 0; i < n; ++i)
     {
@@ -41,7 +41,7 @@ void fill_matrix(int **m, int n)
 
 
 
-bool is_unique_chars(char * str)
+bool IsUniqueChars(char * str)
 {
     if (str == NULL) return true;
     int length = strlen(str);
@@ -71,9 +71,9 @@ bool is_unique_chars(char * str)
 //
 // 1.6
 //
-void rotate_matrix_90(int ** m, int n)
+void RotateMatrix90(int ** m, int n)
 {
-    print_matrix(m, n);
+    _PrintMatrix(m, n);
     for (int layer = 0; layer < n/2; ++layer)
     {
         int start = layer;
@@ -88,5 +88,5 @@ void rotate_matrix_90(int ** m, int n)
             m[i][end] = top;
         }
     }
-    print_matrix(m, n);
+    _PrintMatrix(m, n);
 }

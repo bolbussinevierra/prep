@@ -19,14 +19,14 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
     srand(time(0));
-#if 0
+#if 1
     //1.1
-	bool result = is_unique_chars(""); 
+	bool result = IsUniqueChars(""); 
 
     // 1.6
     int** someArray = new int*[5];
-    fill_matrix(someArray, 5);
-    rotate_matrix_90(someArray, 5);
+    _FillMatrix(someArray, 5);
+    RotateMatrix90(someArray, 5);
 #endif
 
 #if 0
