@@ -19,7 +19,7 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
     srand(time(0));
-#if 1
+#if 0
     //1.1
 	bool result = IsUniqueChars(""); 
 
@@ -28,7 +28,12 @@ int _tmain(int argc, _TCHAR* argv[])
     _FillMatrix(someArray, 5);
     RotateMatrix90(someArray, 5);
 #endif
-
+#if 0
+    // 1.3
+    string a = "abcd";
+    string b = "bcda";
+    cout << "IsPermutation(" << a << ", " << b << ")=" << std::boolalpha << IsPermutation(a, b);  
+#endif 
 #if 0
     //2.1
     int data[] = {13,6,5,4,1,0,3,3,2,1};
@@ -84,6 +89,8 @@ int _tmain(int argc, _TCHAR* argv[])
     for (int i = 0; i < result.size(); ++i){
         PrintList(result[i]);
     }
+    // 4.1
+    cout << "Tree is balanced=" << std::boolalpha << IsBalanced(tree) << endl; 
 #endif 
 #if 0
     int data45[] = {1,2,4,5,6,7};

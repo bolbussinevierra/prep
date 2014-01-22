@@ -50,7 +50,29 @@ TreeNode* MakeOptimalBST(int * items, int n){
 //
 // helpers
 //
+//
+//
+// 4.1
+//
+int _CheckHeight(TreeNode* node) {
+    if (!node) return 0;
+    
+    int left_height = _CheckHeight(node->left);
+    if (-1 == left_height) return -1;
 
+    int right_height = _CheckHeight(node->right);
+    if (-1 == right_height) return -1;
+
+    if (abs(left_height - right_height) > 1) return -1;
+
+    return max(left_height, right_height)+1;
+}
+
+bool IsBalanced(TreeNode* root) {
+    return _CheckHeight(root) != -1;
+}
+
+//
 //
 // 4.4
 //
@@ -125,3 +147,4 @@ bool IsBST(TreeNode* root){
     printf("\n");
     return _IsBST(root, lastValue, lastValueSet);
 }
+

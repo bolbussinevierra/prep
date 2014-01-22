@@ -1,7 +1,6 @@
-//
-// helpers
-//
+#include <algorithm>
 #include <iostream>
+#include <string>
 using namespace std;
 
 void _PrintMatrix(int **m, int n)
@@ -89,4 +88,17 @@ void RotateMatrix90(int ** m, int n)
         }
     }
     _PrintMatrix(m, n);
+}
+
+bool IsPermutation(string const& a, string const& b) {
+    // ASSUMPTION: CASE IS SIGNIFICANT
+    if (a.size() != b.size()) return false;
+
+    string a_sorted = a;
+    string b_sorted = b;
+
+    std::sort(a_sorted.begin(), a_sorted.end());
+    std::sort(b_sorted.begin(), b_sorted.end());
+
+    return a_sorted == b_sorted;
 }
