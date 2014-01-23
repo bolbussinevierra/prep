@@ -557,7 +557,12 @@ struct PrintScope {
 typedef unordered_map<int, ParseResult> Cache;
 ParseResult ParseWords(string const& w, int f, int l, Trie const& dict, Cache& cache, int indent=0) {
     if (l >= w.size()) {
-        ParseResult tmp(l - f, f < w.size() ? MakeUpper(w.substr(f)) : "");
+        string parsed = "";
+        if (f < w.size()) {
+            string upper(w.substr(f));
+            parsed.assign(MakeUpper(upper));
+        }
+        ParseResult tmp(l - f, parsed);
         return tmp;
     }
 
