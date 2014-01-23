@@ -51,7 +51,7 @@ bool IsUniqueChars(char * str)
     if (length <= 1) return true;
 
     // bit vector for ascii (256 chars max)
-    char set[32] = {0}; // 256 / 8
+    byte set[32] = {0}; // 256 / 8
 
     for (int i = 0; i < length; ++i)
     {

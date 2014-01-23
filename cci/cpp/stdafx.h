@@ -17,3 +17,6 @@
 #include <atlstr.h>
 
 // TODO: reference additional headers your program requires here
+#pragma warning (error : 4706) // assignment within condition expression
+#pragma warning (disable: 4996)
+typedef unsigned int uint;

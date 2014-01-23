@@ -16,7 +16,7 @@
 #include "hm.h"
 #include "other.h"
 
-int _tmain(int argc, _TCHAR* argv[])
+int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 {
     srand(time(0));
 #if 0
@@ -125,6 +125,18 @@ int _tmain(int argc, _TCHAR* argv[])
     TreeNode* tree = MakeOptimalBST(a, AS(a));
     TreeNode::Print(tree);
     Test_InOrderSuccessor(tree);
+#endif 
+#if 1
+    //
+    // 4.7
+    //
+    int a[] = {1,2,3,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    TreeNode::Print(tree);
+    int values[] ={4, 5}; 
+    TreeNode* lca = LowestCommonAncestor(tree, values[0], values[1]);
+    cout << "lca(" << values[0] << "," << values[1] << ")=" 
+         << (lca ? to_string(lca->value) : "None") << endl;
 #endif 
 #if 0
     //

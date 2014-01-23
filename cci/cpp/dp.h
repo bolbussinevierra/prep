@@ -480,7 +480,7 @@ void CloseAllOpenRectanglesHigherThan(unordered_map<int, Rect>& rectangles, int 
     for(auto it = rectangles.begin(); it != rectangles.end(); ) {
         if (it->first > height) {
             Rect& rect = it->second;
-            if (rect.r = -1)  {
+            if (rect.r == -1)  {
                 rect.r = right;
             }
             if (-1 == max_rect.t || rect.Area() > max_rect.Area()) {

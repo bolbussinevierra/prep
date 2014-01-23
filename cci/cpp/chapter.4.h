@@ -93,7 +93,7 @@ bool IsBalanced(TreeNode* root) {
 // 4.4
 // -- recursive
 void GetLevelsLinkedLists(TreeNode * root, vector<shared_ptr<LinkedListNode>>& lists, 
-                        int level) {
+                        uint level) {
     if (!root) return;
     if (lists.size() < level+1) { // level is 0 indexed
         lists.push_back(make_shared<LinkedListNode>(root));
@@ -207,6 +207,33 @@ void Test_InOrderSuccessor(TreeNode* root) {
     TreeNode * s = InOrderSuccessor(root);
     cout << "InOrderSuccessor(" << root->value << ")=" << (s ? to_string(s->value) : "nullptr") << endl;
     Test_InOrderSuccessor(root->right);
+}
+
+//
+// 4.7
+// - common ancestor
+bool _NodeInTree(TreeNode* root, int value) {
+    if (!root) return false;
+    if (root->value == value) return true;
+    return _NodeInTree(root->left, value) || _NodeInTree(root->right, value);
+}
+
+TreeNode* _LowestCommonAncestor(TreeNode* root, int value1, int value2) {
+    if (!root) return nullptr;
+    if (root->value == value1 || root->value == value2) 
+        return root;
+
+    TreeNode* lca_left = _LowestCommonAncestor(root->left, value1, value2);
+    TreeNode* lca_right = _LowestCommonAncestor(root->right, value1, value2);
+
+    if (lca_left && lca_right) return root;
+    return lca_left ? lca_left : lca_right;
+}
+
+TreeNode* LowestCommonAncestor(TreeNode* root, int value1, int value2) {
+    if (!_NodeInTree(root, value1) || !_NodeInTree(root, value2))
+        return nullptr;
+    return _LowestCommonAncestor(root, value1, value2);
 }
 
 #if 0
