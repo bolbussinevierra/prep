@@ -7,6 +7,7 @@
 #include <stack>
 #include <assert.h>
 #include <vector>
+#include <limits>
 using namespace std;
 
 struct TreeNode {
@@ -136,11 +137,35 @@ void GetLevelsLinkedLists(TreeNode* root, vector<shared_ptr<LinkedListNode>>& re
 //
 // 4.5
 //
-bool _IsBST(TreeNode* root, int& lastValue, bool& lastValueSet){
+
+bool _IsBST(TreeNode* root, int min, int max) {
+    if (!root) return true;
+
+    // NOTE! there is a tricky bit of logic here. The left tree is limited by max.
+    // by definition of bst, left should be equal or less than or max. Min is used
+    // to contrain the RIGHT side of the tree so root needs to be strictly greater
+    if (root->value <= min || root->value > max) 
+        return false;
+
+    // going left updates the max, going right updates the min
+    if (!_IsBST(root->left, min, root->value) || 
+        !_IsBST(root->right, root->value, max)) 
+        return false;
+    return true;
+}
+bool IsBST(TreeNode* root) {
+    return _IsBST(root, numeric_limits<int>::min(), numeric_limits<int>::max());
+}
+
+//
+// DEPRECATED BELOW HERE
+//
+
+bool _IsBST_NotGoodEnough(TreeNode* root, int& lastValue, bool& lastValueSet){
     if (!root)
         return true;
 
-    if (!_IsBST(root->left, lastValue, lastValueSet))
+    if (!_IsBST_NotGoodEnough(root->left, lastValue, lastValueSet))
         return false;
 
     if (!lastValueSet) {
@@ -152,15 +177,15 @@ bool _IsBST(TreeNode* root, int& lastValue, bool& lastValueSet){
     lastValue = root->value;
     printf("lastSeen = %d ", lastValue); 
 
-    if (!_IsBST(root->right, lastValue, lastValueSet))
+    if (!_IsBST_NotGoodEnough(root->right, lastValue, lastValueSet))
         return false;
 
     return true;
 }
-bool IsBST(TreeNode* root){
+bool IsBST_NotGoodEnough(TreeNode* root){
     int lastValue = 0;
     bool lastValueSet = false;
     printf("\n");
-    return _IsBST(root, lastValue, lastValueSet);
+    return _IsBST_NotGoodEnough(root, lastValue, lastValueSet);
 }
 

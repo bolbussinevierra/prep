@@ -81,35 +81,41 @@ int _tmain(int argc, _TCHAR* argv[])
     IsPalindrome(ll27);
 #endif
 
-#if 1
+#if 0
+    //
+    // 4.4
+    //
     int data44[] = {1,2,3,4,5,6};
     TreeNode* tree = MakeOptimalBST(data44, AS(data44));
     
     vector<shared_ptr<LinkedListNode>> result;
     GetLevelsLinkedLists(tree, result);
-    for (int i = 0; i < result.size(); ++i){
-        PrintList(result[i].get());
+    for (shared_ptr<LinkedListNode> const& list : result){
+        PrintList(list.get());
     }
     
     cout << "alternative implementation" << endl;
     vector<shared_ptr<LinkedListNode>> result2;
     GetLevelsLinkedLists(tree, result2, 0); 
-    for (int i = 0; i < result2.size(); ++i) {
-        PrintList(result2[i].get());
+    for (shared_ptr<LinkedListNode> const& list : result2) {
+        PrintList(list.get());
     }
 
     // 4.1
     cout << "Tree is balanced=" << std::boolalpha << IsBalanced(tree) << endl; 
-#endif 
+#endif
 #if 0
-    int data45[] = {1,2,4,5,6,7};
+    //
+    // 4.5
+    //
+    int data45[] = {1,5,4,5,6,7};
     TreeNode* tree = MakeOptimalBST(data45, AS(data45));
-    vector<LinkedListNode*> result;
-    GetLevelsLinkedLists(tree, result);
-    for (int i = 0; i < result.size(); ++i){
-        PrintList(result[i]);
+    vector<shared_ptr<LinkedListNode>> result2;
+    GetLevelsLinkedLists(tree, result2, 0); 
+    for (shared_ptr<LinkedListNode> const& list : result2 ) {
+        PrintList(list.get());
     }
-    printf("IsBST=%d\n", IsBST(tree)); 
+    cout << "IsBST=" << std::boolalpha << IsBST(tree); 
 #endif 
 #if 0
     //
