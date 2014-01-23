@@ -259,7 +259,7 @@ void PrintMaxSumNaive(vector<int> const& v) {
 // 17.9
 // 
 map<string, int> ft;
-void Trim(string& w) {
+void Trim(string& /*w*/) {
 }
 
 void SetupFrequencyTable(vector<string>& book) {
@@ -572,11 +572,13 @@ ParseResult ParseWords(string const& w, int f, int l, Trie const& dict, Cache& c
     // jump past current word (insert space after current word) 
     ParseResult bestExact = ParseWords(w, l+1, l+1, dict, cache, indent+1);
     if (valid_exact) {
-        bestExact.parsed.swap(current_word + " " + bestExact.parsed);
+        string tmp(current_word + " " + bestExact.parsed);
+        bestExact.parsed.swap(tmp);
     }
     else {
         bestExact.invalid += current_word.size();
-        bestExact.parsed.swap(MakeUpper(current_word) + " " + bestExact.parsed);
+        string tmp(MakeUpper(current_word) + " " + bestExact.parsed);
+        bestExact.parsed.swap(tmp);
     }
 
     // extend current word using another letter

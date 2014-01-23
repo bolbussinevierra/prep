@@ -133,7 +133,7 @@ struct track {
 static track const k_null = {false, make_pair(-1,-1)};
 typedef vector<vector<track>> TrackTable;
 bool NeighborIsSet(vector<TrackTable> const& dp, int nbor_char, int row, int col, 
-                  string const& w, Point& prev) {
+                 Point& prev) {
     
     int const k_rows = dp[0].size();
     int const k_cols = dp[0][0].size();
@@ -178,7 +178,7 @@ void ContainsWordDP(string const& w, CharTable2D const& table) {
                 bool set_on = table[row][col] == lower_w[pos]; 
                 if (pos > 0 && set_on) {
                     Point prev;
-                    set_on = NeighborIsSet(dp, pos-1, row, col, lower_w, prev);
+                    set_on = NeighborIsSet(dp, pos-1, row, col, prev);
                     if (set_on) {
                         dp[pos][row][col].previous = prev;
                     }

@@ -18,5 +18,5 @@
 
 // TODO: reference additional headers your program requires here
 #pragma warning (error : 4706) // assignment within condition expression
-#pragma warning (disable: 4996)
+#pragma warning (disable: 4996 4389 4244)
 typedef unsigned int uint;

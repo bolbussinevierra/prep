@@ -358,7 +358,6 @@ void print_edit_guide(
             string start_msg = (i > j) ? "From a Delete[" : "Into a Insert[";
             string end_msg = (i > j) ? "]": "] from b";
             string const& c =  (i > j) ? a : b;
-            string const& n = (tmp == i) ? "a" : "b";
             
             cout << start_msg;
 
@@ -790,7 +789,8 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
     for (int i = 1; i < p.size(); ++i) {
         stream << _GetMatrix(p, i) << " ";
     }
-    m_print.swap(stream.str());
+    string stream_str(stream.str());
+    m_print.swap(stream_str);
 
     /* 
      * t[i,j] = minimum number of scalar multiplications needed to compute the matrix 
