@@ -236,6 +236,31 @@ TreeNode* LowestCommonAncestor(TreeNode* root, int value1, int value2) {
     return _LowestCommonAncestor(root, value1, value2);
 }
 
+//
+// 4.8
+//
+bool _MatchTree(TreeNode* tree, TreeNode* subtree) {
+    if (!tree && !subtree) return true;  // empty trees both match
+    if (!tree || !subtree) return false; // only one of them is empty
+    if (tree->value != subtree->value) return false;
+    return _MatchTree(tree->left, subtree->left) && 
+          _MatchTree(tree->right, subtree->right);
+}
+
+bool _IsSubtree(TreeNode* tree, TreeNode* subtree) {
+    if (!tree) return false; // ran out of tree nodes on this branch without a match
+        
+    if (tree->value == subtree->value) 
+        if (_MatchTree(tree, subtree)) return true;
+    
+    return _IsSubtree(tree->left, subtree) || _IsSubtree(tree->right, subtree);
+}
+
+bool IsSubtree(TreeNode* tree, TreeNode* subtree) {
+    if (!subtree) return true; // empty subtree is always a subtree
+    return _IsSubtree(tree, subtree);
+}
+
 #if 0
 //
 // DEPRECATED BELOW HERE

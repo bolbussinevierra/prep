@@ -126,7 +126,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     TreeNode::Print(tree);
     Test_InOrderSuccessor(tree);
 #endif 
-#if 1
+#if 0
     //
     // 4.7
     //
@@ -137,6 +137,20 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     TreeNode* lca = LowestCommonAncestor(tree, values[0], values[1]);
     cout << "lca(" << values[0] << "," << values[1] << ")=" 
          << (lca ? to_string(lca->value) : "None") << endl;
+#endif
+#if 0
+    //
+    // 4.8
+    //
+    int a_tree[] = {1,2,3,4,5,6,7};
+    int s_tree[] = {1,2,3};
+    TreeNode* tree = MakeOptimalBST(a_tree, AS(a_tree));
+    cout << "main tree:" << endl;
+    TreeNode::Print(tree);
+    TreeNode* subtree = MakeOptimalBST(s_tree, AS(s_tree));
+    cout << "subtree:" << endl;
+    TreeNode::Print(subtree);
+    cout << "IsSubtree()=" << std::boolalpha << IsSubtree(tree, subtree) << endl;
 #endif 
 #if 0
     //
