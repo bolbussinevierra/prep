@@ -18,7 +18,7 @@ struct TreeNode {
 
 struct LinkedListNode {
     TreeNode* value;
-    LinkedListNode * next;
+    shared_ptr<LinkedListNode> next;
     LinkedListNode(TreeNode* value):value(value), next(NULL){}
 };
 
@@ -27,7 +27,7 @@ void PrintList(LinkedListNode* head){
 
     do{
         printf("%d ", head->value->value); 
-        head = head->next;
+        head = head->next.get();
     }
     while(head);
     printf("%\n");
@@ -75,46 +75,62 @@ bool IsBalanced(TreeNode* root) {
 //
 //
 // 4.4
-//
-HRESULT GetLevelsLinkedLists(TreeNode * root, vector<LinkedListNode*>& result){
-    assert(root);
-    LinkedListNode* head = new LinkedListNode(root);
-    LinkedListNode* tail = head;
-    vector<TreeNode*> levelNodes;
-    levelNodes.push_back(root);
+// -- recursive
+void GetLevelsLinkedLists(TreeNode * root, vector<shared_ptr<LinkedListNode>>& lists, 
+                        int level) {
+    if (!root) return;
+    if (lists.size() < level+1) { // level is 0 indexed
+        lists.push_back(make_shared<LinkedListNode>(root));
+    } 
+    else {
+        shared_ptr<LinkedListNode> link = make_shared<LinkedListNode>(root);
+        link->next = lists[level];
+        lists[level] = link;
+    }
+    GetLevelsLinkedLists(root->right, lists, level+1);
+    GetLevelsLinkedLists(root->left, lists, level+1);
+}
+// -- iterative
+void GetLevelsLinkedLists(TreeNode* root, vector<shared_ptr<LinkedListNode>>& result){
+    if (!root) return;
 
-    while (levelNodes.size() > 0) {
+    shared_ptr<LinkedListNode> head = make_shared<LinkedListNode>(root);
+    shared_ptr<LinkedListNode> tail(head);
+    
+    vector<TreeNode*> level_nodes;
+    level_nodes.push_back(root);
+
+    while (level_nodes.size() > 0) {
         result.push_back(head);
         
-        vector<TreeNode*> parents(levelNodes);
-        levelNodes.clear();
+        vector<TreeNode*> parents(level_nodes);
+        level_nodes.clear();
         head = NULL;
         tail = NULL;
 
         for (size_t i = 0; i < parents.size(); i++){
             if (parents[i]->left){
                 if (!head) {
-                    head = new LinkedListNode(parents[i]->left);
+                    head = make_shared<LinkedListNode>(parents[i]->left);
                     tail = head;
                 } else {
-                    tail->next = new LinkedListNode(parents[i]->left);
+                    tail->next = make_shared<LinkedListNode>(parents[i]->left);
                     tail = tail->next;
                 }
-                levelNodes.push_back(parents[i]->left);
+                level_nodes.push_back(parents[i]->left);
             }
             if (parents[i]->right) {
                 if (!head) {
-                    head = new LinkedListNode(parents[i]->right);
+                    head = make_shared<LinkedListNode>(parents[i]->right);
                     tail = head;
                 } else {
-                    tail->next = new LinkedListNode(parents[i]->right);
+                    tail->next = make_shared<LinkedListNode>(parents[i]->right);
                     tail = tail->next;
                 }
-                levelNodes.push_back(parents[i]->right);
+                level_nodes.push_back(parents[i]->right);
             }
         }
     }
-    return S_OK;
 }
 
 //

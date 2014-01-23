@@ -81,14 +81,23 @@ int _tmain(int argc, _TCHAR* argv[])
     IsPalindrome(ll27);
 #endif
 
-#if 0
+#if 1
     int data44[] = {1,2,3,4,5,6};
     TreeNode* tree = MakeOptimalBST(data44, AS(data44));
-    vector<LinkedListNode*> result;
+    
+    vector<shared_ptr<LinkedListNode>> result;
     GetLevelsLinkedLists(tree, result);
     for (int i = 0; i < result.size(); ++i){
-        PrintList(result[i]);
+        PrintList(result[i].get());
     }
+    
+    cout << "alternative implementation" << endl;
+    vector<shared_ptr<LinkedListNode>> result2;
+    GetLevelsLinkedLists(tree, result2, 0); 
+    for (int i = 0; i < result2.size(); ++i) {
+        PrintList(result2[i].get());
+    }
+
     // 4.1
     cout << "Tree is balanced=" << std::boolalpha << IsBalanced(tree) << endl; 
 #endif 
