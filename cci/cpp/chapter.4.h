@@ -14,13 +14,23 @@ struct TreeNode {
     int value;
     TreeNode * left;
     TreeNode * right;
-    TreeNode(int value):value(value), left(NULL), right(NULL) {}
+    TreeNode * parent;
+    TreeNode(int value):value(value), left(nullptr), right(nullptr), parent(nullptr) {}
+    static void Print(TreeNode* root, int indent = 0){
+        if (!root) return;
+        Print(root->right, indent+1);
+        for (int i = 1; i <= indent; ++i) {
+            cout << "  ";
+        }
+        cout << root->value << endl;
+        Print(root->left, indent + 1);
+    }
 };
 
 struct LinkedListNode {
     TreeNode* value;
     shared_ptr<LinkedListNode> next;
-    LinkedListNode(TreeNode* value):value(value), next(NULL){}
+    LinkedListNode(TreeNode* value):value(value), next(nullptr){}
 };
 
 void PrintList(LinkedListNode* head){
@@ -36,12 +46,17 @@ void PrintList(LinkedListNode* head){
 
 TreeNode* _MakeOptimalBST(int * items, int start, int end) {
     if  (end < start) {
-        return NULL;
+        return nullptr;
     }
     int mid = (start + end) / 2;
     TreeNode* n = new TreeNode(items[mid]);
     n->left = _MakeOptimalBST(items, start, mid-1);
     n->right = _MakeOptimalBST(items, mid+1, end);
+    
+    // set parent pointers
+    if (n->left) n->left->parent = n;
+    if (n->right) n->right->parent = n;
+
     return n;
 }
 
@@ -106,8 +121,8 @@ void GetLevelsLinkedLists(TreeNode* root, vector<shared_ptr<LinkedListNode>>& re
         
         vector<TreeNode*> parents(level_nodes);
         level_nodes.clear();
-        head = NULL;
-        tail = NULL;
+        head = nullptr;
+        tail = nullptr;
 
         for (size_t i = 0; i < parents.size(); i++){
             if (parents[i]->left){
@@ -158,9 +173,46 @@ bool IsBST(TreeNode* root) {
 }
 
 //
+// 4.6
+//
+TreeNode* _LeftMost(TreeNode* root) {
+    if (!root) return nullptr;
+    while (root->left) 
+        root = root->left;
+    return root;
+}
+
+TreeNode* InOrderSuccessor(TreeNode* root) {
+    if(!root) return nullptr;
+
+    // if the node has a right branch, return the left most 
+    // node in that branch
+    if (root->right) {
+        return _LeftMost(root->right);
+    }
+    else {
+        // otherwise find the parent that root is on the LEFT side of
+        TreeNode *p = root->parent;
+        while (p && p->right == root) {
+            root = p;
+            p = p->parent;
+        }
+        return p; // will be nullptr if tree is fully explored (correct)
+    }
+}
+
+void Test_InOrderSuccessor(TreeNode* root) {
+    if (!root) return;
+    Test_InOrderSuccessor(root->left);
+    TreeNode * s = InOrderSuccessor(root);
+    cout << "InOrderSuccessor(" << root->value << ")=" << (s ? to_string(s->value) : "nullptr") << endl;
+    Test_InOrderSuccessor(root->right);
+}
+
+#if 0
+//
 // DEPRECATED BELOW HERE
 //
-
 bool _IsBST_NotGoodEnough(TreeNode* root, int& lastValue, bool& lastValueSet){
     if (!root)
         return true;
@@ -188,4 +240,4 @@ bool IsBST_NotGoodEnough(TreeNode* root){
     printf("\n");
     return _IsBST_NotGoodEnough(root, lastValue, lastValueSet);
 }
-
+#endif

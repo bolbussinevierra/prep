@@ -15,7 +15,7 @@ struct Node
     int data;
     Node* next;
     Node* previous;
-    Node(int data):data(data), next(NULL), previous(NULL) {}
+    Node(int data):data(data), next(nullptr), previous(nullptr) {}
 };
 
 void PrintList(Node* head){
@@ -31,8 +31,8 @@ void PrintList(Node* head){
 
 Node* MakeList(int data[], int n)
 {
-    Node *head = NULL;
-    Node *current = NULL;
+    Node *head = nullptr;
+    Node *current = nullptr;
     for (int i = 0; i < n; ++i)
     {
         Node*n = new Node(data[i]);
@@ -76,7 +76,7 @@ void MakeCycleAt(Node* head, int at){
 void RemoveDuplicates(Node *head){
     Node* current = head;
     map<int, int> seen;
-    Node *previous = NULL;
+    Node *previous = nullptr;
     typedef pair<int, int> Int_Pair;
 
     while (current){
@@ -94,7 +94,7 @@ void RemoveDuplicates(Node *head){
 
 void  RemoveDuplicatesNoBuffer(Node *head){
     Node *current = head;
-    Node *runner = NULL;
+    Node *runner = nullptr;
     while (current){
         runner = current->next;
         while (runner){
@@ -113,14 +113,14 @@ void  RemoveDuplicatesNoBuffer(Node *head){
 // 2.2
 //
 Node* GetKthToLast(Node* head, int k){
-    if (!head || (k <= 0)) return NULL;
+    if (!head || (k <= 0)) return nullptr;
 
     Node* runner = head;
     for(int i = 0; i < k - 1; ++i){
-        if (!runner) return NULL;
+        if (!runner) return nullptr;
         runner = runner->next;
     }
-    if (!runner) return NULL;
+    if (!runner) return nullptr;
 
     while (runner->next){
         head = head->next;
@@ -132,15 +132,15 @@ Node* GetKthToLast(Node* head, int k){
 // 2.4
 //
 Node* PartitionList(Node* head, int x) {
-    if (!head) return NULL;
+    if (!head) return nullptr;
 
-    Node* beforeList = NULL;
-    Node* afterList = NULL;
+    Node* beforeList = nullptr;
+    Node* afterList = nullptr;
 
     while (head) {
         // free the node at the front of the list
         Node * next = head->next;
-        head->next = NULL;
+        head->next = nullptr;
 
         if (head->data < x) {
             head->next = beforeList;
@@ -166,16 +166,16 @@ Node* PartitionList(Node* head, int x) {
 // 2. 6
 //
 Node* FindCycleStart(Node* head) {
-    if (!head) return NULL;
+    if (!head) return nullptr;
     Node* slow = head;
     Node* fast = head;
     do {
         slow = slow->next;
-        if (!fast->next) return NULL;
+        if (!fast->next) return nullptr;
         fast = fast->next->next;
     } while (slow && fast && (fast != slow));
 
-    if (!fast) return NULL;
+    if (!fast) return nullptr;
     
     slow = head;    // reassign back to the front of the list
     while (slow != fast) {
@@ -216,7 +216,7 @@ bool IsPalindrome(Node* head){
         slow = slow->next;
     }
     
-    bool result = s.empty() && (slow == NULL);
+    bool result = s.empty() && (slow == nullptr);
     printf("is%spalindrome!", result ? " " : " not ");
     return result;
 }

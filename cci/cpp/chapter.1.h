@@ -42,7 +42,7 @@ void _FillMatrix(int **m, int n)
 
 bool IsUniqueChars(char * str)
 {
-    if (str == NULL) return true;
+    if (str == nullptr) return true;
     int length = strlen(str);
     
     // must contain a duplicated if longer than 256. A single character or

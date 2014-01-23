@@ -119,6 +119,15 @@ int _tmain(int argc, _TCHAR* argv[])
 #endif 
 #if 0
     //
+    // 4.6
+    //
+    int a[] = {1,5,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    TreeNode::Print(tree);
+    Test_InOrderSuccessor(tree);
+#endif 
+#if 0
+    //
     // 9.1
     //
     for (int i = 4; i >=0; --i) {

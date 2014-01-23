@@ -46,7 +46,7 @@ struct Card {
 };
 int random(int low, int high) {
     /* initialize random seed: */
-    srand (time(NULL));
+    srand (time(nullptr));
     int range = high - low;
     return low + (rand() % (range+1));
 }
