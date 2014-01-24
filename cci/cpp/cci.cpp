@@ -3,11 +3,11 @@
 
 #include "stdafx.h"
 #include <bitset>
-#include "chapter.1.h"
-#include "chapter.2.h"
-#include "chapter.3.h"
-#include "chapter.4.h"
-#include "chapter.5.h"
+#include "arrays.strings.1.h"
+#include "linked.lists.2.h"
+#include "stacks.queues.3.h"
+#include "trees.graphs.4.h"
+#include "bits.5.h"
 #include "chapter.9.h"
 #include "chapter.10.h"
 #include "chapter.11.h"
@@ -184,6 +184,13 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     double value = 0.75;
     cout << "ToBinary(" << value << ")=" << ToBinary(value) << endl;
+#endif 
+#if 1
+    //
+    // 5.3
+    //
+    int num = 4;
+    cout << "GetNext(" << 4 << ")=" << GetNextLargestInteger(num) << endl;
 #endif 
 #if 0
     //

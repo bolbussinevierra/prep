@@ -1,0 +1,95 @@
+#include <iostream>
+#include <assert.h>
+int const k_pos_max = (sizeof(int) * CHAR_BIT) - 1;
+//
+// 5.1
+//
+int InsertBits(int into, int insert, uint i, uint j) {
+    assert(i <= k_pos_max && j <= k_pos_max);
+    // make the right side of the mask
+    int all_ones = ~0;
+    int right_mask = all_ones << (j+1); // all ones position j+1 (bits to preserve)
+    int left_mask = (1 << i) - 1;    // shift 1 to position i then substract 1 to turn
+                                   // set all bits [0, i-1] to 1 (digits to preserve)
+    int mask = right_mask | left_mask;
+    int into_masked = into & mask;
+    int insert_shifted = insert << i;
+
+    return into_masked | insert_shifted;
+}
+//
+// 5.2
+//
+string ToBinary(double num) {
+    if (num > 1 || num < 0) 
+        return "ERROR";
+
+    string binary(".");
+    while (num > 0) {
+        if (binary.size() >= 32) 
+            return "ERROR";
+        
+        num *= 2;
+        if (num >= 1)
+            binary.append("1");
+        else
+            binary.append("0");
+ 
+        num -= (int) num; // no-op for the case where num < 1
+    }
+    return binary;
+}
+//
+// 5.3
+//
+int GetNextLargestInteger(int n) {
+    // calculate the number of 1 and 0's 
+    int n_temp = n;
+    int count_0 = 0;
+    int count_1 = 0;
+
+    // count all the trailing zeros
+    while (((n_temp & 1) == 0) && (n_temp != 0)) {
+        count_0++;
+        n_temp >>= 1;
+    }
+
+    // count the trailing ones
+    while ((n_temp & 1) == 1) {
+        count_1++;
+        n_temp >>= 1;
+    }
+
+    // if all the zeros in the number trail all the ones in the same number
+    // (1111110000000), then there is no way to get a bigger number with the same
+    // number of ones (since we need to find a "non-trailing zero" to flip (i.e a
+    // zero that has 1's to the right of it. This will also cover the 11111111111
+    // case
+    // Also: if the number is 0, it has no ones so we cant find a bigger number with
+    // the same number of 1
+    if (count_0 + count_1 == 31 || count_0 + count_1 == 0)
+        return -1;
+
+    // find the position of the right most non-trailing 0
+    int pos_non_trailing_zero = count_0 + count_1;
+
+    // turn on this zero to a one
+    n |= (1 << pos_non_trailing_zero);
+
+    // clear out all the bits to the right of pos_non_trailing_zero. We need to make
+    // the appropriate a mask of the form 111111111110000000000 where the left 0 is
+    // at pos-1
+    int clear_right_mask = (1 << pos_non_trailing_zero); // 000000001000000000
+    clear_right_mask -= 1;                             // 000000000111111111
+    clear_right_mask = ~clear_right_mask;               // 111111111000000000 
+    n &= clear_right_mask; 
+
+    // add count_1-1 ones back
+    n |= (1 << (count_1-1))-1;
+    return n;
+}
+
+int GetPreviousSmallestInteger(int n) {
+    int n_temp = n;
+
+}
