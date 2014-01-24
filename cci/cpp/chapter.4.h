@@ -261,6 +261,32 @@ bool IsSubtree(TreeNode* tree, TreeNode* subtree) {
     return _IsSubtree(tree, subtree);
 }
 
+//
+// 4.9
+//
+int _depth(TreeNode* tree) {
+    if (!tree) return 0;
+    return 1 + max(_depth(tree->left), _depth(tree->right));
+}
+void _FindSum(TreeNode* tree, int target, vector<int>& path, int level) {
+    if (!tree) return;
+    path[level]=tree->value;
+    int sum = 0;
+    for (int i = level; i >= 0; --i) {
+        sum += path[i];
+        if (sum == target) {
+            for_each(path.begin()+i, path.begin()+level+1, [](int n) { cout << n << " "; });
+            cout << endl;
+        }
+    }
+    _FindSum(tree->left, target, path, level+1);
+    _FindSum(tree->right, target, path, level+1);
+}
+void FindSum(TreeNode* tree, int target) {
+    vector<int> path(_depth(tree));
+    return _FindSum(tree, target, path, 0);
+}
+
 #if 0
 //
 // DEPRECATED BELOW HERE

@@ -154,6 +154,18 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #endif 
 #if 0
     //
+    // 4.9
+    //
+    int a[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    TreeNode::Print(tree);
+    for (int target = 1; target <= 40; ++target) {
+        cout << "paths that sum to " << target << ":\n";
+        FindSum(tree,  target);
+    }
+#endif
+#if 0
+    //
     // 9.1
     //
     for (int i = 4; i >=0; --i) {
@@ -912,6 +924,12 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     }
     cout << fib[0] << endl;
 
+#endif 
+#if 0
+    vector<int> v(21);
+    for (int i = 0; i < v.size(); ++i) 
+        v[i]=i;
+    for_each(v.begin()+0, v.begin()+1, [](int n) { cout << n << " "; });
 #endif 
 #if 0
 #define COUNT 50
