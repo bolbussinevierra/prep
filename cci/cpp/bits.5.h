@@ -141,3 +141,36 @@ int BitSwapsRequired2(int a, int b) {
         count += n & 1;
     return count;
 }
+//
+// 5.6
+//
+//  generates oxAA AA AA AA AA 
+//             "1010 1010 1010 1010 1010 1010 1010 1010"
+int _MaskForEvenBits() { 
+    int all_ones = ~0;
+    int pos = 0;
+    while (pos < 32) {
+        if (pos % 2 == 0) 
+            all_ones &= ~(1 << pos);
+        pos++;
+    }
+    return all_ones;
+}
+// generates 0101 0101 0101 0101 0101 0101 0101 0101 (ox55555555)
+int _MaskForOddBits() {
+    int all_ones = ~0;
+    int pos = 0;
+    while (pos < 32) {
+        if (pos % 2 == 1)
+            all_ones &= ~(1 << pos);
+        pos++;
+    }
+    return all_ones;
+}
+
+int SwapBits(int n) {
+    return ( ((n & _MaskForEvenBits()) >> 1) | ((n & _MaskForOddBits()) << 1) ); 
+}
+int SwapBits2(int n) {
+    return ( ((n & 0xAAAAAAAA) >> 1) | ((n & 0x55555555) << 1) ); 
+}

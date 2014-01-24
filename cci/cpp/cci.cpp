@@ -194,9 +194,24 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << "GetPrev(" << num << ")=" << GetPreviousSmallestInteger(num) << endl;
 #endif
 #if 0
+    //
+    // 5.5
+    //
     int a = 4, b = 5;
     cout << "SwapsNeeded(" << a << "," << b << ")=" << BitSwapsRequired(a, b) << endl;
     cout << "SwapsNeeded(" << a << "," << b << ")=" << BitSwapsRequired2(a, b) << endl;
+#endif
+#if 1
+    //
+    // 5.6
+    //
+    int num = 5;
+    cout << "Swap(" << bitset<4>(num).to_string() << ")=" 
+         << bitset<4>(SwapBits(num)).to_string() << endl;
+
+    cout << "Swap2(" << bitset<4>(num).to_string() << ")=" 
+         << bitset<4>(SwapBits2(num)).to_string() << endl;
+
 #endif 
 #if 0
     //
