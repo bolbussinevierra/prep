@@ -185,13 +185,18 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     double value = 0.75;
     cout << "ToBinary(" << value << ")=" << ToBinary(value) << endl;
 #endif 
-#if 1
+#if 0
     //
     // 5.3
     //
     int num = 4;
     cout << "GetNext(" << num << ")=" << GetNextLargestInteger(num) << endl;
     cout << "GetPrev(" << num << ")=" << GetPreviousSmallestInteger(num) << endl;
+#endif
+#if 0
+    int a = 4, b = 5;
+    cout << "SwapsNeeded(" << a << "," << b << ")=" << BitSwapsRequired(a, b) << endl;
+    cout << "SwapsNeeded(" << a << "," << b << ")=" << BitSwapsRequired2(a, b) << endl;
 #endif 
 #if 0
     //

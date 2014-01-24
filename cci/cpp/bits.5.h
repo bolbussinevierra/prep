@@ -124,3 +124,20 @@ int GetPreviousSmallestInteger(int n) {
     n |= mask_insert_ones << (count_0 -1); // // - 1 accounts for the fact that we added a 1
     return n;
 }
+
+//
+// 5.5
+// 
+int BitSwapsRequired(int a, int b) {
+    int count = 0;
+    // n & (n - 1) clears the most significant bit
+    for (int n = a^b; n != 0; n = n & (n - 1))
+        count++;
+    return count;
+}
+int BitSwapsRequired2(int a, int b) {
+    int count = 0;
+    for (int n = a^b; n != 0; n >>= 1) 
+        count += n & 1;
+    return count;
+}
