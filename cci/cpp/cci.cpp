@@ -201,7 +201,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << "SwapsNeeded(" << a << "," << b << ")=" << BitSwapsRequired(a, b) << endl;
     cout << "SwapsNeeded(" << a << "," << b << ")=" << BitSwapsRequired2(a, b) << endl;
 #endif
-#if 1
+#if 0
     //
     // 5.6
     //

@@ -174,3 +174,6 @@ int SwapBits(int n) {
 int SwapBits2(int n) {
     return ( ((n & 0xAAAAAAAA) >> 1) | ((n & 0x55555555) << 1) ); 
 }
+//
+// 5.7
+// 
