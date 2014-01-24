@@ -89,6 +89,7 @@
     <ClInclude Include="chapter.2.h" />
     <ClInclude Include="chapter.3.h" />
     <ClInclude Include="chapter.4.h" />
+    <ClInclude Include="chapter.5.h" />
     <ClInclude Include="chapter.9.h" />
     <ClInclude Include="dp.h" />
     <ClInclude Include="heap.h" />

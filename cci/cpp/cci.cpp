@@ -2,10 +2,12 @@
 //
 
 #include "stdafx.h"
+#include <bitset>
 #include "chapter.1.h"
 #include "chapter.2.h"
 #include "chapter.3.h"
 #include "chapter.4.h"
+#include "chapter.5.h"
 #include "chapter.9.h"
 #include "chapter.10.h"
 #include "chapter.11.h"
@@ -164,6 +166,18 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         FindSum(tree,  target);
     }
 #endif
+#if 0
+    //
+    // 5.1
+    //
+    bitset<11> insert("10011");
+    bitset<11> into("10000000000");
+    int i = 2, j = 6;
+    int answer = InsertBits(into.to_ulong(), insert.to_ulong(), 2, 6);
+    bitset<11> result(answer);
+    cout << "InsertBits(" << into.to_string() << ", " << insert.to_string() << ", " 
+        << i << ", " << j << ")=" << result.to_string();
+#endif 
 #if 0
     //
     // 9.1
