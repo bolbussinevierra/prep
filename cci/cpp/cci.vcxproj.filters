@@ -24,18 +24,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="chapter.1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="chapter.9.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,7 +60,19 @@
     <ClInclude Include="other.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="chapter.5.h">
+    <ClInclude Include="linked.lists.2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stacks.queues.3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="trees.graphs.4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bits.5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="arrays.strings.1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

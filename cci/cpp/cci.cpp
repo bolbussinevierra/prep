@@ -190,7 +190,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 5.3
     //
     int num = 4;
-    cout << "GetNext(" << 4 << ")=" << GetNextLargestInteger(num) << endl;
+    cout << "GetNext(" << num << ")=" << GetNextLargestInteger(num) << endl;
+    cout << "GetPrev(" << num << ")=" << GetPreviousSmallestInteger(num) << endl;
 #endif 
 #if 0
     //

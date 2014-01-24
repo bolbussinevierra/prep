@@ -71,15 +71,15 @@ int GetNextLargestInteger(int n) {
         return -1;
 
     // find the position of the right most non-trailing 0
-    int pos_non_trailing_zero = count_0 + count_1;
+    int pos_non_trailing_0 = count_0 + count_1;
 
     // turn on this zero to a one
-    n |= (1 << pos_non_trailing_zero);
+    n |= (1 << pos_non_trailing_0);
 
     // clear out all the bits to the right of pos_non_trailing_zero. We need to make
     // the appropriate a mask of the form 111111111110000000000 where the left 0 is
     // at pos-1
-    int clear_right_mask = (1 << pos_non_trailing_zero); // 000000001000000000
+    int clear_right_mask = (1 << pos_non_trailing_0); // 000000001000000000
     clear_right_mask -= 1;                             // 000000000111111111
     clear_right_mask = ~clear_right_mask;               // 111111111000000000 
     n &= clear_right_mask; 
@@ -91,5 +91,36 @@ int GetNextLargestInteger(int n) {
 
 int GetPreviousSmallestInteger(int n) {
     int n_temp = n;
+    int count_1 = 0;
+    int count_0 = 0;
 
+    // count the trailing 1's
+    while ((n_temp & 1) == 1) {
+        count_1++;
+        n_temp >>= 1;
+    }
+
+    // if n_temp is zero, we will not be able to find a non-trailing 1 (i.e a 1 with
+    // 0's to the right of it)
+    if (n_temp == 0) return -1;
+
+    // count the following zero's
+    while (((n_temp & 1) == 0) && (n_temp != 0)) {
+        count_0++;
+        n_temp >>= 1;
+    }
+
+    // find the position of the right most non-trailing 1
+    int pos_non_trailing_1 = count_0 + count_1;
+
+    // flip this 1 to a zero
+    n &= ~(1 << pos_non_trailing_1); // ~(0000000000010000000000)
+
+    // clear all bits at p-1 down to 0
+    n &= (~0) << pos_non_trailing_1;
+
+    // now we need to insert count_1+1 ones immediately to the right of p
+    int mask_insert_ones = (1 << (count_1+1))-1; // 0000000000111111111
+    n |= mask_insert_ones << (count_0 -1); // // - 1 accounts for the fact that we added a 1
+    return n;
 }

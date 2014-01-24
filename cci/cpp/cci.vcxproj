@@ -80,16 +80,16 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="chapter.1.h" />
+    <ClInclude Include="arrays.strings.1.h" />
     <ClInclude Include="chapter.10.h" />
     <ClInclude Include="chapter.11.h" />
     <ClInclude Include="chapter.13.h" />
     <ClInclude Include="chapter.17.h" />
     <ClInclude Include="chapter.18.h" />
-    <ClInclude Include="chapter.2.h" />
-    <ClInclude Include="chapter.3.h" />
-    <ClInclude Include="chapter.4.h" />
-    <ClInclude Include="chapter.5.h" />
+    <ClInclude Include="linked.lists.2.h" />
+    <ClInclude Include="stacks.queues.3.h" />
+    <ClInclude Include="trees.graphs.4.h" />
+    <ClInclude Include="bits.5.h" />
     <ClInclude Include="chapter.9.h" />
     <ClInclude Include="dp.h" />
     <ClInclude Include="heap.h" />
