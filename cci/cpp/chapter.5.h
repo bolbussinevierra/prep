@@ -17,4 +17,28 @@ int InsertBits(int into, int insert, uint i, uint j) {
 
     return into_masked | insert_shifted;
 }
+//
+// 5.2
+//
+string ToBinary(double num) {
+    if (num > 1 || num < 0) 
+        return "ERROR";
+
+    string binary(".");
+    while (num > 0) {
+        if (binary.size() >= 32) 
+            return "ERROR";
+        
+        num *= 2;
+        if (num >= 1)
+            binary.append("1");
+        else
+            binary.append("0");
+ 
+        num -= (int) num; // no-op for the case where num < 1
+    }
+    return binary;
+}
+
+
 

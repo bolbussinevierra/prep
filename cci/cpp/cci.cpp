@@ -180,6 +180,13 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #endif 
 #if 0
     //
+    // 5.2
+    //
+    double value = 0.75;
+    cout << "ToBinary(" << value << ")=" << ToBinary(value) << endl;
+#endif 
+#if 0
+    //
     // 9.1
     //
     for (int i = 4; i >=0; --i) {
