@@ -1,15 +1,8 @@
+#pragma once
+
 //
 // helpers
 //
-#include <iostream>
-#include <memory>
-#include <map>
-#include <stack>
-#include <assert.h>
-#include <vector>
-#include <limits>
-using namespace std;
-
 struct TreeNode {
     int value;
     TreeNode * left;

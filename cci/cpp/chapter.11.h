@@ -1,12 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <algorithm> 
-#include <map>
-#include <string>
-#include <windows.h>
 #pragma once
 
-using namespace std;
 //
 //
 //
@@ -39,13 +32,6 @@ void _P(int a[], int lenA) {
         printf("%d ", a[i]);
     }
     printf("\n");
-}
-
-template <class T>
-void _swap(T* a, T* b) {
-    T temp = *a;
-    *a = *b;
-    *b = temp;
 }
 
 template <class T>

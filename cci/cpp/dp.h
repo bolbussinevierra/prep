@@ -1,14 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <numeric>
-#include <hash_set>
-#include <sstream>
-#include <limits>
-#include "utils.h"
-
 #pragma once
-using namespace std;
 
 struct Item {
     int weight;

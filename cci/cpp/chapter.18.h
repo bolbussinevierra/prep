@@ -1,11 +1,3 @@
-#include <iostream>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-#include <deque>
-#include <queue>
-#include "heap.h"
-#include "trie.h"
-#include "utils.h"
 #pragma once
 //
 // 18.1

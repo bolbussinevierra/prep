@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-using namespace std;
+#pragma once
 
 void _PrintMatrix(int **m, int n)
 {   

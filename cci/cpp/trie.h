@@ -1,10 +1,4 @@
-#include <iostream>
-#include <unordered_map>
-#include <assert.h>
-#include <WinError.h>
 #pragma once
-
-using namespace std;
 
 class TrieNode {
 public:

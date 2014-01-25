@@ -1,15 +1,8 @@
+#pragma once
+
 //
 // helpers
 //
-#include <iostream>
-#include <memory>
-#include <map>
-#include <stack>
-#include <assert.h>
-using namespace std;
-
-#define AS(array) sizeof(array)/sizeof(array[0]) 
-
 struct Node
 {
     int data;

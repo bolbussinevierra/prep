@@ -1,13 +1,5 @@
-#include <iostream>
-#include <assert.h>
-#include <algorithm>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include "chapter.11.h"
-#include "trie.h"
-#include <tuple>
-#pragma warning (disable: 4018)
+#pragma once
+
 //
 // 17.2
 //

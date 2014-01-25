@@ -1,7 +1,4 @@
-#include <vector>
-#include <assert.h>
 #pragma once
-using namespace std;
 
 class heap {
 public:

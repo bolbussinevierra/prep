@@ -1,6 +1,4 @@
-#include <vector>
-#include <list>
-using namespace std;
+#pragma once
 
 // Paul Larson's hashing algorthm (MSR)
 unsigned long get_hash(string const& s) {

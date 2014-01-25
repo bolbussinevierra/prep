@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <bitset>
 #include "1.arrays.strings.h"
 #include "2.linked.lists.h"
 #include "3.stacks.queues.h"
@@ -15,7 +14,6 @@
 #include "chapter.17.h"
 #include "chapter.18.h"
 #include "dp.h"
-#include "hm.h"
 #include "other.h"
 
 int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)

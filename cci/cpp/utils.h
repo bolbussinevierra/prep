@@ -1,5 +1,5 @@
 #pragma once
-typedef vector<vector<int>> matrix;
+
 struct Rect { 
     int t; 
     int b; 
@@ -28,9 +28,11 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
 typedef vector<vector<int>> IntTable2D;
 typedef vector<vector<bool>> BoolTable2D;
 typedef vector<vector<char>> CharTable2D;
+typedef vector<vector<int>> matrix;
+
 typedef pair<int, int> Point;
 
-void Print(Point const& p) {
+static void Print(Point const& p) {
     cout << "[" << p.first << "," << p.second << "]" << endl;
 }
 
@@ -51,4 +53,11 @@ void Print(char* tag, vector<int> const& indexes, vector<t> const& indexed) {
         cout << indexed[i] << " ";
     }
     cout << endl;
+}
+
+template <class T>
+void _swap(T* a, T* b) {
+    T temp = *a;
+    *a = *b;
+    *b = temp;
 }

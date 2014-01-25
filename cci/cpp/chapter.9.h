@@ -1,10 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <map>
-#include <string>
-#include <unordered_set>
-
-using namespace std;
+#pragma once
 
 //
 // 9.1

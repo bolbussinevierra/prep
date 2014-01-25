@@ -1,5 +1,5 @@
-#include <iostream>
-#include <assert.h>
+#pragma once
+
 int const k_pos_max = (sizeof(int) * CHAR_BIT) - 1;
 //
 // 5.1

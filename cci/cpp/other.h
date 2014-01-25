@@ -1,6 +1,4 @@
-#include <iostream>
-#include <unordered_map>
-using namespace std;
+#pragma once
 
 // ---------------------------------------------------------------------
 typedef unordered_map<string, string> TranslationTable;

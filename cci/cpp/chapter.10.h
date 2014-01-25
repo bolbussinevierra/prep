@@ -1,9 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <map>
-#include <string>
-#include <windows.h>
-using namespace std;
+#pragma once
 
 class Scanner {
 public:
