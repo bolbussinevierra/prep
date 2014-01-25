@@ -42,27 +42,6 @@
     <ClInclude Include="other.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="2.linked.lists.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="3.stacks.queues.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="4.trees.graphs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="7.math.and.probability.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="5.bits.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="1.arrays.strings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="9.recursion.and.dp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="10.scalability.and.mem.limits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -76,6 +55,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="18.hard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="01.arrays.strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="02.linked.lists.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03.stacks.queues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="04.trees.graphs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="05.bits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="07.math.and.probability.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="09.recursion.and.dp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
