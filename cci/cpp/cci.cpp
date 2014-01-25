@@ -3,11 +3,11 @@
 
 #include "stdafx.h"
 #include <bitset>
-#include "arrays.strings.1.h"
-#include "linked.lists.2.h"
-#include "stacks.queues.3.h"
-#include "trees.graphs.4.h"
-#include "bits.5.h"
+#include "1.arrays.strings.h"
+#include "2.linked.lists.h"
+#include "3.stacks.queues.h"
+#include "4.trees.graphs.h"
+#include "5.bits.h"
 #include "chapter.9.h"
 #include "chapter.10.h"
 #include "chapter.11.h"
