@@ -2,21 +2,48 @@
 //
 
 #include "stdafx.h"
+#if 0
 #include "01.arrays.strings.h"
+#endif
+#if 0
 #include "02.linked.lists.h"
+#endif
+#if 0
 #include "03.stacks.queues.h"
+#endif
+#if 0
 #include "04.trees.graphs.h"
+#endif
+#if 0
 #include "05.bits.h"
+#endif
+#if 1
 #include "07.math.and.probability.h"
+#endif
+#if 0
 #include "09.recursion.and.dp.h"
+#endif
+#if 0
 #include "10.scalability.and.mem.limits.h"
+#endif
+#if 0
 #include "11.sorting.and.searching.h"
+#endif
+#if 0
 #include "13.c.and.cplusplus.h"
+#endif
+#if 0
 #include "17.moderate.h"
+#endif
+#if 0
 #include "18.hard.h"
+#endif
+#if 0
 #include "dp.h"
+#endif
+#if 0
 #include "other.h"
-
+#endif
 int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 {
     srand(time(0));
