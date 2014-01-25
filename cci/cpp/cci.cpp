@@ -212,7 +212,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
          << bitset<4>(SwapBits2(num)).to_string() << endl;
 
 #endif 
-#if 1
+#if 0
     //
     // 5.7
     //
@@ -222,6 +222,16 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
             input.push_back(i);
 
     cout << "Missing Integer is=" << FindMissingInteger(input) << endl;
+#endif 
+#if 0
+    //
+    // 7.4
+    //
+    cout << minus(10, 11) << endl;
+    cout << multiply(10, 11) << endl;
+    cout << divide(10, 2) << endl;
+    cout << divide(0, 10) << endl;
+    cout << divide(0, 0) << endl;
 #endif 
 #if 0
     //
