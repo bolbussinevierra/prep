@@ -176,4 +176,33 @@ int SwapBits2(int n) {
 }
 //
 // 5.7
-// 
+//
+typedef bitset<3> ThreeBitInt;
+int _FindMissingInteger(vector<ThreeBitInt> const& input, int column) {
+    if (column >= 3) return 0;
+
+    // reserve to minize resize cost
+    vector<ThreeBitInt> one_bits; one_bits.reserve(input.size() / 2); 
+    vector<ThreeBitInt> zero_bits; zero_bits.reserve(input.size() / 2); 
+
+
+    for(ThreeBitInt t : input) {
+        if (t[column] == 0) 
+            zero_bits.push_back(t);
+        else
+            one_bits.push_back(t);
+    }
+
+    if (zero_bits.size() <= one_bits.size()) {
+        int v = _FindMissingInteger(zero_bits, column + 1);
+        return (v << 1) | 0;
+    }
+    else {
+        int v = _FindMissingInteger(one_bits, column + 1);
+        return (v << 1) | 1;
+    }
+}
+
+int FindMissingInteger(vector<ThreeBitInt> const& input) {
+    return _FindMissingInteger(input, 0);
+}

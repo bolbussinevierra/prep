@@ -213,6 +213,17 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
          << bitset<4>(SwapBits2(num)).to_string() << endl;
 
 #endif 
+#if 1
+    //
+    // 5.7
+    //
+    vector<ThreeBitInt> input;
+    for (int i = 0; i <= 7; ++i) 
+        if (i != 7) 
+            input.push_back(i);
+
+    cout << "Missing Integer is=" << FindMissingInteger(input) << endl;
+#endif 
 #if 0
     //
     // 9.1
