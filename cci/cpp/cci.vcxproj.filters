@@ -24,25 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="chapter.9.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.10.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.11.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.13.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.17.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chapter.18.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="trie.h">
@@ -76,6 +58,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="1.arrays.strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="9.recursion.and.dp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="10.scalability.and.mem.limits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="11.sorting.and.searching.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="13.c.and.cplusplus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="17.moderate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="18.hard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

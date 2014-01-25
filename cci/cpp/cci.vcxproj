@@ -81,17 +81,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1.arrays.strings.h" />
-    <ClInclude Include="chapter.10.h" />
-    <ClInclude Include="chapter.11.h" />
-    <ClInclude Include="chapter.13.h" />
-    <ClInclude Include="chapter.17.h" />
-    <ClInclude Include="chapter.18.h" />
+    <ClInclude Include="10.scalability.and.mem.limits.h" />
+    <ClInclude Include="11.sorting.and.searching.h" />
+    <ClInclude Include="13.c.and.cplusplus.h" />
+    <ClInclude Include="17.moderate.h" />
+    <ClInclude Include="18.hard.h" />
     <ClInclude Include="2.linked.lists.h" />
     <ClInclude Include="7.math.and.probability.h" />
     <ClInclude Include="3.stacks.queues.h" />
     <ClInclude Include="4.trees.graphs.h" />
     <ClInclude Include="5.bits.h" />
-    <ClInclude Include="chapter.9.h" />
+    <ClInclude Include="9.recursion.and.dp.h" />
     <ClInclude Include="dp.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="hm.h" />
