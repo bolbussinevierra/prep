@@ -100,3 +100,31 @@ private:
     bool m_infinite_slope;
     double m_y_intercept;
 };
+// -------------------------------------------------------------------
+// 7.5
+class Square {
+public:
+    // assume origin is top left corner
+    Square(DoublePoint topleft, int size)
+        :m_topleft(topleft)
+        ,m_size(size) 
+    {
+        m_bottomRight = make_pair(m_topleft.first+m_size, 
+                                m_topleft.second+m_size);
+    }
+    DoublePoint GetCenter() {
+        return make_pair(m_topleft.first + (m_size/2.0), 
+                        m_topleft.second + (m_size/2.0));
+    }
+    Line Cuts(Square other) {
+        if (this->GetCenter() == other.GetCenter())
+            return Line(m_topleft, m_bottomRight);
+        else 
+            return Line(this->GetCenter(), other.GetCenter());
+    }
+    
+private:
+    DoublePoint m_topleft;
+    DoublePoint m_bottomRight;
+    double m_size;
+};
