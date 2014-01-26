@@ -252,6 +252,17 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #endif 
 #if 0
     //
+    // 7.3
+    //
+    Line a(make_pair(2.0,2.0), make_pair(2.0,4.0));
+    Line b(make_pair(4.0,2.0), make_pair(6.0,4.0));
+    cout << "intersects=" << boolalpha << a.intersects(b) << endl; 
+#endif
+#if 1
+
+#endif 
+#if 0
+    //
     // 7.4
     //
     cout << minus(10, 11) << endl;

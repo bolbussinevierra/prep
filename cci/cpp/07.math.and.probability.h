@@ -61,4 +61,42 @@ int divide(int a, int b) {
     else 
         return _negate(x);
 }
-        
+// --------------------------------------------------------------
+// 7.3
+//
+class Line {
+public:
+    Line(DoublePoint a, DoublePoint b):epsilon(0.000001){
+        double delta_x = b.first - a.first;
+        m_infinite_slope = (delta_x <= epsilon);
+
+        if (!m_infinite_slope) {
+            m_slope = (b.second - a.second)/delta_x;
+
+            // we know y = (m_slope * x) + y_intercept. Thefore
+            // y - (m_slope * x) = y_intercept
+            m_y_intercept = a.second - (m_slope * a.first);
+        }
+        else {
+            m_slope = numeric_limits<double>::max();
+            m_y_intercept = numeric_limits<double>::max();
+        }
+    }
+
+    bool operator==(Line const& rhs) const {
+        return  (m_infinite_slope == rhs.m_infinite_slope) &&
+                (abs(m_slope - rhs.m_slope) <= epsilon) &&
+                (m_y_intercept - rhs.m_y_intercept <= epsilon);
+    }
+
+    bool intersects(Line const& other) const {
+        return (*this == other) ||
+              abs(m_slope - other.m_slope) > epsilon;
+    }
+
+private:
+    const double epsilon;
+    double m_slope;
+    bool m_infinite_slope;
+    double m_y_intercept;
+};

@@ -31,6 +31,7 @@ typedef vector<vector<char>> CharTable2D;
 typedef vector<vector<int>> matrix;
 
 typedef pair<int, int> Point;
+typedef pair<double, double> DoublePoint;
 
 static void Print(Point const& p) {
     cout << "[" << p.first << "," << p.second << "]" << endl;
