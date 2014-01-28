@@ -143,26 +143,22 @@ void Subsets(vector<int>& items, int start, vector<vector<int>>& sets) {
         sets.push_back(empty);
     } else {
         Subsets(items, start+1, sets); // get the rest of the sets
-        size_t existingSets = sets.size();
-        for (size_t i = 0; i < existingSets; ++i) {
-            vector<int> cloneSet(sets[i]); // clone the previous et
+        int count_previous_sets = sets.size();
+        for (int i = 0; i < count_previous_sets; ++i) {
+            vector<int> cloneSet(sets[i]); // clone the previous set
             cloneSet.push_back(items[start]);   // add the new item
-            sets.push_back(cloneSet);           // add the cloned and expanded set to list
+            sets.push_back(cloneSet);           // add the expanded-clone set to list
         }
     }
 }
 void PrintSets(vector<vector<int>>& sets) {
-    for (size_t i = 0; i < sets.size(); ++i) {
-        vector<int> set = sets[i];
-        if (set.empty()) {
-            printf("<empty> ");
-        }
-        else {
-            for (size_t j = 0; j < set.size(); ++j) {
-                printf("%d ", set[j]);
-            }
-        }
-        printf("\n");
+    for (vector<int> const& set : sets) {
+        if (set.empty()) 
+            cout << "<empty> ";
+        else 
+            for_each (set.begin(), set.end(), [](int n) { cout << n << " "; });
+            
+        cout << endl;
     }
 }
 

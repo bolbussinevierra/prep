@@ -308,9 +308,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 9.4
     //
     int items93[] = {1,2,3,4,5,6,7,8,9,10};
-    // Subsets(items93, AS(items93));
+    Subsets(items93, AS(items93));
     // SubsetsIterative(items93, AS(items93));
-    SubsetsBinary(items93, AS(items93));
+    // SubsetsBinary(items93, AS(items93));
 #endif 
 #if 0
     //
