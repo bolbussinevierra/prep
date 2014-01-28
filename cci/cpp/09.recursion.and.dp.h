@@ -258,8 +258,8 @@ void GetPermutations(string& s, size_t start, vector<string>& perms){
     else {
         vector<string> otherPerms;
         GetPermutations(s, start+1, otherPerms);
-        for (size_t i = 0; i < otherPerms.size(); ++i) {
-            Expand(otherPerms[i], s[start], perms);
+        for (string& previous_string : otherPerms) {
+            Expand(previous_string, s[start], perms);
         }
     }
 }
