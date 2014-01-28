@@ -383,8 +383,9 @@ int CountWaysToMakeChangeBroken(int n) {
     }
 }
 
-int CountWaysToMakeChangeRecursive(int n, int denom) {
-    printf("n=%d, denom=%d\n", n, denom); 
+
+
+int CountWaysToMakeChangeRecursive(int n, int denom, int indent=0) {
     int nextDenom = 0;
     switch (denom) {
         case 25:
@@ -397,15 +398,14 @@ int CountWaysToMakeChangeRecursive(int n, int denom) {
             nextDenom = 1;
             break;
         case 1:
-            //printf("returning 1\n"); 
+            tabout(indent); cout << " and " << n << " in 1s" << endl;
             return 1;
     }
 
     int ways = 0;
     for (int i = 0; denom*i <= n; ++i) {
-        //printf("i=%d\n", i); 
-        ways += CountWaysToMakeChangeRecursive(n - i*denom, nextDenom);
+        if (i != 1) tabout(indent); cout << " " << i*denom << " in " << denom;
+        ways += CountWaysToMakeChangeRecursive(n - i*denom, nextDenom, indent+1);
     }
-    //printf("ways=%d\n", ways); 
     return ways;
 }

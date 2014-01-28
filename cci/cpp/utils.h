@@ -62,3 +62,5 @@ void _swap(T* a, T* b) {
     *a = *b;
     *b = temp;
 }
+
+void tabout(int value);

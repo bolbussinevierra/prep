@@ -326,7 +326,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     PrintParens(4);
 #endif
-#if 0
+#if 1
     //
     // 9.7
     //
@@ -334,9 +334,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // causes us to run into problems because it double counts combinations that are the
     // same when dealing with coins (e.g [1c,5c] is the same as [5c,1c] whereas if this
     // was ways of stepping instead of coins, they would indeed be two different ways
-    int amount = 1 * 6;
+    int amount = 50;
     //printf("Ways to change make for [%d cents] is %d \n", amount, CountWaysToMakeChangeBroken(amount));
-    CountWaysToMakeChangeRecursive(50, 25);
+    CountWaysToMakeChangeRecursive(amount, 25);
 #endif
 #if 0
     //
