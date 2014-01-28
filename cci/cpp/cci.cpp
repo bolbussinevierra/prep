@@ -17,10 +17,10 @@
 #if 0
 #include "05.bits.h"
 #endif
-#if 1
+#if 0
 #include "07.math.and.probability.h"
 #endif
-#if 0
+#if 1
 #include "09.recursion.and.dp.h"
 #endif
 #if 0
@@ -291,6 +291,18 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     printf("\n FindPathTo=%d\n", FindPathTo(width, height));
 
 #endif
+#if 0
+    //
+    // 9.3 
+    //
+    //            0   1    2  3  4  5   6  7  8  9   10
+    int a1[] = {-40, -20, -1, 1, 2, 3, 5, 7, 9, 12, 13};
+    int a2[] = {-10, -5,   2, 2, 2, 3, 4, 7, 9, 12, 13}; 
+    vector<int> v1(a1, a1+AS(a1));
+    vector<int> v2(a2, a2+AS(a2));
+    cout << "Magic Index in A1 is=" << MagicIndexUnique(v1) << endl;
+    cout << "Magic Index in A2 is=" << MagicIndexDuplicates(v2) << endl;
+#endif 
 #if 0
     //
     // 9.4

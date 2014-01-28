@@ -98,6 +98,45 @@ bool FindPathTo(int ex, int ey) {
 //
 // 9.3
 //
+int _MagicIndexUnique(vector<int> const& v, int start, int end) {
+    if (start > end) return -1;
+
+    int mid = (start + end) / 2;
+
+    if (v[mid] == mid) 
+        return mid;
+    else if (v[mid] > mid) 
+        return _MagicIndexUnique(v, start, mid-1);
+    else 
+        return _MagicIndexUnique(v, mid+1, end);
+}
+
+int MagicIndexUnique(vector<int> const& v) {
+    return _MagicIndexUnique(v, 0, v.size() - 1);
+}
+
+int _MagicIndexDuplicates(vector<int> const& v, int start, int end) {
+    if (start > end) return -1;
+
+    int mid = (start + end)/2;
+ 
+    if (v[mid] == mid) 
+        return mid;
+    
+    int left = _MagicIndexDuplicates(v, start, min(mid-1, v[mid]));
+    if (left != -1) return left;
+
+    int right = _MagicIndexDuplicates(v, max(mid+1, v[mid]), end);
+    return right;
+}
+
+int MagicIndexDuplicates(vector<int> const& v) {
+    return _MagicIndexDuplicates(v, 0, v.size() - 1);
+}
+
+//
+// 9.4
+//
 void Subsets(vector<int>& items, int start, vector<vector<int>>& sets) {
     if(start == items.size()){
         vector<int> empty;
