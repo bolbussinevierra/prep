@@ -2,8 +2,24 @@
 
 //
 // 9.1
-//
-int ways(int n) {
+// DP runs in linear order! 
+int steps[3] = {1, 2, 3};
+int WaysDP(int n) {
+    
+    vector<int>table(n+1, 0);
+    table[0] = 1;
+
+    for (int i = 1; i <= n; ++i) 
+        for (int k = 0; k < AS(steps); ++k) // this is a constant factor (3)!
+            if (i - steps[k] >= 0) 
+                table[i] += table[i - steps[k]];
+
+    return table[n];
+}
+
+/// INEFFICIENT!!! Needs to be memoized! better implementation is 
+/// to do a bottom up recursive implementation of this 0(3N)
+int WaysExponential(int n) {
     if (n < 0) {
         return 0;
     } 
@@ -14,7 +30,7 @@ int ways(int n) {
         return 1; 
     }
     else {
-        return ways(n - 1) + ways(n - 2) + ways(n - 3);
+        return WaysExponential(n - 1) + WaysExponential(n - 2) + WaysExponential(n - 3);
     }
 }
 
@@ -384,28 +400,29 @@ int CountWaysToMakeChangeBroken(int n) {
 }
 
 
-
-int CountWaysToMakeChangeRecursive(int n, int denom, int indent=0) {
-    int nextDenom = 0;
+int CountWaysToMakeChangeMemoized(int n, int denom) {
+    int next_denom = 0;
+    cout << n << " " << denom << endl;
     switch (denom) {
         case 25:
-            nextDenom = 10;
+            next_denom = 10;
             break;
         case 10:
-            nextDenom = 5;
+            next_denom = 5;
             break;
         case 5:
-            nextDenom = 1;
+            next_denom = 1;
             break;
         case 1:
-            tabout(indent); cout << " and " << n << " in 1s" << endl;
             return 1;
     }
 
     int ways = 0;
-    for (int i = 0; denom*i <= n; ++i) {
-        if (i != 1) tabout(indent); cout << " " << i*denom << " in " << denom;
-        ways += CountWaysToMakeChangeRecursive(n - i*denom, nextDenom, indent+1);
-    }
+    for (int i = 0; denom*i <= n; ++i) 
+        ways += CountWaysToMakeChangeMemoized(n - i*denom, next_denom);
+    
     return ways;
 }
+
+// tabout(indent); cout << " and " << n << " in 1s" << endl;
+// if (denom != 1) tabout(indent); cout << " " << i*denom << " in " << denom;

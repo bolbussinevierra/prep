@@ -277,8 +277,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     // 9.1
     //
-    for (int i = 4; i >=0; --i) {
-        printf("WAYS(%d)=%d\n",i, ways(i));
+    for (int i = 10; i >=0; --i) {
+        printf("WAYSDP(%d)      =%d\n",i, WaysDP(i));
+        printf("WAYS(%d)        =%d\n",i, WaysExponential(i));
     }
 #endif
 #if 0
@@ -326,7 +327,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     PrintParens(4);
 #endif
-#if 1
+#if 0
     //
     // 9.7
     //
@@ -334,9 +335,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // causes us to run into problems because it double counts combinations that are the
     // same when dealing with coins (e.g [1c,5c] is the same as [5c,1c] whereas if this
     // was ways of stepping instead of coins, they would indeed be two different ways
-    int amount = 50;
-    //printf("Ways to change make for [%d cents] is %d \n", amount, CountWaysToMakeChangeBroken(amount));
-    CountWaysToMakeChangeRecursive(amount, 25);
+    int amount = 25;
+    cout << "Ways to make change for " << amount << "=" << CountWaysToMakeChangeMemoized(amount, 25);
 #endif
 #if 0
     //
