@@ -33,10 +33,6 @@ typedef vector<vector<int>> matrix;
 typedef pair<int, int> Point;
 typedef pair<double, double> DoublePoint;
 
-static void Print(Point const& p) {
-    cout << "[" << p.first << "," << p.second << "]" << endl;
-}
-
 
 template <typename t>
 void Print(char* tag, vector<t> const& items) {
@@ -62,5 +58,8 @@ void _swap(T* a, T* b) {
     *a = *b;
     *b = temp;
 }
-
+/*
+    DECLARATIONS
+*/
 void tabout(int value);
+void Print(Point const& p); 
