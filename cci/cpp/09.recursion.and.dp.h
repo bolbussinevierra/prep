@@ -460,3 +460,63 @@ int CountWaysToMakeChangeBroken(int n) {
                CountWaysToMakeChangeBroken(n - 1);
     }
 }
+//
+// 9.9
+//
+
+bool _IsSafe(vector<int>& row_set, int row, int col) {
+    // check all the left columns to see if they have a queen on the same
+    // row
+    for (int col_prev = 0; col_prev < col; ++col_prev) {
+        int row_in_col_prev = row_set[col_prev];
+        if (row_in_col_prev == row) 
+            return false;
+
+        // check the diagnonals. If the distance between the columns 
+        // equals the distance of rows (comparing existing queens with
+        // the current protential queen)
+        int dist_row = abs(row_in_col_prev - row);
+        int dist_col = col - col_prev;
+        if (dist_col == dist_row) 
+            return false;
+    }
+    return true;
+}
+
+// rows[k] = i, means in column K, queen is at row i 
+bool SolveQueensColByCol(vector<int>& row_set, int col) {
+    if (col >= row_set.size())
+        return true;
+
+    // consider this column and try placing this queen in all rows
+    // of the column one by one
+    for (int row = 0; row < row_set.size(); ++row) {
+        if(_IsSafe(row_set, row, col)) {
+            row_set[col] = row;    // place queen at this row in this col
+
+            // recur and see if this leads to a solution
+            if (SolveQueensColByCol(row_set, col+1))
+                return true;
+
+            // back track
+            row_set[col] = 0;
+        }
+    }
+    // no solution found at this level
+    return false;
+}
+
+void DrawBoard(vector<int>& row_set) {
+    int n = row_set.size();
+    for (int i = n-1; i >= 0; --i) { 
+        for (int k = 0; k < n; ++k) {
+            if (row_set[k] == i) {
+                cout << setw(2) << "Q" ;
+            }
+            else {
+                cout << setw(2) << "_";
+            }
+        }
+        cout << endl;
+    }
+}

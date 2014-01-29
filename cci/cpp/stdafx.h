@@ -24,6 +24,7 @@
 // stl headers
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <map>
 #include <vector>

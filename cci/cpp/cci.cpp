@@ -329,7 +329,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #endif
 #if 0
     //
-    // 9.7
+    // 9.8
     //
     // First, attempting to calculate the same way as the "ways to climb stairs" problem
     // causes us to run into problems because it double counts combinations that are the
@@ -343,6 +343,17 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << title << amount << "=" << CountWaysToMakeChangeDP(amount, coins) << endl;
     cout << title << amount << "=" << CountWaysToMakeChangeMemoized(amount, coins);
 #endif
+#if 0
+    //
+    // 9.9
+    //
+    vector<int> row_set(32, 0);
+    SolveQueensColByCol(row_set, 0);
+    DrawBoard(row_set);
+#endif 
+    //
+    // 9.10 -- Box stacking problem. See solution under dp
+    //
 #if 0
     //
     // 10.3
