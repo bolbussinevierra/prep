@@ -327,7 +327,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     PrintParens(4);
 #endif
-#if 0
+#if 1
     //
     // 9.7
     //
@@ -335,8 +335,11 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // causes us to run into problems because it double counts combinations that are the
     // same when dealing with coins (e.g [1c,5c] is the same as [5c,1c] whereas if this
     // was ways of stepping instead of coins, they would indeed be two different ways
-    int amount = 25;
-    cout << "Ways to make change for " << amount << "=" << CountWaysToMakeChangeMemoized(amount, 25);
+    int amount = 6;
+    int c[] = {25,10,5,1};
+    vector<int> coins(c, c+AS(c));
+    cout << "Ways to make change for " << amount << "=" 
+        << CountWaysToMakeChangeMemoized(amount, coins, 0);
 #endif
 #if 0
     //

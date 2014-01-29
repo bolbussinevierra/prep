@@ -399,29 +399,29 @@ int CountWaysToMakeChangeBroken(int n) {
     }
 }
 
+int _CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, 
+                               int denom_index, IntTable2D& cache) {
 
-int CountWaysToMakeChangeMemoized(int n, int denom) {
-    int next_denom = 0;
-    cout << n << " " << denom << endl;
-    switch (denom) {
-        case 25:
-            next_denom = 10;
-            break;
-        case 10:
-            next_denom = 5;
-            break;
-        case 5:
-            next_denom = 1;
-            break;
-        case 1:
-            return 1;
-    }
-
-    int ways = 0;
-    for (int i = 0; denom*i <= n; ++i) 
-        ways += CountWaysToMakeChangeMemoized(n - i*denom, next_denom);
+    if (cache[n][denom_index] != -1) 
+        return cache[n][denom_index];
     
+    int ways = 0;
+    if (denom_index == coins.size() - 1) { // lowest value coin is last (1 cent)
+        ways = 1;
+    } 
+    else {
+        for (int i = 0; coins[denom_index]*i <= n; ++i) {
+            ways += _CountWaysToMakeChangeMemoized(n - i*coins[denom_index], coins,
+                                                denom_index + 1, cache);
+        }
+    }
+    cache[n][denom_index] = ways;
     return ways;
+}
+
+int CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, int denom_index) {
+    IntTable2D cache(n+1, vector<int>(coins.size(), -1));
+    return _CountWaysToMakeChangeMemoized(n, coins, denom_index, cache);
 }
 
 // tabout(indent); cout << " and " << n << " in 1s" << endl;
