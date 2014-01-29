@@ -378,6 +378,35 @@ bool PaintFill(
 //
 // 9.8
 //
+int CountWaysToMakeChangeDP_SpaceOptimized(int n, vector<int> const& coins)
+{
+    n; coins;
+    // in this case, we take each coin in turn and add to all cells that are less
+    // than the value of the coin. Needs only O(N) space
+    return 1;
+}
+int CountWaysToMakeChangeDP(int n, vector<int> const& coins) {
+    //
+    // We can build DP based on the counting classes:
+    // ways = ways that include coin m + ways that dont include coin m
+    //
+    IntTable2D table(n+1, vector<int>(coins.size(), 0));
+
+    // initialize
+    for (int m = 0; m < coins.size(); ++m)
+        table[0][m] = 1; // there 1 way is no change
+
+    for (int i = 1; i <= n; ++i) {
+        for (int m = 0; m < coins.size(); ++m) {
+            int include_coin = (i - coins[m] >= 0) ? table[i-coins[m]][m] : 0;
+            int exclude_coin = (m > 0) ? table[i][m-1] : 0;
+
+            table[i][m] = include_coin + exclude_coin;
+        }
+    }
+    return table[n][coins.size() - 1];
+}
+
 int _CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, 
                                int denom_index, IntTable2D& cache) {
     if (denom_index == 0) // lowest value coin
