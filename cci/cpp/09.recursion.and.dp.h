@@ -380,11 +380,17 @@ bool PaintFill(
 //
 int CountWaysToMakeChangeDP_SpaceOptimized(int n, vector<int> const& coins)
 {
-    n; coins;
     // in this case, we take each coin in turn and add to all cells that are less
     // than the value of the coin. Needs only O(N) space
-    return 1;
+    vector<int> table(n+1, 0);
+    table[0] = 1;
+    for (int m = 0; m < coins.size(); ++m)
+        for (int k=coins[m]; k <= n; ++k)
+            table[k] += table[k-coins[m]];
+                
+    return table[n];
 }
+
 int CountWaysToMakeChangeDP(int n, vector<int> const& coins) {
     //
     // We can build DP based on the counting classes:

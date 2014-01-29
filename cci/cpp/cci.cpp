@@ -327,7 +327,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     PrintParens(4);
 #endif
-#if 1
+#if 0
     //
     // 9.7
     //
@@ -339,6 +339,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int c[] = {1, 5, 10, 25};
     vector<int> coins(c, c+AS(c));
     char * title = "Ways to make change for ";
+    cout << title << amount << "=" << CountWaysToMakeChangeDP_SpaceOptimized(amount, coins) << endl;
     cout << title << amount << "=" << CountWaysToMakeChangeDP(amount, coins) << endl;
     cout << title << amount << "=" << CountWaysToMakeChangeMemoized(amount, coins);
 #endif
