@@ -336,10 +336,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // same when dealing with coins (e.g [1c,5c] is the same as [5c,1c] whereas if this
     // was ways of stepping instead of coins, they would indeed be two different ways
     int amount = 6;
-    int c[] = {25,10,5,1};
+    int c[] = {1, 5, 10, 25};
     vector<int> coins(c, c+AS(c));
-    cout << "Ways to make change for " << amount << "=" 
-        << CountWaysToMakeChangeMemoized(amount, coins, 0);
+    cout << "Ways to make change for " << amount << "=" << CountWaysToMakeChangeMemoized(amount, coins);
 #endif
 #if 0
     //

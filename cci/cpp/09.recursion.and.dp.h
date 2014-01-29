@@ -377,6 +377,33 @@ bool PaintFill(
 
 //
 // 9.8
+//
+int _CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, 
+                               int denom_index, IntTable2D& cache) {
+    if (denom_index == 0) // lowest value coin
+        return 1;
+
+    if (cache[n][denom_index] != -1) {
+        // cout << n << ":" << coins[denom_index] << " from cache" << endl;
+        return cache[n][denom_index];
+    }
+    
+    int ways = 0;    
+    for (int i = 0; coins[denom_index]*i <= n; ++i) 
+        ways += _CountWaysToMakeChangeMemoized(n - i*coins[denom_index], coins,
+                                            denom_index-1, cache);
+    
+    cache[n][denom_index] = ways;
+    return ways;
+}
+
+int CountWaysToMakeChangeMemoized(int n, vector<int> const& coins) {
+    IntTable2D cache(n+1, vector<int>(coins.size(), -1));
+    return _CountWaysToMakeChangeMemoized(n, coins, coins.size()-1, cache);
+}
+
+// tabout(indent); cout << " and " << n << " in 1s" << endl;
+// if (denom != 1) tabout(indent); cout << " " << i*denom << " in " << denom;
 // pre-ample - try to calculate the WAYS to make change. Note that if we did 
 // this exactly how we count the ways to go up steps it would not work because
 // it double counts combinations of change we consider the same. For example
@@ -398,31 +425,3 @@ int CountWaysToMakeChangeBroken(int n) {
                CountWaysToMakeChangeBroken(n - 1);
     }
 }
-
-int _CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, 
-                               int denom_index, IntTable2D& cache) {
-
-    if (cache[n][denom_index] != -1) 
-        return cache[n][denom_index];
-    
-    int ways = 0;
-    if (denom_index == coins.size() - 1) { // lowest value coin is last (1 cent)
-        ways = 1;
-    } 
-    else {
-        for (int i = 0; coins[denom_index]*i <= n; ++i) {
-            ways += _CountWaysToMakeChangeMemoized(n - i*coins[denom_index], coins,
-                                                denom_index + 1, cache);
-        }
-    }
-    cache[n][denom_index] = ways;
-    return ways;
-}
-
-int CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, int denom_index) {
-    IntTable2D cache(n+1, vector<int>(coins.size(), -1));
-    return _CountWaysToMakeChangeMemoized(n, coins, denom_index, cache);
-}
-
-// tabout(indent); cout << " and " << n << " in 1s" << endl;
-// if (denom != 1) tabout(indent); cout << " " << i*denom << " in " << denom;
