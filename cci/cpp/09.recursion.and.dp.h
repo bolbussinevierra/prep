@@ -520,3 +520,73 @@ void DrawBoard(vector<int>& row_set) {
         cout << endl;
     }
 }
+
+typedef unordered_map<string, int> CountCache;
+//
+// 9.10
+// 
+// let f(expr, result, s, e) be the count of ways to parenthesize expr
+// starting at position s and ending at position e such that it evaluates
+// to result
+int _f(string const& expr, bool result, int s, int e, CountCache& cache) {
+    string key = "s:" + to_string(s) + "e:" + to_string(e) + "r:" + to_string(result);
+    if (cache.find(key) != cache.end())
+        return cache[key];
+
+    // are we at the end? Note that we would always end (and start) with a literal
+    // in a properfly formed epxression
+    if (s == e) {
+        if ((expr[s] == '1' && result) ||
+            (expr[s] == '0' && !result)) {
+            return 1;
+        } 
+        else {
+            return 0;
+        }
+    }
+
+    int c = 0;
+    // look for the next operator. Note that operators have to be 2 characters
+    // apart since we cannot have two operators next to each other
+    if (result) {
+        for (int i = s+1; i <= e; i += 2) {
+            char op = expr[i];
+            if (op == '&') {
+                c += _f(expr, true, s, i-1, cache) * _f(expr, true, i+1, e, cache);
+            }
+            else if (op == '|') {
+                c += _f(expr, true, s, i-1, cache) * _f(expr, true, i+1, e, cache);
+                c += _f(expr, false, s, i-1, cache) * _f(expr, true, i+1, e, cache);
+                c += _f(expr, true, s, i-1, cache) * _f(expr, false, i+1, e, cache);
+            }
+            else if (op == '^') {
+                c += _f(expr, true, s, i-1, cache) * _f(expr, false, i+1, e, cache);
+                c += _f(expr, false, s, i-1, cache) * _f(expr, true, i+1, e, cache);
+            }
+        }
+    }
+    else {
+        for (int i = s+1; i <= e; i += 2) {
+            char op = expr[i];
+            if (op == '&') {
+                c += _f(expr, false, s, i-1, cache) * _f(expr, false, i+1, e, cache);
+                c += _f(expr, false, s, i-1, cache) * _f(expr, true, i+1, e, cache);
+                c += _f(expr, true, s, i-1, cache) * _f(expr, false, i+1, e, cache);
+            }
+            else if (op == '|') {
+                c += _f(expr, false, s, i-1, cache) * _f(expr, false, i+1, e, cache);
+            }
+            else if (op == '^') {
+                c += _f(expr, true, s, i-1, cache) * _f(expr, true, i+1, e, cache);
+                c += _f(expr, false, s, i-1, cache) * _f(expr, false, i+1, e, cache);
+            }
+        }
+    }
+    cache[key] = c;
+    return c;
+}
+
+int f(string const& expr, bool result, int s, int e) {
+    CountCache cache;
+    return _f(expr, result, s, e, cache);
+}

@@ -355,6 +355,10 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 9.10 -- Box stacking problem. See solution under dp
     //
 #if 0
+    string expr = "1&0^1"; // answer should be two for true
+    cout << f(expr, true, 0, expr.length()-1) << endl;
+#endif
+#if 0
     //
     // 10.3
     //
