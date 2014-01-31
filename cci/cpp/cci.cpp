@@ -26,7 +26,7 @@
 #if 0
 #include "10.scalability.and.mem.limits.h"
 #endif
-#if 1
+#if 0
 #include "11.sorting.and.searching.h"
 #endif
 #if 0
@@ -372,8 +372,6 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     CheckDuplicates(_getArray());
 #endif
 
-#pragma endregion move along as problems are reviewed
-
 #if 0
     //
     // 11.1
@@ -392,7 +390,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     _P(ms, AS(ms));
 
 #endif
-#if 1
+#if 0
     //
     // 11.2
     //
@@ -421,20 +419,31 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     char* a115[] = {"at","","","","ball","","","car","","","dad","",""}; 
     printf("found '%s' at index = %d\n", target, FindString(a115, AS(a115), target));
 #endif
+
 #if 0
     //
     // 11.6
     //
     Location l = {-1,-1};
-    int a116[4][5] = 
+#define ROWS 4
+#define COLS 5
+    int a116[ROWS][COLS] = 
     { {1, 22, 23, 24, 25},
       {12,33, 34, 35, 36},
       {13,44, 45, 46, 46},
       {14,55, 56, 57, 58}}; 
     int find = 35;
-    bool found = SearchMatrix(a116,find,5,4,&l);
+    bool found = SearchGrid(a116,find,COLS,ROWS,&l);
+    matrix grid;
+    Make2DVector(a116, ROWS, COLS, grid);
+    Point p = SearchGridBinary(grid, make_pair(0, 0), 
+                             make_pair(grid.size() - 1, grid[0].size() - 1), find);
+    cout << "SearchGridBinary found" << find << " at "; Print(p); cout << endl;
     printf("Found=%d for elem=%d at location (row=%d, col=%d)", found, find, l.row, l.col);  
 #endif
+
+#pragma endregion move along as problems are reviewed
+
 #if 0
     //
     // 11.7
@@ -481,12 +490,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         { Empty, O,     Empty, Empty },
         { O,     Empty, Empty, Empty }
     };
-    vector<vector<Type>> b(BS, vector<Type>(BS));
-    for (size_t row = 0; row < BS; ++row) {
-        for (size_t col = 0; col < BS; ++col) {
-            b[row][col] = _b[row][col];
-        }
-    }
+    vector<vector<Type>> b; 
+    Make2DVector(_b, BS, BS, b);
     Move m = {0, 3, O};
     cout << m.value << " has made a winning move?=" << IsWinningMove(m, b); 
 #endif
@@ -673,10 +678,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         {0,0,1},
         {0,0,1}
     };
-    vector<vector<int>> v(DIM, vector<int>(DIM));
-    for (int i = 0; i < DIM; ++i) {
-        v[i].assign(s1811[i], s1811[i] + DIM);
-    }
+    vector<vector<int>> v; 
+    Make2DVector(s1811, DIM, DIM, v);
     result res;
     if (GetSquare(v, res)) {
         cout << "Found Square! \n" ;
@@ -697,10 +700,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         { 3, 8, 10, 1, 3},
         {-4,-1, 1, 7, -6}
     };
-    vector<vector<int>> v(DIM_ROW, vector<int>(DIM_COL));
-    for (int i = 0; i < DIM_ROW; ++i) {
-        v[i].assign(s1812[i], s1812[i] + DIM_COL);
-    }
+    vector<vector<int>> v; 
+    Make2DVector(s1812, DIM_ROW, DIM_COL, v);
     Rect res;
     int max_sum = Kadane2D(v, res);
     cout << "Maximum_Sum=" << max_sum << endl;
@@ -770,10 +771,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         {1,1,1,1,1,0},
     };
 
-    matrix v(DIM_ROW, vector<int>(DIM_COL));
-    for (int i = 0; i < DIM_ROW; ++i) {
-        v[i].assign(a_matrix[i], a_matrix[i] + DIM_COL);
-    }
+    matrix v;
+    Make2DVector(a_matrix, DIM_ROW, DIM_COL, v);
     Rect res;
     if(SUCCEEDED(LargestSubmatrixOfOnes(v, res))) {
         cout << "largest submatrix = "; 
@@ -945,11 +944,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         'h','i','c','a','h','n',
         'o','r','q','i','n','i'};
 
-    CharTable2D v(ROWS, vector<char>(COLS, 0));
-    for(int r = 0; r < ROWS; ++r)
-        for (int c = 0; c < COLS; ++c) 
-            v[r][c] = word_table[r][c];
-
+    CharTable2D v;
+    Make2DVector(word_table, ROWS, COLS, v);
+    
     PrintLetterPaths("CAT", v);
     /*
         Check if a word exists in a table. Cycles are allowed
@@ -1014,12 +1011,10 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         { -2, -1,   0}, 
         { -1, -3,   6},
     };
-    int ans = ;
+    int ans = 7;
 
-    matrix v(DIM_ROW, vector<int>(DIM_COL));
-    for (int i = 0; i < DIM_ROW; ++i) {
-        v[i].assign(a_matrix[i], a_matrix[i] + DIM_COL);
-    }
+    matrix v;
+    Make2DVector(a_matrix, DIM_ROW, DIM_COL, v);
     cout << "expected=" << ans << " got=" << CountNegatives(v) << endl;
 #endif 
 #if 0

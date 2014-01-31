@@ -6,8 +6,11 @@ template <class T>
 int _qs_partition(T array[], int left, int right) {
     // use the middle element as the pivot. Move it to the left
     // end to get it out of the way. Well remember to move it back
-    // at the end
-    int m = (left + right) / 2;
+    // at the end.
+    // Pivot selection: if we want to be pedantic, we can do a real 
+    // random pivot selection but in practice, picking the middle well performs
+    // acceptably well.
+    int m = (left + right) / 2; 
     _swap(&array[left], &array[m]);
     T p = array[left];
     int cache = left;
@@ -235,7 +238,7 @@ struct Location {
     int col;
 };
 
-bool SearchMatrix(int m[][5], int target, int width, int height, Location* l) {
+bool SearchGrid(int m[][5], int target, int width, int height, Location* l) {
     if (! (width > 0 && height > 0)) return false;
 
     // start at bottom left
@@ -258,6 +261,76 @@ bool SearchMatrix(int m[][5], int target, int width, int height, Location* l) {
     return false;
 }
 
+// "BINARY-SEARCH" solution for this - T(n) = T(n/2) + c lg n. Solution for this ends
+// up as O(n) 
+#pragma region helpers
+bool _InBoundsOf(Point a, matrix const& grid) {
+    return ((a.first >= 0 && a.second >= 0) &&
+            (a.first < grid.size() && a.second < grid[0].size()));
+}
+
+bool _IsBefore(Point a, Point b) {
+    return a.first <= b.first && a.second <= b.second;
+}
+
+Point _GetAverage(Point low, Point high) {
+    return make_pair((low.first + high.first)/2, (low.second + high.second)/2);
+}
+bool _IsNullPoint(Point a) { return a == make_pair(-1, -1); }
+Point _NullPoint() { return make_pair(-1, -1); }
+
+// forward declaration
+Point _PartitionAndSearch(matrix const& grid, Point origin, Point dest, Point pivot, int target);
+#pragma endregion
+
+Point SearchGridBinary(matrix const& grid, Point origin, Point dest, int target) {
+    if (!_InBoundsOf(origin, grid) || !_InBoundsOf(dest, grid)) 
+        return _NullPoint();
+
+    if (grid[origin.first][origin.second] == target)
+        return origin;
+    else { 
+        if (!_IsBefore(origin, dest))
+            return _NullPoint();
+    }
+    /* set start to the start of diagonal and end to the end of the diagonal. Since 
+     * the grid may not be square, the end of the diagonal may not equal dest */
+    Point start = origin;
+    int diag_dist = min(dest.first - origin.first, dest.second - origin.second);
+    Point end = make_pair(start.first+diag_dist, start.second+diag_dist); 
+
+    Point mid = make_pair(0,0);
+    while(_IsBefore(start, end)) {
+        mid = _GetAverage(start, end);
+        if (target == grid[mid.first][mid.second])
+            return mid;
+        else if (target > grid[mid.first][mid.second]) {
+            start.first = mid.first + 1;
+            start.second = mid.second + 1;
+        }
+        else {
+            end.first = mid.first - 1;
+            end.second = mid.second - 1;
+        }
+    }
+    return _PartitionAndSearch(grid, origin, dest, start, target);
+}
+
+Point _PartitionAndSearch(matrix const& grid, Point origin, Point dest, Point pivot,
+                        int target) {
+    Point lower_left_origin = make_pair(pivot.first, origin.second);
+    Point lower_left_dest = make_pair(dest.first, pivot.second - 1);
+    Point upper_right_origin = make_pair(origin.first, pivot.second);
+    Point upper_right_dest = make_pair(pivot.first - 1, dest.second);
+
+    Point lower_left = SearchGridBinary(grid, lower_left_origin, lower_left_dest, target);
+    if (lower_left == _NullPoint()) {
+        return SearchGridBinary(grid, upper_right_origin, upper_right_dest, target);
+    }
+    return lower_left;
+}
+
+      
 //
 // 11.7
 //

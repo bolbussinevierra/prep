@@ -58,6 +58,18 @@ void _swap(T* a, T* b) {
     *a = *b;
     *b = temp;
 }
+
+template <typename t, size_t dim_cols>
+void Make2DVector(t array[][dim_cols], size_t rows, size_t cols, vector<vector<t>>& grid){
+    vector<vector<t>> grid_local(rows, vector<t>(cols));
+    for (size_t row = 0; row < rows; ++row) {
+        for (size_t col = 0; col < cols; ++col) {
+            grid_local[row][col] = array[row][col];
+        }
+    }
+    grid_local.swap(grid);
+}
+
 /*
     DECLARATIONS
 */
