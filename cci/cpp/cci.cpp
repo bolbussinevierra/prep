@@ -26,7 +26,7 @@
 #if 0
 #include "10.scalability.and.mem.limits.h"
 #endif
-#if 0
+#if 1
 #include "11.sorting.and.searching.h"
 #endif
 #if 0
@@ -451,7 +451,6 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     BuildCircusTower(v117);
   
 #endif
-#pragma endregion move along as problems are reviewed
 #if 0
     //
     // 11.8
@@ -469,6 +468,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     printf("GetRank(%d)=%d", locate, r.GetRank(locate));
 
 #endif 
+#pragma endregion move along as problems are reviewed
 #if 0
     //
     // 13.09

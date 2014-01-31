@@ -403,18 +403,18 @@ void BuildCircusTower(vector<htwt>& v) {
 //
 class RankNode {
 private:
-    int m_leftSize;
-    auto_ptr<RankNode> m_left;
-    auto_ptr<RankNode> m_right;
+    int m_left_size;
+    unique_ptr<RankNode> m_left;
+    unique_ptr<RankNode> m_right;
     int m_data;
 public:
-    RankNode(int data):m_data(data), m_leftSize(0) {}
+    RankNode(int data):m_data(data), m_left_size(0) {}
 
     void Insert(int number) {
         if (number <= m_data) {
             if (m_left.get()) m_left->Insert(number);
             else m_left.reset(new RankNode(number));
-            m_leftSize++;
+            m_left_size++;
         }
         else {
             if (m_right.get()) m_right->Insert(number);
@@ -424,7 +424,7 @@ public:
 
     int GetRank(int number) {
         if (number == m_data) {
-            return m_leftSize;
+            return m_left_size;
         }
         else if (number <= m_data) {
             if (!m_left.get()) return -1;
@@ -432,14 +432,14 @@ public:
         }
         else {
             if (!m_right.get()) return -1;
-            return 1 + m_leftSize + m_right->GetRank(number);
+            return 1 + m_left_size + m_right->GetRank(number);
         }
     }
 };
 
 class Rank {
 private:
-    auto_ptr<RankNode> m_root;
+    unique_ptr<RankNode> m_root;
 public:
     void Track(int number) {
         if (!m_root.get()) {
