@@ -20,13 +20,13 @@
 #if 0
 #include "07.math.and.probability.h"
 #endif
-#if 1
+#if 0
 #include "09.recursion.and.dp.h"
 #endif
 #if 0
 #include "10.scalability.and.mem.limits.h"
 #endif
-#if 0
+#if 1
 #include "11.sorting.and.searching.h"
 #endif
 #if 0
@@ -46,6 +46,7 @@
 #endif
 int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 {
+#pragma region reviewed
     srand(time(0));
 #if 0
     //1.1
@@ -370,6 +371,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     CheckDuplicates(_getArray());
 #endif
+
+#pragma endregion move along as problems are reviewed
+
 #if 0
     //
     // 11.1
@@ -388,7 +392,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     _P(ms, AS(ms));
 
 #endif
-#if 0
+#if 1
     //
     // 11.2
     //

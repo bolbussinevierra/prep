@@ -63,3 +63,7 @@ void _swap(T* a, T* b) {
 */
 void tabout(int value);
 void Print(Point const& p); 
+void _P(int a[], int len_a, char* title);
+void _P(int a[], int len_a);
+void rotate(int a[], int len, int rot_count);
+void PrintVector(vector<string>& p, char* title);

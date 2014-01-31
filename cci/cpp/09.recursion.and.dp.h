@@ -234,13 +234,6 @@ void Subsets(int arr[], int length) {
 //
 // 9.5
 //
-void PrintVector(vector<string>& p, char* title) {
-    for (size_t i = 0; i < p.size(); ++i) {
-        printf("%s\n", p[i].c_str());
-    }
-    printf("%s=[%d]\n", title, p.size());
-}
-
 void Combine(string& s, char c, int at, string& out) {
     size_t from = 0;
     size_t to = 0;

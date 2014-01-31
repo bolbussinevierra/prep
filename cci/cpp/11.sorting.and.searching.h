@@ -1,39 +1,7 @@
 #pragma once
-
-//
-//
-//
-void _P(int a[], int lenA, char* title) {
-    printf("%s:", title);
-    for (int i = 0; i < lenA; ++i) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
-}
-
-void rotate(int a[], int len, int rotCount) {
-    if (rotCount == 0) return;
-    _P(a, len, "bef_rotate");
-    vector<int> temp(len);
-    for (int i = 0; i < len; ++i) {
-        int newPos = (i + rotCount) % len;
-        if (newPos < 0) {
-            newPos = len + newPos; // if rotCount was negative, make it positive
-        }
-        temp[newPos] = a[i]; // mod can handle negative math
-    }
-    copy(temp.begin(), temp.end(), a);
-    _P(a, len, "aft_rotate");
-    return;
-}
-
-void _P(int a[], int lenA) {
-    for (int i = 0; i < lenA; ++i) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
-}
-
+//------------------------------------------------------------------------------------
+// QuickSort and MergeSort implementations
+//------------------------------------------------------------------------------------
 template <class T>
 int _qs_partition(T array[], int left, int right) {
     // use the middle element as the pivot. Move it to the left
@@ -45,9 +13,13 @@ int _qs_partition(T array[], int left, int right) {
     int cache = left;
     
     left++; // skip over the pivot
-    while (left <= right) {
-        while (array[left] <= p) left++;
-        while (array[right] > p) right--;
+    while (left <= right) { 
+        while (left <= right && array[left] <= p) 
+            left++;
+
+        while (left <= right && array[right] > p) 
+            right--;
+        
         if (left <= right) {
             _swap(&array[left], &array[right]);
             left++;
@@ -107,7 +79,7 @@ void _mergesort(T array[], int left, int right) {
         _merge(array, left, mid, right);
     }
 }
-
+//------------------------------------------------------------------------------------
 string SortChars(string& s) {
     char* key = new char[s.size()]; 
     s.copy(key, s.size());
@@ -119,18 +91,6 @@ string SortChars(string& s) {
     return value;
 }
 
-void GroupAnagrams(vector<string>& list) {
-    map<string, vector<string>> hashSet;
-    for (size_t i = 0; i < list.size(); ++i) {
-        string key = SortChars(list[i]);
-        hashSet[key].push_back(list[i]);
-    }
-    map<string, vector<string>>::iterator iter;
-    list.clear();
-    for(iter = hashSet.begin(); iter != hashSet.end(); ++iter) {
-        list.insert(list.end(), iter->second.begin(), iter->second.end());
-    }
-}
 //
 // 11.1
 //
@@ -158,6 +118,21 @@ void MergeSorted(int a[], int countA, int b[], int countB) {
     }
 
     _P(a, countA + countB);
+}
+
+//
+// 11.2
+//
+void GroupAnagrams(vector<string>& list) {
+    unordered_map<string, vector<string>> hashSet;
+    for (size_t i = 0; i < list.size(); ++i) {
+        string key = SortChars(list[i]);
+        hashSet[key].push_back(list[i]);
+    }
+    list.clear();
+    for(auto iter = hashSet.begin(); iter != hashSet.end(); ++iter) {
+        list.insert(list.end(), iter->second.begin(), iter->second.end());
+    }
 }
 
 //
