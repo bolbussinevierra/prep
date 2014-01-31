@@ -441,9 +441,6 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << "SearchGridBinary found" << find << " at "; Print(p); cout << endl;
     printf("Found=%d for elem=%d at location (row=%d, col=%d)", found, find, l.row, l.col);  
 #endif
-
-#pragma endregion move along as problems are reviewed
-
 #if 0
     //
     // 11.7
@@ -454,6 +451,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     BuildCircusTower(v117);
   
 #endif
+#pragma endregion move along as problems are reviewed
 #if 0
     //
     // 11.8
