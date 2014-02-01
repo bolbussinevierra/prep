@@ -43,6 +43,8 @@
 #include <hash_set>
 #include <sstream>
 #include <list>
+#include <tuple>
+#include <functional>
 using namespace std;
 
 // project level headers

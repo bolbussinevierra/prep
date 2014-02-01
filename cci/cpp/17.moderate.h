@@ -1,6 +1,25 @@
 #pragma once
 
 //
+// 17.1
+//
+// tuple is just an experimental extravagance here to make for each output 
+// printfing, nothing more
+tuple<int, int> swap_opt(int a , int b) {
+    a = a^b;
+    b = a^b;
+    a = a^b;
+    return make_tuple(a, b);
+}
+
+tuple<int, int> swap_opt2(int a, int b) {
+    a = a - b; // diff
+    b = b + a; // b + diff (=a)
+    a = b - a; // a - diff (=b)
+    return make_tuple(a, b);
+}
+
+//
 // 17.2
 //
 
@@ -70,8 +89,8 @@ bool IsWinningMove(Move m, vector<vector<Type>>& b) {
 }
 
 //
-//
 // 17.3
+// 
 int CountZerosBest(int num) {
     if (num < 0) return -1;
     int count = 0;
@@ -116,6 +135,51 @@ int safe_max_opt(int a, int b) {
 
     return (a * s) + (b * inv_s);
 }
+//
+// 17.5
+//
+struct Result {
+    int hits;
+    int pseudo_hits;
+};
+Result NullResult = {-1, -1};
+
+int get_code(char c) {
+    switch(c) {
+    case 'R': return 0;
+    case 'G': return 1;
+    case 'B': return 2;
+    case 'Y': return 3;
+    default: assert(false); return -1;
+    }
+}
+#define MAX_COLORS 4
+Result estimate(string guess, string solution){
+    if (guess.size() != solution.size() || guess.size() != MAX_COLORS)
+        return NullResult;
+    vector<int> pseudo_hit_frequency(MAX_COLORS, 0);
+    
+    Result res = {0,0};
+    for (int i = 0; i < guess.size(); ++i){
+        if (guess[i] == solution[i])
+            res.hits++;
+        else 
+            // if not a hit, track count of appearances in solution for tracking 
+            // purposed of evaluating pseudo hits
+            pseudo_hit_frequency[get_code(solution[i])]++;
+    }
+
+    // get the pseudo_hits
+    for (int i = 0; i < guess.size(); ++i) {
+        int code = get_code(guess[i]);
+        if (code >=0 && pseudo_hit_frequency[code] > 0 && guess[i] != solution[i]) {
+            res.pseudo_hits++;
+            pseudo_hit_frequency[code]--;
+        }
+    }
+    return res;
+}
+//
 //
 // 17.6
 //

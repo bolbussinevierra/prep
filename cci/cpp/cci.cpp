@@ -27,12 +27,13 @@
 #include "10.scalability.and.mem.limits.h"
 #endif
 #if 0
-#include "11.sorting.and.searching.h"
+// chapter 11 - grouped with 17 as 17 uses sorting functions in it
 #endif
 #if 0
 #include "13.c.and.cplusplus.h"
 #endif
-#if 0
+#if 1
+#include "11.sorting.and.searching.h"
 #include "17.moderate.h"
 #endif
 #if 0
@@ -499,7 +500,14 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << double_array[3][5] << endl;
     free(double_array);
 #endif
-#pragma endregion --- move along as problems are reviewed ----------------------
+#if 0
+    //
+    // 17.1
+    //
+    int a = 5, b = 0;
+    printf("swap(%d,%d)=(%d,%d)\n", a,b, get<0>(swap_opt(a, b)), get<1>(swap_opt(a, b)));
+    printf("swap(%d,%d)=(%d,%d)\n", a,b, get<0>(swap_opt2(a, b)), get<1>(swap_opt2(a, b)));
+#endif 
 #if 0
     //
     // 17.2
@@ -534,6 +542,14 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << "max of 1, 1 = " << safe_max_opt(1,1) << endl;
     cout << "max of -1, -2 = " << safe_max_opt(-1, -2) << endl;
 #endif
+#if 0
+    //
+    // 17.5
+    // 
+    Result res = estimate("GGRR", "RGBY");
+    printf("(hits:%d phits:%d)", res.hits, res.pseudo_hits);
+#endif
+#pragma endregion --- move along as problems are reviewed ----------------------
 #if 0
     //
     // 17.6
