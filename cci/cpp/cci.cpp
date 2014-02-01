@@ -549,7 +549,6 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     Result res = estimate("GGRR", "RGBY");
     printf("(hits:%d phits:%d)", res.hits, res.pseudo_hits);
 #endif
-#pragma endregion --- move along as problems are reviewed ----------------------
 #if 0
     //
     // 17.6
@@ -557,17 +556,24 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int a176[] = {1,2,4,7,10,11,7,12,6,7,16,18,19};
     vector<int> v(a176, a176+AS(a176));
     GetSortRange(v);
+#endif
+#if 0
+    //
+    // 17.7
+    //
+    cout << NumToString(11111111);
 #endif 
 #if 0
     //
     // 17.8
     //
     int a178[] = {2, -8, 3, -2, 4, -10};
-    int a178b[] = {-2, -8, -3, -2, -4, -10};
+    //int a178b[] = {-2, -8, -3, -2, -4, -10};
     vector<int> v(a178, a178+AS(a178));
     PrintMaxSumNaive(v);
     PrintMaxSumBest(v);
 #endif
+#pragma endregion --- move along as problems are reviewed --------------------
 #if 0
     //
     // 17.9
@@ -745,7 +751,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << "Maximum_Sum=" << max_sum << endl;
     cout << "t=" << res.t << " l=" << res.l << " b=" << res.b << " r=" << res.r << endl;   
 #endif 
-
+#pragma region dynamic_programming
     /*
      *
      *   CLASSIC DYNAMIC PROGRAMMING ALGORITHMS
@@ -943,6 +949,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     Print("player_one moves", moves_player_one);
     Print("player_two moves", moves_player_two);
 #endif
+#pragma endregion
+
+#pragma region other_questions
 #if 0
     //
     // OTHER RANDOM QUESTIONS
@@ -1088,6 +1097,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     RemoveByteDuplicates(v);
     for_each(v.begin(), v.end(), [](byte n) { cout << n << endl;});
 #endif 
+#pragma endregion
+
+#pragma region random_experiments
 // -----------------------------------------------------------------------------------
     /*
      * RANDOM EXPERIMENTS IN AWESOME
@@ -1126,6 +1138,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     }
 
 #endif 
+#pragma endregion
     cin.get(); // pause console before exit
     return 0;
 }

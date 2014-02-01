@@ -251,39 +251,108 @@ void GetSortRange(vector<int> const& a) {
     cout << "m=" << minI << " n=" << maxI << endl;
 }
 //
+// 17.7
+//
+string digits[] = {"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"};
+string teens[] = {"Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+string tens[] = {"Ten", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+string bigs[] = {"", "Thousand", "Million"};
+string _NumToString100(int number) {
+    string str = "";
+
+    // convert hundreds place 
+    if (number >= 100) {
+        str += digits[number / 100 - 1] + " Hundred ";
+        number %=100;
+    }
+
+    // convert tens place
+    if (number >= 11 && number <= 19) 
+        return str + teens[number - 11] + " ";
+    else if (number == 10 || number >= 20){
+        str += tens[number / 10 - 1] + " ";
+        number %= 10;
+    }
+
+    // convert ones place
+    if (number >= 1 && number <= 9) 
+        str += digits[number - 1] + " ";
+
+    return str;
+}
+
+string NumToString(int number) {
+    if (number == 0)
+        return "Zero";
+    else if (number < 0)
+        return "Negative " + NumToString(-1*number);
+
+    int count = 0;
+    string str = "";
+
+    // limited to millions
+    while (number > 0) {
+        if (number % 1000 != 0) {
+            str = _NumToString100(number % 1000) + bigs[count] + " " + str;
+        }
+        number /= 1000;
+        count++;
+    }
+    return str;
+}
+
+
+
+
+
+
+//
 // 17.8
 //
 void PrintMaxSumBest(vector<int> const& v) {
-    int bestStart = -1;
-    int bestEnd = -1;
-    int bestSum = 0;
+    int max_sum = numeric_limits<int>::min();
     int sum = 0;
-    int leastNegativeItem = -1; // if v is all negative, best sum is this item
+    int local_start = 0;
+    int first = 0;
+    int last = -1; // will be useful in flagging all negative case
 
-    for (size_t i=0; i < v.size(); ++i) {
-        if (sum == 0) bestStart = i;
+    for (int i = 0; i < v.size(); ++i) {
         sum += v[i];
-        if ((v[i] < 0) && 
-            (leastNegativeItem < 0 || v[leastNegativeItem] < v[i])) {
-            leastNegativeItem = i;
-        }
-        if (bestSum < sum) {
-            bestSum = sum;
-            bestEnd = i;
-        }
-        else if (sum < 0) {
+
+        // make sure we check negative case first!
+        if (sum < 0) {
             sum = 0;
+            local_start = i+1;
+        }
+        else if (sum > max_sum) {
+            max_sum = sum;
+            first = local_start;
+            last = i;
+        }
+        
+    }
+
+    // found at least one non-negative value
+    if (last != -1) {
+        cout << "sum=" << max_sum << " start=" << first << " end=" << last << endl;
+        return;
+    }
+
+    // else we have hit the all negative case. Find the largest negative
+    // number
+    int largest_negative = v[0];
+    first = last = 0;
+    for (int i = 1; i < v.size(); ++i) {
+        if (v[i] > largest_negative) {
+            largest_negative = v[i];
+            first = last = i;
         }
     }
-    if ((bestSum == 0) && (leastNegativeItem != -1)) {
-        cout << "v contained all negative items. best sum =" 
-             << v[leastNegativeItem] << endl;
-    }
-    else {
-        cout << "BestSum=" << bestSum << " start=" << bestStart 
-             << " end=" << bestEnd << endl;
-    }
+    cout << "v contained all negative items. best sum =" 
+             << largest_negative << " at " << first << endl;
+    
 }
+
 int _SumRange(vector<int> const& v, int start, int end) {
     int sum = 0;
     for (int i = start; i <= end; ++i) {
