@@ -26,7 +26,7 @@
 #if 0
 #include "10.scalability.and.mem.limits.h"
 #endif
-#if 1
+#if 0
 #include "11.sorting.and.searching.h"
 #endif
 #if 0
@@ -468,14 +468,38 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     printf("GetRank(%d)=%d", locate, r.GetRank(locate));
 
 #endif 
-#pragma endregion move along as problems are reviewed
+#if 0
+    //
+    // 13.08
+    //
+    {
+        smart_pointer<int> sptr1(new int(1));
+        smart_pointer<int> sptr2(sptr1);
+        smart_pointer<int> sptr3(new int(3));
+        sptr1 = sptr3;
+    }
+
+#endif
 #if 0
     //
     // 13.09
     //
+    bitset<32> mem_value;
     void* mem = aligned_malloc(10, 16);
+    mem_value = (long) mem;
+    cout << mem_value.to_string() << endl;
     aligned_free(mem);
 #endif
+#if 0
+    //
+    // 13.10
+    //
+    int ** double_array = Alloc2D(5, 5);
+    double_array[3][5] = 20;
+    cout << double_array[3][5] << endl;
+    free(double_array);
+#endif
+#pragma endregion --- move along as problems are reviewed ----------------------
 #if 0
     //
     // 17.2
