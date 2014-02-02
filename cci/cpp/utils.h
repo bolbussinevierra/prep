@@ -70,6 +70,39 @@ void Make2DVector(t array[][dim_cols], size_t rows, size_t cols, vector<vector<t
     grid_local.swap(grid);
 }
 
+struct PrintScope {
+    int indent;
+    char* message;
+    char* opt;
+    static void _print_indent(int indent) {
+        for (int i = 0; i < indent; ++i) {
+            cout << " ";
+        }
+    }
+    PrintScope(int indent, char*message, char* opt=" "):indent(indent),message(message), opt(opt) {
+        _print_indent(indent);
+        cout << "Entering " << message;
+        if (!isspace(opt[0])) {
+            cout << opt ;
+        } 
+        cout << endl;
+    }
+    ~PrintScope() {
+        _print_indent(indent);
+        cout << "Leaving " << message;
+        if (!isspace(opt[0])) {
+            cout << opt ;
+        } 
+        cout << endl;
+    }
+
+    static void PrintRecursionTree(int indent, int f, int l) {
+        _print_indent(indent);
+        cout << "f=" << f << " l=" << l << endl;
+    }
+};
+
+
 /*
     DECLARATIONS
 */

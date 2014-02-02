@@ -684,38 +684,6 @@ struct ParseResult {
     }
 };
 
-struct PrintScope {
-    int indent;
-    char* message;
-    char* opt;
-    static void _print_indent(int indent) {
-        for (int i = 0; i < indent; ++i) {
-            cout << " ";
-        }
-    }
-    PrintScope(int indent, char*message, char* opt=" "):indent(indent),message(message), opt(opt) {
-        _print_indent(indent);
-        cout << "Entering " << message;
-        if (!isspace(opt[0])) {
-            cout << opt ;
-        } 
-        cout << endl;
-    }
-    ~PrintScope() {
-        _print_indent(indent);
-        cout << "Leaving " << message;
-        if (!isspace(opt[0])) {
-            cout << opt ;
-        } 
-        cout << endl;
-    }
-
-    static void PrintRecursionTree(int indent, int f, int l) {
-        _print_indent(indent);
-        cout << "f=" << f << " l=" << l << endl;
-    }
-};
-
 typedef unordered_map<int, ParseResult> Cache;
 ParseResult ParseWords(string const& w, int f, int l, Trie const& dict, Cache& cache, int indent=0) {
     if (l >= w.size()) {
