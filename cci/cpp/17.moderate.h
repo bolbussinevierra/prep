@@ -404,7 +404,7 @@ int LookupWord(string& w) {
     std::transform(w.begin(), w.end(), lookup.begin(), ::tolower);
     Trim(lookup);
 
-    map<string, int>::iterator iter = ft.find(lookup);
+    auto iter = ft.find(lookup);
     if (iter == ft.end()) {
         return 0;
     }
@@ -412,17 +412,50 @@ int LookupWord(string& w) {
         return ft[lookup];
     }
 }
+//
+// 17.11
+//
+int _rand5() { return rand() % 5; }
+
+int rand7() {
+    while (true) {
+        int num = 5 * _rand5() + _rand5();
+        while (num < 21)
+            return num % 7;
+    }
+}
+int rand7_cool() {
+    int numspace[5][5] = {
+        {0,1,2,3,4},
+        {5,6,0,1,2},
+        {3,4,5,6,0},
+        {1,2,3,4,5},
+        {6,0,0,0,0},
+    };
+    int result = 0;
+    while (result == 0) {
+        int i = _rand5();
+        int j = _rand5();
+        result = numspace[i][j];
+    }
+    return result;
+}
 
 //
 // 17.12
 //
 // This is order N if there are no duplicates. If there are duplicates
 // then it goes up linearly by a factor related to the number of duplicates
-void CorrectWithoutDuplicateLogic_PrintPairSum_O_N_withHash(vector<int>& v, int sum) {
-    unordered_map<int, int> hm;
+//
+// ON THE QUESTION OF DUPLICATES: seems to only be relevant if we are asked
+// for the INDEXES of pairs that contain values that add up to value. Should
+// avoid the duplicate handling logic unless it makes sense. Space should be 
+// the consideration
+void PrintPairSum_O_N_UsesHashTable_HandlesDuplicates(vector<int>& v, int sum) {
+    unordered_map<int, int> hm; // <complement, duplicate_count>
     for (int i = 0; i < v.size(); ++i) {
         int complement = sum - v[i]; // can overflow. Be ready to address that
-        unordered_map<int, int>::iterator it = hm.find(complement);
+        auto it = hm.find(complement);
         if (it != hm.end()) {
             int duplicates = it->second;
             while (duplicates > 0) {
@@ -434,11 +467,9 @@ void CorrectWithoutDuplicateLogic_PrintPairSum_O_N_withHash(vector<int>& v, int 
     }
 }
 //
-// if we need to print duplicates for the numbers, we would need to do a a 
-// binary search on the remaining right hand side modified to take a hash set
-// for items already found
+// 
 //
-void Correct_PrintPairSum_O_NLogN_InPlace_NoDuplicates(int a[], int len, int sum) {
+void PrintPairSum_O_NLogN_InPlace_NoDuplicates(int a[], int len, int sum) {
     // sort the array nlogn
     _mergesort(a, 0, len-1);
 
@@ -446,17 +477,23 @@ void Correct_PrintPairSum_O_NLogN_InPlace_NoDuplicates(int a[], int len, int sum
     int end = len - 1;
 
     while (start < end) {
-        int pairSum = a[start] + a[end];
+        int pair_sum = a[start] + a[end];
 
-        if (sum == pairSum) {
+        if (sum == pair_sum) {
             cout << "{" << a[start] << "," << a[end] << "}" << endl;
+            // can probably be modified to handle duplicates here by incrementing
+            // start and end separately
             start++;
             end--;
         }
-        else if (pairSum < sum) {
+        else if (pair_sum < sum) {
+            // we need to see a large number to have a shot, therefore the only
+            // way is to increase start (which goes onto a larger number
             start++;
         }
         else {
+            // if we have already exceeded sum, we have to try smaller numbers
+            // only way to do this is to decrement end
             end--;
         }
     }
@@ -464,7 +501,7 @@ void Correct_PrintPairSum_O_NLogN_InPlace_NoDuplicates(int a[], int len, int sum
 
 int ModifiedBinSearch(int a[], int target, int start, int last) {
  
-    if (start > last) return false;
+    if (start > last) return 0;
 
     int mid = (start + last)/2;
     if (a[mid] == target) {
@@ -500,7 +537,7 @@ int ModifiedBinSearch(int a[], int target, int start, int last) {
     }
 }
 
-void WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(
+void PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(
     int a[], int len, int sum) {
     
     // sort the array nlogn

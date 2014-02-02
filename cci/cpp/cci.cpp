@@ -473,11 +473,22 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     // 13.08
     //
+    
     {
         smart_pointer<int> sptr1(new int(1));
         smart_pointer<int> sptr2(sptr1);
         smart_pointer<int> sptr3(new int(3));
         sptr1 = sptr3;
+    }
+    
+    {
+        // cyclic reference memory leak example
+        struct Node { smart_pointer<Node> ptr; };
+        
+        smart_pointer<Node> a (new Node());
+        smart_pointer<Node> b (new Node());
+        a.get()->ptr = b;
+        b.get()->ptr = a;
     }
 
 #endif
@@ -573,7 +584,6 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     PrintMaxSumNaive(v);
     PrintMaxSumBest(v);
 #endif
-#pragma endregion --- move along as problems are reviewed --------------------
 #if 0
     //
     // 17.9
@@ -583,6 +593,17 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     SetupFrequencyTable(v);
     string lookup("Calypso");
     cout << "Frequency of " << lookup << " is=" << LookupWord(lookup) << endl;
+#endif
+#if 0
+    //
+    // 17.11
+    //
+    cout << rand7_cool() << endl;
+    cout << rand7_cool() << endl;
+    cout << rand7_cool() << endl;
+    cout << rand7() << endl;
+    cout << rand7() << endl;
+    cout << rand7() << endl;
 #endif 
 #if 0
     //
@@ -591,11 +612,11 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int a1712[] = {1,2,1,2,1,2,2};
     vector<int> v(a1712, a1712+AS(a1712));
     cout << "O(N) with Hash: ArraySize=" << AS(a1712) << endl;
-    CorrectWithoutDuplicateLogic_PrintPairSum_O_N_withHash(v, 3);
+    PrintPairSum_O_N_UsesHashTable_HandlesDuplicates(v, 3);
     cout << "O(NLogN, NoDupeHandled) ArraySize=" << AS(a1712) << endl;
-    Correct_PrintPairSum_O_NLogN_InPlace_NoDuplicates(a1712, AS(a1712), 3);
+    PrintPairSum_O_NLogN_InPlace_NoDuplicates(a1712, AS(a1712), 3);
     cout << "O(NLogN  DupesHandled) ArraySize=" << AS(a1712) << endl;
-    WorksButNah_PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(a1712, AS(a1712), 3);
+    PrintPairSum_O_NLogN_InPlace_HandlesDuplicates(a1712, AS(a1712), 3);
 #endif
 #if 0
     //
@@ -613,11 +634,14 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     headAgain->Print();
 #endif 
 #if 0
+    //
+    // 17.13
+    // 
     string w("ycatxdog");
     ParseResult result = ParseWords(w);
     cout << "inv:" << result.invalid << " parsed:" <<  result.parsed << endl;
 #endif 
-
+#pragma endregion --- move along as problems are reviewed ---------------------
 #if 0
     //
     // 18.1

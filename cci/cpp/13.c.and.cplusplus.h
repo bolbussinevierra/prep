@@ -44,6 +44,11 @@ private:
 template <typename t>
 class smart_pointer {
 public:
+    smart_pointer()
+        :m_ref(nullptr), m_ref_count(nullptr) 
+    {    
+    }
+
     smart_pointer(t * ptr)
         :m_ref(ptr)
     {
@@ -55,7 +60,8 @@ public:
         ,m_ref_count(sptr.m_ref_count)
 
     {
-        m_ref_count->AddRef();
+        if (m_ref_count)
+            m_ref_count->AddRef();
     }
 
     smart_pointer<t> operator=(smart_pointer<t> const& sptr) {
@@ -66,16 +72,17 @@ public:
 
         m_ref = sptr.m_ref;
         m_ref_count = sptr.m_ref_count;
-        m_ref_count->AddRef();
+        if (m_ref_count) m_ref_count->AddRef();
         return *this;
     }
+    void reset() { Release(); m_ref = nullptr; m_ref_count = nullptr; }
 
     ~smart_pointer() { Release(); }
     t* get() { return m_ref; }
 
 private:
     void Release() {
-        if (0 == m_ref_count->Release()) {
+        if (m_ref_count && 0 == m_ref_count->Release()) {
             delete m_ref_count;
             delete m_ref;
             m_ref_count = nullptr;
