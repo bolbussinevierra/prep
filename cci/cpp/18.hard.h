@@ -50,13 +50,15 @@ void PrintCards(vector<Card> const& cards) {
     cout << endl;
 }
 
+// simulates a real life scenario of picking a random permutation with fair
+// probabilities
 void ShuffleDeck_Mine(vector<Card>& cards) {
     PrintCards(cards);
     int last = cards.size() - 1;
-    for (int i = 0; i < cards.size(); ++i) {
-        int k = random(0, last); 
-        _swap(&cards[k], &cards[last]);
-        last--;
+    for (int i = 0; i < cards.size(); ++i) { // as many items are they are
+        int k = random(0, last);             // pick a random one from remaining
+        _swap(&cards[k], &cards[last]);      // swap it with the last
+        last--;                               // declare the last "dead"
     }
     PrintCards(cards);
 }
@@ -111,6 +113,46 @@ void PickM_CCI(vector<int> const&n, int m) {
 //
 // 18.4
 //
+// count using recursion in order of length of number (LogN)
+typedef unordered_map<int, int> Cache184;
+// take n = 413 as example
+int _CountTwosMemoized(int n, Cache184& cache) {
+    if (n < 2) // base case
+        return 0;
+    else if (cache.find(n) != cache.end()) 
+        return cache[n];
+    
+    int result = 0;
+    int power_10 = 1;
+    while (power_10 * 10 < n) 
+        power_10 *= 10;
+
+    // power_10 = 100
+    int most_significant_digit = n / power_10; // 4
+    int remainder = n % power_10; // 13
+
+    // count # of 2 at the MSD position. eg its 200-299
+    if (most_significant_digit > 2)
+        result += power_10;
+    if (most_significant_digit == 2)
+        // if n is 213, count 200-213 which is remained + 1 (14)
+        result += remainder + 1;
+
+    // count #2 in the remainder:
+    // count recursively the # of 2's from 1 to 100 and then multiply by MSB
+    // this gets the # of 2 in 1 to 100. multiply by msb accounts for the number
+    // of times that range repeats
+    result += most_significant_digit * _CountTwosMemoized(power_10, cache);
+    result += _CountTwosMemoized(remainder, cache);
+    
+    cache[n] = result;
+    return result;
+}
+int CountTwosMemoized(int n) {
+    Cache184 cache;
+    return _CountTwosMemoized(n, cache);
+}
+
 int _CountTwos(int n) {
     int count = 0;
     while (n > 0) {
@@ -171,8 +213,8 @@ int _partition(vector<int>& a, int left, int right) {
     
     left++; // skip over the pivot
     while (left <= right) {
-        while (a[left] <= p) left++;
-        while (a[right] > p) right--;
+        while (left <= right && a[left] <= p) left++;
+        while (left <= right && a[right] > p) right--;
         if (left <= right) {
             _swap(&a[left], &a[right]);
             left++;
@@ -181,7 +223,7 @@ int _partition(vector<int>& a, int left, int right) {
     }
     // restore the pivot to its correct position (before the right half
     // of partition)
-    _swap(&a[cache], &a[right]);
+    _swap(&a[cache], &a[right]); // could also swap with (left - 1);
     return right;
 }
 
@@ -189,15 +231,13 @@ int _get_index_of_nth(vector<int>& a, int n, int left, int right) {
     int pivot_index = _partition(a, left, right);
 
     int left_size = pivot_index - left + 1;
-    if (left_size == n) { // pivot is the right 
+    if (left_size == n)  // pivot is the nth number
         return pivot_index;
-    } 
-    else if (left_size > n) {
+    else if (left_size > n)
         return _get_index_of_nth(a, n, left, pivot_index-1);
-    }
-    else {
+    else
+        // if going right make sure we adjust rank
         return _get_index_of_nth(a, n - left_size, pivot_index+1, right);
-    }
 }
 
 void _test_print_nth(vector<int>& a, int n) {
@@ -205,7 +245,7 @@ void _test_print_nth(vector<int>& a, int n) {
     cout << endl;
 }
 
-void print_n_smallest(vector<int>& a, int n) {
+void print_n_smallest(vector<int> a, int n) {
     if (n <= 0) return;
 
     int nth = _get_index_of_nth(a, n, 0, a.size() -1);

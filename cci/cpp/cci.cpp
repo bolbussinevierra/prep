@@ -301,8 +301,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //            0   1    2  3  4  5   6  7  8  9   10
     int a1[] = {-40, -20, -1, 1, 2, 3, 5, 7, 9, 12, 13};
     int a2[] = {-10, -5,   2, 2, 2, 3, 4, 7, 9, 12, 13}; 
-    vector<int> v1(a1, a1+AS(a1));
-    vector<int> v2(a2, a2+AS(a2));
+    vector<int> v1(begin(a1), end(a1));
+    vector<int> v2(begin(a2), end(a2));
     cout << "Magic Index in A1 is=" << MagicIndexUnique(v1) << endl;
     cout << "Magic Index in A2 is=" << MagicIndexDuplicates(v2) << endl;
 #endif 
@@ -339,7 +339,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // was ways of stepping instead of coins, they would indeed be two different ways
     int amount = 27;
     int c[] = {1, 5, 10, 25};
-    vector<int> coins(c, c+AS(c));
+    vector<int> coins(begin(c), end(c));
     char * title = "Ways to make change for ";
     cout << title << amount << "=" << CountWaysToMakeChangeDP_SpaceOptimized(amount, coins) << endl;
     cout << title << amount << "=" << CountWaysToMakeChangeDP(amount, coins) << endl;
@@ -565,7 +565,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 17.6
     //
     int a176[] = {1,2,4,7,10,11,7,12,6,7,16,18,19};
-    vector<int> v(a176, a176+AS(a176));
+    vector<int> v(begin(a176), end(a176));
     GetSortRange(v);
 #endif
 #if 0
@@ -580,7 +580,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     int a178[] = {2, -8, 3, -2, 4, -10};
     //int a178b[] = {-2, -8, -3, -2, -4, -10};
-    vector<int> v(a178, a178+AS(a178));
+    vector<int> v(begin(a178), end(a178));
     PrintMaxSumNaive(v);
     PrintMaxSumBest(v);
 #endif
@@ -589,7 +589,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 17.9
     //
     char* a179[] = {"FOO", "bar", "CALYpso", "Calypso", "Bar"};
-    vector<string> v(a179, a179+AS(a179));
+    vector<string> v(begin(a179), end(a179));
     SetupFrequencyTable(v);
     string lookup("Calypso");
     cout << "Frequency of " << lookup << " is=" << LookupWord(lookup) << endl;
@@ -610,7 +610,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 17.12
     //
     int a1712[] = {1,2,1,2,1,2,2};
-    vector<int> v(a1712, a1712+AS(a1712));
+    vector<int> v(begin(a1712), end(a1712));
     cout << "O(N) with Hash: ArraySize=" << AS(a1712) << endl;
     PrintPairSum_O_N_UsesHashTable_HandlesDuplicates(v, 3);
     cout << "O(NLogN, NoDupeHandled) ArraySize=" << AS(a1712) << endl;
@@ -654,7 +654,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     //
     Card cards[] = {{0,1}, {0,2}, {0, 3}, {0,4}, {0,5}}; 
-    vector<Card> v(cards, cards+AS(cards));
+    vector<Card> v(begin(cards), end(cards));
     ShuffleDeck_Mine(v);
 #endif
 #if 0
@@ -662,14 +662,15 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 18.3
     //
     int a183[] = {1,2,3,4,5};
-    PickM_MineBetter(vector<int>(a183, a183+AS(a183)), 3);
+    PickM_MineBetter(vector<int>(begin(a183), end(a183)), 3);
 #endif
 #pragma endregion --- move along as problems are reviewed ---------------------
 #if 0
     //
     // 18.4
     // 
-    int n = 22;
+    int n = 3222222;
+    cout << "Twos between 0 and " << n << "=" << CountTwosMemoized(n) << endl;
     cout << "Twos between 0 and " << n << "=" << CountTwosBruteForce(n) << endl;
 #endif
 #if 0
@@ -677,23 +678,23 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 18.5
     //
     char* s185[] = {"foo", "cow", "boy", "bar", "cow", "foo" };
-    cout << "MinDist=" << MinDist("foo", "bar", vector<string>(s185, s185+AS(s185)));
+    cout << "MinDist=" << MinDist("foo", "bar", vector<string>(begin(s185), end(s185)));
 #endif
 #if 0
     //
     // 18.6
     //
     int a186[] = {5,4,3,1,1,2,9,8,7,7,6,10};
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 1);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 2);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 3);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 4);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 5);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 6);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 7);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 8);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 9);
-    print_n_smallest(vector<int>(a186, a186+AS(a186)), 10);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 1);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 2);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 3);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 4);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 5);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 6);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 7);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 8);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 9);
+    print_n_smallest(vector<int>(begin(a186), end(a186)), 10);
 #endif
 #if 0
     //
@@ -701,16 +702,16 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     char* a187[] = { "cat", "cats", "catsdogcats", "catxdogcatsrat", "dog", "dogcatsdog",
         "hippopotamuses", "rat", "ratcatdogcat" };
-    LongestCompoundWord_DP(vector<string>(a187, a187+AS(a187)));
-    LongestCompoundWord_Trie(vector<string>(a187, a187+AS(a187)));
-    LongestCompoundWord_Memo(vector<string>(a187, a187+AS(a187)));
+    LongestCompoundWord_DP(vector<string>(begin(a187), end(a187)));
+    LongestCompoundWord_Trie(vector<string>(begin(a187), end(a187)));
+    LongestCompoundWord_Memo(vector<string>(begin(a187), end(a187)));
 #endif 
 #if 0
     //
     // 18.8
     // 
     char* a188[] = { "cat", "dog", "ass", "assk" };
-    SearchStringIn("catfragdogasbass", vector<string>(a188, a188+AS(a188)));
+    SearchStringIn("catfragdogasbass", vector<string>(begin(a188), end(a188)));
 #endif
 #if 0
     //
@@ -785,7 +786,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #if 0
     /* Knapsack problem */
     Item items[] = {{6,30}, {3,14}, {4,16}, {2,9}};
-    vector<Item> v(items, items+AS(items));
+    vector<Item> v(begin(items), end(items));
     KnapsackRepeats(10, v);
     Knapsack0_1NoRepeats(10, v);
 #endif
@@ -793,15 +794,15 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     /* Making Change */
     int coins[] = {1, 5, 25};
     int limits[] = {60, 1, 3};
-    vector<int> vCoins(coins, coins+AS(coins));
-    vector<int> vLimits(limits, limits+AS(limits));
+    vector<int> vCoins(begin(coins), end(coins));
+    vector<int> vLimits(begin(limits), end(limits));
     MakingChangeInfiniteCoins(65, vCoins);   
     MakingChangeLimitedCoins(65, vCoins, vLimits);
 #endif
 #if 0
     /* Box Stacking */
     Box boxes[] = { {4, 6, 7}, {1, 2, 3}, {4, 5, 6}, {10, 12, 32} };
-    vector<Box> vBoxes(boxes, boxes+AS(boxes));
+    vector<Box> vBoxes(begin(boxes), end(boxes));
     StackBoxes(vBoxes);
 #endif
 #if 0
@@ -824,7 +825,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     /* BALANCED PARTITION */
       
     int a[] = {3,2,1,1,2,1};
-    vector<int> v(a, a+AS(a));
+    vector<int> v(begin(a), end(a));
     balanced_partition(v);
 #endif 
 #if 0
@@ -860,11 +861,11 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int arr5[] = {1,1,1}; // ans=0,1,2
 
     vector<int> cases[] = {
-        vector<int>(arr1, arr1+AS(arr1)),
-        vector<int>(arr2, arr2+AS(arr2)),
-        vector<int>(arr3, arr3+AS(arr3)),
-        vector<int>(arr4, arr4+AS(arr4)),
-        vector<int>(arr5, arr5+AS(arr5)),
+        vector<int>(begin(arr1), end(arr1)),
+        vector<int>(begin(arr2), end(arr2)),
+        vector<int>(begin(arr3), end(arr3)),
+        vector<int>(begin(arr4), end(arr4)),
+        vector<int>(begin(arr5), end(arr5)),
     };
 
     for (vector<int> const& v : cases) {
@@ -890,7 +891,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #if 0
     /* Matrix Multiplication */
     int a[] = {10, 20, 30, 40, 30};
-    vector<int> v(a, a+AS(a));
+    vector<int> v(begin(a), end(a));
     string result;
     string m_print; // simply to print the matrices
     int count = MatrixChainOrder(v, m_print, result);
@@ -905,7 +906,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int set[] = {3, 34, 4, 12, 5, 2};
     int sum = 9;
     vector<int> result;
-    vector<int> v(set, set+AS(set));
+    vector<int> v(begin(set), end(set));
     bool has_subset = SubsetWithSum(v, sum, result);
     if (has_subset) {
         cout << "There is a subset with sum=" << sum << endl;
@@ -950,7 +951,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
      *
      */
     int arr[] = {1, 5, 8, 9, 10, 17, 17, 20};
-    vector<int> p(arr, arr+AS(arr));
+    vector<int> p(begin(arr), end(arr));
     vector<int> cuts;
     int best_price = CutRod(p, cuts);
     cout << "Best Price=" << best_price << endl;
@@ -965,7 +966,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
      *
      */
     int arr[] = {8, 15, 3, 7};
-    vector<int> coins(arr, arr+AS(arr));
+    vector<int> coins(begin(arr), end(arr));
     vector<int> moves_player_one;
     vector<int> moves_player_two;
     int score = BestStrategyForGame(coins, moves_player_one, moves_player_two);
@@ -1031,7 +1032,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         Here 3 does not have the pair (6 does not have one either)
     */
     int a[] = {1, 2, 1, 3, 5, -3, -2, 6, 2, -3, 5, -2};
-    vector<int> v(a, a+AS(a));
+    vector<int> v(begin(a), end(a));
     PrintNumberMissingPair(v);
 #endif
 #if 0
@@ -1059,7 +1060,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     any random node
     */
     int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    vector<int> v(a, a+AS(a));
+    vector<int> v(begin(a), end(a));
     shared_ptr<Link> original = MakeLinkList(v);
     shared_ptr<Link> copy1 = CopyList_O_N_Space_O_N_Speed(original.get());
     shared_ptr<Link> copy2 = CopyList_O_1_Space_O_N_Speed(copy1.get());
@@ -1117,7 +1118,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #if 0
     /* Given a byte array, how would you eliminate duplicate entries */
     byte a[] = {'1','1','1','4','3','4','5','1','6','7','9','3'};
-    vector<byte> v(a, a+AS(a));
+    vector<byte> v(begin(a), end(a));
     RemoveByteDuplicates(v);
     for_each(v.begin(), v.end(), [](byte n) { cout << n << endl;});
 #endif 
