@@ -10,11 +10,11 @@ int _badd(int a, int b) {
 }
 
 int _badd_iterative(int a, int b) {
-    
     int result = a ^ b;
     int carry = (a & b) << 1;
 
     while (carry != 0) {
+        printf("(%d, %d)", a, b);
         int r1 = result ^ carry;
         carry = (result & carry) << 1;
         result = r1;

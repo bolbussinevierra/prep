@@ -32,11 +32,11 @@
 #if 0
 #include "13.c.and.cplusplus.h"
 #endif
-#if 1
+#if 0
 #include "11.sorting.and.searching.h"
 #include "17.moderate.h"
 #endif
-#if 0
+#if 1
 #include "18.hard.h"
 #endif
 #if 0
@@ -641,12 +641,11 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     ParseResult result = ParseWords(w);
     cout << "inv:" << result.invalid << " parsed:" <<  result.parsed << endl;
 #endif 
-#pragma endregion --- move along as problems are reviewed ---------------------
 #if 0
     //
     // 18.1
     //
-    badd(5,-4);
+    badd(174,165);
 #endif 
 #if 0
     //
@@ -665,6 +664,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int a183[] = {1,2,3,4,5};
     PickM_MineBetter(vector<int>(a183, a183+AS(a183)), 3);
 #endif
+#pragma endregion --- move along as problems are reviewed ---------------------
 #if 0
     //
     // 18.4
