@@ -696,15 +696,15 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     print_n_smallest(vector<int>(begin(a186), end(a186)), 9);
     print_n_smallest(vector<int>(begin(a186), end(a186)), 10);
 #endif
-#if 0
+#if 1
     //
     // 18.7
     //
     char* a187[] = { "cat", "cats", "catsdogcats", "catxdogcatsrat", "dog", "dogcatsdog",
         "hippopotamuses", "rat", "ratcatdogcat" };
-    LongestCompoundWord_DP(vector<string>(begin(a187), end(a187)));
+    // LongestCompoundWord_DP(vector<string>(begin(a187), end(a187)));
     LongestCompoundWord_Trie(vector<string>(begin(a187), end(a187)));
-    LongestCompoundWord_Memo(vector<string>(begin(a187), end(a187)));
+    // LongestCompoundWord_Memo(vector<string>(begin(a187), end(a187)));
 #endif 
 #if 0
     //
