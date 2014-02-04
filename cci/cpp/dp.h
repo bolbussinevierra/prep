@@ -621,24 +621,24 @@ HRESULT MinJumps_Greedy_Best_O_N(vi const& v, list<int>& jumps) {
     int unseen_pos = 1; // allows us to not revisit any values we have already seen. Guarantees O(N)
     while (current + v[current] < final) { // if we cant reach end in one hop
         int max_reaching_child = current; // so we can tell if we were able to move forward
-        int max_child_range = 0;
-        int next_in_range = current + v[current];
-        for (int next_child = unseen_pos; next_child <= next_in_range; ++next_child) {
-            int child_range = next_child + v[next_child];
+        int max_child_range = 0; // largest reach we have seen a child offer
+        int next_children_in_range = current + v[current]; // range of children we can cover in the next hop
+        for (int next_child = unseen_pos; next_child <= next_children_in_range; ++next_child) {
+            int child_range = next_child + v[next_child]; 
             if (child_range > max_child_range) {
                 max_child_range = child_range;
                 max_reaching_child = next_child;
             }
         }
 
-        // still on the same end? dead end
+        // if we have not moved, we have hit a dead end. we cannot proceed.
         if (max_reaching_child == current) {
             jumps.clear();
             return E_FAIL;
         }
         // we no longer need to consider elements in previous range since we already picked the optimum
-        // choice from that range
-        unseen_pos = next_in_range + 1;
+        // choice from that range. This guarantees O(N) performance
+        unseen_pos = next_children_in_range + 1; 
         current = max_reaching_child;
         jumps.push_back(current);
     }
@@ -683,7 +683,14 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vi const& v, list<int>& jumps) {
     }
     return S_OK;
 }
-/* Longest Palindrome Subsequence */
+/************************************************************************************* 
+ Longest Palindrome Subsequence 
+ ------------------------------
+ Given a sequence, find the length of the longest palindromic subsequence in it. For 
+ example, if the given sequence is “BBABCBCAB”, then the output should be 7 as 
+ “BABCBAB” is the longest palindromic subsequence in it. “BBBBB” and “BBCBB” are also 
+ palindromic subsequences of the given sequence, but not the longest ones.
+*/
 #define CASE1 1
 #define CASE2 2
 #define CASE3 3
@@ -698,28 +705,23 @@ void _GetLPS(vvi const& back_trace, string const& s, string& lps) {
             i++;
             j--;
         }
-        else if (CASE2 == back_trace[i][j]) {
-            i++;
-        }
-        else if (CASE3 == back_trace[i][j]) {
-            j--;
-        }
-        else {
-            assert(false);
-        }
+        else if (CASE2 == back_trace[i][j]) i++;
+        else if (CASE3 == back_trace[i][j]) j--;
+        else assert(false);
     }
 
     // fill in the first half. Since we filled in from the back, current 
-    // is not pointing to the left most empty slot (looking at the string from left to right).
+    // is now pointing to the left most empty slot (looking at the string from left to right).
     // we can use this to know where to stop as we mirror the second half to create the first half
     // of the palindrom
     int leftmost_blank_slot = current;
     int mirroring_reader = lps.size() - 1;
     int writer = 0;
-    while (writer <= leftmost_blank_slot) { // writing up until where "current" stopped
+    while (writer <= leftmost_blank_slot) // writing up until where "current" stopped
         lps[writer++] = lps[mirroring_reader--];
-    }
+    
 }
+
 int LongestPalindromeSubsequence(string const& s, string &lps) {
     if (s.empty()) return 0;
     if (s.size() == 1) {
@@ -733,8 +735,6 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
     // logic used to create it but this is cleaner
     vvi back_pointer(s.size(), vi(s.size()));
 
-  
-    // gap starts at 1 since we have already taken care of gap=0 (single element strings)
     for (int gap=0; gap < s.size(); ++gap) {
         for (int i = 0; i < s.size()-gap; ++i) {
             int j = i+gap;
@@ -762,10 +762,14 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
     _GetLPS(back_pointer, s, lps);
     return t[0][s.size() - 1];        
 }
-/*
- *
+/*************************************************************************************
  * MATRIX CHAIN MULTIPLICATION
- *
+ * Given a sequence of matrices, find the most efficient way to multiply these 
+ * matrices together. The problem is not actually to perform the multiplications, 
+ * but merely to decide in which order to perform the multiplications.
+ * Given an array p[] which represents the chain of matrices such that the ith matrix 
+ * Ai is of dimension p[i-1] x p[i]. We need to write a function MatrixChainOrder() 
+ * that should return the minimum number of multiplications needed to multiply the chain.
  */
 string _GetMatrix(vi const& p, int i) {
     ostringstream stream;
@@ -779,7 +783,8 @@ void _BuildSolution(vi const& p, vvi const& s, int i, int j, string& result) {
         return;
     }
 
-    string left, right;
+    string left, right; 
+    // note k, the ideal midpoint point to split (left ... right) is s[i][j]
     _BuildSolution(p, s, i, s[i][j], left);
     _BuildSolution(p, s, s[i][j]+1, j, right);
     
@@ -804,7 +809,7 @@ int MatrixChainOrder(vi const& p, string& m_print, string& result) {
 
     /* 
      * t[i,j] = minimum number of scalar multiplications needed to compute the matrix 
-     * A[i]A[i+1] .... A[j-1]A[j]" = A[i...j] where A[i] is p[i-1]x
+     * A[i]A[i+1] .... A[j-1]A[j]" = A[i...j] where A[i] is p[i-1]xp[i]
      */
     int num_matrices = p.size() - 1;
     vvi t(num_matrices+1, vi(num_matrices+1));
@@ -815,12 +820,15 @@ int MatrixChainOrder(vi const& p, string& m_print, string& result) {
     for (int gap=0; gap < num_matrices; ++gap) {
         for(int i = 1; i <= num_matrices-gap; i++) {
             int j = i+gap;
-            if (i == j) {// no cost to "multiply" one matrix (no multiplication to do)
+            if (i == j) // no cost to "multiply" one matrix (no multiplication to do)
                 t[i][j] = 0;
-            }
             else {
                 t[i][j] = numeric_limits<int>::max();
                 for (int k=i; k <= j-1; ++k) {
+                    // divide the matrices set into two at position k. Then the total
+                    // number of multiplications is the the cost of resolving the 
+                    // parenthesizations (i...k) and (k+1 .... j) plus the cost of 
+                    // multiplying those two resulting matrices together
                     int count = t[i][k] + t[k+1][j] + p[i-1]*p[k]*p[j];
                     if (count < t[i][j]) {
                         t[i][j] = count;
