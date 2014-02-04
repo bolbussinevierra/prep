@@ -389,7 +389,7 @@ int CountWaysToMakeChangeDP(int n, vi const& coins) {
     // We can build DP based on the counting classes:
     // ways = ways that include coin m + ways that dont include coin m
     //
-    IntTable2D table(n+1, vi(coins.size(), 0));
+    vvi table(n+1, vi(coins.size(), 0));
 
     // initialize
     for (int m = 0; m < coins.size(); ++m)
@@ -407,7 +407,7 @@ int CountWaysToMakeChangeDP(int n, vi const& coins) {
 }
 
 int _CountWaysToMakeChangeMemoized(int n, vi const& coins, 
-                               int denom_index, IntTable2D& cache) {
+                               int denom_index, vvi& cache) {
     if (denom_index == 0) // lowest value coin
         return 1;
 
@@ -426,7 +426,7 @@ int _CountWaysToMakeChangeMemoized(int n, vi const& coins,
 }
 
 int CountWaysToMakeChangeMemoized(int n, vi const& coins) {
-    IntTable2D cache(n+1, vi(coins.size(), -1));
+    vvi cache(n+1, vi(coins.size(), -1));
     return _CountWaysToMakeChangeMemoized(n, coins, coins.size()-1, cache);
 }
 

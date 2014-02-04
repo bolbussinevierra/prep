@@ -4,6 +4,7 @@ struct Item {
     int weight;
     int value;
 };
+#pragma region print_solution
 /*
 Recreate the decisions made for the knapsack 01 problem
 */
@@ -19,7 +20,7 @@ void PrintKnapsack(int C, vvi const& table, vector<Item> const& items) {
         i--;
     }
 }
-
+#pragma endregion
 
 /*
     Solves the 0-1 Knapsack problem, no repeats
@@ -52,9 +53,9 @@ void Knapsack0_1NoRepeats(int C, vector<Item> const& items) {
     PrintKnapsack(C, table, items); cout << endl;
 }
 /*
-Solves Knapsack problem with a dynamic problem allowing for duplicate
-items
+Solves Knapsack problem via dp allowing for duplicate items
 */
+#pragma region print_solution
 void PrintKnapsack(int C, vi const& R, vector<Item> const& items) {
     if  (C == 0 || R[C] == numeric_limits<int>::min()) {
         cout << "Printing Optimal Knapsack:" << endl;
@@ -63,6 +64,8 @@ void PrintKnapsack(int C, vi const& R, vector<Item> const& items) {
     PrintKnapsack(C - items[R[C]].weight, R, items);
     cout << "{w:" << items[R[C]].weight << ", v:" << items[R[C]].value << "} ";
 }
+#pragma endregion
+
 void KnapsackRepeats(int C, vector<Item> const& items) {
     vi table(C+1, 0); // DP table;
     vi R(C+1, numeric_limits<int>::min()); // item picked for each C. So we can generate solution
@@ -83,7 +86,7 @@ void KnapsackRepeats(int C, vector<Item> const& items) {
     cout << "KnapsacksRepeats(" << C << ")=" << table[C] << endl;
     PrintKnapsack(C, R, items); cout << endl;
 }
-
+#pragma region print_solution
 void PrintSelection(int C, vi const& R, vi const& items) {
     if (C==0 || R[C] == -1) {
         cout << "Selected coins:\n";
@@ -93,7 +96,9 @@ void PrintSelection(int C, vi const& R, vi const& items) {
         cout << items[R[C]] << " ";
     }
 }
-/*
+#pragma endregion
+
+/************************************************************************************
  -MAKING CHANGE-
 */
 void MakingChangeLimitedCoins(int C, vi const& coins, vi const& limits) {
@@ -117,9 +122,7 @@ void MakingChangeLimitedCoins(int C, vi const& coins, vi const& limits) {
                     int next_sum = c+coins[i];
                     if (next_sum <= C) {
                         is_possible[next_sum] = true;
-                        if (-1 == table[next_sum] ||
-                            table[c]+1 < table[next_sum]) 
-                        {
+                        if (-1 == table[next_sum] || table[c]+1 < table[next_sum]){
                             table[next_sum] = table[c]+1;
                             R[next_sum] = i;
                             track[next_sum].assign(track[c].begin(), track[c].end());
@@ -138,7 +141,10 @@ void MakingChangeLimitedCoins(int C, vi const& coins, vi const& limits) {
         cout << "MakingChangeLimitedCoins(" << C << ")=Not possible! \n";
     }
 }
-
+/*
+ Given an infinite supply of coins of denomications 1 < v2 < v3 etc,
+ Find the fewest number of coins needed to make change for an amout 
+ */ 
 void MakingChangeInfiniteCoins(int C, vi const& coins) {
     /*
     For us coins, the greedy algorithm always works (pick the biggest coin
@@ -153,8 +159,8 @@ void MakingChangeInfiniteCoins(int C, vi const& coins) {
     denominations we need to use dynamic programming
     */
     assert(C >= 0);
-    vector<bool> is_possible(C+1, false);
-    vi table(C+1, -1);
+    vector<bool> is_possible(C+1, false); // possible to make change for amount C
+    vi table(C+1, -1); // fewest coins needed to make change for c
     vi R(C+1, -1); //record of coin used for weight each change sum
                             // so result can be reconstructed
 
@@ -163,12 +169,12 @@ void MakingChangeInfiniteCoins(int C, vi const& coins) {
     for (int c = 0; c <= C; ++c) {
         for (int i = 0; i < coins.size(); ++i) {
             if (is_possible[c]) {
-                if (c + coins[i] <= C) {
-                    is_possible[c+coins[i]] = true;
-                    if (-1 == table[c+coins[i]] ||
-                        table[c]+1 < table[c+coins[i]]) {
-                            table[c+coins[i]] = table[c]+1;
-                            R[c+coins[i]] = i;
+                int next_sum = c + coins[i];
+                if (next_sum <= C) {
+                    is_possible[next_sum] = true;
+                    if (-1 == table[next_sum] || table[c]+1 < table[next_sum]) {
+                            table[next_sum] = table[c]+1;
+                            R[next_sum] = i;
                     }
                 }
             }
@@ -182,9 +188,15 @@ void MakingChangeInfiniteCoins(int C, vi const& coins) {
         cout << "MakingChangeInfiniteCoins(" << C << ")=Not possible! \n";
     }
 }
-
-/*
+/*************************************************************************************
  -- BOX STACKING --
+ You are given a set of n types of rectangular 3-D boxes, where the i^th box has 
+ height h(i), width w(i) and depth d(i) (all real numbers). You want to create a stack
+ of boxes which is as tall as possible, but you can only stack a box on top of another
+ box if the dimensions of the 2-D base of the lower box are each strictly larger than 
+ those of the 2-D base of the higher box. Of course, you can rotate a box so that any 
+ side functions as its base. It is also allowable to use multiple instances of the same
+ type of box.
 */
 struct Box {
     double h;
@@ -198,6 +210,11 @@ struct Box {
     void Print() const {
         cout << h << " x (" << w << " x " << l << ")\n";
     }
+
+    bool CanPutUnder(Box const& top) {
+        return w > top.w && l > top.l;
+    }
+
 };
 void AddRotations(vector<Box> const& in, vector<Box>& out) {
     out.reserve(in.size() * 3);
@@ -214,6 +231,7 @@ void AddRotations(vector<Box> const& in, vector<Box>& out) {
         out.push_back(r);
     }
 }
+#pragma region print_solution
 void PrintBoxStack(vi const& prev, int bestEnd, vector<Box> const& b) {
     if (-1 == bestEnd) {
         return;
@@ -221,6 +239,8 @@ void PrintBoxStack(vi const& prev, int bestEnd, vector<Box> const& b) {
     PrintBoxStack(prev, prev[bestEnd], b);
     b[bestEnd].Print();
 }
+#pragma endregion
+
 void StackBoxes(vector<Box> const& b) {
     if (b.empty()) {
         cout << "Error! No boxes to stack \n";
@@ -253,9 +273,8 @@ void StackBoxes(vector<Box> const& b) {
     for (int i = 0; i < rotB.size(); ++i) {
         table[i] = rotB[i].h; // table[i] is at least the height of the i-box in trivial case
         for (int j = i - 1; j >=0; --j) {
-            if ((rotB[j].w > rotB[i].w) && 
-                (rotB[j].l > rotB[i].l) &&
-                (table[j] + rotB[i].h > table[i])) 
+            if (rotB[j].CanPutUnder(rotB[i]) &&
+                (table[j] + rotB[i].h > table[i]))
             {
                 table[i] = table[j] + rotB[i].h;
                 prev[i] = j;
@@ -270,18 +289,18 @@ void StackBoxes(vector<Box> const& b) {
     cout << "StackHeight=" << maxSeen << endl;
     PrintBoxStack(prev, bestEnd, rotB);
 }
-/*
+/*************************************************************************************
  * LCS - LONGEST COMMON SUBSEQUENCE
- *
+ * ---------------------------------
+ * LCS Problem Statement: Given two sequences, find the length of longest subsequence 
+ * present in both of them. A subsequence is a sequence that appears in the same relative 
+ * order, but not necessarily contiguous. For example, “abc”, “abg”, “bdf”, “aeg”, 
+ * ‘”acefg”, .. etc are subsequences of “abcdefg”. So a string of length n has 2^n 
+ * different possible subsequences.
  */
 
 template <class t>
-void PrintLCS(
-    vvi const& table, 
-    int i, int j, 
-    vector<t> const& a,
-    vector<t> const& b) 
-{
+void PrintLCS(vvi const& table, int i, int j, vector<t> const& a, vector<t> const& b) {
     if (0 == i || 0 == j) {
         return;
     }
@@ -300,7 +319,7 @@ void PrintLCS(
 template <class t>
 int _LCS(vector<t> const& a, vector<t> const& b) {
     
-    vvi table (a.size()+1, vi(b.size()+1));
+    vvi table(a.size()+1, vi(b.size()+1));
 
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
@@ -320,10 +339,12 @@ int _LCS(vector<t> const& a, vector<t> const& b) {
     PrintLCS(table, a.size(), b.size(), a, b);
     return table[a.size()][b.size()];
 }
-
-/*
+/*************************************************************************************
  *
  * EDIT DISTANCE
+ * Problem: Given two strings of size m, n and set of operations replace (R), insert 
+ * (I) and delete (D) all at equal cost. Find minimum number of edits (operations) 
+ * required to convert one string into another.
  *
  */
 #define INSERT_COST 1
@@ -331,13 +352,7 @@ int _LCS(vector<t> const& a, vector<t> const& b) {
 #define REPLACE_COST 1
 int min3(int a, int b, int c) { return min(min(a, b), c); }
 
-void print_edit_guide(
-    vvi const& t, 
-    int i, 
-    int j, 
-    string const& a, 
-    string const& b) 
-{
+void PrintEditGuide(vvi const& t, int i, int j, string const& a, string const& b){ 
     if (0==i || 0==j) {
         if (!(i == 0 && j == 0)) {
             
@@ -355,75 +370,74 @@ void print_edit_guide(
         }
     } 
     else if (a[i-1] == b[j-1]) {
-        print_edit_guide(t, i-1, j-1, a, b);
+        PrintEditGuide(t, i-1, j-1, a, b);
         cout << "Match [" << a[i-1] << " with " << b[j-1] << "]\n";
     } 
     else if (t[i-1][j] + DELETE_COST == t[i][j]) {
-        print_edit_guide(t, i-1, j, a, b);
+        PrintEditGuide(t, i-1, j, a, b);
         cout << "Delete [" << a[i-1] << " from a]\n";
     } 
     else if (t[i][j-1] + INSERT_COST == t[i][j]) {
-        print_edit_guide(t, i, j-1, a, b);
+        PrintEditGuide(t, i, j-1, a, b);
         cout << "Insert [" << b[j-1] << " into a]\n";
     }
     else if (t[i-1][j-1] + REPLACE_COST == t[i][j]) {
-        print_edit_guide(t, i-1, j-1, a, b);
+        PrintEditGuide(t, i-1, j-1, a, b);
         cout << "Replace [" << a[i-1] << " in a with " << b[j-1] << " from b]\n";
     }
 }
 
-int get_edit_distance(string const&a, string const&b) {
-    cout << "a (len=" << a.size() << "): " << a.c_str() << endl;
-    cout << "b (len=" << b.size() << "): " << b.c_str() << endl;
+int GetEditDistance(string const&a, string const&b) {
+    printf("a (len=%d): %s \n", a.size(), a.c_str());
+    printf("b (len=%d): %s \n", b.size(), b.c_str());
+    
     vvi t(a.size()+1, vi(b.size()+1));
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
-            if (0==i || 0==j) {
+            if (0==i || 0==j)
                 t[i][j] = max(i, j);
-            }
-            else if (a[i-1] == b[j-1]) { // note that t[i][..] corresponds to a[i-1]
+            else if (a[i-1] == b[j-1]) // note that t[i][..] corresponds to a[i-1]
                 t[i][j] = t[i-1][j-1];
-            }
-            else {
+            else 
                 t[i][j] = min3(t[i-1][j] + DELETE_COST, // deleted last of a
                                t[i][j-1] + INSERT_COST, // inserted last of b into a
                                t[i-1][j-1] + REPLACE_COST); // moved last of b into a
-            }
+            
         }
     }
     cout << "edit_distance=" << t[a.size()][b.size()] << endl;
-    print_edit_guide(t, a.size(), b.size(), a, b);
+    PrintEditGuide(t, a.size(), b.size(), a, b);
     return t[a.size()][b.size()];
 }
-
-/*
+/*************************************************************************************
  BALANCED PARTITION
+ ------------------
+ Partition a set into two subsets such that the difference between sums of the two
+ subsets is minimized
 */
-typedef vector<vector<bool>> ss_table;
-void print_s1(ss_table const& t, int bss, int bse, vi const& a, 
+void PrintS1(vvbool const& t, int bss, int bse, vi const& a, 
               hash_set<int>& s1) 
 {
     if (0 == bss || 0 == bse) {
         cout << "s1=\""; 
         return;
     }
-    else if (t[bss][bse-1]) {
-        print_s1(t, bss, bse-1, a, s1);
-    }
+    else if (t[bss][bse-1])
+        PrintS1(t, bss, bse-1, a, s1);
     else if (bss >= a[bse-1] && t[bss-a[bse-1]][bse-1]) {
-        print_s1(t, bss-a[bse-1], bse-1, a, s1);
+        PrintS1(t, bss-a[bse-1], bse-1, a, s1);
         s1.insert(bse-1);
         cout << a[bse-1] << " ";
     }
-    else {
+    else
         assert(false);
-    }
 }
 
-int balanced_partition(vi const& a) {
+int BalancedPartition(vi const& a) {
     int sum = accumulate(a.begin(), a.end(), 0);
     int half_sum = sum / 2;
-    ss_table t(half_sum+1, vector<bool>(a.size()+1));
+    // t[i][j] is true if sum=i is possible considering the first j items
+    vvbool t(half_sum+1, vector<bool>(a.size()+1));
 
     for (int i = 1; i <= half_sum; ++i) t[i][0] = false; // exclude t[0][0] which is true
     for (int i= 0; i <= a.size(); ++i) t[0][i] = true;
@@ -433,6 +447,7 @@ int balanced_partition(vi const& a) {
 
     for (int i = 1; i <= half_sum; ++i) {
         for (int j = 1; j <= a.size(); ++j) {
+            // dont include jth item, or include it (if its not too big)
             t[i][j] = t[i][j-1] || (i >= a[j-1] ? t[i-a[j-1]][j-1] : false );
             if (t[i][j] && (best_subset_sum < i)) {
                 best_subset_sum = i;
@@ -444,7 +459,7 @@ int balanced_partition(vi const& a) {
     cout << "minimized_difference=" << min_diff << endl;
     hash_set<int> s1;
     
-    print_s1(t, best_subset_sum, best_subset_end, a, s1); 
+    PrintS1(t, best_subset_sum, best_subset_end, a, s1); 
     cout << "\"" << endl;
 
     cout << "s2=\"";
@@ -457,7 +472,13 @@ int balanced_partition(vi const& a) {
 
     return min_diff;
 }
-
+/*************************************************************************************
+   LARGEST SUBMATRIX COMPOSED OF ALL 1's
+   ---------------------------------------
+   Given an M x N matrix of 0 and 1 find the largest submatrix (not neccesarily square)
+   composed of all 1's
+   solution inspired by: http://stackoverflow.com/questions/7770945/largest-rectangular-sub-matrix-with-the-same-number
+*/
 void CloseAllOpenRectanglesHigherThan(unordered_map<int, Rect>& rectangles, int right, 
                                    Rect& max_rect, int height) {
                        
@@ -485,12 +506,9 @@ void CloseAllOpenRectangles(unordered_map<int, Rect>& rectangles, int right,
     return CloseAllOpenRectanglesHigherThan(rectangles, right, max_rect, 0);
 }
 
-/* Largest submatrix composed of all 1's */
-// solution inspired by: http://stackoverflow.com/questions/7770945/largest-rectangular-sub-matrix-with-the-same-number
-HRESULT LargestSubmatrixOfOnes(matrix const& v, Rect& result){
-    // PARAM CHECK
+HRESULT LargestSubmatrixOfOnes(vvi const& v, Rect& result){
 
-    matrix t(v.size(), vi(v[0].size()));
+    vvi t(v.size(), vi(v[0].size()));
 
     // if v[i,j]=1, let t[i,j] represent the count of contigous 1's below (same column) t[i,j] upto 
     // and including it. so note that we are calculating bottom row up. if v[i,j]=0. then t[i,j]=0
@@ -502,29 +520,27 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, Rect& result){
     t[rows-1].assign(v[rows-1].begin(), v[rows-1].end());
     for (int row = rows - 2; row >= 0; --row) {
         for (int col = 0; col < cols; ++col) {
-            if (1 == v[row][col]) {
+            if (1 == v[row][col]) 
                 t[row][col] = t[row+1][col] + 1; // note that row below is (row+1)
-            } 
-            else {
+            else 
                 t[row][col] = 0;
-            }
         }
     }
         
     // Next step is to process all the possible rectangles. We already know the heights from the above
-    // not we need to find the possible widths.
-    unordered_map<int, Rect> rectangles; 
+    // now we need to find the possible widths.
+    unordered_map<int, Rect> rectangles; // we will only have 1 rectangle of a given height open at one time
     Rect max_rect = {-1};
     int final_col = cols-1;
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
             int height = t[row][col];
             
-            // we have run into a gap that cannot be expanded. 
-            if (col > 0 && height == 0) {
+            // we have run into a gap that cannot be expanded, resolve all the open
+            // rectangles whose heights we now do know
+            if (col > 0 && height == 0) 
                 CloseAllOpenRectangles(rectangles, col-1, max_rect);
-            }
-
+            
             // if a rectangle of this height does not exist yet, create it
             // then close all open rectangles that are higher since we now
             // now they cannot share a base with the rectangle we just created.
@@ -535,9 +551,8 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, Rect& result){
                     rectangles.insert(make_pair(height, new_rect));
                 }
                 int previous_col = col-1;
-                if (previous_col >= 0) {
+                if (previous_col >= 0) 
                     CloseAllOpenRectanglesHigherThan(rectangles, previous_col, max_rect, height);
-                }
             }
         }
         // At the end of each row (i.e right=final_col) close, all open rectangles
@@ -546,9 +561,11 @@ HRESULT LargestSubmatrixOfOnes(matrix const& v, Rect& result){
     result = max_rect;
     return S_OK;
 }
-
-int Min3(int a, int b, int c) { return min(min(a,b), c); }
-
+/**************************************************************************************
+   LARGEST SQUARE SUBMATRIX COMPOSED OF ALL 1's
+   ---------------------------------------
+   Given an M x N matrix of 0 and 1 find the largest SQUARE submatrix composed of all 1's
+*/
 void CheckMax(int size, int bottom, int right, Rect& max) {
     Rect rect = {bottom-size+1, bottom, right-size+1, right};
     if (-1 == max.t || rect.Area() > max.Area()) {
@@ -556,10 +573,12 @@ void CheckMax(int size, int bottom, int right, Rect& max) {
     }
 }
 
-HRESULT LargestSquareSubmatrixOfOnes(matrix const& v, Rect& result) {
+HRESULT LargestSquareSubmatrixOfOnes(vvi const& v, Rect& result) {
     int const k_rows = v.size();
     int const k_cols = v[0].size();
-    matrix t(k_rows, vi(k_cols));
+    // t[i][j] is the size of the largest square of 1's whose bottom right corner
+    // is v[i][j]
+    vvi t(k_rows, vi(k_cols)); 
 
     // copy first row and first col as is
     t[0].assign(v[0].begin(), v[0].end());
@@ -574,17 +593,21 @@ HRESULT LargestSquareSubmatrixOfOnes(matrix const& v, Rect& result) {
                 t[row][col] = Min3(t[row-1][col], t[row][col-1], t[row-1][col-1]) + 1;
                 CheckMax(t[row][col], row, col, max_square);
             }
-            else {
+            else 
                 t[row][col] = 0;
-            }
         }
     }
     result = max_square;
     return S_OK;
 }
-//
-// MINIMUM JUMPS - GREEDY IS ACTUALLY BEST
-//
+/*************************************************************************************
+  MINIMUM JUMPS - GREEDY IS ACTUALLY BEST
+  ---------------------------------------
+  Given an array of integers where each element represents the max number of steps that
+  can be made forward from that element. Write a function to return the minimum number
+  of jumps to reach the end of the array (starting from the first element). If an element
+  is 0, then cannot move through that element.
+*/
 HRESULT MinJumps_Greedy_Best_O_N(vi const& v, list<int>& jumps) {
     if (v.empty()) return S_OK;
     if (v.size() == 1) {
@@ -664,7 +687,7 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vi const& v, list<int>& jumps) {
 #define CASE1 1
 #define CASE2 2
 #define CASE3 3
-void _GetLPS(IntTable2D const& back_trace, string const& s, string& lps) {
+void _GetLPS(vvi const& back_trace, string const& s, string& lps) {
     int current = lps.size()-1;
     // get the last half of the palindrome (including the middle character if palindrome
     // is off odd size) from the backtrace table
@@ -704,11 +727,11 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
         return 1;
     }
 
-    IntTable2D t(s.size(), vi(s.size()));
+    vvi t(s.size(), vi(s.size()));
 
     // can use t above to reproduce this if memory is tight by essentially reproducing the 
     // logic used to create it but this is cleaner
-    IntTable2D back_pointer(s.size(), vi(s.size()));
+    vvi back_pointer(s.size(), vi(s.size()));
 
   
     // gap starts at 1 since we have already taken care of gap=0 (single element strings)
@@ -750,7 +773,7 @@ string _GetMatrix(vi const& p, int i) {
     return stream.str();
 }
 
-void _BuildSolution(vi const& p, IntTable2D const& s, int i, int j, string& result) {
+void _BuildSolution(vi const& p, vvi const& s, int i, int j, string& result) {
     if (i == j ) {
         result.assign(_GetMatrix(p, i));
         return;
@@ -784,8 +807,8 @@ int MatrixChainOrder(vi const& p, string& m_print, string& result) {
      * A[i]A[i+1] .... A[j-1]A[j]" = A[i...j] where A[i] is p[i-1]x
      */
     int num_matrices = p.size() - 1;
-    IntTable2D t(num_matrices+1, vi(num_matrices+1));
-    IntTable2D solution(num_matrices+1, vi(num_matrices+1));
+    vvi t(num_matrices+1, vi(num_matrices+1));
+    vvi solution(num_matrices+1, vi(num_matrices+1));
 
     // do make the dependency graph of the table work, we need to calculate m for all submatrices of length
     // l before we calculate the submatrics for l+1
@@ -815,7 +838,7 @@ int MatrixChainOrder(vi const& p, string& m_print, string& result) {
  * Subset Sum problem - is there an array of items that sums to the given sum
  *
  */
-void _GetSubset(BoolTable2D const& t, vi const& v, int items, int sum, vi& result) {
+void _GetSubset(vvbool const& t, vi const& v, int items, int sum, vi& result) {
     if (0 == items) return;
     if (t[items-1][sum]) {
         _GetSubset(t, v, items-1, sum, result);
@@ -829,7 +852,7 @@ void _GetSubset(BoolTable2D const& t, vi const& v, int items, int sum, vi& resul
 // iterative implementation of the same function above done for educative purposes
 // HOWEVER!!! THIS WILL GET THE ITEMS BACKWARDS. WOULD NEED TO USE A LIST FOR FOWARDS
 // so prefer above
-void _GetSubset(BoolTable2D const& t, vi const& v, int sum, vi& result) {
+void _GetSubset(vvbool const& t, vi const& v, int sum, vi& result) {
     for (int i = v.size(); i >=1; --i) {
         if (! t[i-1][sum]) { // because of OR-ing order we need to check this is negative first
             result.push_back(v[i-1]);
@@ -839,7 +862,7 @@ void _GetSubset(BoolTable2D const& t, vi const& v, int sum, vi& result) {
 }
 
 bool SubsetWithSum(vi const& v, int sum, vi& result) {
-    BoolTable2D t(v.size()+1, vector<bool>(sum+1));
+    vvbool t(v.size()+1, vector<bool>(sum+1));
 
     for (int i = 0; i <= v.size(); ++i) {
         for (int s = 0; s <= sum; ++s) {
@@ -880,7 +903,7 @@ int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
     if (sum_to <= dice_count) 
         return (sum_to == dice_count ? 1 : 0);
 
-    IntTable2D table(dice_count+1, vi(sum_to+1, 0)); // initialize all values to 0
+    vvi table(dice_count+1, vi(sum_to+1, 0)); // initialize all values to 0
 
     // dice=1 case Initialize values we can get to in the single through 
     for (int s = 1; s <= sum_to && s <= face_count; ++s) 
@@ -928,7 +951,7 @@ int CutRod(vi const& p, vi& cuts) {
  */
 
 
-void GetMoves(IntTable2D const& t, vi const& coins, vi& moves_player_one, vi& moves_player_two) {  
+void GetMoves(vvi const& t, vi const& coins, vi& moves_player_one, vi& moves_player_two) {  
     int i = 0, j = coins.size() - 1;
     bool player_ones_turn = true;
     while (i <= j) {
@@ -954,7 +977,7 @@ int BestStrategyForGame(vi const& coins, vi& moves_player_one,
     int n = coins.size();
     if (n % 2 != 0) return -1; // coins must be an even number (could alsdo do n & (n-1) != 0)
 
-    IntTable2D table(n, vi(n, 0));
+    vvi table(n, vi(n, 0));
  
     for (int gap = 0; gap < n; ++gap) {
         for (int i=0; i < n-gap; ++i) {

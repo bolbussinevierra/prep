@@ -435,7 +435,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
       {14,55, 56, 57, 58}}; 
     int find = 35;
     bool found = SearchGrid(a116,find,COLS,ROWS,&l);
-    matrix grid;
+    vvi grid;
     Make2DVector(a116, ROWS, COLS, grid);
     Point p = SearchGridBinary(grid, make_pair(0, 0), 
                              make_pair(grid.size() - 1, grid[0].size() - 1), find);
@@ -784,14 +784,14 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
      *
      */
 #if 0
-    /* Knapsack problem */
+    /* KNAPSACK PROBLEM */
     Item items[] = {{6,30}, {3,14}, {4,16}, {2,9}};
     vector<Item> v(begin(items), end(items));
     KnapsackRepeats(10, v);
     Knapsack0_1NoRepeats(10, v);
 #endif
 #if 0
-    /* Making Change */
+    /* MAKING CHANGE WITH FEWEST COINS */
     int coins[] = {1, 5, 25};
     int limits[] = {60, 1, 3};
     vi vCoins(begin(coins), end(coins));
@@ -800,14 +800,13 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     MakingChangeLimitedCoins(65, vCoins, vLimits);
 #endif
 #if 0
-    /* Box Stacking */
+    /* BOX STACKING TO ACHIEVE HIGHEST HEIGHT */
     Box boxes[] = { {4, 6, 7}, {1, 2, 3}, {4, 5, 6}, {10, 12, 32} };
     vector<Box> vBoxes(begin(boxes), end(boxes));
     StackBoxes(vBoxes);
 #endif
 #if 0
     /* LONGEST COMMON SUBSEQUENCE */
-    
     char* S1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
     char* S2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
     vector<char> vS1(S1, S1+strlen(S1));
@@ -815,21 +814,21 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     _LCS(vS1, vS2);
 #endif 
 #if 0
+    /* EDIT DISTANCE */
     string S1 = "EXPONENTIAL";
     string S2 = "POLYNOMIAL";
     //string S1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
     //string S2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
-    get_edit_distance(S1, S2);
+    GetEditDistance(S1, S2);
 #endif
 #if 0
     /* BALANCED PARTITION */
-      
     int a[] = {3,2,1,1,2,1};
     vi v(begin(a), end(a));
-    balanced_partition(v);
+    BalancedPartition(v);
 #endif 
 #if 0
-    /* maximum submatrix that is all 1 (not neccesarily square) */ 
+    /* MAXIMUM SUBMATRIX THAT IS ALL 1 (NOT NECCESARILY SQUARE) */ 
 #define DIM_ROW 4
 #define DIM_COL 6
     int a_matrix[DIM_ROW][DIM_COL] = 
@@ -840,7 +839,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         {1,1,1,1,1,0},
     };
 
-    matrix v;
+    vvi v;
     Make2DVector(a_matrix, DIM_ROW, DIM_COL, v);
     Rect res;
     if(SUCCEEDED(LargestSubmatrixOfOnes(v, res))) {
@@ -1016,7 +1015,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         'h','i','c','a','h','n',
         'o','r','q','i','n','i'};
 
-    CharTable2D v;
+    vvc v;
     Make2DVector(word_table, ROWS, COLS, v);
     
     PrintLetterPaths("CAT", v);
@@ -1085,7 +1084,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     };
     int ans = 7;
 
-    matrix v;
+    vvi v;
     Make2DVector(a_matrix, DIM_ROW, DIM_COL, v);
     cout << "expected=" << ans << " got=" << CountNegatives(v) << endl;
 #endif 

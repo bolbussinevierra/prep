@@ -25,14 +25,11 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
     }
     cout << endl;
 }
+
 typedef vector<int> vi;
-typedef vector<vi> IntTable2D;
 typedef vector<vi> vvi;
-
-typedef vector<vector<bool>> BoolTable2D;
-typedef vector<vector<char>> CharTable2D;
-typedef vector<vi> matrix;
-
+typedef vector<vector<bool>> vvbool;
+typedef vector<vector<char>> vvc;
 typedef pair<int, int> Point;
 typedef pair<double, double> DoublePoint;
 
@@ -115,3 +112,4 @@ void _P(int a[], int len_a, char* title);
 void _P(int a[], int len_a);
 void rotate(int a[], int len, int rot_count);
 void PrintVector(vector<string>& p, char* title);
+int Min3(int a, int b, int c); 

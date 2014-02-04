@@ -78,7 +78,7 @@ int const k_count_adjacent = AS(dr);
 bool WithinBounds(int x, int size) { return x >=0 && x < size; }
 
 void dfs_find(int char_at, string const& w, int row, int col, 
-             CharTable2D const& table, BoolTable2D& visited, vector<Point>& path) {
+             vvc const& table, vvbool& visited, vector<Point>& path) {
     if (!WithinBounds(row, table.size()) || !WithinBounds(col, table[0].size()))
         return;
   
@@ -102,7 +102,7 @@ void dfs_find(int char_at, string const& w, int row, int col,
     }
 }
 
-void PrintLetterPaths(string const& w, CharTable2D const& table) {
+void PrintLetterPaths(string const& w, vvc const& table) {
     if (w.empty()) return;
  
     int rows = table.size();
@@ -115,7 +115,7 @@ void PrintLetterPaths(string const& w, CharTable2D const& table) {
         for (int j = 0; j < cols; ++j) {
             if (table[i][j] == *lower_w.begin()) {
                 vector<Point> path(lower_w.size());
-                BoolTable2D visited(rows, vector<bool>(cols, false));
+                vvbool visited(rows, vector<bool>(cols, false));
                 dfs_find(0, lower_w, i, j, table, visited, path);
             }
         }
@@ -148,7 +148,7 @@ bool NeighborIsSet(vector<TrackTable> const& dp, int nbor_char, int row, int col
     }
     return false;
 }
-void PrintPath(vector<TrackTable>const& dp, CharTable2D const& table, 
+void PrintPath(vector<TrackTable>const& dp, vvc const& table, 
               int pos, int row, int col) {
     if (pos == -1) return;
     PrintPath(dp, table, pos-1, 
@@ -156,7 +156,7 @@ void PrintPath(vector<TrackTable>const& dp, CharTable2D const& table,
              dp[pos][row][col].previous.second); // backpointer previous col
     cout << "[" << row << "," << col << "]" ;
 }
-void ContainsWordDP(string const& w, CharTable2D const& table) {
+void ContainsWordDP(string const& w, vvc const& table) {
     // dp[pos][row][col] = true if table[row][col] == w_pos and
     //                             table[pos-1][x][y] == true
     //                             where table [x][y] is a valid neighbor of
@@ -401,7 +401,7 @@ shared_ptr<Link> MakeLinkList(vi const& v) {
     than or equal to element[i-1][j-1] how would you efficiently count the
     number of negatives.
  */
-Point _binary_find(Point l, Point r, IntTable2D const& m) {
+Point _binary_find(Point l, Point r, vvi const& m) {
     while (l.second < r.second) { // cols increase l to r
         // Point mid = make_pair((l.first + r.first)/2, (l.second + r.second)/2);
         // Note! rows decrease upwards, and columns increase going right
@@ -428,7 +428,7 @@ Point _binary_find(Point l, Point r, IntTable2D const& m) {
     return make_pair(r.first+1, r.second-1);
 }
 
-int _CountNegatives(Point const& beg, Point const& end, IntTable2D const& m) {
+int _CountNegatives(Point const& beg, Point const& end, vvi const& m) {
     // if the value at begin is positive, there can be no negative numbers in that
     // diagonal
     if (0 <= m[beg.first][beg.second]) 
@@ -445,7 +445,7 @@ int _CountNegatives(Point const& beg, Point const& end, IntTable2D const& m) {
     return negative_end.second - beg.second + 1; // use cols as they increase beg->end
 }
 
-int CountNegatives(IntTable2D const& m) {
+int CountNegatives(vvi const& m) {
     if (0 == m.size() || 0 == m[0].size()) return 0;
 
     int const k_rows = m.size();
