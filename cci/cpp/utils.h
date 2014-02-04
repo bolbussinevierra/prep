@@ -25,12 +25,14 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
     }
     cout << endl;
 }
-typedef vector<vector<int>> IntTable2D;
-typedef vector<vector<int>> TableII;
+typedef vector<int> vi;
+typedef vector<vi> IntTable2D;
+typedef vector<vi> vvi;
+
 typedef vector<vector<bool>> BoolTable2D;
 typedef vector<vector<char>> CharTable2D;
-typedef vector<vector<int>> matrix;
-typedef vector<int> vi;
+typedef vector<vi> matrix;
+
 typedef pair<int, int> Point;
 typedef pair<double, double> DoublePoint;
 

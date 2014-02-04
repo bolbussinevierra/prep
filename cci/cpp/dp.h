@@ -7,11 +7,7 @@ struct Item {
 /*
 Recreate the decisions made for the knapsack 01 problem
 */
-void PrintKnapsack(
-    int C, 
-    TableII const& table,
-    vector<Item> const& items) 
-{        
+void PrintKnapsack(int C, vvi const& table, vector<Item> const& items) {        
     cout << "Printing Optimal Knapsack:" << endl;
     int c = C, i = items.size();
     while(c > 0 && i > 0) {
@@ -37,21 +33,18 @@ void PrintKnapsack(
     the complete item, or don’t pick it (0-1 property).
 */
 void Knapsack0_1NoRepeats(int C, vector<Item> const& items) {
-    TableII table(C+1, vi(items.size()+1));
+    vvi table(C+1, vi(items.size()+1));
     for (int c = 0; c <= C; ++c) {
         for (int i = 0; i <= items.size(); ++i) {
             if (c == 0 || i == 0) {
                 table[c][i] = 0;
             }
             else {
-                if (items[i-1].weight > c) { // items are zero indexed (1st item at 0)
+                if (items[i-1].weight > c)  // items are zero indexed (1st item at 0)
                     table[c][i] = table[c][i-1];
-                }
-                else {
+                else 
                     table[c][i] = max(table[c-items[i-1].weight][i-1]+items[i-1].value,
                                   table[c][i-1]);
-
-                }
             }
         }
     }
@@ -103,9 +96,7 @@ void PrintSelection(int C, vi const& R, vi const& items) {
 /*
  -MAKING CHANGE-
 */
-void MakingChangeLimitedCoins(
-    int C, vi const& coins, vi const& limits) {
-
+void MakingChangeLimitedCoins(int C, vi const& coins, vi const& limits) {
     assert(C >= 0);
     assert(coins.size() == limits.size());
     vector<bool> is_possible(C+1, false);
@@ -114,7 +105,7 @@ void MakingChangeLimitedCoins(
                             // so result can be reconstructed
     // need to track how many coins we have used up in getting to a particular
     // sum state. 
-    TableII track(C+1, vi(limits.size()));
+    vvi track(C+1, vi(limits.size()));
 
     table[0] = 0;
     is_possible[0] = true;
@@ -286,7 +277,7 @@ void StackBoxes(vector<Box> const& b) {
 
 template <class t>
 void PrintLCS(
-    TableII const& table, 
+    vvi const& table, 
     int i, int j, 
     vector<t> const& a,
     vector<t> const& b) 
@@ -309,7 +300,7 @@ void PrintLCS(
 template <class t>
 int _LCS(vector<t> const& a, vector<t> const& b) {
     
-    TableII table (a.size()+1, vi(b.size()+1));
+    vvi table (a.size()+1, vi(b.size()+1));
 
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
@@ -341,7 +332,7 @@ int _LCS(vector<t> const& a, vector<t> const& b) {
 int min3(int a, int b, int c) { return min(min(a, b), c); }
 
 void print_edit_guide(
-    TableII const& t, 
+    vvi const& t, 
     int i, 
     int j, 
     string const& a, 
@@ -384,7 +375,7 @@ void print_edit_guide(
 int get_edit_distance(string const&a, string const&b) {
     cout << "a (len=" << a.size() << "): " << a.c_str() << endl;
     cout << "b (len=" << b.size() << "): " << b.c_str() << endl;
-    TableII t(a.size()+1, vi(b.size()+1));
+    vvi t(a.size()+1, vi(b.size()+1));
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
             if (0==i || 0==j) {
