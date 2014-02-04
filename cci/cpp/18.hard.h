@@ -696,8 +696,8 @@ bool FoundSquare(PS const& pm, int size, result& res) {
 bool GetSquare(square const& m, result& res) {
     PS pm(m.size(), vector<square_data>(m[0].size()));
     ProcessSquare(m, pm);
-    for (int i = m.size(); i > 0; --i) {
-        if (FoundSquare(pm, i, res)) {
+    for (int square_len = m.size(); square_len > 0; --square_len) {
+        if (FoundSquare(pm, square_len, res)) {
             return true;
         }
     }

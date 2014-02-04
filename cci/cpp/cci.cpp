@@ -36,10 +36,10 @@
 #include "11.sorting.and.searching.h"
 #include "17.moderate.h"
 #endif
-#if 1
+#if 0
 #include "18.hard.h"
 #endif
-#if 0
+#if 1
 #include "dp.h"
 #endif
 #if 0
@@ -664,7 +664,6 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int a183[] = {1,2,3,4,5};
     PickM_MineBetter(vector<int>(begin(a183), end(a183)), 3);
 #endif
-#pragma endregion --- move along as problems are reviewed ---------------------
 #if 0
     //
     // 18.4
@@ -736,7 +735,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     }
     cout << endl;
 #endif 
-#if 1
+#if 0
     //
     // 18.11
     //
@@ -776,6 +775,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     cout << "Maximum_Sum=" << max_sum << endl;
     cout << "t=" << res.t << " l=" << res.l << " b=" << res.b << " r=" << res.r << endl;   
 #endif 
+#pragma endregion --- move along as problems are reviewed ----------------------
 #pragma region dynamic_programming
     /*
      *

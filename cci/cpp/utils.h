@@ -26,6 +26,7 @@ void PrintJumps(HRESULT hr, list<int> const& lst) {
     cout << endl;
 }
 typedef vector<vector<int>> IntTable2D;
+typedef vector<vector<int>> TableII;
 typedef vector<vector<bool>> BoolTable2D;
 typedef vector<vector<char>> CharTable2D;
 typedef vector<vector<int>> matrix;

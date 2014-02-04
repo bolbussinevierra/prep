@@ -9,13 +9,13 @@ Recreate the decisions made for the knapsack 01 problem
 */
 void PrintKnapsack(
     int C, 
-    vector<vector<int>> const& dp,
+    TableII const& table,
     vector<Item> const& items) 
 {        
     cout << "Printing Optimal Knapsack:" << endl;
     int c = C, i = items.size();
     while(c > 0 && i > 0) {
-        if (dp[c][i] != dp[c][i-1]) {
+        if (table[c][i] != table[c][i-1]) {
             cout << "{w: " << items[i-1].weight <<", v:" 
                     << items[i-1].value << "} ";
             c -= items[i-1].weight;
@@ -27,28 +27,36 @@ void PrintKnapsack(
 
 /*
     Solves the 0-1 Knapsack problem, no repeats
+    ---------------------------------------------
+    Given weights and values of n items, put these items in a knapsack of capacity W 
+    to get the maximum total value in the knapsack. In other words, given two integer 
+    arrays val[0..n-1] and wt[0..n-1] which represent values and weights associated 
+    with n items respectively. Also given an integer W which represents knapsack 
+    capacity, find out the maximum value subset of val[] such that sum of the weights 
+    of this subset is smaller than or equal to W. You cannot break an item, either pick
+    the complete item, or don’t pick it (0-1 property).
 */
 void Knapsack0_1NoRepeats(int C, vector<Item> const& items) {
-    vector<vector<int>> dp(C+1, vector<int>(items.size()+1));
+    TableII table(C+1, vector<int>(items.size()+1));
     for (int c = 0; c <= C; ++c) {
         for (int i = 0; i <= items.size(); ++i) {
             if (c == 0 || i == 0) {
-                dp[c][i] = 0;
+                table[c][i] = 0;
             }
             else {
                 if (items[i-1].weight > c) {
-                    dp[c][i] = dp[c][i-1];
+                    table[c][i] = table[c][i-1];
                 }
                 else {
-                    dp[c][i] = max(dp[c-items[i-1].weight][i-1]+items[i-1].value,
-                                  dp[c][i-1]);
+                    table[c][i] = max(table[c-items[i-1].weight][i-1]+items[i-1].value,
+                                  table[c][i-1]);
 
                 }
             }
         }
     }
-    cout << "Knapsack0_1NoRepeats(" << C << ")=" << dp[C][items.size()] << endl;
-    PrintKnapsack(C, dp, items); cout << endl;
+    cout << "Knapsack0_1NoRepeats(" << C << ")=" << table[C][items.size()] << endl;
+    PrintKnapsack(C, table, items); cout << endl;
 }
 /*
 Solves Knapsack problem with a dynamic problem allowing for duplicate
@@ -63,23 +71,23 @@ void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
     cout << "{w:" << items[R[C]].weight << ", v:" << items[R[C]].value << "} ";
 }
 void KnapsackRepeats(int C, vector<Item> const& items) {
-    vector<int> dp(C+1, 0); // DP table;
+    vector<int> table(C+1, 0); // DP table;
     vector<int> R(C+1, numeric_limits<int>::min()); // item picked for each C. So we can generate solution
 
     for (int c = 1; c <= C; ++c) {
-        dp[c] = dp[c-1]; // Best value as at least this much if new items not added
+        table[c] = table[c-1]; // Best value as at least this much if new items not added
         for (int i = 0; i < items.size(); ++i) {
             if (items[i].weight <= c) {
-                int temp = dp[c - items[i].weight] + items[i].value;
-                if (temp > dp[c]) {
-                    dp[c] = temp;
+                int temp = table[c - items[i].weight] + items[i].value;
+                if (temp > table[c]) {
+                    table[c] = temp;
                     R[c] = i;
                 }
             }
         }
     }
 
-    cout << "KnapsacksRepeats(" << C << ")=" << dp[C] << endl;
+    cout << "KnapsacksRepeats(" << C << ")=" << table[C] << endl;
     PrintKnapsack(C, R, items); cout << endl;
 }
 
@@ -101,14 +109,14 @@ void MakingChangeLimitedCoins(
     assert(C >= 0);
     assert(coins.size() == limits.size());
     vector<bool> is_possible(C+1, false);
-    vector<int> dp(C+1, -1);
+    vector<int> table(C+1, -1);
     vector<int> R(C+1, -1); //record of coin used for weight each change sum
                             // so result can be reconstructed
     // need to track how many coins we have used up in getting to a particular
     // sum state. 
-    vector<vector<int>> track(C+1, vector<int>(limits.size()));
+    TableII track(C+1, vector<int>(limits.size()));
 
-    dp[0] = 0;
+    table[0] = 0;
     is_possible[0] = true;
     track[0].assign(limits.begin(), limits.end());
     for (int c = 0; c <= C; ++c) {
@@ -118,10 +126,10 @@ void MakingChangeLimitedCoins(
                     int next_sum = c+coins[i];
                     if (next_sum <= C) {
                         is_possible[next_sum] = true;
-                        if (-1 == dp[next_sum] ||
-                            dp[c]+1 < dp[next_sum]) 
+                        if (-1 == table[next_sum] ||
+                            table[c]+1 < table[next_sum]) 
                         {
-                            dp[next_sum] = dp[c]+1;
+                            table[next_sum] = table[c]+1;
                             R[next_sum] = i;
                             track[next_sum].assign(track[c].begin(), track[c].end());
                             track[next_sum][i]--;
@@ -132,7 +140,7 @@ void MakingChangeLimitedCoins(
         }
     }
     if (is_possible[C]) {
-        cout << "MakingChangeLimitedCoins(" << C << ")=" << dp[C] << endl;
+        cout << "MakingChangeLimitedCoins(" << C << ")=" << table[C] << endl;
         PrintSelection(C, R, coins); cout << endl;
     }
     else {
@@ -155,20 +163,20 @@ void MakingChangeInfiniteCoins(int C, vector<int> const& coins) {
     */
     assert(C >= 0);
     vector<bool> is_possible(C+1, false);
-    vector<int> dp(C+1, -1);
+    vector<int> table(C+1, -1);
     vector<int> R(C+1, -1); //record of coin used for weight each change sum
                             // so result can be reconstructed
 
-    dp[0] = 0;
+    table[0] = 0;
     is_possible[0] = true;
     for (int c = 0; c <= C; ++c) {
         for (int i = 0; i < coins.size(); ++i) {
             if (is_possible[c]) {
                 if (c + coins[i] <= C) {
                     is_possible[c+coins[i]] = true;
-                    if (-1 == dp[c+coins[i]] ||
-                        dp[c]+1 < dp[c+coins[i]]) {
-                            dp[c+coins[i]] = dp[c]+1;
+                    if (-1 == table[c+coins[i]] ||
+                        table[c]+1 < table[c+coins[i]]) {
+                            table[c+coins[i]] = table[c]+1;
                             R[c+coins[i]] = i;
                     }
                 }
@@ -176,7 +184,7 @@ void MakingChangeInfiniteCoins(int C, vector<int> const& coins) {
         }
     }
     if (is_possible[C]) {
-        cout << "MakingChangeInfiniteCoins(" << C << ")=" << dp[C] << endl;
+        cout << "MakingChangeInfiniteCoins(" << C << ")=" << table[C] << endl;
         PrintSelection(C, R, coins); cout << endl;
     }
     else {
@@ -243,7 +251,7 @@ void StackBoxes(vector<Box> const& b) {
     // order. QED
     std::sort(rotB.begin(), rotB.end(), Box::Greater);
 
-    vector<double> dp(rotB.size()); 
+    vector<double> table(rotB.size()); 
     vector<int> prev(rotB.size(), -1);
 
     int bestEnd = -1;
@@ -252,17 +260,17 @@ void StackBoxes(vector<Box> const& b) {
     // Find the Longest Increasing Subsequence or a list of sorted in descending
     // order of base area
     for (int i = 0; i < rotB.size(); ++i) {
-        dp[i] = rotB[i].h; // dp[i] is at least the height of the i-box in trivial case
+        table[i] = rotB[i].h; // table[i] is at least the height of the i-box in trivial case
         for (int j = i - 1; j >=0; --j) {
             if ((rotB[j].w > rotB[i].w) && 
                 (rotB[j].l > rotB[i].l) &&
-                (dp[j] + rotB[i].h > dp[i])) 
+                (table[j] + rotB[i].h > table[i])) 
             {
-                dp[i] = dp[j] + rotB[i].h;
+                table[i] = table[j] + rotB[i].h;
                 prev[i] = j;
 
-                if (maxSeen < dp[i]) {
-                    maxSeen = dp[i];
+                if (maxSeen < table[i]) {
+                    maxSeen = table[i];
                     bestEnd = i;
                 }
             }
@@ -278,7 +286,7 @@ void StackBoxes(vector<Box> const& b) {
 
 template <class t>
 void PrintLCS(
-    vector<vector<int>> const& dp, 
+    TableII const& table, 
     int i, int j, 
     vector<t> const& a,
     vector<t> const& b) 
@@ -286,40 +294,40 @@ void PrintLCS(
     if (0 == i || 0 == j) {
         return;
     }
-    else if (dp[i][j] == dp[i-1][j-1]+1 && a[i-1] == b[j-1]) {
-        PrintLCS(dp, i-1, j-1, a, b);
+    else if (table[i][j] == table[i-1][j-1]+1 && a[i-1] == b[j-1]) {
+        PrintLCS(table, i-1, j-1, a, b);
         cout << a[i-1];     // note that d[p][..] corresponds to item a[p-1]
     }
-    else if (dp[i][j] == dp[i-1][j]) {
-        PrintLCS(dp, i-1, j, a, b);
+    else if (table[i][j] == table[i-1][j]) {
+        PrintLCS(table, i-1, j, a, b);
     }
     else {
-        PrintLCS(dp, i, j-1, a, b);
+        PrintLCS(table, i, j-1, a, b);
     }
 }
 
 template <class t>
 int _LCS(vector<t> const& a, vector<t> const& b) {
     
-    vector<vector<int>> dp (a.size()+1, vector<int>(b.size()+1));
+    TableII table (a.size()+1, vector<int>(b.size()+1));
 
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
             if (0 == i || 0 == j) {
-                dp[i][j] = 0;
+                table[i][j] = 0;
             }
             else if (a[i-1] == b[j-1]) {
-                dp[i][j] = dp[i-1][j-1]+1;
+                table[i][j] = table[i-1][j-1]+1;
             }
             else {
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                table[i][j] = max(table[i-1][j], table[i][j-1]);
             }
         }
     }
-    cout << "LCS=" << dp[a.size()][b.size()] << endl;
+    cout << "LCS=" << table[a.size()][b.size()] << endl;
     cout << "LCS contains:\n";
-    PrintLCS(dp, a.size(), b.size(), a, b);
-    return dp[a.size()][b.size()];
+    PrintLCS(table, a.size(), b.size(), a, b);
+    return table[a.size()][b.size()];
 }
 
 /*
@@ -332,10 +340,8 @@ int _LCS(vector<t> const& a, vector<t> const& b) {
 #define REPLACE_COST 1
 int min3(int a, int b, int c) { return min(min(a, b), c); }
 
-typedef vector<vector<int>> table2d_t;
-
 void print_edit_guide(
-    table2d_t const& t, 
+    TableII const& t, 
     int i, 
     int j, 
     string const& a, 
@@ -378,7 +384,7 @@ void print_edit_guide(
 int get_edit_distance(string const&a, string const&b) {
     cout << "a (len=" << a.size() << "): " << a.c_str() << endl;
     cout << "b (len=" << b.size() << "): " << b.c_str() << endl;
-    table2d_t t(a.size()+1, vector<int>(b.size()+1));
+    TableII t(a.size()+1, vector<int>(b.size()+1));
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
             if (0==i || 0==j) {
