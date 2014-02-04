@@ -30,7 +30,7 @@ typedef vector<vector<int>> TableII;
 typedef vector<vector<bool>> BoolTable2D;
 typedef vector<vector<char>> CharTable2D;
 typedef vector<vector<int>> matrix;
-
+typedef vector<int> vi;
 typedef pair<int, int> Point;
 typedef pair<double, double> DoublePoint;
 

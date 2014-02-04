@@ -37,14 +37,14 @@ void PrintKnapsack(
     the complete item, or don’t pick it (0-1 property).
 */
 void Knapsack0_1NoRepeats(int C, vector<Item> const& items) {
-    TableII table(C+1, vector<int>(items.size()+1));
+    TableII table(C+1, vi(items.size()+1));
     for (int c = 0; c <= C; ++c) {
         for (int i = 0; i <= items.size(); ++i) {
             if (c == 0 || i == 0) {
                 table[c][i] = 0;
             }
             else {
-                if (items[i-1].weight > c) {
+                if (items[i-1].weight > c) { // items are zero indexed (1st item at 0)
                     table[c][i] = table[c][i-1];
                 }
                 else {
@@ -62,7 +62,7 @@ void Knapsack0_1NoRepeats(int C, vector<Item> const& items) {
 Solves Knapsack problem with a dynamic problem allowing for duplicate
 items
 */
-void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
+void PrintKnapsack(int C, vi const& R, vector<Item> const& items) {
     if  (C == 0 || R[C] == numeric_limits<int>::min()) {
         cout << "Printing Optimal Knapsack:" << endl;
         return;
@@ -71,8 +71,8 @@ void PrintKnapsack(int C, vector<int> const& R, vector<Item> const& items) {
     cout << "{w:" << items[R[C]].weight << ", v:" << items[R[C]].value << "} ";
 }
 void KnapsackRepeats(int C, vector<Item> const& items) {
-    vector<int> table(C+1, 0); // DP table;
-    vector<int> R(C+1, numeric_limits<int>::min()); // item picked for each C. So we can generate solution
+    vi table(C+1, 0); // DP table;
+    vi R(C+1, numeric_limits<int>::min()); // item picked for each C. So we can generate solution
 
     for (int c = 1; c <= C; ++c) {
         table[c] = table[c-1]; // Best value as at least this much if new items not added
@@ -91,7 +91,7 @@ void KnapsackRepeats(int C, vector<Item> const& items) {
     PrintKnapsack(C, R, items); cout << endl;
 }
 
-void PrintSelection(int C, vector<int> const& R, vector<int> const& items) {
+void PrintSelection(int C, vi const& R, vi const& items) {
     if (C==0 || R[C] == -1) {
         cout << "Selected coins:\n";
     }
@@ -104,17 +104,17 @@ void PrintSelection(int C, vector<int> const& R, vector<int> const& items) {
  -MAKING CHANGE-
 */
 void MakingChangeLimitedCoins(
-    int C, vector<int> const& coins, vector<int> const& limits) {
+    int C, vi const& coins, vi const& limits) {
 
     assert(C >= 0);
     assert(coins.size() == limits.size());
     vector<bool> is_possible(C+1, false);
-    vector<int> table(C+1, -1);
-    vector<int> R(C+1, -1); //record of coin used for weight each change sum
+    vi table(C+1, -1);
+    vi R(C+1, -1); //record of coin used for weight each change sum
                             // so result can be reconstructed
     // need to track how many coins we have used up in getting to a particular
     // sum state. 
-    TableII track(C+1, vector<int>(limits.size()));
+    TableII track(C+1, vi(limits.size()));
 
     table[0] = 0;
     is_possible[0] = true;
@@ -148,7 +148,7 @@ void MakingChangeLimitedCoins(
     }
 }
 
-void MakingChangeInfiniteCoins(int C, vector<int> const& coins) {
+void MakingChangeInfiniteCoins(int C, vi const& coins) {
     /*
     For us coins, the greedy algorithm always works (pick the biggest coin
     first and use that till you can't anymore and then move to the next)
@@ -163,8 +163,8 @@ void MakingChangeInfiniteCoins(int C, vector<int> const& coins) {
     */
     assert(C >= 0);
     vector<bool> is_possible(C+1, false);
-    vector<int> table(C+1, -1);
-    vector<int> R(C+1, -1); //record of coin used for weight each change sum
+    vi table(C+1, -1);
+    vi R(C+1, -1); //record of coin used for weight each change sum
                             // so result can be reconstructed
 
     table[0] = 0;
@@ -223,7 +223,7 @@ void AddRotations(vector<Box> const& in, vector<Box>& out) {
         out.push_back(r);
     }
 }
-void PrintBoxStack(vector<int> const& prev, int bestEnd, vector<Box> const& b) {
+void PrintBoxStack(vi const& prev, int bestEnd, vector<Box> const& b) {
     if (-1 == bestEnd) {
         return;
     }
@@ -252,7 +252,7 @@ void StackBoxes(vector<Box> const& b) {
     std::sort(rotB.begin(), rotB.end(), Box::Greater);
 
     vector<double> table(rotB.size()); 
-    vector<int> prev(rotB.size(), -1);
+    vi prev(rotB.size(), -1);
 
     int bestEnd = -1;
     double maxSeen = 0;
@@ -309,7 +309,7 @@ void PrintLCS(
 template <class t>
 int _LCS(vector<t> const& a, vector<t> const& b) {
     
-    TableII table (a.size()+1, vector<int>(b.size()+1));
+    TableII table (a.size()+1, vi(b.size()+1));
 
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
@@ -384,7 +384,7 @@ void print_edit_guide(
 int get_edit_distance(string const&a, string const&b) {
     cout << "a (len=" << a.size() << "): " << a.c_str() << endl;
     cout << "b (len=" << b.size() << "): " << b.c_str() << endl;
-    TableII t(a.size()+1, vector<int>(b.size()+1));
+    TableII t(a.size()+1, vi(b.size()+1));
     for (int i = 0; i <= a.size(); ++i) {
         for (int j = 0; j <= b.size(); ++j) {
             if (0==i || 0==j) {
@@ -409,7 +409,7 @@ int get_edit_distance(string const&a, string const&b) {
  BALANCED PARTITION
 */
 typedef vector<vector<bool>> ss_table;
-void print_s1(ss_table const& t, int bss, int bse, vector<int> const& a, 
+void print_s1(ss_table const& t, int bss, int bse, vi const& a, 
               hash_set<int>& s1) 
 {
     if (0 == bss || 0 == bse) {
@@ -429,7 +429,7 @@ void print_s1(ss_table const& t, int bss, int bse, vector<int> const& a,
     }
 }
 
-int balanced_partition(vector<int> const& a) {
+int balanced_partition(vi const& a) {
     int sum = accumulate(a.begin(), a.end(), 0);
     int half_sum = sum / 2;
     ss_table t(half_sum+1, vector<bool>(a.size()+1));
@@ -499,7 +499,7 @@ void CloseAllOpenRectangles(unordered_map<int, Rect>& rectangles, int right,
 HRESULT LargestSubmatrixOfOnes(matrix const& v, Rect& result){
     // PARAM CHECK
 
-    matrix t(v.size(), vector<int>(v[0].size()));
+    matrix t(v.size(), vi(v[0].size()));
 
     // if v[i,j]=1, let t[i,j] represent the count of contigous 1's below (same column) t[i,j] upto 
     // and including it. so note that we are calculating bottom row up. if v[i,j]=0. then t[i,j]=0
@@ -568,7 +568,7 @@ void CheckMax(int size, int bottom, int right, Rect& max) {
 HRESULT LargestSquareSubmatrixOfOnes(matrix const& v, Rect& result) {
     int const k_rows = v.size();
     int const k_cols = v[0].size();
-    matrix t(k_rows, vector<int>(k_cols));
+    matrix t(k_rows, vi(k_cols));
 
     // copy first row and first col as is
     t[0].assign(v[0].begin(), v[0].end());
@@ -594,7 +594,7 @@ HRESULT LargestSquareSubmatrixOfOnes(matrix const& v, Rect& result) {
 //
 // MINIMUM JUMPS - GREEDY IS ACTUALLY BEST
 //
-HRESULT MinJumps_Greedy_Best_O_N(vector<int> const& v, list<int>& jumps) {
+HRESULT MinJumps_Greedy_Best_O_N(vi const& v, list<int>& jumps) {
     if (v.empty()) return S_OK;
     if (v.size() == 1) {
         jumps.push_back(v[0]);
@@ -632,7 +632,7 @@ HRESULT MinJumps_Greedy_Best_O_N(vector<int> const& v, list<int>& jumps) {
     return S_OK;
 }
 
-HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
+HRESULT MinJumps_DP_NotIdeal_O_N2(vi const& v, list<int>& jumps) {
     if (v.empty()) return S_OK;
     if (v.size() == 1) {
         jumps.push_back(v[0]);
@@ -640,8 +640,8 @@ HRESULT MinJumps_DP_NotIdeal_O_N2(vector<int> const& v, list<int>& jumps) {
     }
     
     // t[i] represents the fewest jumps needed to get to i
-    vector<int> t(v.size(), numeric_limits<int>::max());
-    vector<int> prev(v.size(), -1);
+    vi t(v.size(), numeric_limits<int>::max());
+    vi prev(v.size(), -1);
 
     t[0] = 0;
     for (int i = 1; i < v.size(); ++i) {
@@ -713,11 +713,11 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
         return 1;
     }
 
-    IntTable2D t(s.size(), vector<int>(s.size()));
+    IntTable2D t(s.size(), vi(s.size()));
 
     // can use t above to reproduce this if memory is tight by essentially reproducing the 
     // logic used to create it but this is cleaner
-    IntTable2D back_pointer(s.size(), vector<int>(s.size()));
+    IntTable2D back_pointer(s.size(), vi(s.size()));
 
   
     // gap starts at 1 since we have already taken care of gap=0 (single element strings)
@@ -753,13 +753,13 @@ int LongestPalindromeSubsequence(string const& s, string &lps) {
  * MATRIX CHAIN MULTIPLICATION
  *
  */
-string _GetMatrix(vector<int> const& p, int i) {
+string _GetMatrix(vi const& p, int i) {
     ostringstream stream;
     stream << "[" << p[i-1] << "x" << p[i] << "]";
     return stream.str();
 }
 
-void _BuildSolution(vector<int> const& p, IntTable2D const& s, int i, int j, string& result) {
+void _BuildSolution(vi const& p, IntTable2D const& s, int i, int j, string& result) {
     if (i == j ) {
         result.assign(_GetMatrix(p, i));
         return;
@@ -778,7 +778,7 @@ void _BuildSolution(vector<int> const& p, IntTable2D const& s, int i, int j, str
     return;
 }
 
-int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
+int MatrixChainOrder(vi const& p, string& m_print, string& result) {
     if (2 >= p.size()) return 0; // need at least two matrices to multiply
 
     ostringstream stream;
@@ -793,8 +793,8 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
      * A[i]A[i+1] .... A[j-1]A[j]" = A[i...j] where A[i] is p[i-1]x
      */
     int num_matrices = p.size() - 1;
-    IntTable2D t(num_matrices+1, vector<int>(num_matrices+1));
-    IntTable2D solution(num_matrices+1, vector<int>(num_matrices+1));
+    IntTable2D t(num_matrices+1, vi(num_matrices+1));
+    IntTable2D solution(num_matrices+1, vi(num_matrices+1));
 
     // do make the dependency graph of the table work, we need to calculate m for all submatrices of length
     // l before we calculate the submatrics for l+1
@@ -824,7 +824,7 @@ int MatrixChainOrder(vector<int> const& p, string& m_print, string& result) {
  * Subset Sum problem - is there an array of items that sums to the given sum
  *
  */
-void _GetSubset(BoolTable2D const& t, vector<int> const& v, int items, int sum, vector<int>& result) {
+void _GetSubset(BoolTable2D const& t, vi const& v, int items, int sum, vi& result) {
     if (0 == items) return;
     if (t[items-1][sum]) {
         _GetSubset(t, v, items-1, sum, result);
@@ -838,7 +838,7 @@ void _GetSubset(BoolTable2D const& t, vector<int> const& v, int items, int sum, 
 // iterative implementation of the same function above done for educative purposes
 // HOWEVER!!! THIS WILL GET THE ITEMS BACKWARDS. WOULD NEED TO USE A LIST FOR FOWARDS
 // so prefer above
-void _GetSubset(BoolTable2D const& t, vector<int> const& v, int sum, vector<int>& result) {
+void _GetSubset(BoolTable2D const& t, vi const& v, int sum, vi& result) {
     for (int i = v.size(); i >=1; --i) {
         if (! t[i-1][sum]) { // because of OR-ing order we need to check this is negative first
             result.push_back(v[i-1]);
@@ -847,7 +847,7 @@ void _GetSubset(BoolTable2D const& t, vector<int> const& v, int sum, vector<int>
     }
 }
 
-bool SubsetWithSum(vector<int> const& v, int sum, vector<int>& result) {
+bool SubsetWithSum(vi const& v, int sum, vi& result) {
     BoolTable2D t(v.size()+1, vector<bool>(sum+1));
 
     for (int i = 0; i <= v.size(); ++i) {
@@ -889,7 +889,7 @@ int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
     if (sum_to <= dice_count) 
         return (sum_to == dice_count ? 1 : 0);
 
-    IntTable2D table(dice_count+1, vector<int>(sum_to+1, 0)); // initialize all values to 0
+    IntTable2D table(dice_count+1, vi(sum_to+1, 0)); // initialize all values to 0
 
     // dice=1 case Initialize values we can get to in the single through 
     for (int s = 1; s <= sum_to && s <= face_count; ++s) 
@@ -905,12 +905,12 @@ int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
 /*
     ROD CUTTING 
 */
-int CutRod(vector<int> const& p, vector<int>& cuts) {
+int CutRod(vi const& p, vi& cuts) {
     if (p.empty()) return -1;
     
     int n = p.size();
-    vector<int> table(n+1, INT_MIN);
-    vector<int> s(n+1, INT_MAX); // s[i] = j means best first cut to make for length i is at j
+    vi table(n+1, INT_MIN);
+    vi s(n+1, INT_MAX); // s[i] = j means best first cut to make for length i is at j
     
     table[0] = 0;
     for (int i = 1; i <= n; ++i) {
@@ -937,13 +937,13 @@ int CutRod(vector<int> const& p, vector<int>& cuts) {
  */
 
 
-void GetMoves(IntTable2D const& t, vector<int> const& coins, vector<int>& moves_player_one, vector<int>& moves_player_two) {  
+void GetMoves(IntTable2D const& t, vi const& coins, vi& moves_player_one, vi& moves_player_two) {  
     int i = 0, j = coins.size() - 1;
     bool player_ones_turn = true;
     while (i <= j) {
         int picked_left = (i+1 <= j) ? t[i+1][j] : 0; // If current player takes coins[i], opponent gets this scenario ...
         int picked_right = (i <= j-1) ? t[i][j-1] : 0; // If current player takes coin[j], opponent gets this scenario
-        vector<int>& mover = player_ones_turn ? moves_player_one : moves_player_two;
+        vi& mover = player_ones_turn ? moves_player_one : moves_player_two;
 
         // current player will pick the value the leaves player_two with least favorable option for his
         // upcoming move (i.e the smallest coin)
@@ -958,12 +958,12 @@ void GetMoves(IntTable2D const& t, vector<int> const& coins, vector<int>& moves_
     }
 }
 
-int BestStrategyForGame(vector<int> const& coins, vector<int>& moves_player_one, 
-                      vector<int>& moves_player_two) {
+int BestStrategyForGame(vi const& coins, vi& moves_player_one, 
+                      vi& moves_player_two) {
     int n = coins.size();
     if (n % 2 != 0) return -1; // coins must be an even number (could alsdo do n & (n-1) != 0)
 
-    IntTable2D table(n, vector<int>(n, 0));
+    IntTable2D table(n, vi(n, 0));
  
     for (int gap = 0; gap < n; ++gap) {
         for (int i=0; i < n-gap; ++i) {
