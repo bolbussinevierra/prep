@@ -47,7 +47,7 @@ void Print(char* tag, vector<t> const& items) {
 }
 
 template <typename t>
-void Print(char* tag, vector<int> const& indexes, vector<t> const& indexed) {
+void Print(char* tag, vi const& indexes, vector<t> const& indexed) {
     cout << tag << ": ";
     for (int i : indexes) {
         cout << indexed[i] << " ";

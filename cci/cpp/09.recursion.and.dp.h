@@ -6,7 +6,7 @@
 int steps[3] = {1, 2, 3};
 int WaysDP(int n) {
     
-    vector<int>table(n+1, 0);
+    vitable(n+1, 0);
     table[0] = 1;
 
     for (int i = 1; i <= n; ++i) 
@@ -41,7 +41,7 @@ int compute_paths(int width, int height) {
     // BTB - ** IMPORTANT **
     // [0][0] is not involved in the math which is why we allocate width+1
     // height+1
-    vector<vector<int>> result(width+1, vector<int>(height+1));
+    vector<vi> result(width+1, vi(height+1));
 
     // initialize [1,0] to [width,0] = 1
     for (int x = 1; x <= width; ++x) {
@@ -114,7 +114,7 @@ bool FindPathTo(int ex, int ey) {
 //
 // 9.3
 //
-int _MagicIndexUnique(vector<int> const& v, int start, int end) {
+int _MagicIndexUnique(vi const& v, int start, int end) {
     if (start > end) return -1;
 
     int mid = (start + end) / 2;
@@ -127,11 +127,11 @@ int _MagicIndexUnique(vector<int> const& v, int start, int end) {
         return _MagicIndexUnique(v, mid+1, end);
 }
 
-int MagicIndexUnique(vector<int> const& v) {
+int MagicIndexUnique(vi const& v) {
     return _MagicIndexUnique(v, 0, v.size() - 1);
 }
 
-int _MagicIndexDuplicates(vector<int> const& v, int start, int end) {
+int _MagicIndexDuplicates(vi const& v, int start, int end) {
     if (start > end) return -1;
 
     int mid = (start + end)/2;
@@ -146,29 +146,29 @@ int _MagicIndexDuplicates(vector<int> const& v, int start, int end) {
     return right;
 }
 
-int MagicIndexDuplicates(vector<int> const& v) {
+int MagicIndexDuplicates(vi const& v) {
     return _MagicIndexDuplicates(v, 0, v.size() - 1);
 }
 
 //
 // 9.4
 //
-void Subsets(vector<int>& items, int start, vector<vector<int>>& sets) {
+void Subsets(vi& items, int start, vector<vi>& sets) {
     if(start == items.size()){
-        vector<int> empty;
+        vi empty;
         sets.push_back(empty);
     } else {
         Subsets(items, start+1, sets); // get the rest of the sets
         int count_previous_sets = sets.size();
         for (int i = 0; i < count_previous_sets; ++i) {
-            vector<int> cloneSet(sets[i]); // clone the previous set
+            vi cloneSet(sets[i]); // clone the previous set
             cloneSet.push_back(items[start]);   // add the new item
             sets.push_back(cloneSet);           // add the expanded-clone set to list
         }
     }
 }
-void PrintSets(vector<vector<int>>& sets) {
-    for (vector<int> const& set : sets) {
+void PrintSets(vector<vi>& sets) {
+    for (vi const& set : sets) {
         if (set.empty()) 
             cout << "<empty> ";
         else 
@@ -178,7 +178,7 @@ void PrintSets(vector<vector<int>>& sets) {
     }
 }
 
-void MapBinaryToSet(int binSet, vector<int>& items, vector<int>& set) {
+void MapBinaryToSet(int binSet, vi& items, vi& set) {
     for (size_t i = 0; i < items.size(); ++i) {
         if ((1 << i) & binSet) {
             set.push_back(items[i]);
@@ -186,34 +186,34 @@ void MapBinaryToSet(int binSet, vector<int>& items, vector<int>& set) {
     }
 }
 
-void SubsetsBinary(vector<int>& items, vector<vector<int>>& sets) {
+void SubsetsBinary(vi& items, vector<vi>& sets) {
     assert(32 >= items.size()); // limited by size of integer .. can use long (or long ass int array)
     int maxSets = (1 << items.size());  // 2^(n)
 
     for (int i = 0; i < maxSets; ++i) {
-        vector<int> newSet; // empty set added when i == 0 (empty newSet)
+        vi newSet; // empty set added when i == 0 (empty newSet)
         MapBinaryToSet(i, items, newSet);
         sets.push_back(newSet);
     }
 }
 
 void SubsetsBinary(int arr[], int length) {
-    vector<int> items(arr, arr+length);
-    vector<vector<int>> sets;
+    vi items(arr, arr+length);
+    vector<vi> sets;
     SubsetsBinary(items, sets);
     PrintSets(sets);
     printf("Items=[%d], Subsets=[%d]\n", length, sets.size());
 }
 
 void SubsetsIterative(int arr[], int length) {
-    vector<vector<int>> sets;
-    vector<int> empty;
+    vector<vi> sets;
+    vi empty;
     sets.push_back(empty);
     
     for (int i = 0; i < length; ++i) {
         size_t existingSets = sets.size();
         for (size_t v = 0; v < existingSets; ++v) {
-            vector<int> newSet(sets[v]);
+            vi newSet(sets[v]);
             newSet.push_back(arr[i]);
             sets.push_back(newSet);
         }
@@ -224,8 +224,8 @@ void SubsetsIterative(int arr[], int length) {
 }
 
 void Subsets(int arr[], int length) {
-    vector<int> items(arr, arr+length);
-    vector<vector<int>> sets;
+    vi items(arr, arr+length);
+    vector<vi> sets;
     Subsets(items, 0, sets);
     PrintSets(sets);
     printf("Items=[%d], Subsets=[%d]\n", length, sets.size());
@@ -371,11 +371,11 @@ bool PaintFill(
 //
 // 9.8
 //
-int CountWaysToMakeChangeDP_SpaceOptimized(int n, vector<int> const& coins)
+int CountWaysToMakeChangeDP_SpaceOptimized(int n, vi const& coins)
 {
     // in this case, we take each coin in turn and add to all cells that are less
     // than the value of the coin. Needs only O(N) space
-    vector<int> table(n+1, 0);
+    vi table(n+1, 0);
     table[0] = 1;
     for (int m = 0; m < coins.size(); ++m)
         for (int k=coins[m]; k <= n; ++k)
@@ -384,12 +384,12 @@ int CountWaysToMakeChangeDP_SpaceOptimized(int n, vector<int> const& coins)
     return table[n];
 }
 
-int CountWaysToMakeChangeDP(int n, vector<int> const& coins) {
+int CountWaysToMakeChangeDP(int n, vi const& coins) {
     //
     // We can build DP based on the counting classes:
     // ways = ways that include coin m + ways that dont include coin m
     //
-    IntTable2D table(n+1, vector<int>(coins.size(), 0));
+    IntTable2D table(n+1, vi(coins.size(), 0));
 
     // initialize
     for (int m = 0; m < coins.size(); ++m)
@@ -406,7 +406,7 @@ int CountWaysToMakeChangeDP(int n, vector<int> const& coins) {
     return table[n][coins.size() - 1];
 }
 
-int _CountWaysToMakeChangeMemoized(int n, vector<int> const& coins, 
+int _CountWaysToMakeChangeMemoized(int n, vi const& coins, 
                                int denom_index, IntTable2D& cache) {
     if (denom_index == 0) // lowest value coin
         return 1;
@@ -425,8 +425,8 @@ int _CountWaysToMakeChangeMemoized(int n, vector<int> const& coins,
     return ways;
 }
 
-int CountWaysToMakeChangeMemoized(int n, vector<int> const& coins) {
-    IntTable2D cache(n+1, vector<int>(coins.size(), -1));
+int CountWaysToMakeChangeMemoized(int n, vi const& coins) {
+    IntTable2D cache(n+1, vi(coins.size(), -1));
     return _CountWaysToMakeChangeMemoized(n, coins, coins.size()-1, cache);
 }
 
@@ -457,7 +457,7 @@ int CountWaysToMakeChangeBroken(int n) {
 // 9.9
 //
 
-bool _IsSafe(vector<int>& row_set, int row, int col) {
+bool _IsSafe(vi& row_set, int row, int col) {
     // check all the left columns to see if they have a queen on the same
     // row
     for (int col_prev = 0; col_prev < col; ++col_prev) {
@@ -477,7 +477,7 @@ bool _IsSafe(vector<int>& row_set, int row, int col) {
 }
 
 // rows[k] = i, means in column K, queen is at row i 
-bool SolveQueensColByCol(vector<int>& row_set, int col) {
+bool SolveQueensColByCol(vi& row_set, int col) {
     if (col >= row_set.size())
         return true;
 
@@ -499,7 +499,7 @@ bool SolveQueensColByCol(vector<int>& row_set, int col) {
     return false;
 }
 
-void DrawBoard(vector<int>& row_set) {
+void DrawBoard(vi& row_set) {
     int n = row_set.size();
     for (int i = n-1; i >= 0; --i) { 
         for (int k = 0; k < n; ++k) {

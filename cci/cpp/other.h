@@ -203,7 +203,7 @@ void ContainsWordDP(string const& w, CharTable2D const& table) {
     Here 3 does not have the pair (6 does not have one either)
 */
 
-void PrintNumberMissingPair(vector<int> const& v) {
+void PrintNumberMissingPair(vi const& v) {
     unordered_set<int> set;
     for (int a : v) {
         // Toggle Insert and Remove. Whatever is less was missing a pair
@@ -377,7 +377,7 @@ void PrintList(Link* head) {
     cout << endl;
 }
 
-shared_ptr<Link> MakeLinkList(vector<int> const& v) {
+shared_ptr<Link> MakeLinkList(vi const& v) {
     vector<shared_ptr<Link>> nodes;
     for (int a : v) {
         shared_ptr<Link> node = make_shared<Link>();
@@ -503,11 +503,11 @@ private:
 
 /* Implement a function that can calculate the prime numbers upto number N */
 /* Loose bound on performance is O(nlogn) (n/2 + n/3 + n/4 ...) = n(1/2 + 1/3 + ..) */
-vector<int> GetPrimesUpto(int num) {
+vi GetPrimesUpto(int num) {
     vector<bool> sieve(num+1, true);
     sieve[0] = false;
     sieve[1] = false;
-    vector<int> primes;
+    vi primes;
     for (int i = 2; i <= num; ++i) {
         if (sieve[i]) {
             primes.push_back(i);

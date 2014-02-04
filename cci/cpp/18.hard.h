@@ -76,7 +76,7 @@ void ShuffleDeck_CCI(vector<Card>& cards) {
 //
 // 18.3
 //
-void PickM_MineBetter(vector<int>& n, int m) {
+void PickM_MineBetter(vi& n, int m) {
     // Think of this as picking from a bag where the partition [last, n]
     // will contain that items that have ALREADY BEEN picked are in hand
     int last = n.size() - 1;
@@ -92,8 +92,8 @@ void PickM_MineBetter(vector<int>& n, int m) {
     }
 }
 
-void PickM_CCI(vector<int> const&n, int m) {
-    vector<int> vm(m);
+void PickM_CCI(vi const&n, int m) {
+    vi vm(m);
     for (int i = 0; i < m; ++i) {
         vm[i] = n[i];
     }
@@ -202,7 +202,7 @@ int MinDist(string const& a, string const& b, vector<string> const& words) {
 //
 // 18.6
 //
-int _partition(vector<int>& a, int left, int right) {
+int _partition(vi& a, int left, int right) {
     // use the middle element as the pivot. Move it to the left
     // end to get it out of the way. Well remember to move it back
     // at the end
@@ -227,7 +227,7 @@ int _partition(vector<int>& a, int left, int right) {
     return right;
 }
 
-int _get_index_of_nth(vector<int>& a, int n, int left, int right) {
+int _get_index_of_nth(vi& a, int n, int left, int right) {
     int pivot_index = _partition(a, left, right);
 
     int left_size = pivot_index - left + 1;
@@ -240,12 +240,12 @@ int _get_index_of_nth(vector<int>& a, int n, int left, int right) {
         return _get_index_of_nth(a, n - left_size, pivot_index+1, right);
 }
 
-void _test_print_nth(vector<int>& a, int n) {
+void _test_print_nth(vi& a, int n) {
     cout << n << " smallest=" << a[_get_index_of_nth(a, n, 0, a.size()-1)];
     cout << endl;
 }
 
-void print_n_smallest(vector<int> a, int n) {
+void print_n_smallest(vi a, int n) {
     if (n <= 0) return;
 
     int nth = _get_index_of_nth(a, n, 0, a.size() -1);
@@ -278,7 +278,7 @@ bool _InDict(string const& w, unordered_set<string> const& dict) {
     return dict.end() != dict.find(s);
 }
 
-void _PrintWords(string const& w, vector<int> const& prev, int end_pos) {
+void _PrintWords(string const& w, vi const& prev, int end_pos) {
     if (end_pos == -1) {
         cout << "Words=";
         return;
@@ -293,7 +293,7 @@ bool _CanBreakWord(string const& w, unordered_set<string> const& dict) {
     // t[i] is true IFF w.subst(0,i) can be broken up into words that
     // are in dict
     vector<bool> t(w.size()+1, false);
-    vector<int> prev(w.size()+1, -1); // so we can regenerate solution
+    vi prev(w.size()+1, -1); // so we can regenerate solution
                                     // prev[i] = j means word ending at position i
                                     // started at j
 
@@ -637,7 +637,7 @@ struct result {
     int size;
 };
 
-typedef vector<vector<int>> square;
+typedef vector<vi> square;
 struct square_data {
     int br;
     int bd;
@@ -706,11 +706,11 @@ bool GetSquare(square const& m, result& res) {
 //
 // 18.12
 //
-void Clear(vector<int>& k) {
+void Clear(vi& k) {
     for (int &i : k) i = 0; 
 }
 
-int Kadane(vector<int> const& k, int &first, int& last) {
+int Kadane(vi const& k, int &first, int& last) {
     int max_sum = numeric_limits<int>::min();
     int sum = 0;
     int local_start = 0;
@@ -756,7 +756,7 @@ int Kadane2D(matrix const& m, Rect& result) {
     int max_sum = numeric_limits<int>::min();
     int const c_rows = m.size();
     int const c_cols = m[0].size();
-    vector<int> k(c_rows);
+    vi k(c_rows);
     
     for (int left = 0; left < c_cols; ++left) {
         Clear(k);

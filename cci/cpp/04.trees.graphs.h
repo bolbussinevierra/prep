@@ -261,7 +261,7 @@ int _depth(TreeNode* tree) {
     if (!tree) return 0;
     return 1 + max(_depth(tree->left), _depth(tree->right));
 }
-void _FindSum(TreeNode* tree, int target, vector<int>& path, int level) {
+void _FindSum(TreeNode* tree, int target, vi& path, int level) {
     if (!tree) return;
     path[level]=tree->value;
     int sum = 0;
@@ -276,7 +276,7 @@ void _FindSum(TreeNode* tree, int target, vector<int>& path, int level) {
     _FindSum(tree->right, target, path, level+1);
 }
 void FindSum(TreeNode* tree, int target) {
-    vector<int> path(_depth(tree));
+    vi path(_depth(tree));
     return _FindSum(tree, target, path, 0);
 }
 

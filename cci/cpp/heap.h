@@ -29,7 +29,7 @@ public:
         heapify_up(items.size() - 1);
     }
 
-    void make_heap(vector<int> const& v) {
+    void make_heap(vi const& v) {
         items.assign(v.begin(), v.end());
 
         // start at the last possible parent and heapify_down
@@ -126,7 +126,7 @@ protected:
         return (2*i) + 2;
     }
     
-    vector<int> items;
+    vi items;
 };
 
 class min_heap : public heap {

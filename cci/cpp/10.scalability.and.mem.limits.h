@@ -33,7 +33,7 @@ public:
 void FindNumber() {
     int bitVectSize = (1 << 20); // 2^20 BITS (2^17 bytes)
     int countBlocks = (1 << 12);  // 2^32 / 2^20
-    vector<int> blocks(countBlocks); // space so far 2^2 * 2^12 = 2^14
+    vi blocks(countBlocks); // space so far 2^2 * 2^12 = 2^14
     vector<BYTE> bitVect(bitVectSize/8);
 
     Scanner s;
@@ -75,15 +75,15 @@ void FindNumber() {
 //
 // 10.4
 //
-vector<int> _getArray() {
-    vector<int> arr(32000);
+vi _getArray() {
+    vi arr(32000);
     for (size_t i = 0; i < arr.size(); ++i) {
         // make 1423 a duplicate
         arr[i] = ((i == 1423) ? arr[i-1] : i + 1);
     }
     return arr;
 }
-void CheckDuplicates(vector<int>& arr) {
+void CheckDuplicates(vi& arr) {
     assert(arr.size() == 32000);
     vector<BYTE> set(arr.size());
 

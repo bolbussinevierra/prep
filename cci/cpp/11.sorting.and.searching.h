@@ -348,7 +348,7 @@ bool operator>=(htwt lhs, htwt rhs) {
 }
 
 template <class t>
-void printpath(vector<t>& v, vector<int>path, int end)
+void printpath(vector<t>& v, vipath, int end)
 {
     if(end > -1) {
         printpath(v, path, path[end]);
@@ -358,8 +358,8 @@ void printpath(vector<t>& v, vector<int>path, int end)
 
 template <class t>
 void LIS(vector<t>& a) {
-    vector<int> DP(a.size());
-    vector<int> prev(a.size());
+    vi DP(a.size());
+    vi prev(a.size());
     int maxSeen=0;
     int bestEnd=0;
 

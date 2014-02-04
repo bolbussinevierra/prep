@@ -157,7 +157,7 @@ int get_code(char c) {
 Result estimate(string guess, string solution){
     if (guess.size() != solution.size() || guess.size() != MAX_COLORS)
         return NullResult;
-    vector<int> pseudo_hit_frequency(MAX_COLORS, 0);
+    vi pseudo_hit_frequency(MAX_COLORS, 0);
     
     Result res = {0,0};
     for (int i = 0; i < guess.size(); ++i){
@@ -183,7 +183,7 @@ Result estimate(string guess, string solution){
 //
 // 17.6
 //
-int GetLeftEnd(vector<int> const& a) {
+int GetLeftEnd(vi const& a) {
     for (int i = 1; i < a.size(); ++i) {
         if (a[i] < a[i-1]) {
             return i-1;
@@ -192,7 +192,7 @@ int GetLeftEnd(vector<int> const& a) {
     return a.size() - 1;
 }
 
-int GetRightStart(vector<int> const& a) {
+int GetRightStart(vi const& a) {
     for (int i = a.size() - 2; i >= 0; --i) {
         if (a[i] > a[i+1]) {
             return i+1;
@@ -201,7 +201,7 @@ int GetRightStart(vector<int> const& a) {
     return 0;
 }
 
-void GetMinMaxInRange(vector<int> const& a, int start, int end, 
+void GetMinMaxInRange(vi const& a, int start, int end, 
                       int& minI, int& maxI) {
     minI = start;
     maxI = start;
@@ -216,7 +216,7 @@ void GetMinMaxInRange(vector<int> const& a, int start, int end,
     }
 }
     
-void GetSortRange(vector<int> const& a) {
+void GetSortRange(vi const& a) {
     assert(a.size() > 1);
 
     int el = GetLeftEnd(a);
@@ -309,7 +309,7 @@ string NumToString(int number) {
 //
 // 17.8
 //
-void PrintMaxSumBest(vector<int> const& v) {
+void PrintMaxSumBest(vi const& v) {
     int max_sum = numeric_limits<int>::min();
     int sum = 0;
     int local_start = 0;
@@ -353,7 +353,7 @@ void PrintMaxSumBest(vector<int> const& v) {
     
 }
 
-int _SumRange(vector<int> const& v, int start, int end) {
+int _SumRange(vi const& v, int start, int end) {
     int sum = 0;
     for (int i = start; i <= end; ++i) {
         sum += v[i];
@@ -361,7 +361,7 @@ int _SumRange(vector<int> const& v, int start, int end) {
     return sum;
 }
 
-void PrintMaxSumNaive(vector<int> const& v) {
+void PrintMaxSumNaive(vi const& v) {
     int bestStart = -1;
     int bestEnd = -1;
     int bestSum = numeric_limits<int>::min();
@@ -451,7 +451,7 @@ int rand7_cool() {
 // for the INDEXES of pairs that contain values that add up to value. Should
 // avoid the duplicate handling logic unless it makes sense. Space should be 
 // the consideration
-void PrintPairSum_O_N_UsesHashTable_HandlesDuplicates(vector<int>& v, int sum) {
+void PrintPairSum_O_N_UsesHashTable_HandlesDuplicates(vi& v, int sum) {
     unordered_map<int, int> hm; // <complement, duplicate_count>
     for (int i = 0; i < v.size(); ++i) {
         int complement = sum - v[i]; // can overflow. Be ready to address that

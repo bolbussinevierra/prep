@@ -27,7 +27,7 @@ void _P(int a[], int len_a) {
 void rotate(int a[], int len, int rot_count) {
     if (rot_count == 0) return;
     _P(a, len, "bef_rotate");
-    vector<int> temp(len);
+    vi temp(len);
     for (int i = 0; i < len; ++i) {
         int newPos = (i + rot_count) % len;
         if (newPos < 0) {

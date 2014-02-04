@@ -301,8 +301,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //            0   1    2  3  4  5   6  7  8  9   10
     int a1[] = {-40, -20, -1, 1, 2, 3, 5, 7, 9, 12, 13};
     int a2[] = {-10, -5,   2, 2, 2, 3, 4, 7, 9, 12, 13}; 
-    vector<int> v1(begin(a1), end(a1));
-    vector<int> v2(begin(a2), end(a2));
+    vi v1(begin(a1), end(a1));
+    vi v2(begin(a2), end(a2));
     cout << "Magic Index in A1 is=" << MagicIndexUnique(v1) << endl;
     cout << "Magic Index in A2 is=" << MagicIndexDuplicates(v2) << endl;
 #endif 
@@ -339,7 +339,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // was ways of stepping instead of coins, they would indeed be two different ways
     int amount = 27;
     int c[] = {1, 5, 10, 25};
-    vector<int> coins(begin(c), end(c));
+    vi coins(begin(c), end(c));
     char * title = "Ways to make change for ";
     cout << title << amount << "=" << CountWaysToMakeChangeDP_SpaceOptimized(amount, coins) << endl;
     cout << title << amount << "=" << CountWaysToMakeChangeDP(amount, coins) << endl;
@@ -349,7 +349,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     // 9.9
     //
-    vector<int> row_set(32, 0);
+    vi row_set(32, 0);
     SolveQueensColByCol(row_set, 0);
     DrawBoard(row_set);
 #endif 
@@ -565,7 +565,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 17.6
     //
     int a176[] = {1,2,4,7,10,11,7,12,6,7,16,18,19};
-    vector<int> v(begin(a176), end(a176));
+    vi v(begin(a176), end(a176));
     GetSortRange(v);
 #endif
 #if 0
@@ -580,7 +580,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     int a178[] = {2, -8, 3, -2, 4, -10};
     //int a178b[] = {-2, -8, -3, -2, -4, -10};
-    vector<int> v(begin(a178), end(a178));
+    vi v(begin(a178), end(a178));
     PrintMaxSumNaive(v);
     PrintMaxSumBest(v);
 #endif
@@ -610,7 +610,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 17.12
     //
     int a1712[] = {1,2,1,2,1,2,2};
-    vector<int> v(begin(a1712), end(a1712));
+    vi v(begin(a1712), end(a1712));
     cout << "O(N) with Hash: ArraySize=" << AS(a1712) << endl;
     PrintPairSum_O_N_UsesHashTable_HandlesDuplicates(v, 3);
     cout << "O(NLogN, NoDupeHandled) ArraySize=" << AS(a1712) << endl;
@@ -662,7 +662,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 18.3
     //
     int a183[] = {1,2,3,4,5};
-    PickM_MineBetter(vector<int>(begin(a183), end(a183)), 3);
+    PickM_MineBetter(vi(begin(a183), end(a183)), 3);
 #endif
 #if 0
     //
@@ -684,16 +684,16 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     // 18.6
     //
     int a186[] = {5,4,3,1,1,2,9,8,7,7,6,10};
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 1);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 2);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 3);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 4);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 5);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 6);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 7);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 8);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 9);
-    print_n_smallest(vector<int>(begin(a186), end(a186)), 10);
+    print_n_smallest(vi(begin(a186), end(a186)), 1);
+    print_n_smallest(vi(begin(a186), end(a186)), 2);
+    print_n_smallest(vi(begin(a186), end(a186)), 3);
+    print_n_smallest(vi(begin(a186), end(a186)), 4);
+    print_n_smallest(vi(begin(a186), end(a186)), 5);
+    print_n_smallest(vi(begin(a186), end(a186)), 6);
+    print_n_smallest(vi(begin(a186), end(a186)), 7);
+    print_n_smallest(vi(begin(a186), end(a186)), 8);
+    print_n_smallest(vi(begin(a186), end(a186)), 9);
+    print_n_smallest(vi(begin(a186), end(a186)), 10);
 #endif
 #if 0
     //
@@ -746,7 +746,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         {0,0,1},
         {0,0,1}
     };
-    vector<vector<int>> v; 
+    vector<vi> v; 
     Make2DVector(s1811, DIM, DIM, v);
     result res;
     if (GetSquare(v, res)) {
@@ -768,7 +768,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         { 3, 8, 10, 1, 3},
         {-4,-1, 1, 7, -6}
     };
-    vector<vector<int>> v; 
+    vector<vi> v; 
     Make2DVector(s1812, DIM_ROW, DIM_COL, v);
     Rect res;
     int max_sum = Kadane2D(v, res);
@@ -794,8 +794,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     /* Making Change */
     int coins[] = {1, 5, 25};
     int limits[] = {60, 1, 3};
-    vector<int> vCoins(begin(coins), end(coins));
-    vector<int> vLimits(begin(limits), end(limits));
+    vi vCoins(begin(coins), end(coins));
+    vi vLimits(begin(limits), end(limits));
     MakingChangeInfiniteCoins(65, vCoins);   
     MakingChangeLimitedCoins(65, vCoins, vLimits);
 #endif
@@ -825,7 +825,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     /* BALANCED PARTITION */
       
     int a[] = {3,2,1,1,2,1};
-    vector<int> v(begin(a), end(a));
+    vi v(begin(a), end(a));
     balanced_partition(v);
 #endif 
 #if 0
@@ -860,15 +860,15 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     int arr4[] = {0,1,1}; // no path
     int arr5[] = {1,1,1}; // ans=0,1,2
 
-    vector<int> cases[] = {
-        vector<int>(begin(arr1), end(arr1)),
-        vector<int>(begin(arr2), end(arr2)),
-        vector<int>(begin(arr3), end(arr3)),
-        vector<int>(begin(arr4), end(arr4)),
-        vector<int>(begin(arr5), end(arr5)),
+    vi cases[] = {
+        vi(begin(arr1), end(arr1)),
+        vi(begin(arr2), end(arr2)),
+        vi(begin(arr3), end(arr3)),
+        vi(begin(arr4), end(arr4)),
+        vi(begin(arr5), end(arr5)),
     };
 
-    for (vector<int> const& v : cases) {
+    for (vi const& v : cases) {
         list<int> jumps;
         HRESULT hr = MinJumps_DP_NotIdeal_O_N2(v, jumps);
         PrintJumps(hr, jumps);
@@ -891,7 +891,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #if 0
     /* Matrix Multiplication */
     int a[] = {10, 20, 30, 40, 30};
-    vector<int> v(begin(a), end(a));
+    vi v(begin(a), end(a));
     string result;
     string m_print; // simply to print the matrices
     int count = MatrixChainOrder(v, m_print, result);
@@ -905,8 +905,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     //
     int set[] = {3, 34, 4, 12, 5, 2};
     int sum = 9;
-    vector<int> result;
-    vector<int> v(begin(set), end(set));
+    vi result;
+    vi v(begin(set), end(set));
     bool has_subset = SubsetWithSum(v, sum, result);
     if (has_subset) {
         cout << "There is a subset with sum=" << sum << endl;
@@ -951,8 +951,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
      *
      */
     int arr[] = {1, 5, 8, 9, 10, 17, 17, 20};
-    vector<int> p(begin(arr), end(arr));
-    vector<int> cuts;
+    vi p(begin(arr), end(arr));
+    vi cuts;
     int best_price = CutRod(p, cuts);
     cout << "Best Price=" << best_price << endl;
     cout << "make cuts at:" ;
@@ -966,9 +966,9 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
      *
      */
     int arr[] = {8, 15, 3, 7};
-    vector<int> coins(begin(arr), end(arr));
-    vector<int> moves_player_one;
-    vector<int> moves_player_two;
+    vi coins(begin(arr), end(arr));
+    vi moves_player_one;
+    vi moves_player_two;
     int score = BestStrategyForGame(coins, moves_player_one, moves_player_two);
     cout << "winning score=" << score << endl;
     Print("player_one moves", moves_player_one);
@@ -1032,7 +1032,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
         Here 3 does not have the pair (6 does not have one either)
     */
     int a[] = {1, 2, 1, 3, 5, -3, -2, 6, 2, -3, 5, -2};
-    vector<int> v(begin(a), end(a));
+    vi v(begin(a), end(a));
     PrintNumberMissingPair(v);
 #endif
 #if 0
@@ -1060,7 +1060,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
     any random node
     */
     int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    vector<int> v(begin(a), end(a));
+    vi v(begin(a), end(a));
     shared_ptr<Link> original = MakeLinkList(v);
     shared_ptr<Link> copy1 = CopyList_O_N_Space_O_N_Speed(original.get());
     shared_ptr<Link> copy2 = CopyList_O_1_Space_O_N_Speed(copy1.get());
@@ -1112,7 +1112,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 #if 0
     /* Implement a function that can calculate the prime numbers upto number N */
     /* Loose bound on performance is O(nlogn) (n/2 + n/3 + n/4 ...) = n(1/2 + 1/3 + ..) */
-    vector<int> v = GetPrimesUpto(1000);
+    vi v = GetPrimesUpto(1000);
     for_each(v.begin(), v.end(), [](int n){ cout << n << endl;});
 #endif 
 #if 0
@@ -1141,7 +1141,7 @@ int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 
 #endif 
 #if 0
-    vector<int> v(21);
+    vi v(21);
     for (int i = 0; i < v.size(); ++i) 
         v[i]=i;
     for_each(v.begin()+0, v.begin()+1, [](int n) { cout << n << " "; });
