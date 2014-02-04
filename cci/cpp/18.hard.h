@@ -509,8 +509,8 @@ void TrackNumber(int num, heap* maxh, heap* minh) {
             minh->insert(num);
         }
     }
-    else { // maxh heap is always the larger one if they are arent equal but keep it no more
-           // than one item larger
+    else { // maxh heap is always the larger one if they are arent equal but 
+           // keep it no more than one item larger
         if (num <= GetMedian(maxh, minh)) {
             int max_top = maxh->extract_top();
             minh->insert(max_top);
@@ -575,9 +575,14 @@ void _unpack_path(unordered_map<string, string> const& prev, list<string>& path,
         it = prev.find(it->second);
     }
 }
+string MakeUpper(string const& w) {
+    string start(w.size(), ' ');
+    std::transform(w.begin(), w.end(), start.begin(), ::toupper);
+    return start;
+}
 
 HRESULT CalculateTransform(string const& w1, string const& w2, hash_map const& dict, 
-                           list<string>& path) {
+                         list<string>& path) {
     if ((w1.length() != w2.length()) || w1.empty() || dict.empty()) {
         return E_UNEXPECTED;
     }
@@ -587,11 +592,9 @@ HRESULT CalculateTransform(string const& w1, string const& w2, hash_map const& d
         return S_OK; // no work to do
     }
 
-    string start(w1.size(), ' ');
-    string end(w2.size(), ' ');
-    std::transform(w1.begin(), w1.end(), start.begin(), ::toupper);
-    std::transform(w2.begin(), w2.end(), end.begin(), ::toupper);
-
+    string start = MakeUpper(w1);
+    string end = MakeUpper(w2);
+    
     queue<string> bfs; 
     bfs.push(start);
     
