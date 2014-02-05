@@ -841,10 +841,9 @@ int MatrixChainOrder(vi const& p, string& m_print, string& result) {
     _BuildSolution(p, solution, 1, num_matrices, result);
     return t[1][num_matrices];
 }
-/*
- *
- * Subset Sum problem - is there an array of items that sums to the given sum
- *
+/*************************************************************************************
+ * Subset Sum problem
+ * Is there an array of items that sums to the given sum?
  */
 void _GetSubset(vvbool const& t, vi const& v, int items, int sum, vi& result) {
     if (0 == items) return;
@@ -858,8 +857,8 @@ void _GetSubset(vvbool const& t, vi const& v, int items, int sum, vi& result) {
 }
 
 // iterative implementation of the same function above done for educative purposes
-// HOWEVER!!! THIS WILL GET THE ITEMS BACKWARDS. WOULD NEED TO USE A LIST FOR FOWARDS
-// so prefer above
+// HOWEVER!!! THIS WILL GET THE ITEMS BACKWARDS. WOULD NEED TO USE A LIST FOR FORWARDS
+// and do a push_front() to make this work
 void _GetSubset(vvbool const& t, vi const& v, int sum, vi& result) {
     for (int i = v.size(); i >=1; --i) {
         if (! t[i-1][sum]) { // because of OR-ing order we need to check this is negative first
@@ -874,18 +873,14 @@ bool SubsetWithSum(vi const& v, int sum, vi& result) {
 
     for (int i = 0; i <= v.size(); ++i) {
         for (int s = 0; s <= sum; ++s) {
-            if (0 == s) { // always true
+            if (0 == s)  // always true
                 t[i][s] = true;
-            }
-            else if (0 == i) { // always false except the s == 0 case above
+            else if (0 == i) // always false except the s == 0 case above
                 t[i][s] = false;
-            }
-            else if (s < v[i-1]) { // v is zero indexed so item i is at index i-1
+            else if (s < v[i-1])  // v is zero indexed so item i is at index i-1
                 t[i][s] = t[i-1][s]; // i-th element is too large to be included
-            }
-            else {
+            else 
                 t[i][s] = t[i-1][s] || t[i-1][s-v[i-1]]; // v is zero indexed so item i is at index i - 1
-            }
         }
     }
     if (t[v.size()][sum]) {
@@ -894,9 +889,10 @@ bool SubsetWithSum(vi const& v, int sum, vi& result) {
     return t[v.size()][sum];
 }
 
-/*
+/*************************************************************************************
  
- DICE THROW PROBLEM - given N dice with M faces, ways to sum to a value x
+ DICE THROW PROBLEM - given N dice with M faces, how many ways are the to sum to 
+ a value x
 
 */
 int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
@@ -908,12 +904,12 @@ int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
 
     // sum_to is far too small to allow the dice to all be thrown even if they all 
     // land on their smallest face
-    if (sum_to <= dice_count) 
+    if (sum_to <= dice_count) // smallest face is 1
         return (sum_to == dice_count ? 1 : 0);
 
     vvi table(dice_count+1, vi(sum_to+1, 0)); // initialize all values to 0
 
-    // dice=1 case Initialize values we can get to in the single through 
+    // dice=1 case Initialize values we can get to in the single throw
     for (int s = 1; s <= sum_to && s <= face_count; ++s) 
         table[1][s] = 1;
 
@@ -924,14 +920,18 @@ int WaysToSumDiceTo(int sum_to, int dice_count, int face_count) {
 
     return table[dice_count][sum_to];
 }
-/*
+/*************************************************************************************
     ROD CUTTING 
+    ------------
+    Given a rod of length n inches and an array of prices that contains prices of all 
+    pieces of size smaller than n. Determine the maximum value obtainable by cutting 
+    up the rod and selling the pieces. 
 */
 int CutRod(vi const& p, vi& cuts) {
     if (p.empty()) return -1;
     
     int n = p.size();
-    vi table(n+1, INT_MIN);
+    vi table(n+1, INT_MIN); // t[i] optimal price that can be obtained by cutting rod length i
     vi s(n+1, INT_MAX); // s[i] = j means best first cut to make for length i is at j
     
     table[0] = 0;
@@ -952,10 +952,14 @@ int CutRod(vi const& p, vi& cuts) {
     return table[n];
 }
 
-/*
+/*************************************************************************************
  *
  * BEST STRATEGY FOR THE GAME
- *
+ * Problem statement: Consider a row of n coins of values v1 . . . vn, where n is even
+ * We play a game against an opponent by alternating turns. In each turn, a player 
+ * selects either the first or last coin from the row, removes it from the row 
+ * permanently, and receives the value of the coin. Determine the maximum possible 
+ * amount of money we can definitely win if we move first.
  */
 
 

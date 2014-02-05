@@ -131,10 +131,10 @@ protected:
 
 class min_heap : public heap {
 private:
-    bool greater_priority(int lhs, int rhs) { return lhs < rhs; }
+    bool greater_priority(int lhs, int rhs) final override { return lhs < rhs; }
 };
 
 class max_heap : public heap {  
 private:
-    bool greater_priority(int lhs, int rhs) { return lhs > rhs; }
+    bool greater_priority(int lhs, int rhs) final override { return lhs > rhs; }
 };

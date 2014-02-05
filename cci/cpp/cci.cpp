@@ -42,11 +42,10 @@
 #if 1
 #include "dp.h"
 #endif
-#if 0
+#if 1
 #include "other.h"
 #endif
-int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
-{
+int main(){
 #pragma region reviewed
     srand(time(0));
 #if 0
