@@ -148,40 +148,40 @@ bool NeighborIsSet(vector<TrackTable> const& dp, int nbor_char, int row, int col
     }
     return false;
 }
-void PrintPath(vector<TrackTable>const& dp, vvc const& table, 
+void PrintPath(vector<TrackTable>const& table, vvc const& char_grid, 
               int pos, int row, int col) {
     if (pos == -1) return;
-    PrintPath(dp, table, pos-1, 
-             dp[pos][row][col].previous.first, // backpointer previous row
-             dp[pos][row][col].previous.second); // backpointer previous col
+    PrintPath(table, char_grid, pos-1, 
+             table[pos][row][col].previous.first, // backpointer previous row
+             table[pos][row][col].previous.second); // backpointer previous col
     cout << "[" << row << "," << col << "]" ;
 }
-void ContainsWordDP(string const& w, vvc const& table) {
-    // dp[pos][row][col] = true if table[row][col] == w_pos and
-    //                             table[pos-1][x][y] == true
-    //                             where table [x][y] is a valid neighbor of
-    //                             table[row][col]. (There are 8 max poosible neighbors)
-    // return true if dp[w.size() - 1][i][j] is true for any valid i,j
+void ContainsWordDP(string const& w, vvc const& char_grid) {
+    // table[pos][row][col].match = true if char_grid[row][col] == w_pos and
+    //                             table[pos-1][x][y].match == true
+    //                             where char_grid [x][y] is a valid neighbor of
+    //                             char_grid[row][col]. (There are 8 max poosible neighbors)
+    // return true if table[w.size() - 1][i][j] is true for any valid i,j
     //
-    int const k_rows = table.size();
-    int const k_cols = table[0].size();
+    int const k_rows = char_grid.size();
+    int const k_cols = char_grid[0].size();
     string lower_w(w.size(), 0);
     std::transform(w.begin(), w.end(), lower_w.begin(), ::tolower);
 
-    vector<TrackTable> dp(lower_w.size(), TrackTable(k_rows, vector<track>(k_cols, k_null)));
+    vector<TrackTable> table(lower_w.size(), TrackTable(k_rows, vector<track>(k_cols, k_null)));
 
     for (int pos = 0; pos < lower_w.size(); ++pos) {
         for (int row = 0; row < k_rows; ++row) {
             for (int col = 0; col < k_cols; ++col) {
-                bool set_on = table[row][col] == lower_w[pos]; 
+                bool set_on = char_grid[row][col] == lower_w[pos]; 
                 if (pos > 0 && set_on) {
                     Point prev;
-                    set_on = NeighborIsSet(dp, pos-1, row, col, prev);
+                    set_on = NeighborIsSet(table, pos-1, row, col, prev);
                     if (set_on) {
-                        dp[pos][row][col].previous = prev;
+                        table[pos][row][col].previous = prev;
                     }
                 }
-                dp[pos][row][col].match = set_on;
+                table[pos][row][col].match = set_on;
             }
         }
     }
@@ -189,8 +189,8 @@ void ContainsWordDP(string const& w, vvc const& table) {
     // now find every instance that matches and print its path
     for (int row = 0; row < k_rows; ++row) {
         for (int col = 0; col < k_cols; ++col) {
-            if (dp[w.size()-1][row][col].match) {
-                PrintPath(dp, table, w.size()-1, row, col);
+            if (table[w.size()-1][row][col].match) {
+                PrintPath(table, char_grid, w.size()-1, row, col);
                 cout << endl;
             }
         }
