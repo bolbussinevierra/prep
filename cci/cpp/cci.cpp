@@ -42,9 +42,13 @@
 #if 0
 #include "dp.h"
 #endif
-#if 1
+#if 0
 #include "other.h"
 #endif
+#if 1
+#include "splay.tree.h"
+#endif
+
 int main(){
 #pragma region reviewed
     srand(time(0));

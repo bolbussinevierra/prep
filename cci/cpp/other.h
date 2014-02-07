@@ -409,8 +409,10 @@ Point _binary_find(Point l, Point r, vvi const& m) {
                             (l.second + (r.second - l.second)/2));
 
         if (-1 == m[mid.first][mid.second]) {
-            while (-1 == m[mid.first][mid.second]) // in case there are duplicate -1's
-                mid.first--, mid.second++;
+            while (-1 == m[mid.first][mid.second]) { // in case there are duplicate -1's
+                mid.first--; 
+                mid.second++;
+            }
 
             // mid has gone past the right most -1, back it up one
             return make_pair(mid.first+1, mid.second-1);

@@ -78,6 +78,9 @@
     <ClInclude Include="09.recursion.and.dp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="splay.tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
