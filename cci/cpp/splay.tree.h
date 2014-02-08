@@ -115,6 +115,12 @@ private:
        }
        m_root = splayee;
    }
+   
+   node * _get_maximum_node(node * root) {
+       while (root->right) root = root->right;
+       return root;
+   }
+
 public:
     splay_tree():m_root(nullptr), m_size(0) {}
     node* find(int target) {
@@ -162,7 +168,7 @@ public:
                 else {
                     current->left = new node(data);
                     current->left->parent = current;
-                    current = current->left;
+                    current = current->left; // important so as to splay correct node
                     break;
                 }
            
@@ -173,7 +179,7 @@ public:
                 else {
                     current->right = new node(data);
                     current->right->parent = current;
-                    current = current->right;
+                    current = current->right; // important so as to splay correct node
                     break;
                 }
             }
@@ -182,8 +188,36 @@ public:
         // splay the inserted value up to the root
         _splay(current);
         assert(m_root == current);
+        return;
     }  
    
-   
+    // erase a node from a bst
+    void erase(T const& key) {
+        // first find the node. This will _splay the node up to the root
+        node* found = find(key);
+        if (!found) return;
+        assert(m_root->key == key); // make sure splaying occurred.
+
+        // now remove the root and free it
+        node * left_subtree = found->left;
+        node * right_subtree = found->right;
+        delete found;
+        m_size--;
+
+        if (!left_subtree && !right_subtree)
+            return;
+
+        // if left subtree is valid, need to get the maximum element in the left subtree
+        // and make that the new root (which will be the root of the new melded tree we
+        // are making (_correctly set by _splay)
+        if (left_subtree && right_subtree) {
+            _splay(_get_maximum_node(left_subtree));
+            // make the right subtree the right child of the left
+            m_root->right = right_subtree;
+        }
+        else {
+            m_root = left_subtree ? left_subtree : right_subtree;
+        }   
+    }
 };
 
