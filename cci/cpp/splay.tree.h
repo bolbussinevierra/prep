@@ -42,14 +42,19 @@ private:
            rotatee->left->parent = via_parent;
        
        node* grand_parent = via_parent->parent;
-       if (!grand_parent) 
+       if (!grand_parent) {
            m_root = rotatee;
+           rotatee->parent = nullptr;
+       }
        // if old parent was on the left side of ITS parent (Grandparent of rotatee),
        // then the new grandchild of GP, is rotatee (ditto for right )
-       else if (via_parent == grand_parent->left ) 
-           grand_parent->left = rotatee;
-       else 
-           grand_parent->right = rotatee;
+       else { 
+            if (via_parent == grand_parent->left ) 
+                grand_parent->left = rotatee;
+            else 
+                grand_parent->right = rotatee;
+            rotatee->parent = grand_parent;
+       }
 
        // complete left and right assignments
        rotatee->left = via_parent;
@@ -62,19 +67,25 @@ private:
        via_parent->left = rotatee->right;
 
        // set the parent pointers appropriately
-       if (!rotatee->right) 
+       if (rotatee->right) 
            rotatee->right->parent = via_parent;
 
        node* grand_parent = via_parent->parent;
-       if (!grand_parent)
+       if (!grand_parent) {
            m_root = rotatee;
+           rotatee->parent = nullptr;
+       }
 
        // else if the old parent (via_parent) is on the left side of GP, then
        // left of GrandParent is now rotee
-       else if (via_parent == grand_parent->left)
-           grand_parent->left = rotatee;
-       else 
-           grand_parent->right = rotatee;
+       else {
+            if (via_parent == grand_parent->left) 
+                grand_parent->left = rotatee;
+            else 
+                grand_parent->right = rotatee;
+           
+            rotatee->parent = grand_parent;
+       }
 
        rotatee->right = via_parent;
        via_parent->parent = rotatee;
@@ -138,7 +149,7 @@ private:
            for (int i = 1; i <= indent; ++i)
                cout << "    ";
        }
-       cout << root->key << endl;
+       printf("%d[p:%d]\n", root->key, (root->parent ? root->parent->key : -1));
        _print(root->left, indent+1);
    }
 
@@ -148,14 +159,14 @@ public:
     ~splay_tree() { _release(m_root); m_root = nullptr; }
 
     node* find(int target) {
-       if (!root) return nullptr;
+       if (!m_root) return nullptr;
        // locate the node, then _splay it up if we find it. If we dont find it, _splay up
        // the last node we saw when looking
-       node * current = root;
+       node *current = m_root;
        while (true) {
            if (current->key == target) 
                break;
-           else if (current->key > key) {
+           else if (current->key > target) {
                if (!current->left) break;
                else current = current->left;
            }
@@ -169,7 +180,8 @@ public:
        // we want to make sure that we only return a !nullptr value if we actually found
        // the value we were looking for
        assert(current);
-       _splay(current);
+       if (m_root != current)
+            _splay(current);
        assert(m_root == current);
 
        return (m_root->key == target ? m_root : nullptr); 
@@ -177,6 +189,10 @@ public:
     }
 
     void print() { 
+        if (!m_root) {
+            cout << "Tree is Empty!\n" << endl;
+            return;
+        }
         _print(m_root); 
         cout << "------------------------\n";
     }
@@ -222,19 +238,26 @@ public:
    
     // erase a node from a bst
     void erase(T const& key) {
+        if (!m_root || m_size==0) {
+            assert(!m_root && m_size == 0);
+            return;
+        }
         // first find the node. This will _splay the node up to the root
         node* found = find(key);
         if (!found) return;
         assert(m_root->key == key); // make sure splaying occurred.
 
         // now remove the root and free it
-        node * left_subtree = found->left;
-        node * right_subtree = found->right;
+        node *left_subtree = found->left;
+        node *right_subtree = found->right;
         delete found;
         m_size--;
 
-        if (!left_subtree && !right_subtree)
+        if (!left_subtree && !right_subtree) {
+            assert(m_size == 0);
+            m_root = nullptr;
             return;
+        }
 
         // if left subtree is valid, need to get the maximum element in the left subtree
         // and make that the new root (which will be the root of the new melded tree we
@@ -246,7 +269,8 @@ public:
         }
         else {
             m_root = left_subtree ? left_subtree : right_subtree;
-        }   
+        }
+        m_root->parent = nullptr; // make sure new root's parent is cleared.
     }
 };
 
