@@ -1124,6 +1124,17 @@ int main(){
     RemoveByteDuplicates(v);
     for_each(v.begin(), v.end(), [](byte n) { cout << n << endl;});
 #endif 
+#if 1
+    // implement and demonstrate a splay tree
+    splay_tree<int> st;
+    for (int i = 0; i <= 5; ++i) {
+        st.insert(i);
+        st.print();
+    }
+        
+
+#endif
+
 #pragma endregion
 
 #pragma region random_experiments

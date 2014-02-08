@@ -7,7 +7,7 @@ void * aligned_malloc(size_t required_bytes, size_t alignment) {
     assert((alignment & (alignment-1)) == 0);
     int offset = alignment - 1 + sizeof(void*);
     // somewhere in the next aligned-1 bytes is an aligned value
-    void* p = (void*) malloc(required_bytes+offset);
+    void *p = (void*) malloc(required_bytes+offset);
     if (!p) return nullptr;
 
     // jump the pointer offset forward 
@@ -22,7 +22,7 @@ void * aligned_malloc(size_t required_bytes, size_t alignment) {
 }
 
 void aligned_free(void * p_aligned) {
-    void * p = ((void**)p_aligned)[-1];
+    void *p = ((void**)p_aligned)[-1];
     free(p);
 }
 

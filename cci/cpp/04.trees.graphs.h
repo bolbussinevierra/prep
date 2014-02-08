@@ -42,7 +42,7 @@ TreeNode* _MakeOptimalBST(int * items, int start, int end) {
         return nullptr;
     }
     int mid = (start + end) / 2;
-    TreeNode* n = new TreeNode(items[mid]);
+    TreeNode *n = new TreeNode(items[mid]);
     n->left = _MakeOptimalBST(items, start, mid-1);
     n->right = _MakeOptimalBST(items, mid+1, end);
     
@@ -197,7 +197,7 @@ TreeNode* InOrderSuccessor(TreeNode* root) {
 void Test_InOrderSuccessor(TreeNode* root) {
     if (!root) return;
     Test_InOrderSuccessor(root->left);
-    TreeNode * s = InOrderSuccessor(root);
+    TreeNode *s = InOrderSuccessor(root);
     cout << "InOrderSuccessor(" << root->value << ")=" << (s ? to_string(s->value) : "nullptr") << endl;
     Test_InOrderSuccessor(root->right);
 }

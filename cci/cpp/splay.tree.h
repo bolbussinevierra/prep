@@ -12,29 +12,38 @@ private:
 
     struct node {
         node *left, *right, *parent;
+        T key;
         explicit node (const T& init = T()) 
-            : left(nullptr), right(nullptr), parent(nullptr), key (init) {}
+            : left(nullptr), right(nullptr), parent(nullptr), key(init) {}
     } *m_root; // declaration and definition together;
 
     node* _get_grand_parent(node* n){
-        if (node->parent) return node->parent->parent;
+        if (n->parent) return n->parent->parent;
         else return nullptr;
+    }
+
+    void _release(node* root){
+        if (!root) return;
+        _release(root->right);
+        _release(root->left);
+        delete root;
+        root = nullptr;
     }
 
 
    /* via_parent is the OUTGOING parent to be rotated through. The rotatee is the right
       child of via_parent */
    void _left_rotate_thru(node* via_parent) {
-       node * rotatee = via_parent->right;
+       node *rotatee = via_parent->right;
        via_parent->right = rotatee->left;
        
        // set the parent pointers properly
        if (rotatee->left) 
            rotatee->left->parent = via_parent;
        
-       node *grand_parent = via_parent->parent;
+       node* grand_parent = via_parent->parent;
        if (!grand_parent) 
-           root = rotatee;
+           m_root = rotatee;
        // if old parent was on the left side of ITS parent (Grandparent of rotatee),
        // then the new grandchild of GP, is rotatee (ditto for right )
        else if (via_parent == grand_parent->left ) 
@@ -56,9 +65,9 @@ private:
        if (!rotatee->right) 
            rotatee->right->parent = via_parent;
 
-       node* grandparent = via_parent->parent;
+       node* grand_parent = via_parent->parent;
        if (!grand_parent)
-           root = rotatee;
+           m_root = rotatee;
 
        // else if the old parent (via_parent) is on the left side of GP, then
        // left of GrandParent is now rotee
@@ -121,8 +130,23 @@ private:
        return root;
    }
 
+   void _print(node *root, int indent=0) {
+       if (!root) return;
+
+       _print(root->right, indent+1);
+       if (indent > 0) {
+           for (int i = 1; i <= indent; ++i)
+               cout << "    ";
+       }
+       cout << root->key << endl;
+       _print(root->left, indent+1);
+   }
+
+
 public:
     splay_tree():m_root(nullptr), m_size(0) {}
+    ~splay_tree() { _release(m_root); m_root = nullptr; }
+
     node* find(int target) {
        if (!root) return nullptr;
        // locate the node, then _splay it up if we find it. If we dont find it, _splay up
@@ -152,15 +176,20 @@ public:
   
     }
 
+    void print() { 
+        _print(m_root); 
+        cout << "------------------------\n";
+    }
+
     // add the node as you would in a bst but then _splay it up after
     void insert(int data) {
-        if (!root) {
-            root = new node(data);
+        if (!m_root) {
+            m_root = new node(data);
             m_size = 1;
             return;
         }   
        
-        node* current = root;
+        node* current = m_root;
         while (true) {
             if (current->key >= data) {
                 if (current->left) 
