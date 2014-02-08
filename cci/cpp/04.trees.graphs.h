@@ -280,35 +280,85 @@ void FindSum(TreeNode* tree, int target) {
     return _FindSum(tree, target, path, 0);
 }
 
-#if 0
-//
-// DEPRECATED BELOW HERE
-//
-bool _IsBST_NotGoodEnough(TreeNode* root, int& lastValue, bool& lastValueSet){
-    if (!root)
-        return true;
-
-    if (!_IsBST_NotGoodEnough(root->left, lastValue, lastValueSet))
-        return false;
-
-    if (!lastValueSet) {
-        lastValueSet = true;
+tuple<TreeNode*, TreeNode*> _Find(TreeNode *root, int key) {
+    if (!root) return make_tuple(nullptr, nullptr);
+    TreeNode* current = root;
+    TreeNode* parent = nullptr;
+    while (current) {
+        if (current->value == key) 
+            return make_tuple(current, parent);
+        else if (current->value > key) {
+            parent = current;
+            current = current->left;
+        }
+        else {
+            parent = current;
+            current = current->right;
+        }
     }
-    else if (root->value <= lastValue) {
-        return false;
+    return make_tuple(nullptr, nullptr);
+}
+void _DeleteNode(TreeNode* n, TreeNode* parent) {
+    if (!n) return;
+    // if n has no children delete simply unlink it from its parent
+    // and delete it
+    if (!n->left && !n->right) {
+        if (parent->left == n)
+            parent->left = nullptr;
+        else
+            parent->right = nullptr;
     }
-    lastValue = root->value;
-    printf("lastSeen = %d ", lastValue); 
-
-    if (!_IsBST_NotGoodEnough(root->right, lastValue, lastValueSet))
-        return false;
-
-    return true;
+    // has both children, get the inorder successor, move it up to the
+    // node and then go and delete the duplicate
+    else if (n->left && n->right) {
+        TreeNode* in_order_succ_parent = nullptr;
+        TreeNode* in_order_succ = _LeftMost(n->right);
+        n->value = in_order_succ->value;
+        // TODO: this would be unnecesary if we change _leftMost to return
+        // parent as well (I am pretending TreeNode does not have a parent
+        // member for purposes of this algorithm
+        tie(in_order_succ, in_order_succ_parent) = _Find(n->right, n->value);
+        // if we do not get a parent for the successor we just used, this means
+        // it is a child of n (which was not included in the find)
+        if (!in_order_succ_parent) in_order_succ_parent = n; 
+        return _DeleteNode(in_order_succ, in_order_succ_parent);
+    }
+    // else it has only one child
+    else if (n->left || n->right) {
+        if (parent->left == n) {
+            parent->left = (n->left) ? n->left : n->right;
+            parent->left->parent = parent;
+        }
+        else {
+            parent->right = (n->left) ? n->left : n->right;
+            parent->right->parent = parent;
+        }
+    }
+    delete n;
+    return;
 }
-bool IsBST_NotGoodEnough(TreeNode* root){
-    int lastValue = 0;
-    bool lastValueSet = false;
-    printf("\n");
-    return _IsBST_NotGoodEnough(root, lastValue, lastValueSet);
+// http://www.algolist.net/Data_structures/Binary_search_tree/Removal
+void DeleteNode(TreeNode *& root, int key) {
+    if (!root) return;
+
+    TreeNode *parent = nullptr, *found = nullptr;
+    tie(found, parent) = _Find(root, key);
+    if (!found) return;
+
+    assert(found->value == key);
+    
+    // check if we are deleting the root. This is a special case that requires
+    // special treatment. The approach we use here is to create a dummy root,
+    // hang the real root on it and then after the delete algorithm runs, 
+    // restore the root
+    if (found->value == root->value) {
+        shared_ptr<TreeNode> dummy_root = make_shared<TreeNode>(0);
+        dummy_root->left = root;
+        root->parent = dummy_root.get();
+        _DeleteNode(root, dummy_root.get());
+        root = dummy_root->left;
+    }
+    else {
+        return _DeleteNode(found, parent);
+    }
 }
-#endif

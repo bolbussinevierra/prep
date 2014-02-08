@@ -198,6 +198,43 @@ int main(){
     }
 #endif
 #if 0
+    // 4.x1 (extra credit)
+    // delete nodes from a bst
+    int a[] = {0,1,2,3,5,6,7,8,9,10};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    TreeNode::Print(tree);
+    cout << "------------------------\n";
+    DeleteNode(tree, 5);
+    TreeNode::Print(tree);
+    DeleteNode(tree, 1);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 6);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 8);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 7);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 9);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 10);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 2);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 3);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+    DeleteNode(tree, 0);
+    cout << "------------------------\n";
+    TreeNode::Print(tree);
+#endif 
+#if 0
     //
     // 5.1
     //
