@@ -532,3 +532,14 @@ void RemoveByteDuplicates(vector<byte>& v) {
     }
     v.swap(fixed);
 }
+/*
+ GCD / LCM
+ */
+int gcd(int a, int b) { 
+    while (b) tie(a, b) = make_tuple(b, a%b);
+    return a;
+}
+int lcm(int a, int b) {
+    return (a * b)/gcd(a,b);
+}
+    

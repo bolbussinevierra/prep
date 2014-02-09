@@ -39,7 +39,7 @@
 #if 0
 #include "18.hard.h"
 #endif
-#if 1
+#if 0
 #include "dp.h"
 #endif
 #if 0
@@ -1013,7 +1013,7 @@ int main(){
     Print("player_one moves", moves_player_one);
     Print("player_two moves", moves_player_two);
 #endif
-#if 1
+#if 0
     /*************************************************************************************
     NLOGN LONGEST INCREASING SUBSEQUENCE
     ------------
@@ -1199,7 +1199,14 @@ int main(){
     st.erase(-1);
     st.print();   
 #endif
+#if 0
+    /*
+        LCM / GCD
+    */
 
+    cout << gcd(8, 4) << endl;
+    cout << lcm(12, 8) << endl;
+#endif 
 #pragma endregion
 
 #pragma region random_experiments
