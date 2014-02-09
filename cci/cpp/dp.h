@@ -1005,3 +1005,55 @@ int BestStrategyForGame(vi const& coins, vi& moves_player_one,
     GetMoves(table, coins, moves_player_one,  moves_player_two);
     return table[0][n-1];
 }
+/*************************************************************************************
+    NLOGN LONGEST INCREASING SUBSEQUENCE
+    ------------
+    Find and print the longest monotonically increasing subsequence in nlogn
+*/
+int _GetLowestHigherValue(vi const& v, vi const& indices, int l, int r, int target) {
+    while (r - l > 1) {
+        int mid = (l + r)/2;
+        if (v[indices[mid]] >= target) 
+            r = mid;
+        else 
+            l = mid;
+    }
+    return r;
+}
+
+tuple<int, vi> nlog_n_LongestIncreasingSubsequence(vi const& v) {
+    if (v.empty()) return make_tuple(0, vi(0));
+
+    vi tail_indices(v.size(), 0);
+    vi prev_indices(v.size(), -1);
+    
+    prev_indices[0] = -1;
+    int lis_len = 1; // invariant: always point to the the next empty location
+
+    for (int i = 1; i < v.size(); ++i) {
+        if (v[i] < v[tail_indices[0]]) 
+            // new smallest value 
+            tail_indices[0] = i;
+        else if (v[i] > v[tail_indices[lis_len-1]]) {
+            // clone and extend the largest subsequence
+            prev_indices[i] = tail_indices[lis_len-1];
+            tail_indices[lis_len++] = i;
+        }
+        else {
+            // A[i] is a potential candidate for a future subsequence
+            // it will replace ceil value in tail_indices
+            int pos = _GetLowestHigherValue(v, tail_indices, 0, lis_len-1, v[i]);
+            prev_indices[i] = tail_indices[pos-1];
+            tail_indices[pos] = i;
+        }       
+    }
+
+    vi lis;
+    int last = tail_indices[lis_len-1];
+    while (last > -1) {
+        lis.push_back(v[last]);
+        last = prev_indices[last];
+    }
+    reverse(lis.begin(), lis.end());
+    return make_tuple(lis_len, lis);
+}

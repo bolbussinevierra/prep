@@ -39,13 +39,13 @@
 #if 0
 #include "18.hard.h"
 #endif
-#if 0
+#if 1
 #include "dp.h"
 #endif
 #if 0
 #include "other.h"
 #endif
-#if 1
+#if 0
 #include "splay.tree.h"
 #endif
 
@@ -1013,6 +1013,19 @@ int main(){
     Print("player_one moves", moves_player_one);
     Print("player_two moves", moves_player_two);
 #endif
+#if 1
+    /*************************************************************************************
+    NLOGN LONGEST INCREASING SUBSEQUENCE
+    ------------
+    Find and print the longest monotonically increasing subsequence in nlogn
+    */
+    int a[] = {0,8,4,12,2,2,10,6,14,1,9,5,13,3,11,7,15};
+    vi v(begin(a), end(a));
+    vi lis; int lis_len;
+    tie(lis_len, lis) = nlog_n_LongestIncreasingSubsequence(v);
+    printf("lis_len=%d\n", lis_len);
+    for_each(lis.begin(), lis.end(), [](int n) { cout << n << " "; });
+#endif 
 #pragma endregion
 
 #pragma region other_questions
