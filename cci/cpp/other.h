@@ -542,4 +542,88 @@ int gcd(int a, int b) {
 int lcm(int a, int b) {
     return (a * b)/gcd(a,b);
 }
-    
+/*
+    Add a new range with a given list of ranges by combining the new range 
+    instead of overlapping. For example: 1-4, 6-7, 10-12; add 9-11 Should 
+    return 1-4, 6-7, 9-12
+*/    
+struct range { int start; int end; };
+bool _SortRange(range const& lhs, range const& rhs) {
+    return lhs.start <= rhs.start;
+}
+
+void PrintRange(vector<range> const& ranges) {
+    for (range const& r : ranges) 
+        printf("[%d, %d] ", r.start, r.end);
+    puts("\n");
+}
+
+range make_range(int start, int end) {
+    range a = {start, end};
+    return a;
+}
+
+void AddToRange(vector<range>& ranges, range&& add) {
+    if (ranges.empty()) {
+        ranges.push_back(add);
+        return;
+    }
+
+    for (range& r : ranges) {
+        // if the range is completely subsummed, no-op
+        if (r.start <= add.start && r.end >= add.end) 
+            return;
+
+        // if range overlaps, extend the range to include
+        if (r.end >= add.start) {
+            r.start = min(r.start, add.start);
+            r.end = max(r.end,add.end);
+            return;
+        }
+        
+    }
+    // could not extend any range. Add
+    ranges.push_back(add);
+    return;
+}
+/*
+Given a set of time intervals in any order, merge all overlapping 
+intervals into one and output the result which should have only mutually 
+exclusive intervals. Let the intervals be represented as pairs of integers 
+for simplicity.For example, let the given set of intervals be 
+{{1,3}, {2,4}, {5,7}, {6,8} }. The intervals {1,3} and {2,4} 
+overlap with each other, so they should be merged and become {1, 4}. 
+Similarly {5, 7} and {6, 8} should be merged and become {5, 8}
+*/
+void MergeRanges(vector<range>& ranges) {
+    if (ranges.empty()) return;
+
+    sort(ranges.begin(), ranges.end(), _SortRange);
+
+    vector<range> new_ranges;
+    new_ranges.reserve(ranges.size());
+    new_ranges.push_back(ranges.front());
+
+    // we are going to process in place. last will represent the most
+    // recently added to the pile of new ranges we are building. Candidate
+    // will represent the range that we are processing
+    for (range& r : ranges) { 
+        // range is subsummed. skip
+        if (new_ranges.back().start <= r.start && 
+            new_ranges.back().end >= r.end)
+            continue;
+
+        // see if we need can extend the most recent range to reflect
+        // this range            
+        if (new_ranges.back().end >= r.start) {
+            range updated;
+            updated.start = min(new_ranges.back().start, r.start);
+            updated.end = max(new_ranges.back().end,r.end);
+            new_ranges[new_ranges.size()-1] = updated;
+        }
+        // else add this range to the pile 
+        else new_ranges.push_back(r);   
+    }
+    ranges.swap(new_ranges);
+    return;
+}

@@ -1175,6 +1175,42 @@ int main(){
     for_each(v.begin(), v.end(), [](byte n) { cout << n << endl;});
 #endif 
 #if 0
+    /*
+        Add a new range with a given list of ranges by combining the new range 
+        instead of overlapping. For example: 1-4, 6-7, 10-12; add 9-11 Should 
+        return 1-4, 6-7, 9-12
+    */
+    range a[] = {{1,4}, {6,7}, {10,12}};
+    vector<range> v(begin(a), end(a));
+    AddToRange(v, make_range(9,11));
+    PrintRange(v);
+#endif
+#if 0
+    /*
+    Given a set of time intervals in any order, merge all overlapping 
+    intervals into one and output the result which should have only mutually 
+    exclusive intervals. Let the intervals be represented as pairs of integers 
+    for simplicity.For example, let the given set of intervals be 
+    {{1,3}, {2,4}, {5,7}, {6,8} }. The intervals {1,3} and {2,4} 
+    overlap with each other, so they should be merged and become {1, 4}. 
+    Similarly {5, 7} and {6, 8} should be merged and become {5, 8}
+    */
+    range a1[] = { {6,8}, {1,9}, {2,4}, {4,7} }; // => [1.9]
+    vector<range> v1(begin(a1), end(a1));
+    MergeRanges(v1);
+    PrintRange(v1);
+
+    range a2[] = { {6,8},{1,3},{2,4},{4,7} }; // => [1.8]
+    vector<range> v2(begin(a2), end(a2));
+    MergeRanges(v2);
+    PrintRange(v2);
+
+    range a3[] = { {1,3},{7,9},{4,6},{10,13} }; // => [10,13] [7,9] [4,6] [1,3]
+    vector<range> v3(begin(a3), end(a3));
+    MergeRanges(v3);
+    PrintRange(v3);
+#endif 
+#if 0
     // implement and demonstrate a splay tree
     splay_tree<int> st;
     for (int i = 0; i <= 5; ++i) {
