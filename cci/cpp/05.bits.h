@@ -209,7 +209,7 @@ int FindMissingInteger(vector<ThreeBitInt> const& input) {
 //
 // EPI: 5.4
 //
-namespace epi_c5 {
+namespace epi_5 {
     int ClosestIntSameBits(unsigned int n) {
         for (int i = 0; i < 30; i++) {
             // find first pair of least signficant bits that differ
@@ -219,5 +219,5 @@ namespace epi_c5 {
             }
         }
         throw invalid_argument("all bits are 0 or 1");
-    }
+    }    
 }

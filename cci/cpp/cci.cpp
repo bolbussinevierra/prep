@@ -14,13 +14,13 @@
 #if 0
 #include "04.trees.graphs.h"
 #endif
-#if 1
+#if 0
 #include "05.bits.h"
 #endif
 #if 0
 #include "07.math.and.probability.h"
 #endif
-#if 0
+#if 1
 #include "09.recursion.and.dp.h"
 #endif
 #if 0
@@ -319,7 +319,7 @@ int main(){
     // epi:5.4
     // 
     for (int i = 1; i <= 20; ++i) 
-        printf("GetClosestSameBits(%d)=%d\n", i, epi_c5::ClosestIntSameBits(i));
+        printf("GetClosestSameBits(%d)=%d\n", i, epi_5::ClosestIntSameBits(i));
 #endif
 #pragma endregion
 #if 0
@@ -376,12 +376,14 @@ int main(){
     cout << "Magic Index in A1 is=" << MagicIndexUnique(v1) << endl;
     cout << "Magic Index in A2 is=" << MagicIndexDuplicates(v2) << endl;
 #endif 
-#if 0
+#if 1
     //
     // 9.4
     //
-    int items93[] = {1,2,3,4,5,6,7,8,9,10};
-    Subsets(items93, AS(items93));
+    int items93[] = {1,2,3};
+    // Subsets(items93, AS(items93));
+    // epi_5::SubsetsBinary(vi(begin(items93), end(items93)));
+    epi_5::SubsetRecursive(vi(begin(items93), end(items93)));
     // SubsetsIterative(items93, AS(items93));
     // SubsetsBinary(items93, AS(items93));
 #endif 

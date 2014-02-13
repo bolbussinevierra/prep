@@ -113,3 +113,4 @@ void _P(int a[], int len_a);
 void rotate(int a[], int len, int rot_count);
 void PrintVector(vector<string>& p, char* title);
 int Min3(int a, int b, int c); 
+int Log2(unsigned long long val);

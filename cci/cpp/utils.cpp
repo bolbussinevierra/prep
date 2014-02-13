@@ -47,3 +47,7 @@ void PrintVector(vector<string>& p, char* title) {
     printf("%s=[%d]\n", title, p.size());
 }
 int Min3(int a, int b, int c) { return min(min(a,b), c); }
+
+int Log2(unsigned long long val) {
+    return log(val) / log(2);
+}
