@@ -376,7 +376,7 @@ int main(){
     cout << "Magic Index in A1 is=" << MagicIndexUnique(v1) << endl;
     cout << "Magic Index in A2 is=" << MagicIndexDuplicates(v2) << endl;
 #endif 
-#if 1
+#if 0
     //
     // 9.4
     //
