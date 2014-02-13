@@ -11,10 +11,10 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 1
+#if 0
 #include "04.trees.graphs.h"
 #endif
-#if 0
+#if 1
 #include "05.bits.h"
 #endif
 #if 0
@@ -276,9 +276,11 @@ int main(){
     //
     // 5.3
     //
-    int num = 4;
-    cout << "GetNext(" << num << ")=" << GetNextLargestInteger(num) << endl;
-    cout << "GetPrev(" << num << ")=" << GetPreviousSmallestInteger(num) << endl;
+    for (int i = 2; i <= 20; ++i) {
+        printf("GetNext(%d)=%d\n", i, GetNextLargestInteger(i));
+        printf("GetPrev(%d)=%d\n", i, GetPreviousSmallestInteger(i));
+        printf("\n");
+    }
 #endif
 #if 0
     //
@@ -310,7 +312,16 @@ int main(){
             input.push_back(i);
 
     cout << "Missing Integer is=" << FindMissingInteger(input) << endl;
-#endif 
+#endif
+#pragma region epi
+#if 0
+    //
+    // epi:5.4
+    // 
+    for (int i = 1; i <= 20; ++i) 
+        printf("GetClosestSameBits(%d)=%d\n", i, epi_c5::ClosestIntSameBits(i));
+#endif
+#pragma endregion
 #if 0
     //
     // 7.3
