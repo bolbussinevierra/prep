@@ -1288,6 +1288,19 @@ int main(){
     cout << epi_5::StringToInt("-234567") << endl;
     cout << epi_5::IntToString(-234567) << endl;
 #endif
+#if 0
+    //
+    // 5.7
+    //
+    cout << epi_5::ConvertBase("FAF", 16, 10) << endl;
+#endif
+#if 0
+    //
+    // 5.8
+    //
+    cout << epi_5::ColIDToBase26("ABCDZYXW") << endl;
+#endif 
+
 #pragma endregion ------------ epi::elements of programming interviews ---------
 
 
