@@ -20,7 +20,7 @@
 #if 0
 #include "07.math.and.probability.h"
 #endif
-#if 1
+#if 0
 #include "09.recursion.and.dp.h"
 #endif
 #if 0
@@ -48,6 +48,9 @@
 #if 0
 #include "splay.tree.h"
 #endif
+#if 1
+#include "epi.5.h"
+#endif 
 
 int main(){
 #pragma region reviewed
@@ -1276,6 +1279,17 @@ int main(){
     cout << lcm(12, 8) << endl;
 #endif 
 #pragma endregion
+
+#pragma region epi::elements of programming interviews
+#if 0
+    //
+    // 5.6
+    //
+    cout << epi_5::StringToInt("-234567") << endl;
+    cout << epi_5::IntToString(-234567) << endl;
+#endif
+#pragma endregion ------------ epi::elements of programming interviews ---------
+
 
 #pragma region random_experiments
 // -----------------------------------------------------------------------------------
