@@ -19,6 +19,48 @@ struct TreeNode {
         Print(root->left, indent + 1);
     }
 };
+/*
+ * In order iterator
+ */
+class TreeIterator {
+private:
+    // TreeNode* m_pre;
+    // TreeNode* m_current;
+    stack<TreeNode*> nodes;
+    void _SetBegin(TreeNode* root) {
+        while (root) {
+            nodes.push(root);
+            root = root->left;
+        }
+    }
+public:
+    explicit TreeIterator(TreeNode* root) {
+        _SetBegin(root);
+    }
+    
+    bool HasNext() { return !nodes.empty(); }
+
+    TreeIterator operator++() {
+        if (!nodes.empty()) {
+            TreeNode* top = nodes.top();
+            nodes.pop();
+            TreeNode* right_side = top->right;
+            while (right_side) {
+                nodes.push(right_side);
+                right_side = right_side->left;
+            }
+        }
+        return *this;
+    }
+    int operator*() {
+        if (!nodes.empty())
+            return nodes.top()->value;
+        else
+            return numeric_limits<int>::infinity();
+    }
+};
+
+
 
 struct LinkedListNode {
     TreeNode* value;
@@ -362,3 +404,37 @@ void DeleteNode(TreeNode *& root, int key) {
         return _DeleteNode(found, parent);
     }
 }
+/* 
+    Traverse a tree inorder without extra space or recursion (Morris Algorithm)
+    NlogN
+*/
+void MorrisInOrder(TreeNode* root) {
+    if (!root) return;
+
+    TreeNode* current = root;
+    TreeNode* threader = nullptr;
+    while (current) {
+        if (!current->left) {
+            cout << current->value << " ";
+            current = current->right;
+        }
+        else {
+            threader = current->left;
+            while(threader->right && threader->right != current)
+                threader = threader->right;
+
+            // at this point threader->right is either null or it points to current
+            if (!threader->right) {
+                // create the thread and move left
+                threader->right = current;
+                current = current->left;
+            }
+            else { // break the thread, print the node and go right. 
+                threader->right = nullptr;
+                cout << current->value << " ";
+                current = current->right;
+            }
+        }
+    }
+}
+                

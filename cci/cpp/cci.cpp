@@ -11,7 +11,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 0
+#if 1
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -197,8 +197,8 @@ int main(){
         FindSum(tree,  target);
     }
 #endif
+#pragma region adhoc
 #if 0
-    // 4.x1 (extra credit)
     // delete nodes from a bst
     int a[] = {0,1,2,3,5,6,7,8,9,10};
     TreeNode* tree = MakeOptimalBST(a, AS(a));
@@ -234,6 +234,25 @@ int main(){
     cout << "------------------------\n";
     TreeNode::Print(tree);
 #endif 
+#if 0
+    // implement an iterator for a tree
+    int a[] = {0,1,2,3,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    TreeIterator iter(tree);
+    while (iter.HasNext()) {
+        cout << *iter << " ";
+        ++iter;
+    }
+#endif
+#if 0
+    // morris algorithm: in-order traversal of a tree without stack or recursion
+    int a[] = {0,1,2,3,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    MorrisInOrder(tree);
+    cout << endl;
+    TreeNode::Print(tree);
+#endif 
+#pragma endregion
 #if 0
     //
     // 5.1
