@@ -11,7 +11,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 0
+#if 1
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -262,6 +262,14 @@ int main(){
     MorrisInOrder(tree);
     cout << endl;
     TreeNode::Print(tree);
+#endif 
+#if 0
+    // epi::8.9
+    // print tree node in level order
+    // 
+    int a[] = {1,2,3,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    epi_8::PrintBinaryTreeLevelOrder(tree);
 #endif 
 #pragma endregion
 #if 0

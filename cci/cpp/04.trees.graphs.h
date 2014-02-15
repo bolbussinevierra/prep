@@ -19,6 +19,33 @@ struct TreeNode {
         Print(root->left, indent + 1);
     }
 };
+
+
+namespace epi_8 {
+    void PrintBinaryTreeLevelOrder(TreeNode* root) {
+        if (!root) return;
+        queue<TreeNode*> q;
+        q.push(root);
+        size_t count = 1;
+        while (!q.empty()) {
+            cout << q.front()->value << ' ';
+            
+            if (q.front()->left)
+                q.push(q.front()->left);
+            if (q.front()->right)
+                q.push(q.front()->right);
+            
+            q.pop();
+            if (--count == 0) {
+                cout << endl;
+                count = q.size();
+            }
+        }
+    }
+}
+
+
+
 /*
  * In order iterator
  */
