@@ -46,6 +46,7 @@
 #include <tuple>
 #include <functional>
 #include <cmath>
+#include <array>
 using namespace std;
 
 // project level headers

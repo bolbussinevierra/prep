@@ -51,7 +51,7 @@
 #if 0
 #include "epi.5.h"
 #endif 
-#if 1
+#if 0
 #include "epi.6.h"
 #endif 
 
@@ -119,7 +119,12 @@ int main(){
     PrintList(ll27);
     IsPalindrome(ll27);
 #endif
-
+#if 0
+    //
+    // 3.4
+    // 
+    SolveHanoi(3);
+#endif
 #if 0
     //
     // 4.4
@@ -1303,7 +1308,7 @@ int main(){
     //
     cout << epi_5::ColIDToBase26("ABCDZYXW") << endl;
 #endif 
-#if 1
+#if 0
     BigInt a("56");
     BigInt b("12");
     BigInt c = a * b;
