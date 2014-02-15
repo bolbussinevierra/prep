@@ -84,6 +84,9 @@
     <ClInclude Include="epi.5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="epi.6.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

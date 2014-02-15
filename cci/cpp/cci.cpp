@@ -48,8 +48,11 @@
 #if 0
 #include "splay.tree.h"
 #endif
-#if 1
+#if 0
 #include "epi.5.h"
+#endif 
+#if 1
+#include "epi.6.h"
 #endif 
 
 int main(){
@@ -1300,7 +1303,12 @@ int main(){
     //
     cout << epi_5::ColIDToBase26("ABCDZYXW") << endl;
 #endif 
-
+#if 1
+    BigInt a("56");
+    BigInt b("12");
+    BigInt c = a * b;
+    cout << c.to_string() << endl;
+#endif 
 #pragma endregion ------------ epi::elements of programming interviews ---------
 
 

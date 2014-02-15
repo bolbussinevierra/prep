@@ -94,6 +94,7 @@
     <ClInclude Include="09.recursion.and.dp.h" />
     <ClInclude Include="dp.h" />
     <ClInclude Include="epi.5.h" />
+    <ClInclude Include="epi.6.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="hm.h" />
     <ClInclude Include="other.h" />
