@@ -45,6 +45,36 @@ namespace epi_8 {
 }
 
 
+namespace epi_9 {
+
+void PrintInOrderIterUsingParentPtr(TreeNode* root) {
+    if (!root) return;
+
+    TreeNode* curr = root, *next = nullptr, *prev = nullptr;
+    while (curr) {
+        // if we are starting or we have found an inorder child ...
+        if (!prev || prev->left == curr || prev->right == curr) {
+            // keep going left if we can
+            if (curr->left) {
+                next = curr->left;
+            } else {
+                // else, print the current value, if possible go right, else up
+                cout << curr->value << " ";
+                next = (curr->right ? curr->right : curr->parent);
+            } 
+        // just returned from left child, print current, if possible go right else up
+        } else if (curr->left == prev) {
+            cout << curr->value << " ";
+            next = (curr->right ? curr->right : curr->parent);    
+            // just returned from a right child, go up next
+        } else { // curr->right == prev {
+            next = curr->parent;
+        }
+        prev = curr;
+        curr = next;
+    }
+}
+}
 
 /*
  * In order iterator

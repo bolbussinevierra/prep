@@ -11,7 +11,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 0
+#if 1
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -280,6 +280,14 @@ int main(){
     int a[] = {1,2,3,4,5,6,7};
     TreeNode* tree = MakeOptimalBST(a, AS(a));
     epi_8::PrintBinaryTreeLevelOrder(tree);
+#endif 
+#if 0
+    //
+    // epi::9.5
+    //
+    int a[] = {1,2,3,4,5,6,7};
+    TreeNode* tree = MakeOptimalBST(a, AS(a));
+    epi_9::PrintInOrderIterUsingParentPtr(tree);
 #endif 
 #pragma endregion
 #if 0
