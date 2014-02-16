@@ -38,12 +38,12 @@ public:
     int Size() { return m_add.size() + m_remove.size(); }
     
     void Remove() {
-        _CombineStacks();
+        _InvertAdds();
         m_remove.pop();
     }                                                                                                                                                                       
 
     T Peek() {
-        _CombineStacks();
+        _InvertAdds();
         return m_remove.top();
     }
                   
@@ -53,7 +53,7 @@ public:
 
 
 private:
-    void _CombineStacks(){
+    void _InvertAdds(){
         if (m_remove.empty())
         {
             while (!m_add.empty())
