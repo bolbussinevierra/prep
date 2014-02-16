@@ -63,3 +63,38 @@ private:
     stack<T> m_add;
     stack<T> m_remove; 
 };
+
+namespace epi_8 {
+    template<typename T>
+    class Queue {
+    public:
+        explicit Queue(size_t cap):data_(cap), head_(0), tail_(0), count_(0) {}
+        void push(const T& x) {
+            if (count_ == data_.size()) {
+                // rearrange the elements to get the head at front
+                rotate(data_.begin(), data_.begin()+head_, data_.end());
+                data_.resize(data_.size() << 1);
+                head_ = 0, tail_ = count_;
+            }
+            data_[tail_] = x;
+            tail_ = (tail_ + 1) % data_.size();
+            count_++;
+        }
+        T pop() {
+            if(count_) {
+                --count_;
+                T ret = data_[head_];
+                head_ = (head_ + 1) % data_.size();
+                return ret;
+            }
+            throw length_error("empty queue");
+        }
+        size_t size() const { return count_; }
+    
+    private:
+        // head always points to the oldest element (next out) and tail
+        // always points to the next empty slot to be used on push
+        size_t head_, tail_, count_;
+        vector<T> data_;
+    };
+}

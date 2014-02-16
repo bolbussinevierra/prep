@@ -11,7 +11,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 1
+#if 0
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -125,6 +125,16 @@ int main(){
     // 
     SolveHanoi(3);
 #endif
+#if 0
+    //
+    // epi::8.10
+    //
+    epi_8::Queue<int> q(3);
+    for (int i = 0; i < 10; ++i)
+        q.push(i);
+    while (q.size())
+        cout << q.pop() << endl;
+#endif 
 #if 0
     //
     // 4.4
