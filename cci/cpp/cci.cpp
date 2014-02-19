@@ -300,7 +300,16 @@ int main(){
     TreeNode::Print(
         epi_9::_BuildTreeFromPreInTraversal(pre, 0, pre.size(), in, 0, in.size())
     );
-    
+#endif
+#if 0
+    //
+    // epi::9.9
+    // 
+    string pre_order[] = {"4","2", "1", "N", "N", "3", "N", "N","6","5", "N", "N", "7", "N", "N"};
+    vector<string> pre(begin(pre_order), end(pre_order));
+    TreeNode::Print(
+        epi_9::BuildFromPreOrderSpec(pre)
+    );
 #endif 
 #pragma endregion
 #if 0

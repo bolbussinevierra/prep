@@ -39,6 +39,25 @@ TreeNode* _BuildTreeFromPreInTraversal(
                     in, distance(begin(in), it)+1, in_e);
     return root;
 }
+
+
+TreeNode* BuildFromPreOrderSpec(vector<string> const& spec) {
+    
+    // go through the nodes in reverse order (would be front order if postorder)
+    stack<TreeNode*> s;
+    for (auto it = spec.rbegin(); it != spec.rend(); ++it) {
+        if (*it == "N")
+            s.emplace(nullptr);
+        else {
+            auto root = new TreeNode(atoi((*it).c_str()));
+            root->left = s.top(); s.pop();
+            root->right = s.top(); s.pop();
+            s.push(root);
+        }
+    }
+    return s.top();
+}
+
 }
 
 namespace epi_8 {
