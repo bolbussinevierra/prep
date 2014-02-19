@@ -289,6 +289,19 @@ int main(){
     TreeNode* tree = MakeOptimalBST(a, AS(a));
     epi_9::PrintInOrderIterUsingParentPtr(tree);
 #endif 
+#if 0
+    //
+    // epi::9.8
+    // 
+    int in_order[]  = {1,2,3,4,5,6,7};
+    int pre_order[] = {4,2,1,3,6,5,7};
+    vector<int> in(begin(in_order), end(in_order));
+    vector<int> pre(begin(pre_order), end(pre_order));
+    TreeNode::Print(
+        epi_9::_BuildTreeFromPreInTraversal(pre, 0, pre.size(), in, 0, in.size())
+    );
+    
+#endif 
 #pragma endregion
 #if 0
     //

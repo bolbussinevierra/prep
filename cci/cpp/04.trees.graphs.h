@@ -1,5 +1,4 @@
 #pragma once
-
 //
 // helpers
 //
@@ -19,7 +18,28 @@ struct TreeNode {
         Print(root->left, indent + 1);
     }
 };
+namespace epi_9 {
+template<typename T>
+TreeNode* _BuildTreeFromPreInTraversal(
+    vector<T> const& pre, int pre_s, int pre_e,
+    vector<T> const&  in, int  in_s, int  in_e) {
+        
+    if (pre_s >= pre_e || in_s >= in_e) return nullptr;
 
+    // we want to be able to partition the root, left and right node sets
+    auto it = find(begin(in) + in_s, begin(in) + in_e, pre[pre_s]);
+    int left_tree_size = distance(begin(in)+in_s, it);
+
+    TreeNode* root = new TreeNode(pre[pre_s]);
+    root->left  = _BuildTreeFromPreInTraversal(
+                    pre, pre_s+1, pre_s+1+left_tree_size,
+                    in, in_s, distance(begin(in), it));
+    root->right = _BuildTreeFromPreInTraversal(
+                    pre, pre_s+1+left_tree_size, pre_e,
+                    in, distance(begin(in), it)+1, in_e);
+    return root;
+}
+}
 
 namespace epi_8 {
     void PrintBinaryTreeLevelOrder(TreeNode* root) {
@@ -29,12 +49,10 @@ namespace epi_8 {
         size_t count = 1;
         while (!q.empty()) {
             cout << q.front()->value << ' ';
-            
             if (q.front()->left)
                 q.push(q.front()->left);
             if (q.front()->right)
                 q.push(q.front()->right);
-            
             q.pop();
             if (--count == 0) {
                 cout << endl;
@@ -43,13 +61,9 @@ namespace epi_8 {
         }
     }
 }
-
-
 namespace epi_9 {
-
 void PrintInOrderIterUsingParentPtr(TreeNode* root) {
     if (!root) return;
-
     TreeNode* curr = root, *next = nullptr, *prev = nullptr;
     while (curr) {
         // if we are starting or we have found an inorder child ...
@@ -75,7 +89,6 @@ void PrintInOrderIterUsingParentPtr(TreeNode* root) {
     }
 }
 }
-
 /*
  * In order iterator
  */
@@ -94,9 +107,7 @@ public:
     explicit TreeIterator(TreeNode* root) {
         _SetBegin(root);
     }
-    
     bool HasNext() { return !nodes.empty(); }
-
     TreeIterator operator++() {
         if (!nodes.empty()) {
             TreeNode* top = nodes.top();
@@ -116,18 +127,13 @@ public:
             return numeric_limits<int>::infinity();
     }
 };
-
-
-
 struct LinkedListNode {
     TreeNode* value;
     shared_ptr<LinkedListNode> next;
     LinkedListNode(TreeNode* value):value(value), next(nullptr){}
 };
-
 void PrintList(LinkedListNode* head){
     if(!head) return;
-
     do{
         printf("%d ", head->value->value); 
         head = head->next.get();
@@ -135,7 +141,6 @@ void PrintList(LinkedListNode* head){
     while(head);
     printf("%\n");
 }
-
 TreeNode* _MakeOptimalBST(int * items, int start, int end) {
     if  (end < start) {
         return nullptr;
@@ -144,14 +149,11 @@ TreeNode* _MakeOptimalBST(int * items, int start, int end) {
     TreeNode *n = new TreeNode(items[mid]);
     n->left = _MakeOptimalBST(items, start, mid-1);
     n->right = _MakeOptimalBST(items, mid+1, end);
-    
     // set parent pointers
     if (n->left) n->left->parent = n;
     if (n->right) n->right->parent = n;
-
     return n;
 }
-
 TreeNode* MakeOptimalBST(int * items, int n){
     return _MakeOptimalBST(items, 0, n - 1);
 }
@@ -164,22 +166,16 @@ TreeNode* MakeOptimalBST(int * items, int n){
 //
 int _CheckHeight(TreeNode* node) {
     if (!node) return 0;
-    
     int left_height = _CheckHeight(node->left);
     if (-1 == left_height) return -1;
-
     int right_height = _CheckHeight(node->right);
     if (-1 == right_height) return -1;
-
     if (abs(left_height - right_height) > 1) return -1;
-
     return max(left_height, right_height)+1;
 }
-
 bool IsBalanced(TreeNode* root) {
     return _CheckHeight(root) != -1;
 }
-
 //
 //
 // 4.4
@@ -201,21 +197,16 @@ void GetLevelsLinkedLists(TreeNode * root, vector<shared_ptr<LinkedListNode>>& l
 // -- iterative
 void GetLevelsLinkedLists(TreeNode* root, vector<shared_ptr<LinkedListNode>>& result){
     if (!root) return;
-
     shared_ptr<LinkedListNode> head = make_shared<LinkedListNode>(root);
     shared_ptr<LinkedListNode> tail(head);
-    
     vector<TreeNode*> level_nodes;
     level_nodes.push_back(root);
-
     while (level_nodes.size() > 0) {
         result.push_back(head);
-        
         vector<TreeNode*> parents(level_nodes);
         level_nodes.clear();
         head = nullptr;
         tail = nullptr;
-
         for (size_t i = 0; i < parents.size(); i++){
             if (parents[i]->left){
                 if (!head) {
@@ -240,20 +231,16 @@ void GetLevelsLinkedLists(TreeNode* root, vector<shared_ptr<LinkedListNode>>& re
         }
     }
 }
-
 //
 // 4.5
 //
-
 bool _IsBST(TreeNode* root, int min, int max) {
     if (!root) return true;
-
     // NOTE! there is a tricky bit of logic here. The left tree is limited by max.
     // by definition of bst, left should be equal or less than or max. Min is used
     // to contrain the RIGHT side of the tree so root needs to be strictly greater
     if (root->value <= min || root->value > max) 
         return false;
-
     // going left updates the max, going right updates the min
     if (!_IsBST(root->left, min, root->value) || 
         !_IsBST(root->right, root->value, max)) 
@@ -263,7 +250,6 @@ bool _IsBST(TreeNode* root, int min, int max) {
 bool IsBST(TreeNode* root) {
     return _IsBST(root, numeric_limits<int>::min(), numeric_limits<int>::max());
 }
-
 //
 // 4.6
 //
@@ -273,10 +259,8 @@ TreeNode* _LeftMost(TreeNode* root) {
         root = root->left;
     return root;
 }
-
 TreeNode* InOrderSuccessor(TreeNode* root) {
     if(!root) return nullptr;
-
     // if the node has a right branch, return the left most 
     // node in that branch
     if (root->right) {
@@ -292,7 +276,6 @@ TreeNode* InOrderSuccessor(TreeNode* root) {
         return p; // will be nullptr if tree is fully explored (correct)
     }
 }
-
 void Test_InOrderSuccessor(TreeNode* root) {
     if (!root) return;
     Test_InOrderSuccessor(root->left);
@@ -300,7 +283,6 @@ void Test_InOrderSuccessor(TreeNode* root) {
     cout << "InOrderSuccessor(" << root->value << ")=" << (s ? to_string(s->value) : "nullptr") << endl;
     Test_InOrderSuccessor(root->right);
 }
-
 //
 // 4.7
 // - common ancestor
@@ -309,25 +291,20 @@ bool _NodeInTree(TreeNode* root, int value) {
     if (root->value == value) return true;
     return _NodeInTree(root->left, value) || _NodeInTree(root->right, value);
 }
-
 TreeNode* _LowestCommonAncestor(TreeNode* root, int value1, int value2) {
     if (!root) return nullptr;
     if (root->value == value1 || root->value == value2) 
         return root;
-
     TreeNode* lca_left = _LowestCommonAncestor(root->left, value1, value2);
     TreeNode* lca_right = _LowestCommonAncestor(root->right, value1, value2);
-
     if (lca_left && lca_right) return root;
     return lca_left ? lca_left : lca_right;
 }
-
 TreeNode* LowestCommonAncestor(TreeNode* root, int value1, int value2) {
     if (!_NodeInTree(root, value1) || !_NodeInTree(root, value2))
         return nullptr;
     return _LowestCommonAncestor(root, value1, value2);
 }
-
 //
 // 4.8
 //
@@ -338,21 +315,16 @@ bool _MatchTree(TreeNode* tree, TreeNode* subtree) {
     return _MatchTree(tree->left, subtree->left) && 
           _MatchTree(tree->right, subtree->right);
 }
-
 bool _IsSubtree(TreeNode* tree, TreeNode* subtree) {
     if (!tree) return false; // ran out of tree nodes on this branch without a match
-        
     if (tree->value == subtree->value) 
         if (_MatchTree(tree, subtree)) return true;
-    
     return _IsSubtree(tree->left, subtree) || _IsSubtree(tree->right, subtree);
 }
-
 bool IsSubtree(TreeNode* tree, TreeNode* subtree) {
     if (!subtree) return true; // empty subtree is always a subtree
     return _IsSubtree(tree, subtree);
 }
-
 //
 // 4.9
 //
@@ -378,7 +350,6 @@ void FindSum(TreeNode* tree, int target) {
     vi path(_depth(tree));
     return _FindSum(tree, target, path, 0);
 }
-
 tuple<TreeNode*, TreeNode*> _Find(TreeNode *root, int key) {
     if (!root) return make_tuple(nullptr, nullptr);
     TreeNode* current = root;
@@ -439,13 +410,10 @@ void _DeleteNode(TreeNode* n, TreeNode* parent) {
 // http://www.algolist.net/Data_structures/Binary_search_tree/Removal
 void DeleteNode(TreeNode *& root, int key) {
     if (!root) return;
-
     TreeNode *parent = nullptr, *found = nullptr;
     tie(found, parent) = _Find(root, key);
     if (!found) return;
-
     assert(found->value == key);
-    
     // check if we are deleting the root. This is a special case that requires
     // special treatment. The approach we use here is to create a dummy root,
     // hang the real root on it and then after the delete algorithm runs, 
@@ -467,7 +435,6 @@ void DeleteNode(TreeNode *& root, int key) {
 */
 void MorrisInOrder(TreeNode* root) {
     if (!root) return;
-
     TreeNode* current = root;
     TreeNode* threader = nullptr;
     while (current) {
@@ -479,7 +446,6 @@ void MorrisInOrder(TreeNode* root) {
             threader = current->left;
             while(threader->right && threader->right != current)
                 threader = threader->right;
-
             // at this point threader->right is either null or it points to current
             if (!threader->right) {
                 // create the thread and move left
