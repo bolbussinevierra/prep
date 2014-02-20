@@ -31,6 +31,7 @@ typedef vector<vi> vvi;
 typedef vector<vector<bool>> vvbool;
 typedef vector<vector<char>> vvc;
 typedef pair<int, int> Point;
+typedef pair<int, int> ii;
 typedef pair<double, double> DoublePoint;
 
 

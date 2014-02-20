@@ -11,7 +11,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 1
+#if 0
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -36,7 +36,7 @@
 #include "11.sorting.and.searching.h"
 #include "17.moderate.h"
 #endif
-#if 0
+#if 1
 #include "18.hard.h"
 #endif
 #if 0
@@ -602,6 +602,32 @@ int main(){
 #endif 
 #if 0
     //
+    // epi10.2
+    // 
+    int k_array[] = {1,2,3,2,0,4,1};
+    vi k(begin(k_array), end(k_array));
+    auto ret = epi_10::SortKIncreasingDescreasingArray(k);
+    for_each(begin(ret), end(ret), [](int n) { cout << n << " "; });
+#endif 
+#if 0
+    //
+    // epi10.5
+    //
+    string str("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20");
+    string rev("20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1");
+    epi_10::FindKthLargestStream(istringstream(str), 2);
+    epi_10::FindKthLargestStream(istringstream(rev), 2);
+#endif 
+#if 0
+    //
+    // epi10.6
+    //
+    string str("2 1 4 3 6 5 8 7 10 9 11 12 14 13 15 16 18 17 20 19");
+    epi_10::ApproximateSort(istringstream(str), 2);
+#endif 
+
+#if 0
+    //
     // 13.08
     //
     
@@ -848,6 +874,8 @@ int main(){
     // 18.9
     //
     OnlineMedianAlgorithm();
+    string str("1 2 3 4 5 6 7 8 9 10");
+    epi_10::OnlineMedian(istringstream(str));
 #endif
 #if 0
     //

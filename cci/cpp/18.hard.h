@@ -531,6 +531,44 @@ void OnlineMedianAlgorithm() {
         cout << "median: " << GetMedian(maxh.get(), minh.get()) << endl;
     }
 };
+
+namespace epi_10 {
+void OnlineMedian(istringstream&& sin) {
+    priority_queue<int, vi, less<int>> low_max_heap;
+    priority_queue<int, vi, greater<int>> high_min_heap;
+
+    int x;
+    while (sin >> x) {
+        if (!low_max_heap.empty() && (x > low_max_heap.top())) 
+            high_min_heap.push(x);
+        else 
+            low_max_heap.push(x);
+
+        // rebalance
+        if (low_max_heap.size() > high_min_heap.size() + 1)  {
+            high_min_heap.push(low_max_heap.top());
+            low_max_heap.pop();
+        }
+        else if (high_min_heap.size() > low_max_heap.size() + 1) {
+            low_max_heap.push(high_min_heap.top());
+            high_min_heap.pop();
+        }
+
+        // get median
+        if (low_max_heap.size() == high_min_heap.size()) {
+            cout << 0.5 * (high_min_heap.top() + low_max_heap.top()) << endl;
+        } else {
+            cout << (high_min_heap.size() > low_max_heap.size() ? 
+                high_min_heap.top() : low_max_heap.top()) << endl;
+        }
+
+
+    }
+
+}
+
+}
+
 //
 // 18.10
 //
@@ -750,7 +788,7 @@ int Kadane(vi const& k, int &first, int& last) {
     return largest_negative;
 }
 
-int Kadane2D(matrix const& m, Rect& result) {
+int Kadane2D(vvi const& m, Rect& result) {
     assert(!m.empty() && !m[0].empty());
 
     int max_sum = numeric_limits<int>::min();

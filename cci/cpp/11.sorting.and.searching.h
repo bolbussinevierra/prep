@@ -264,7 +264,7 @@ bool SearchGrid(int m[][5], int target, int width, int height, Location* l) {
 // "BINARY-SEARCH" solution for this - T(n) = T(n/2) + c lg n. Solution for this ends
 // up as O(n) 
 #pragma region helpers
-bool _InBoundsOf(Point a, matrix const& grid) {
+bool _InBoundsOf(Point a, vvi const& grid) {
     return ((a.first >= 0 && a.second >= 0) &&
             (a.first < grid.size() && a.second < grid[0].size()));
 }
@@ -280,10 +280,10 @@ bool _IsNullPoint(Point a) { return a == make_pair(-1, -1); }
 Point _NullPoint() { return make_pair(-1, -1); }
 
 // forward declaration
-Point _PartitionAndSearch(matrix const& grid, Point origin, Point dest, Point pivot, int target);
+Point _PartitionAndSearch(vvi const& grid, Point origin, Point dest, Point pivot, int target);
 #pragma endregion
 
-Point SearchGridBinary(matrix const& grid, Point origin, Point dest, int target) {
+Point SearchGridBinary(vvi const& grid, Point origin, Point dest, int target) {
     if (!_InBoundsOf(origin, grid) || !_InBoundsOf(dest, grid)) 
         return _NullPoint();
 
@@ -316,7 +316,7 @@ Point SearchGridBinary(matrix const& grid, Point origin, Point dest, int target)
     return _PartitionAndSearch(grid, origin, dest, start, target);
 }
 
-Point _PartitionAndSearch(matrix const& grid, Point origin, Point dest, Point pivot,
+Point _PartitionAndSearch(vvi const& grid, Point origin, Point dest, Point pivot,
                         int target) {
     Point lower_left_origin = make_pair(pivot.first, origin.second);
     Point lower_left_dest = make_pair(dest.first, pivot.second - 1);
@@ -348,7 +348,7 @@ bool operator>=(htwt lhs, htwt rhs) {
 }
 
 template <class t>
-void printpath(vector<t>& v, vipath, int end)
+void printpath(vector<t>& v, vi path, int end)
 {
     if(end > -1) {
         printpath(v, path, path[end]);
@@ -455,3 +455,122 @@ public:
         return m_root->GetRank(number);
     }
 };
+
+namespace epi_10 {
+//
+// 10.1
+//
+vector<int> MergeArrays(vvi const& S) {
+    auto comp = [] (ii const& lhs, ii const& rhs) { return lhs.first > rhs.first; };
+    priority_queue<ii, vector<ii>, decltype(comp)> min_heap (comp);
+
+    vi S_idx(S.size(), 0);
+
+    // Every array in S puts its smallest element in heap
+    for (int i = 0; i < S.size(); ++i) {
+        if (S[i].size() > 0) {
+            min_heap.emplace(S[i][0], i);
+            S_idx[i] = 1;
+        }
+    }
+
+    vi ret;
+    while (!min_heap.empty()) {
+        ii p = min_heap.top();
+        ret.emplace_back(p.first);
+
+        // add the smallest element into the heap if possible (just in 
+        // case the next smallest element comes from this same file
+        if (S_idx[p.second] < S[p.second].size()) {
+            min_heap.emplace(S[p.second][S_idx[p.second]++], p.second);
+        }
+        min_heap.pop();
+    }
+    return ret;
+}
+//
+// 10.2
+//
+vector<int> SortKIncreasingDescreasingArray(vi const& A) {
+    // decompose A into a set of sorted arrays
+    vvi S;
+    bool is_increasing = true; // the trend that we are looking for
+    int start_idx = 0;
+
+    for (int i = 1; i < A.size(); ++i) {
+        // have we found an i that breaks the trend? if yes, i will be +1 past
+        // the last value in the previous trend we were looking for
+        if ((A[i - 1] < A[i] && !is_increasing) ||
+            (A[i - 1] >= A[i] && is_increasing)) {
+            if (is_increasing) {
+                S.emplace_back(A.begin() + start_idx, A.begin() + i);
+            } else {
+                S.emplace_back(A.rbegin() + A.size() - i,
+                               A.rbegin() + A.size() - start_idx);
+            }
+            start_idx = i;
+            is_increasing = !is_increasing; // invert the trend we are looking for
+        }
+    }
+    
+    if (start_idx < A.size()) {
+        if (is_increasing) {
+            S.emplace_back(A.begin() + start_idx, A.end());
+        } else {
+            S.emplace_back(A.rbegin(), A.rbegin() + A.size() - start_idx);
+        }
+    }
+
+    // Just a place holder not real
+    return MergeArrays(S);
+}
+//
+// 10.5
+// 
+void FindKthLargestStream(istringstream&& sin, int k) {
+    priority_queue<int, vi, greater<int>> min_heap;
+
+    // for the first k elements, print the top
+    int x;
+    for (int i = 0; i < k && sin >> x; ++i) {
+        min_heap.emplace(x);
+        cout << min_heap.top() << endl;
+    }
+
+    while (sin >> x) {
+        if (x > min_heap.top()) {
+            min_heap.pop();
+            min_heap.emplace(x);
+        }
+        cout << min_heap.top() << endl;
+    }
+}
+
+//
+// 10.6
+// 
+void ApproximateSort(istringstream&& sin, int k) {
+    priority_queue<int, vi, greater<int>> min_heap;
+
+    // first load up k elements 
+    int x;
+    for (int i = 0; i < k && sin >> x; ++i) 
+        min_heap.push(x);
+
+    // for every new number that comes in push it (to get to k+1, and then 
+    // pop and print
+    while (sin >> x) {
+        min_heap.push(x);
+        cout << min_heap.top() << endl;
+        min_heap.pop();
+    }
+
+    // print all remaining elements
+    while (!min_heap.empty()) {
+        cout << min_heap.top() << endl;
+        min_heap.pop();
+    }
+}
+
+};
+
