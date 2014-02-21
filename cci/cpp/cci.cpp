@@ -1,6 +1,5 @@
 // cci.cpp : Defines the entry point for the console application.
 //
-
 #include "stdafx.h"
 #if 0
 #include "01.arrays.strings.h"
@@ -36,7 +35,7 @@
 #include "11.sorting.and.searching.h"
 #include "17.moderate.h"
 #endif
-#if 1
+#if 0
 #include "18.hard.h"
 #endif
 #if 0
@@ -389,7 +388,7 @@ int main(){
     Line b(make_pair(4.0,2.0), make_pair(6.0,4.0));
     cout << "intersects=" << boolalpha << a.intersects(b) << endl; 
 #endif
-#if 1
+#if 0
     //
     // TODO: 7.5
     //
@@ -625,7 +624,13 @@ int main(){
     string str("2 1 4 3 6 5 8 7 10 9 11 12 14 13 15 16 18 17 20 19");
     epi_10::ApproximateSort(istringstream(str), 2);
 #endif 
-
+#if 0
+    //
+    // epi11.9
+    //
+    double n = 0.043;
+    printf("Sqr(%f)=%f", n, epi_11::SquareRoot_via_BinarySearch(n));
+#endif 
 #if 0
     //
     // 13.08
@@ -852,6 +857,22 @@ int main(){
     print_n_smallest(vi(begin(a186), end(a186)), 9);
     print_n_smallest(vi(begin(a186), end(a186)), 10);
 #endif
+#if 0
+    //
+    // epi:11.13
+    // 
+    int a187[] = {5,4,3,1,1,2,9,8,7,7,6,10};
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 1);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 2);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 3);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 4);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 5);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 6);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 7);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 8);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 9);
+    epi_11::PrintKthLargest(vi(begin(a187), end(a187)), 10);
+#endif 
 #if 0
     //
     // 18.7

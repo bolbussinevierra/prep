@@ -4,14 +4,14 @@
 //------------------------------------------------------------------------------------
 template <class T>
 int _qs_partition(T array[], int left, int right) {
-    // use the middle element as the pivot. Move it to the left
-    // end to get it out of the way. Well remember to move it back
-    // at the end.
-    // Pivot selection: if we want to be pedantic, we can do a real 
-    // random pivot selection but in practice, picking the middle well performs
-    // acceptably well.
-    int m = (left + right) / 2; 
-    _swap(&array[left], &array[m]);
+    // generate a radom int in [l,r] and use its value as the pivot. Move the
+    // pivot to the left to get it out of the way
+    random_device rd;
+    default_random_engine e(rd());
+    uniform_int_distribution<int> dist(left, right);
+    int random_pivot = dist(e);
+
+    _swap(&array[left], &array[random_pivot]);
     T p = array[left];
     int cache = left;
     
@@ -574,3 +574,36 @@ void ApproximateSort(istringstream&& sin, int k) {
 
 };
 
+namespace epi_11 {
+//
+// 11.9
+//
+int _CompareDoubles(double a, double b) {
+    double eps = numeric_limits<double>::epsilon();
+    if (a < b - eps) return -1; // a is definitely smaller
+    if (a > b + eps) return 1; // a is definitely larger
+    return 0; // conclude equal
+}
+
+double SquareRoot_via_BinarySearch(double n) {
+    double l = 0, r = 0;
+    if (_CompareDoubles(n, 1.0) == -1) 
+        l = n, r = 1.0;
+    else
+        l = 1.0, r = n;
+
+    while (_CompareDoubles(l, r) == -1) {
+        double m = l + (r - l)/2;
+        double square_m = m * m;
+        printf("(%f, %f)\n", m, square_m);
+        if (_CompareDoubles(square_m, n) == 0) 
+            return m;
+        else if (_CompareDoubles(square_m, n) == -1) 
+            l = m; // climb up
+        else 
+            r = m; // climb down
+    }
+    return l;
+}
+
+}

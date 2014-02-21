@@ -203,11 +203,14 @@ int MinDist(string const& a, string const& b, vector<string> const& words) {
 // 18.6
 //
 int _partition(vi& a, int left, int right) {
-    // use the middle element as the pivot. Move it to the left
-    // end to get it out of the way. Well remember to move it back
-    // at the end
-    int m = (left + right) / 2;
-    _swap(&a[left], &a[m]);
+    // generate a radom int in [l,r] and use its value as the pivot. Move the
+    // pivot to the left to get it out of the way
+    random_device rd;
+    default_random_engine e(rd());
+    uniform_int_distribution<int> dist(left, right);
+    int random_pivot = dist(e);
+
+    _swap(&a[left], &a[random_pivot]);
     int p = a[left];
     int cache = left;
     
@@ -227,34 +230,96 @@ int _partition(vi& a, int left, int right) {
     return right;
 }
 
-int _get_index_of_nth(vi& a, int n, int left, int right) {
-    int pivot_index = _partition(a, left, right);
+int _GetIndexOfNthSmallest(vi& a, int n) {
+    int l = 0, r = a.size() - 1;
+    while (l <= r) {
+        int p = _partition(a, l, r);
+        if (p == n - 1) 
+            return a[p];
+        else if (p > n - 1)
+            r = p - 1;
+        else 
+            l = p + 1;
+    }
+    throw invalid_argument("n is larger than items in array");
+}
+namespace deprecated {
+    int _GetIndexOfNthSmallestRecursive(vi& a, int n, int left, int right) {
+        int pivot_index = _partition(a, left, right);
 
-    int left_size = pivot_index - left + 1;
-    if (left_size == n)  // pivot is the nth number
-        return pivot_index;
-    else if (left_size > n)
-        return _get_index_of_nth(a, n, left, pivot_index-1);
-    else
-        // if going right make sure we adjust rank
-        return _get_index_of_nth(a, n - left_size, pivot_index+1, right);
+        int left_size = pivot_index - left + 1;
+        if (left_size == n)  // pivot is the nth number
+            return pivot_index;
+        else if (left_size > n)
+            return _GetIndexOfNthSmallestRecursive(a, n, left, pivot_index-1);
+        else
+            // if going right make sure we adjust rank
+            return _GetIndexOfNthSmallestRecursive(a, n - left_size, pivot_index+1, right);
+    }
 }
 
 void _test_print_nth(vi& a, int n) {
-    cout << n << " smallest=" << a[_get_index_of_nth(a, n, 0, a.size()-1)];
+    cout << n << " smallest=" << a[_GetIndexOfNthSmallest(a, n)];
     cout << endl;
 }
 
 void print_n_smallest(vi a, int n) {
     if (n <= 0) return;
 
-    int nth = _get_index_of_nth(a, n, 0, a.size() -1);
+    int nth = _GetIndexOfNthSmallest(a, n);
     cout << n << " smallest:";
     for (int i = 0; i <= nth; ++i) {
         cout << a[i] << " ";
     }
     cout << endl;
 }
+
+namespace epi_11 {
+//
+// 11.13
+// 
+int _PartitionDecreasing(vi& a, int l, int r) {
+    random_device rd;
+    default_random_engine e(rd());
+    uniform_int_distribution<int> dist(l, r);
+    int random_pivot = dist(e);
+
+    swap(a[l] ,a[random_pivot]);
+    
+    int p = a[l];
+    int cache = l;
+    l++; // skip the pivot
+    
+    while (l <= r) {
+        while (l <= r && a[l] >= p) l++;
+        while (l <= r && a[r] < p ) r--;
+        if (l <= r) {
+            swap(a[l], a[r]);
+            l++, r--;
+        }
+    }
+    swap(a[cache], a[r]);
+    return r;
+}
+void PrintKthLargest(vi && a, int k) {
+    int l = 0, r = a.size() - 1;
+    while (l <= r) {
+        int p = _PartitionDecreasing(a, l, r);
+        if ( p == k - 1) {
+            printf("%d Largest=%d\n", k, a[p]);
+            return;
+        } 
+        else if (p > k - 1) {
+            r = p - 1;
+        } 
+        else { 
+            l = p + 1;
+        }
+    }
+    
+}
+}
+
 //
 // 18.7
 //

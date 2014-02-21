@@ -47,6 +47,7 @@
 #include <functional>
 #include <cmath>
 #include <array>
+#include <random>
 using namespace std;
 
 // project level headers
