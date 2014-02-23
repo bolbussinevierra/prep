@@ -1421,7 +1421,18 @@ int main(){
     cout << epi_12::get_hash("abc") << endl;
     cout << epi_12::get_hash("bcd") << endl;
     cout << epi_12::roll_hash_broken("abc", 'd') << endl;
-
+#endif 
+#if 0
+    //
+    // 12.14
+    // 
+    string a[] = {"talk", "to", "the", "boy", "home", "at", "at"};
+    string q[] = {"boy", "at"};
+    vector<string> A(begin(a), end(a));
+    vector<string> Q(begin(q), end(q));
+    Print(epi_12::FindSmallestSubArrayCoveringSubset(A, Q));
+    istringstream s("talk to the boy home at at");
+    Print(epi_12::FindSmallestSubArrayCoveringSubset_Streaming(s, Q));
 #endif 
 #pragma endregion ------------ epi::elements of programming interviews ---------
 
