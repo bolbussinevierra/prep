@@ -48,10 +48,10 @@
 #include "splay.tree.h"
 #endif
 #if 0
-#include "epi.5.h"
+#include "epi.05.primitive.types.h"
 #endif 
 #if 0
-#include "epi.6.h"
+#include "epi.06.arrays.strings.h"
 #endif 
 
 int main(){
