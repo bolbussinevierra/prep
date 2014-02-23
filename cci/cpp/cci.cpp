@@ -53,6 +53,9 @@
 #if 0
 #include "epi.06.arrays.strings.h"
 #endif 
+#if 0
+#include "epi.12.hashtables.h"
+#endif 
 
 int main(){
 #pragma region reviewed
@@ -1410,6 +1413,15 @@ int main(){
     BigInt b("12");
     BigInt c = a * b;
     cout << c.to_string() << endl;
+#endif 
+#if 0
+    //
+    // 12.1
+    // 
+    cout << epi_12::get_hash("abc") << endl;
+    cout << epi_12::get_hash("bcd") << endl;
+    cout << epi_12::roll_hash_broken("abc", 'd') << endl;
+
 #endif 
 #pragma endregion ------------ epi::elements of programming interviews ---------
 

@@ -33,7 +33,7 @@ typedef vector<vector<char>> vvc;
 typedef pair<int, int> Point;
 typedef pair<int, int> ii;
 typedef pair<double, double> DoublePoint;
-
+typedef unsigned int uint;
 
 template <typename t>
 void Print(char* tag, vector<t> const& items) {

@@ -81,10 +81,13 @@
     <ClInclude Include="splay.tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="epi.5.h">
+    <ClInclude Include="epi.05.primitive.types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="epi.6.h">
+    <ClInclude Include="epi.06.arrays.strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="epi.12.hashtables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
