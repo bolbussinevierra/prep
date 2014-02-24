@@ -523,6 +523,10 @@ int main(){
     _mergesort(ms, 0, AS(ms)-1);
     _P(ms, AS(ms));
 
+    int is[] = {5,6,7,90,23,1,4,5};
+    vi v(begin(is), end(is));
+    insertion_sort(v);
+    for_each(begin(v), end(v), [](int n) { cout << n << " "; });
 #endif
 #if 0
     //

@@ -82,6 +82,18 @@ void _mergesort(T array[], int left, int right) {
         _merge(array, left, mid, right);
     }
 }
+//-----------------------------------------------------------------------------
+// INSERTION SORT
+//-----------------------------------------------------------------------------
+template<class T>
+void insertion_sort(vector<T>& arr) {
+    for (int i = 1; i < arr.size(); ++i) 
+        for (int j = i; j >= 1; --j)
+            if (arr[j-1] > arr[j]) 
+                swap(arr[j-1], arr[j]);
+}
+
+
 //------------------------------------------------------------------------------------
 string SortChars(string& s) {
     char* key = new char[s.size()]; 
