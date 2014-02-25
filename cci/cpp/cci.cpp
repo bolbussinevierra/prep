@@ -1496,6 +1496,13 @@ int main(){
         int result;
         assert(test.find(key_string, result));
     }
+#endif
+#if 0
+    for (int i = 1; i <= 12; ++i) {
+        for (int k = 1; k <= 12; ++k)
+            cout << setw(3) << i * k << " ";
+        cout << endl;
+    }
 
 #endif 
 #pragma endregion
