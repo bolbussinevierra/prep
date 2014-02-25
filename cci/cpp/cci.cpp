@@ -31,7 +31,7 @@
 #if 0
 #include "13.c.and.cplusplus.h"
 #endif
-#if 0
+#if 1
 #include "11.sorting.and.searching.h"
 #include "17.moderate.h"
 #endif
@@ -637,6 +637,24 @@ int main(){
     //
     double n = 0.043;
     printf("Sqr(%f)=%f", n, epi_11::SquareRoot_via_BinarySearch(n));
+#endif 
+#if 1
+    int a[] = {1,2,3,4,5,6,7,8,9};
+    int b[] = {4,7,9,9,60};
+    vi intersect = epi_13::IntersectSorted_N_log_M(vi(begin(a), end(a)),
+                                                   vi(begin(b), end(b)));
+    for_each(begin(intersect), end(intersect), [](int n) { cout << n << " "; });
+    cout << endl;
+    intersect = epi_13::IntersectSorted_N_plus_M(vi(begin(a), end(a)),
+                                                 vi(begin(b), end(b)));
+    for_each(begin(intersect), end(intersect), [](int n) { cout << n << " "; });
+    cout << endl;
+    int au[] = {1,4,3,2,5,9,7,8,6};
+    int bu[] = {4,60,9,9,7};
+    intersect = epi_13::IntersectUnsorted_N_plus_M(vi(begin(au), end(au)),
+                                                   vi(begin(bu), end(bu)));
+    for_each(begin(intersect), end(intersect), [](int n) { cout << n << " "; });
+
 #endif 
 #if 0
     //

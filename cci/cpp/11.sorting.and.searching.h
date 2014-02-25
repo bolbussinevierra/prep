@@ -619,3 +619,54 @@ double SquareRoot_via_BinarySearch(double n) {
 }
 
 }
+
+namespace epi_13 {
+//
+// 13.5
+// 
+vi IntersectSorted_N_log_M(vi const& a, vi const& b) {
+    vi intersect;
+    vi const& larger = (a.size() > b.size()) ? a : b;
+    vi const& smaller = (&larger == &a) ? b : a;
+    
+    for (int i = 0; i < smaller.size(); ++i) {
+        if (i == 0 || smaller[i-1] != smaller[i]) {
+            auto it = lower_bound(begin(larger), end(larger), smaller[i]);
+            if (it != end(larger) && *it == smaller[i]) 
+                intersect.emplace_back(smaller[i]);
+        }
+    }
+    return intersect;
+}
+
+vi IntersectSorted_N_plus_M(vi const&a, vi const& b) {
+    int i = 0, j = 0;
+    vi intersect;
+    while (i < a.size() && j < b.size()) {
+        if (i == 0 || a[i-1] != a[i]) {
+            if (a[i] == b[j]) {
+                intersect.emplace_back(a[i]);
+                ++i, ++j;
+            }
+            else if (a[i] < b[j]) 
+                i++;
+            else 
+                j++;
+        }
+    }
+    return intersect;
+}
+
+vi IntersectUnsorted_N_plus_M(vi const&a, vi const& b) {
+    unordered_set<int> sb(begin(b), end(b));
+    unordered_set<int> intersect;
+    
+    for (int i : a) 
+        if (sb.find(i) != end(sb) && intersect.find(i) == end(intersect))
+            intersect.insert(i);
+    
+    vi res(begin(intersect), end(intersect));
+    return res;
+}
+
+}
