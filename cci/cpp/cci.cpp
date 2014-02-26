@@ -295,10 +295,8 @@ int main(){
     //
     // epi::9.8
     // 
-    int in_order[]  = {1,2,3,4,5,6,7};
-    int pre_order[] = {4,2,1,3,6,5,7};
-    vector<int> in(begin(in_order), end(in_order));
-    vector<int> pre(begin(pre_order), end(pre_order));
+    vector<int> in = { 1, 2, 3, 4, 5, 6, 7 };
+    vector<int> pre = { 4, 2, 1, 3, 6, 5, 7 };
     TreeNode::Print(
         epi_9::_BuildTreeFromPreInTraversal(pre, 0, pre.size(), in, 0, in.size())
     );
@@ -307,8 +305,7 @@ int main(){
     //
     // epi::9.9
     // 
-    string pre_order[] = {"4","2", "1", "N", "N", "3", "N", "N","6","5", "N", "N", "7", "N", "N"};
-    vector<string> pre(begin(pre_order), end(pre_order));
+    vector<string> pre = {"4","2", "1", "N", "N", "3", "N", "N","6","5", "N", "N", "7", "N", "N"};
     TreeNode::Print(
         epi_9::BuildFromPreOrderSpec(pre)
     );
@@ -316,7 +313,7 @@ int main(){
 #if 0
     //
     // TOPOLOGICAL SORT
-    // 
+    //
     Graph g(6);
     g.AddEdge(5,0);
     g.AddEdge(5,2);
@@ -399,8 +396,8 @@ int main(){
     //
     // 7.3
     //
-    Line a(make_pair(2.0,2.0), make_pair(2.0,4.0));
-    Line b(make_pair(4.0,2.0), make_pair(6.0,4.0));
+    Line a({ 2.0, 2.0 }, { 2.0, 4.0 });
+    Line b({ 4.0, 2.0 }, { 6.0, 4.0 });
     cout << "intersects=" << boolalpha << a.intersects(b) << endl; 
 #endif
 #if 0
@@ -442,10 +439,8 @@ int main(){
     // 9.3 
     //
     //            0   1    2  3  4  5   6  7  8  9   10
-    int a1[] = {-40, -20, -1, 1, 2, 3, 5, 7, 9, 12, 13};
-    int a2[] = {-10, -5,   2, 2, 2, 3, 4, 7, 9, 12, 13}; 
-    vi v1(begin(a1), end(a1));
-    vi v2(begin(a2), end(a2));
+    vi v1 = {-40, -20, -1, 1, 2, 3, 5, 7, 9, 12, 13};
+    vi v2 = {-10, -5,   2, 2, 2, 3, 4, 7, 9, 12, 13}; 
     cout << "Magic Index in A1 is=" << MagicIndexUnique(v1) << endl;
     cout << "Magic Index in A2 is=" << MagicIndexDuplicates(v2) << endl;
 #endif 
@@ -544,11 +539,7 @@ int main(){
     //
     // 11.2
     //
-    const char* a112[] = {"cat", "acre", "act", "race", "care", "tac"};
-    vector<string> v;
-    for(int i=0; i < AS(a112); ++i) {
-        v.push_back(string(a112[i]));
-    }
+    vector<string> v = { "cat", "acre", "act", "race", "care", "tac" };
     GroupAnagrams(v);
     PrintVector(v, "anagrams");
 #endif
@@ -595,11 +586,8 @@ int main(){
     //
     // 11.7
     //
-    htwt a117[] = {{65,100},{70,150},{56,90},{75,190},{60,95},{68,110}};
-    int len = AS(a117);
-    vector<htwt> v117(a117, a117+len);
+    vector<htwt> v117 = { { 65, 100 }, { 70, 150 }, { 56, 90 }, { 75, 190 }, { 60, 95 }, { 68, 110 } };
     BuildCircusTower(v117);
-  
 #endif
 #if 0
     //
@@ -956,15 +944,12 @@ int main(){
     //
     // 18.11
     //
-#define DIM 3
-    int s1811[DIM][DIM] = 
+    vvi v = 
     { 
         {1,0,1},
         {0,0,1},
         {0,0,1}
     };
-    vector<vi> v; 
-    Make2DVector(s1811, DIM, DIM, v);
     result res;
     if (GetSquare(v, res)) {
         cout << "Found Square! \n" ;
@@ -975,18 +960,14 @@ int main(){
 #if 0
     //
     // 18.12
-    //
-#define DIM_ROW 4
-#define DIM_COL 5
-    int s1812[DIM_ROW][DIM_COL] = 
+    //    
+    vvi v =
     { 
         {1,  2, -1,-4, -20},
         {-8,-3,  4, 2, 1},
         { 3, 8, 10, 1, 3},
         {-4,-1, 1, 7, -6}
     };
-    vector<vi> v; 
-    Make2DVector(s1812, DIM_ROW, DIM_COL, v);
     Rect res;
     int max_sum = Kadane2D(v, res);
     cout << "Maximum_Sum=" << max_sum << endl;
@@ -1002,24 +983,20 @@ int main(){
      */
 #if 0
     /* KNAPSACK PROBLEM */
-    Item items[] = {{6,30}, {3,14}, {4,16}, {2,9}};
-    vector<Item> v(begin(items), end(items));
+    vector<Item> v = { { 6, 30 }, { 3, 14 }, { 4, 16 }, { 2, 9 } };
     KnapsackRepeats(10, v);
     Knapsack0_1NoRepeats(10, v);
 #endif
 #if 0
     /* MAKING CHANGE WITH FEWEST COINS */
-    int coins[] = {1, 5, 25};
-    int limits[] = {60, 1, 3};
-    vi vCoins(begin(coins), end(coins));
-    vi vLimits(begin(limits), end(limits));
+    vi vCoins = {1, 5, 25};
+    vi vLimits = { 60, 1, 3 };
     MakingChangeInfiniteCoins(65, vCoins);   
     MakingChangeLimitedCoins(65, vCoins, vLimits);
 #endif
 #if 0
     /* BOX STACKING TO ACHIEVE HIGHEST HEIGHT */
-    Box boxes[] = { {4, 6, 7}, {1, 2, 3}, {4, 5, 6}, {10, 12, 32} };
-    vector<Box> vBoxes(begin(boxes), end(boxes));
+    vector<Box> vBoxes = { { 4, 6, 7 }, { 1, 2, 3 }, { 4, 5, 6 }, { 10, 12, 32 } };
     StackBoxes(vBoxes);
 #endif
 #if 0
@@ -1040,15 +1017,12 @@ int main(){
 #endif
 #if 0
     /* BALANCED PARTITION */
-    int a[] = {3,2,1,1,2,1};
-    vi v(begin(a), end(a));
+    vi v = {3,2,1,1,2,1};
     BalancedPartition(v);
 #endif 
 #if 0
     /* MAXIMUM SUBMATRIX THAT IS ALL 1 (NOT NECCESARILY SQUARE) */ 
-#define DIM_ROW 4
-#define DIM_COL 6
-    int a_matrix[DIM_ROW][DIM_COL] = 
+    vvi v =
     { 
         {0,1,1,0,0,0},
         {0,1,1,1,1,0},
@@ -1056,8 +1030,6 @@ int main(){
         {1,1,1,1,1,0},
     };
 
-    vvi v;
-    Make2DVector(a_matrix, DIM_ROW, DIM_COL, v);
     Rect res;
     if(SUCCEEDED(LargestSubmatrixOfOnes(v, res))) {
         cout << "largest submatrix = "; 
@@ -1070,18 +1042,12 @@ int main(){
 #endif
 #if 0
     /* MINIMUM NUMBER OF JUMPS - the best algorithm for this is ACTUALLY GREEDY */
-    int arr1[] = {1, 3, 5, 9, 8, 2, 6, 7, 6, 8, 9}; // ans = 0, 1, 3, 9 (indexes)
-    int arr2[] = {2,3,1,1,4}; // ans=0,1,4
-    int arr3[] = {1,1,1,0,1}; // no path
-    int arr4[] = {0,1,1}; // no path
-    int arr5[] = {1,1,1}; // ans=0,1,2
-
     vi cases[] = {
-        vi(begin(arr1), end(arr1)),
-        vi(begin(arr2), end(arr2)),
-        vi(begin(arr3), end(arr3)),
-        vi(begin(arr4), end(arr4)),
-        vi(begin(arr5), end(arr5)),
+        vi({ 1, 3, 5, 9, 8, 2, 6, 7, 6, 8, 9 }),
+        vi({ 2, 3, 1, 1, 4 }),
+        vi({ 1, 1, 1, 0, 1 }),
+        vi({ 0, 1, 1 }),
+        vi({ 1, 1, 1 }),
     };
 
     for (vi const& v : cases) {
@@ -1106,8 +1072,7 @@ int main(){
 #endif
 #if 0
     /* Matrix Multiplication */
-    int a[] = {10, 20, 30, 40, 30};
-    vi v(begin(a), end(a));
+    vi v = {10, 20, 30, 40, 30};
     string result;
     string m_print; // simply to print the matrices
     int count = MatrixChainOrder(v, m_print, result);
@@ -1119,10 +1084,9 @@ int main(){
     //
     // Subset Sum - is there a subset of item that sums up to a given value
     //
-    int set[] = {3, 34, 4, 12, 5, 2};
+    vi v = {3, 34, 4, 12, 5, 2};
     int sum = 9;
     vi result;
-    vi v(begin(set), end(set));
     bool has_subset = SubsetWithSum(v, sum, result);
     if (has_subset) {
         cout << "There is a subset with sum=" << sum << endl;
@@ -1166,8 +1130,7 @@ int main(){
      * ROD CUTTING - Best way to cut a rod to maximize cost
      *
      */
-    int arr[] = {1, 5, 8, 9, 10, 17, 17, 20};
-    vi p(begin(arr), end(arr));
+    vi p = {1, 5, 8, 9, 10, 17, 17, 20};
     vi cuts;
     int best_price = CutRod(p, cuts);
     cout << "Best Price=" << best_price << endl;
@@ -1181,8 +1144,7 @@ int main(){
      * BEST STRATEGY FOR A GAME
      *
      */
-    int arr[] = {8, 15, 3, 7};
-    vi coins(begin(arr), end(arr));
+    vi coins = {8, 15, 3, 7};
     vi moves_player_one;
     vi moves_player_two;
     int score = BestStrategyForGame(coins, moves_player_one, moves_player_two);
@@ -1196,8 +1158,7 @@ int main(){
     ------------
     Find and print the longest monotonically increasing subsequence in nlogn
     */
-    int a[] = {0,8,4,12,2,2,10,6,14,1,9,5,13,3,11,7,15};
-    vi v(begin(a), end(a));
+    vi v = {0,8,4,12,2,2,10,6,14,1,9,5,13,3,11,7,15};
     vi lis; int lis_len;
     tie(lis_len, lis) = nlog_n_LongestIncreasingSubsequence(v);
     printf("lis_len=%d\n", lis_len);
@@ -1460,10 +1421,8 @@ int main(){
     //
     // 12.14
     // 
-    string a[] = {"talk", "to", "the", "boy", "home", "at", "at"};
-    string q[] = {"boy", "at"};
-    vector<string> A(begin(a), end(a));
-    vector<string> Q(begin(q), end(q));
+    vector<string> A = { "talk", "to", "the", "boy", "home", "at", "at" };
+    vector<string> Q = { "boy", "at" };
     Print(epi_12::FindSmallestSubArrayCoveringSubset(A, Q));
     istringstream s("talk to the boy home at at");
     Print(epi_12::FindSmallestSubArrayCoveringSubset_Streaming(s, Q));

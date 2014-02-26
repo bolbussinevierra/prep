@@ -17,15 +17,6 @@ struct Rect {
     }
 };
 
-void PrintJumps(HRESULT hr, list<int> const& lst) {
-    cout << "PATH_EXISTS=" << (SUCCEEDED(hr) ? "Yes" : "No") << endl;
-    cout << "#Jumps=" << lst.size()-1 << endl;
-    for (int i : lst) {
-        cout << i << " ";
-    }
-    cout << endl;
-}
-
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef vector<vector<bool>> vvbool;
@@ -115,3 +106,4 @@ void rotate(int a[], int len, int rot_count);
 void PrintVector(vector<string>& p, char* title);
 int Min3(int a, int b, int c); 
 int Log2(unsigned long long val);
+void PrintJumps(HRESULT hr, list<int> const& lst);

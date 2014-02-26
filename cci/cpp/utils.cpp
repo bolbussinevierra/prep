@@ -51,3 +51,12 @@ int Min3(int a, int b, int c) { return min(min(a,b), c); }
 int Log2(unsigned long long val) {
     return log(val) / log(2);
 }
+
+void PrintJumps(HRESULT hr, list<int> const& lst) {
+    cout << "PATH_EXISTS=" << (SUCCEEDED(hr) ? "Yes" : "No") << endl;
+    cout << "#Jumps=" << lst.size() - 1 << endl;
+    for (int i : lst) {
+        cout << i << " ";
+    }
+    cout << endl;
+}
