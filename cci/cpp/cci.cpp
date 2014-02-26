@@ -220,7 +220,7 @@ int main(){
         FindSum(tree,  target);
     }
 #endif
-#pragma region adhoc
+
 #if 0
     // delete nodes from a bst
     int a[] = {0,1,2,3,5,6,7,8,9,10};
@@ -313,7 +313,20 @@ int main(){
         epi_9::BuildFromPreOrderSpec(pre)
     );
 #endif 
-#pragma endregion
+#if 0
+    //
+    // TOPOLOGICAL SORT
+    // 
+    Graph g(6);
+    g.AddEdge(5,0);
+    g.AddEdge(5,2);
+    g.AddEdge(2,3);
+    g.AddEdge(3,1);
+    g.AddEdge(4,1);
+    g.AddEdge(4,0);
+    g.TopologicalSort();
+#endif 
+// ****************************************************************************
 #if 0
     //
     // 5.1
@@ -374,7 +387,6 @@ int main(){
 
     cout << "Missing Integer is=" << FindMissingInteger(input) << endl;
 #endif
-#pragma region epi
 #if 0
     //
     // epi:5.4
@@ -382,7 +394,7 @@ int main(){
     for (int i = 1; i <= 20; ++i) 
         printf("GetClosestSameBits(%d)=%d\n", i, epi_5::ClosestIntSameBits(i));
 #endif
-#pragma endregion
+// ****************************************************************************
 #if 0
     //
     // 7.3

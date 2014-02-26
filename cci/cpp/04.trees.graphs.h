@@ -479,4 +479,49 @@ void MorrisInOrder(TreeNode* root) {
         }
     }
 }
-                
+// ****************************************************************************
+// TOPOLOGICAL SORT 
+// ****************************************************************************
+class Graph{
+private:
+    int vertice_count_;
+    vector<list<int>> adj_; // list of adjacency lists
+    void _TopologicalSort(int v, vector<bool>& visited, stack<int>& sort) {
+        // mark the current node as visited
+        visited[v] = true;
+
+        // recur for all vertices adjacent to this vertex
+        for(auto it = adj_[v].begin(); it != adj_[v].end(); ++it) 
+            if (!visited[*it])
+                _TopologicalSort(*it, visited, sort);
+
+        sort.push(v);
+    }
+
+public:
+    explicit Graph(int vertice_count)
+        :vertice_count_(vertice_count), adj_(vertice_count, list<int>()) { }
+
+    void AddEdge(int v, int w) {
+        adj_[v].push_back(w);
+    }
+
+    void TopologicalSort() {
+        stack<int> sort;
+
+        // mark all the vertices are visited
+        vector<bool> visited(vertice_count_, false);
+
+        // call the recursive sort helper to store the topological sort
+        // starting from all vertices one by one
+        for (int i = 0; i < vertice_count_; ++i) 
+            if (!visited[i]) 
+                _TopologicalSort(i, visited, sort);
+
+        while (!sort.empty()) {
+            cout << sort.top() << " ";
+            sort.pop();
+        }
+
+    }
+};
