@@ -323,6 +323,15 @@ int main(){
     g.AddEdge(4,0);
     g.TopologicalSort();
 #endif 
+#if 0
+    //
+    // 16.1
+    // 
+    int dim = 10;
+    vvi maze = epi_16::MakeMaze(dim, dim);
+    vector<epi_16::Coordinate> path = epi_16::SearchMaze(maze, { 0, 0 }, { dim - 1, dim - 1 });
+    for_each(begin(path), end(path), [](epi_16::Coordinate c) { printf("[%d, %d]\n", c.x, c.y); });
+#endif 
 // ****************************************************************************
 #if 0
     //

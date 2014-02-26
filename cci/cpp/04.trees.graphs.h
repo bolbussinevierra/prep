@@ -525,3 +525,78 @@ public:
 
     }
 };
+
+namespace epi_16 {
+//
+// 16.1
+// 
+    vvi MakeMaze(size_t dimension, size_t walls=0) {
+        vvi maze(dimension, vi(dimension, 0)); // zero unblocked
+
+        // create some random walls
+        random_device rd;
+        default_random_engine e(rd());
+        uniform_int_distribution<int> dist(0, dimension - 1);
+
+        cout << "--BLOCKLIST--" << endl;
+        for (int i = 0; i < walls; ++i) {
+            int x = dist(e);
+            int y = dist(e);
+            printf("[%d, %d]\n", x, y);
+            maze[x][y] = 1;
+        }
+        cout << "--BLOCKLIST--" << endl;
+        return maze;
+    }
+
+    struct Coordinate {
+        bool operator==(const Coordinate& that) const {
+            return x == that.x && y == that.y;
+        }
+        int x, y;
+    };
+
+    // check if cur is within the maze
+    bool _WithinBounds(Coordinate const& curr, vvi const& maze){
+        return curr.x >= 0 && curr.x < maze.size() &&
+               curr.y >= 0 && curr.y < maze[curr.x].size();
+    }
+
+    bool _IsFeasible(Coordinate const& curr, vvi const& maze){
+        return _WithinBounds(curr, maze) && maze[curr.x][curr.y] == 0;
+    }
+
+    bool _SearchMazeHelper(vvi& maze, Coordinate const& curr, Coordinate const& e, vector<Coordinate>& path) {
+        if (curr == e) return true; // found destination!
+        if (!_WithinBounds(curr, maze)) return false; 
+
+        const array<array<int, 2>, 4> neighbors = {
+            { { { -1, 0 } }, { { 1, 0 } }, { { 0, -1 } }, { { 0, 1 } } }
+        };
+
+        for (const auto& s : neighbors) {
+            Coordinate next{ curr.x + s[0], curr.y + s[1] };
+            if (_IsFeasible(next, maze)) {
+                // block this item to mark it as visited
+                maze[curr.x][curr.y] = 1;
+                path.emplace_back(next);
+                if (_SearchMazeHelper(maze, next, e, path)) {
+                    return true; 
+                }
+                path.pop_back(); // back track
+            }
+        }
+        return false;
+    }
+    vector<Coordinate> SearchMaze(vvi& maze, Coordinate const& s, Coordinate const& e) {
+        // we are going to do a dfs search to find the path
+        vector<Coordinate> path;
+        if (_IsFeasible(s, maze)) {
+            path.emplace_back(s);
+            if (!_SearchMazeHelper(maze, s, e, path))
+                path.pop_back();
+        }
+        return path; // path will be empty if we cannot find a path
+    }
+
+}
