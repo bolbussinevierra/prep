@@ -10,7 +10,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 0
+#if 1
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -331,6 +331,21 @@ int main(){
     vvi maze = epi_16::MakeMaze(dim, dim);
     vector<epi_16::Coordinate> path = epi_16::SearchMaze(maze, { 0, 0 }, { dim - 1, dim - 1 });
     for_each(begin(path), end(path), [](epi_16::Coordinate c) { printf("[%d, %d]\n", c.x, c.y); });
+#endif 
+#if 0
+    //
+    // 16.3
+    //
+    vector<epi_16::vertex> graph(4);
+    graph[0].adj.emplace_back(&graph[1]);
+    graph[0].adj.emplace_back(&graph[2]);
+    graph[0].adj.emplace_back(&graph[3]);
+    graph[1].adj.emplace_back(&graph[0]);
+    graph[2].adj.emplace_back(&graph[0]);
+    graph[3].adj.emplace_back(&graph[0]);
+    //graph[3].adj.emplace_back(&graph[1]); // makes partitioning not possible
+    //graph[1].adj.emplace_back(&graph[3]); // makes partitioning not possible
+    cout << boolalpha << epi_16::CanPartition(graph) << endl;
 #endif 
 // ****************************************************************************
 #if 0
