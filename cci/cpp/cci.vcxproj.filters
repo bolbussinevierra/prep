@@ -90,6 +90,9 @@
     <ClInclude Include="epi.12.hashtables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="set_union.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
