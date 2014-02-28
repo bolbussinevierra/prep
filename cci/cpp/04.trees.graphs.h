@@ -637,3 +637,52 @@ bool CanPartition(vector<vertex>& graph) {
 }
 
 }
+
+// -------------------------------------------------------------------------------------------
+// KRUSKAL'S ALGORITHM
+// -------------------------------------------------------------------------------------------
+template<typename T>
+struct Edge {
+    T a;
+    T b;
+    int weight = 0;
+    Edge(T const& v1, T const& v2, int wgt)
+        :a(v1), b(v2), weight(wgt) {}
+};
+
+template<typename T>
+struct GraphVE {
+    vector<T> vertices;
+    vector<Edge<T>> edges;
+};
+
+template<typename T>
+void Kruskal(GraphVE<T>& g) {
+    vector<Edge<T>> A; // edges of the minimum spanning tree
+    union_find<T> s(g.vertices); // make all vertices into their own disjoint set
+    
+    // sort all the edges by weight increasingly
+    sort(g.edges.begin(), g.edges.end(), [](Edge<T> const& x, Edge<T> const& y) { return x.weight < y.weight; });
+    
+    // consider all edges in order. For each edge, check for one whose two edges arent in the same set and
+    // union them and add them to the MST
+    for (Edge<T> const& e : g.edges) {
+        T root_1 = s.find(e.a);
+        T root_2 = s.find(e.b);
+        if (root_1 != root_2) {
+            A.emplace_back(e);
+            s.join(root_1, root_2);
+        }
+    }
+
+    // print the edges
+    for_each(begin(A), end(A), [](Edge<T> const& e) {
+        cout << e.a << " -- " << e.b << "  " << e.weight << endl;
+    });
+    
+}
+
+template <typename T>
+void Prims(GraphVE<T>& g) {
+
+}

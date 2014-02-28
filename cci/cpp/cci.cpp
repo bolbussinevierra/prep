@@ -347,6 +347,43 @@ int main(){
     //graph[1].adj.emplace_back(&graph[3]); // makes partitioning not possible
     cout << boolalpha << epi_16::CanPartition(graph) << endl;
 #endif 
+#if 1
+    //
+    // KRUSKAL
+    // 
+    /*
+     B       6          C        3         D
+     +------------------+------------------+
+     |*                 |                  |
+     |  *               |                  |
+     |    *             |                  |
+     |      *           |                  |
+     |       *          |                  |
+     |         *        |                  |
+    4|          * 5     |1                 |2
+     |           *      |                  |
+     |            *     |                  |
+     |             *    |                  |
+     |              *   |                  |
+     |               *  |                  |
+     |                * |                  |
+     +------------------+------------------+
+     A        2         F        4         E
+    
+    */
+    GraphVE<char> g;
+    g.vertices = { 'a', 'b', 'c', 'd', 'e', 'f' };
+    g.edges.emplace_back('a', 'b', 4);
+    g.edges.emplace_back('a', 'f', 2);
+    g.edges.emplace_back('f', 'b', 5);
+    g.edges.emplace_back('c', 'b', 6);
+    g.edges.emplace_back('c', 'f', 1);
+    g.edges.emplace_back('f', 'e', 4);
+    g.edges.emplace_back('d', 'e', 2);
+    g.edges.emplace_back('d', 'c', 3);
+    Kruskal(g);
+
+#endif 
 // ****************************************************************************
 #if 0
     //
