@@ -384,6 +384,8 @@ int main(){
     Kruskal(g);
     cout << endl;
     Prims(g);
+    cout << endl;
+    Dijkstra(g, 'c');
 
 #endif 
 // ****************************************************************************

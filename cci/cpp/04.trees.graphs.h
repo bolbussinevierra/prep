@@ -707,7 +707,7 @@ void Prims(GraphVE<T>& g) {
     key[g.vertices.front()] = 0;
     list<T> vertices_left(begin(g.vertices), end(g.vertices));
 
-    while (!vertices_left.empty()) {
+    while (!vertices_left.empty()) { // VlogV + E if using min_heap
         auto it = min_element(begin(vertices_left), end(vertices_left), [&](T a, T b) { return key[a] < key[b]; });
         T curr = *it;
         vertices_left.erase(it); // vertices are uniquely named so we COULD also remove by value;
@@ -730,4 +730,50 @@ void Prims(GraphVE<T>& g) {
     for_each(begin(A), end(A), [](Edge<T> const& e) {
         cout << e.a << " -- " << e.b << "  " << e.weight << endl;
     });
+}
+
+// -------------------------------------------------------------------------------------------
+// DJIKSTRA ALGORITHM - SIMILAR TO PRIMS 
+// -------------------------------------------------------------------------------------------
+template <typename T>
+void Dijkstra(GraphVE<T>& g, T const& start) {
+    unordered_map<T, T> parent; // parent in a tree sense, where parent is in mst
+    unordered_map<T, int> distance; // distance from start for each vertice
+
+    for (auto c : g.vertices)
+        distance[c] = numeric_limits<int>::max();
+
+    // start has a distance of 0 from start, obviously
+    distance[start] = 0;
+    parent[start] = start; // make start parent of itself so we know when we get to the beginning
+    list<T> vertices_left(begin(g.vertices), end(g.vertices));
+
+    while (!vertices_left.empty()) { // if using minheap, this would be VlogV + E complexity
+        // from all the frontier nodes, get the one with the smallest distance
+        auto it = min_element(begin(vertices_left), end(vertices_left), 
+            [&](T a, T b) { return distance[a] < distance[b]; });
+        T curr = *it;
+        vertices_left.erase(it); // vertices are uniquely named so we COULD also remove by value;
+
+        // update all the distance to children of the new node that remain in the "wild" (unvisited)
+        for (auto p : g.adjacent(curr)) {
+            if (find(begin(vertices_left), end(vertices_left), p.first) != vertices_left.end()) {
+                if (distance[curr] + p.second.weight < distance[p.first]) {
+                    parent[p.first] = curr;
+                    distance[p.first] = distance[curr] + p.second.weight;
+                }
+            }
+        }
+    }
+
+    // for each vertice, print the path from start and the distance
+    for (auto v : g.vertices) {
+        string path_str(1, v);
+        auto c = v;
+        while (parent[c] != c) {
+            path_str = string(1, parent[c]) + " " + path_str;
+            c = parent[c];
+        }
+        cout << path_str << setw(10) << "dist: " << distance[v] << endl;
+    }
 }
