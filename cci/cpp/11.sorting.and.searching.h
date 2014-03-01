@@ -631,8 +631,7 @@ vi IntersectSorted_N_log_M(vi const& a, vi const& b) {
     
     for (int i = 0; i < smaller.size(); ++i) {
         if (i == 0 || smaller[i-1] != smaller[i]) {
-            auto it = lower_bound(begin(larger), end(larger), smaller[i]);
-            if (it != end(larger) && *it == smaller[i]) 
+            if (binary_search(begin(larger), end(larger), smaller[i]))
                 intersect.emplace_back(smaller[i]);
         }
     }
