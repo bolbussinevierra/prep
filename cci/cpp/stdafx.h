@@ -55,7 +55,7 @@ using namespace std;
 #include "heap.h"
 #include "hm.h"
 #include "trie.h"
-#include "set_union.h"
+#include "union_find.h"
 
 
 // project level typedefs

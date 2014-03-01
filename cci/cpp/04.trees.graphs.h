@@ -711,7 +711,7 @@ void Prims(GraphVE<T>& g) {
         auto it = min_element(begin(vertices_left), end(vertices_left), [&](T a, T b) { return key[a] < key[b]; });
         T curr = *it;
         vertices_left.erase(it); // vertices are uniquely named so we COULD also remove by value;
-
+        
         if (parent.find(curr) != parent.end()) // this edge has a parent in the MST (on frontier) we can add it 
             A.emplace_back(parent[curr], curr, key[curr]);
 

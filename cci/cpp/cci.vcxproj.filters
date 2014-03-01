@@ -90,7 +90,7 @@
     <ClInclude Include="epi.12.hashtables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="set_union.h">
+    <ClInclude Include="union_find.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

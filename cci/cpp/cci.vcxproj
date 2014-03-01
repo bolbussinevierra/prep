@@ -99,7 +99,7 @@
     <ClInclude Include="heap.h" />
     <ClInclude Include="hm.h" />
     <ClInclude Include="other.h" />
-    <ClInclude Include="set_union.h" />
+    <ClInclude Include="union_find.h" />
     <ClInclude Include="splay.tree.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

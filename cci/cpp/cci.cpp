@@ -10,7 +10,7 @@
 #if 0
 #include "03.stacks.queues.h"
 #endif
-#if 1
+#if 0
 #include "04.trees.graphs.h"
 #endif
 #if 0
@@ -347,7 +347,7 @@ int main(){
     //graph[1].adj.emplace_back(&graph[3]); // makes partitioning not possible
     cout << boolalpha << epi_16::CanPartition(graph) << endl;
 #endif 
-#if 1
+#if 0
     //
     // KRUSKAL, PRIM, DJIKSTRA
     // 
