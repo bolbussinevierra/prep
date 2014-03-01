@@ -349,7 +349,7 @@ int main(){
 #endif 
 #if 1
     //
-    // KRUSKAL
+    // KRUSKAL, PRIM, DJIKSTRA
     // 
     /*
      B       6          C        3         D
@@ -382,6 +382,8 @@ int main(){
     g.edges.emplace_back('d', 'e', 2);
     g.edges.emplace_back('d', 'c', 3);
     Kruskal(g);
+    cout << endl;
+    Prims(g);
 
 #endif 
 // ****************************************************************************

@@ -654,6 +654,16 @@ template<typename T>
 struct GraphVE {
     vector<T> vertices;
     vector<Edge<T>> edges;
+    vector<pair<T, Edge<T>>> adjacent(T u) {
+        vector<pair<T, Edge<T>>> adj;
+        for (Edge<T> e : edges) {
+            if (e.a == u)
+                adj.emplace_back(e.b, e);
+            else if (e.b == u)
+                adj.emplace_back(e.a, e);
+        }
+        return adj;
+    }
 };
 
 template<typename T>
@@ -662,7 +672,7 @@ void Kruskal(GraphVE<T>& g) {
     union_find<T> s(g.vertices); // make all vertices into their own disjoint set
     
     // sort all the edges by weight increasingly
-    sort(g.edges.begin(), g.edges.end(), [](Edge<T> const& x, Edge<T> const& y) { return x.weight < y.weight; });
+    sort(begin(g.edges), end(g.edges), [](Edge<T> const& x, Edge<T> const& y) { return x.weight < y.weight; });
     
     // consider all edges in order. For each edge, check for one whose two edges arent in the same set and
     // union them and add them to the MST
@@ -681,8 +691,43 @@ void Kruskal(GraphVE<T>& g) {
     });
     
 }
-
+// -------------------------------------------------------------------------------------------
+// PRIM'S ALGORITHM
+// -------------------------------------------------------------------------------------------
 template <typename T>
 void Prims(GraphVE<T>& g) {
+    vector<Edge<T>> A; // edges of the minimum spanning tree
+    unordered_map<T, T> parent; // parent in a tree sense, where parent is in mst
+    unordered_map<T, int> key; 
 
+    for (auto c : g.vertices)
+        key[c] = numeric_limits<int>::max();
+
+    // pick the first node as root
+    key[g.vertices.front()] = 0;
+    list<T> vertices_left(begin(g.vertices), end(g.vertices));
+
+    while (!vertices_left.empty()) {
+        auto it = min_element(begin(vertices_left), end(vertices_left), [&](T a, T b) { return key[a] < key[b]; });
+        T curr = *it;
+        vertices_left.erase(it); // vertices are uniquely named so we COULD also remove by value;
+
+        if (parent.find(curr) != parent.end()) // this edge has a parent in the MST (on frontier) we can add it 
+            A.emplace_back(parent[curr], curr, key[curr]);
+
+        // update all the children of the new node that remain in the "wild" (not yet in mst)
+        for (auto p : g.adjacent(curr)) {
+            if (find(begin(vertices_left), end(vertices_left), p.first) != vertices_left.end()) {
+                if (p.second.weight < key[p.first]) {
+                    parent[p.first] = curr;
+                    key[p.first] = p.second.weight;
+                }
+            }
+        }
+    }
+
+    // print the edges
+    for_each(begin(A), end(A), [](Edge<T> const& e) {
+        cout << e.a << " -- " << e.b << "  " << e.weight << endl;
+    });
 }
