@@ -349,7 +349,7 @@ int main(){
 #endif 
 #if 0
     //
-    // KRUSKAL, PRIM, DJIKSTRA
+    // KRUSKAL, PRIM, DJIKSTRA, FLOYD-WARSHALL
     // 
     /*
      B       6          C        3         D
@@ -382,6 +382,7 @@ int main(){
     g.edges.emplace_back('f', 'e', 4), g.edges.emplace_back('e', 'f', 4);
     g.edges.emplace_back('d', 'e', 2), g.edges.emplace_back('e', 'd', 2);
     g.edges.emplace_back('d', 'c', 3), g.edges.emplace_back('c', 'd', 3);
+#if 0
     Kruskal(g);
     cout << endl;
     Prims(g);
@@ -389,7 +390,16 @@ int main(){
     Dijkstra(g, 'c');
     cout << endl;
     BellmanFord(g, 'c');
-
+#endif
+    int INF = numeric_limits<int>::max();
+    vvi gg = 
+    { 
+        {0,   5,   INF, 10},
+        {INF, 0,   3,   INF},
+        {INF, INF, 0,   1},
+        {INF, INF, INF, 0}
+    };
+    FloydWarshall(gg);
 #endif 
 // ****************************************************************************
 #if 0

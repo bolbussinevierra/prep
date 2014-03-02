@@ -825,3 +825,51 @@ void BellmanFord(GraphVE<T>& g, T const& start) {
         cout << path_str << setw(10) << "dist: " << distance[v] << endl;
     }
 }
+
+// -------------------------------------------------------------------------------------------
+// BELLMAN FORD ALGORITHM - ALL PAIRS SHORTEST PATH PROBLEM USING DP
+// -------------------------------------------------------------------------------------------
+bool IsInf(int val){
+    return val == numeric_limits<int>::max();
+}
+void PrintGraph(vvi const& graph) {
+    cout << "Following matrix shows the shortest distances" << endl;
+    cout << "between every pair of vertices" << endl;
+
+    for (int i = 0; i < graph.size(); ++i) {
+        for (int j = 0; j < graph.size(); j++) {
+            if (IsInf(graph[i][j]))
+                printf("%7s", "INF");
+            else
+                printf("%7d", graph[i][j]);
+        }
+        cout << endl;
+    }
+}
+
+void FloydWarshall(vvi& graph) {
+    //vvi distance(graph.size(), vi(graph[0].size()));
+
+    // initialize the solution matrix same as input graph matrix (Or we can say the 
+    // initial value of shortest distances are based on shortest paths without any 
+    // intermediate nodes
+    vvi distance(graph);
+
+    /* consider every vertice as an intermediate vertex for every pair of vertices*/
+    int vertice_count = graph.size();
+    for (int k = 0; k < vertice_count; ++k) {
+        for (int i = 0; i < vertice_count; ++i) {
+            for (int j = 0; j < vertice_count; ++j) {
+
+                /* if vertex k is on the shortest path from i to j */
+                if (!IsInf(distance[i][k]) && !IsInf(distance[k][j])) {
+                    if (distance[i][k] + distance[k][j] < distance[i][j]) {
+                        distance[i][j] = distance[i][k] + distance[k][j];
+                    }
+                }
+
+            }
+        }
+    }
+    PrintGraph(distance);
+}
