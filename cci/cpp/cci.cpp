@@ -373,19 +373,22 @@ int main(){
     */
     GraphVE<char> g;
     g.vertices = { 'a', 'b', 'c', 'd', 'e', 'f' };
-    g.edges.emplace_back('a', 'b', 4);
-    g.edges.emplace_back('a', 'f', 2);
-    g.edges.emplace_back('f', 'b', 5);
-    g.edges.emplace_back('c', 'b', 6);
-    g.edges.emplace_back('c', 'f', 1);
-    g.edges.emplace_back('f', 'e', 4);
-    g.edges.emplace_back('d', 'e', 2);
-    g.edges.emplace_back('d', 'c', 3);
+    g.edges.emplace_back('a', 'b', 4), g.edges.emplace_back('b', 'a', 4);
+    g.edges.emplace_back('a', 'f', 2), g.edges.emplace_back('f', 'a', 2);
+    g.edges.emplace_back('f', 'b', 5), g.edges.emplace_back('b', 'f', 5);
+    g.edges.emplace_back('c', 'b', 6), g.edges.emplace_back('b', 'c', 6);
+    // g.edges.emplace_back('c', 'b', -56), g.edges.emplace_back('b', 'c', -56); // introduce negative edge cycle
+    g.edges.emplace_back('c', 'f', 1), g.edges.emplace_back('f', 'c', 1);
+    g.edges.emplace_back('f', 'e', 4), g.edges.emplace_back('e', 'f', 4);
+    g.edges.emplace_back('d', 'e', 2), g.edges.emplace_back('e', 'd', 2);
+    g.edges.emplace_back('d', 'c', 3), g.edges.emplace_back('c', 'd', 3);
     Kruskal(g);
     cout << endl;
     Prims(g);
     cout << endl;
     Dijkstra(g, 'c');
+    cout << endl;
+    BellmanFord(g, 'c');
 
 #endif 
 // ****************************************************************************

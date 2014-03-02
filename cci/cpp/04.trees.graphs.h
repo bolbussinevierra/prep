@@ -777,3 +777,51 @@ void Dijkstra(GraphVE<T>& g, T const& start) {
         cout << path_str << setw(10) << "dist: " << distance[v] << endl;
     }
 }
+
+// -------------------------------------------------------------------------------------------
+// BELLMAN FORD ALGORITHM - SINGLE SOURCE WITH NEGATIVE WEIGHT CYCLES 
+// -------------------------------------------------------------------------------------------
+template<typename T>
+void BellmanFord(GraphVE<T>& g, T const& start) {
+    unordered_map<T, T> parent; // parent in a tree sense, where parent is in mst
+    unordered_map<T, int> distance; // distance from start for each vertice
+
+    for (auto c : g.vertices)
+        distance[c] = numeric_limits<int>::max();
+
+    // initialize the source
+    parent[start] = start;
+    distance[start] = 0; 
+
+    // do v-1 edge relaxation cycles
+    for (int i = 0; i < g.vertices.size() - 1; ++i) {
+        for (Edge<T> const& e : g.edges) {
+            if (distance[e.a] != numeric_limits<int>::max()) {
+                if (distance[e.a] + e.weight < distance[e.b]) {
+                    distance[e.b] = distance[e.a] + e.weight;
+                    parent[e.b] = e.a;
+                }
+            }
+        }
+    }
+
+    // Edge detection cycle
+    for (Edge<T> const& e : g.edges) {
+        if (distance[e.a] + e.weight < distance[e.b]) {
+            cout << "negative edge cycle detected!" << endl;
+            printf("(%c - %c)\n", e.a, e.b);
+            return;
+        }
+    }
+
+    // For each vertice, print the path from start and the distance
+    for (auto v : g.vertices) {
+        string path_str(1, v);
+        auto c = v;
+        while (parent[c] != c) {
+            path_str = string(1, parent[c]) + " " + path_str;
+            c = parent[c];
+        }
+        cout << path_str << setw(10) << "dist: " << distance[v] << endl;
+    }
+}
