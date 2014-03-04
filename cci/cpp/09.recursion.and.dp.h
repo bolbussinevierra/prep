@@ -637,3 +637,43 @@ int f(string const& expr, bool result, int s, int e) {
     CountCache cache;
     return _f(expr, result, s, e, cache);
 }
+
+namespace epi_15 {
+template <typename T>
+int Merge(vector<T>& A, int start, int mid, int end) {
+    vector<T> sorted_A;
+    int left_start = start, right_start = mid, inver_count = 0;
+
+    while (left_start < mid && right_start < end) {
+        if (A[left_start] <= A[right_start]) {
+            sorted_A.emplace_back(A[left_start++]);
+        } else {
+            // A[left_start:mid - 1] will be the inversions
+            inver_count += mid - left_start;
+            sorted_A.emplace_back(A[right_start++]);
+        }
+    }
+    copy(A.begin() + left_start,  A.begin() + mid, back_inserter(sorted_A));
+    copy(A.begin() + right_start, A.begin() + end, back_inserter(sorted_A));
+
+    // Updated A with sorted_A
+    copy(sorted_A.begin(), sorted_A.end(), A.begin() + start);
+    return inver_count;
+}
+
+template <typename T>
+int CountInversionsHelper(vector<T>& A, int start, int end) {
+    if (end - start <= 1) {
+        return 0;
+    }
+
+    int mid = start + ((end - start) >> 1);
+    return CountInversionsHelper(A, start, mid) +
+           CountInversionsHelper(A, mid, end) + Merge(A, start, mid, end);
+}
+template <typename T>
+int CountInversions(vector<T> A) {
+    return CountInversionsHelper(A, 0, A.size());
+}
+
+}

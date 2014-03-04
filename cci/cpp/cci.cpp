@@ -580,6 +580,13 @@ int main(){
 #endif
 #if 0
     //
+    // epi_15::15.2
+    // 
+    vector<int> A = { 1, 0, 3, 2 };
+    cout << epi_15::CountInversions(A) << endl;
+#endif 
+#if 0
+    //
     // 10.3
     //
     FindNumber();
