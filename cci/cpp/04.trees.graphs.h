@@ -873,3 +873,46 @@ void FloydWarshall(vvi& graph) {
     }
     PrintGraph(distance);
 }
+
+struct EPIVertex {
+    vector<pair<EPIVertex*, double>> edges;
+};
+
+struct EPIGraph {
+    vector<EPIVertex*> v;
+};
+
+namespace epi_15 {
+// pair = height, diameter
+pair<double, double> ComputeHeightAndDiameter(EPIVertex* root, unordered_set<EPIVertex*>& visited) {
+    double child_diameter = numeric_limits<double>::min();
+    array<double, 2> height = { { 0.0, 0.0 } }; // store the max two heights. invariant h[0] >= h[1] 
+    for (const auto& e : root->edges) {
+        // only neccesary because we include undirected edges twice from both directions. In this implementation
+        // this algorithm is order of edges. However if we keep only one edge, we can do it in Order of vertices
+        // just like the book
+        if (visited.find(e.first) != visited.end())
+            continue;
+        visited.insert(e.first);
+
+        pair<double, double> h_d = ComputeHeightAndDiameter(e.first, visited);
+        if (h_d.first + e.second > height[0]) {
+            height[1] = height[0];
+            height[0] = h_d.first + e.second;
+        }
+        else if (h_d.first + e.second > height[1]) {
+            height[1] = h_d.first + e.second;
+        }
+        child_diameter = max(child_diameter, h_d.second);
+    }
+    // max of the largest child diameter, or a path with the largest two weighted heights that goes through
+    // the root;
+    return{ height[0], max(child_diameter, height[0] + height[1]) };
+}
+
+double ComputerDiameter(EPIGraph const& g) {
+    unordered_set<EPIVertex*> visited;
+    return ComputeHeightAndDiameter(g.v[0], visited).second;
+}
+
+}

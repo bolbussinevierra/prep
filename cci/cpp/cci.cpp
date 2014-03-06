@@ -401,6 +401,26 @@ int main(){
     };
     FloydWarshall(gg);
 #endif 
+#if 0
+    EPIGraph graph;
+    unique_ptr<EPIVertex> a(new EPIVertex), b(new EPIVertex), c(new EPIVertex), d(new EPIVertex), e(new EPIVertex);
+    unique_ptr<EPIVertex> f(new EPIVertex), g(new EPIVertex), h(new EPIVertex), i(new EPIVertex), j(new EPIVertex);
+
+    graph.v = { j.get(), b.get(), c.get(), d.get(), e.get(), f.get(), g.get(), h.get(), i.get(), a.get() };
+    a->edges = { { b.get(), 14 } };
+    b->edges = { { c.get(), 7 }, { a.get(), 14 }, { g.get(), 3 } };
+    c->edges = { { d.get(), 4}, { f.get(), 3 }, { b.get(), 7 } };
+    d->edges = { { c.get(), 4 }, {e.get(), 6}};
+    e->edges = { { d.get(), 6} };
+    f->edges = { { c.get(), 3} };
+    g->edges = { { b.get(), 3}, { h.get(), 2 }, { i.get(), 1 } };
+    h->edges = { { g.get(), 2} };
+    i->edges = { { g.get(), 1}, {j.get(), 6 } };
+    j->edges = { { i.get(), 6 } };
+    cout << epi_15::ComputerDiameter(graph) << endl;
+
+
+#endif 
 // ****************************************************************************
 #if 0
     //
