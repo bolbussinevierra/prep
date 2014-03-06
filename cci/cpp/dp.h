@@ -401,7 +401,7 @@ int GetEditDistance(string const&a, string const&b) {
             else 
                 t[i][j] = min3(t[i-1][j] + DELETE_COST, // deleted last of a
                                t[i][j-1] + INSERT_COST, // inserted last of b into a
-                               t[i-1][j-1] + REPLACE_COST); // moved last of b into a
+                               t[i-1][j-1] + REPLACE_COST); // replaced last of a with b
             
         }
     }

@@ -916,3 +916,63 @@ double ComputerDiameter(EPIGraph const& g) {
 }
 
 }
+
+namespace epi_15 {
+//
+// epi 15.26 
+//
+struct Symbol {
+    char c;
+    double prob;
+};
+
+struct HNode {
+    Symbol* s;
+    string code;
+    double prob;
+    shared_ptr<HNode> left, right;
+    HNode(Symbol* s, string& code, double prob, shared_ptr<HNode> l, shared_ptr<HNode> r)
+        :s(s), code(code), prob(prob), left(l), right(r) {}
+
+};
+
+void AssignHuffmanCodes(shared_ptr<HNode>& root, string const& code) {
+    if (!root) return;
+
+    if (root->s) { // root is a leaf;
+        root->code = code;
+    }
+    else {
+        AssignHuffmanCodes(root->left, code + '0');
+        AssignHuffmanCodes(root->right, code + '1');
+    }
+}
+
+void PrintHuffmanCodes(shared_ptr<HNode>& root) {
+    if (!root) return;
+    if (!root->left && !root->right)
+        cout << root->s->c << ": " << root->code << endl;
+    else {
+        PrintHuffmanCodes(root->left);
+        PrintHuffmanCodes(root->right);
+    }
+}
+
+void HuffmanEncode(vector<Symbol>& symbols) {
+    auto greater = [](shared_ptr<HNode> const& lhs, shared_ptr<HNode> const& rhs)
+        { return lhs->prob > rhs->prob; };
+    priority_queue<shared_ptr<HNode>, vector<shared_ptr<HNode>>,decltype(greater)> min_heap(greater);
+        
+    for (auto & s : symbols)
+        min_heap.emplace(make_shared<HNode>(&s, string(), s.prob, nullptr, nullptr));
+
+    while (min_heap.size() > 1) {
+        shared_ptr<HNode> l = min_heap.top(); min_heap.pop();
+        shared_ptr<HNode> r = min_heap.top(); min_heap.pop();
+        min_heap.emplace(make_shared<HNode>(nullptr, string(), l->prob + r->prob, l, r));
+    }
+    AssignHuffmanCodes(min_heap.top(), string());
+    PrintHuffmanCodes(min_heap.top());
+}
+
+}
