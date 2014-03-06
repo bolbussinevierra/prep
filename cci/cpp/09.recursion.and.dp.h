@@ -677,3 +677,37 @@ int CountInversions(vector<T> A) {
 }
 
 }
+
+namespace epi_17 {
+// epi 17.4
+struct Jug { int low, high; };
+    
+struct HashPair {
+    size_t operator()(pair<int, int> const& p) const {
+        return hash<int>()(p.first) ^ hash<int>()(p.second);
+    }
+};
+
+bool CheckFeasibleHelper(vector<Jug> const& jugs, int L, int H,
+    unordered_set<pair<int, int>, HashPair>& cache) {
+    if (L > H || cache.find({ L, H }) != cache.end() || (L < 0 && H < 0)) {
+        return false;
+    }
+
+    // checks the volume for each judge to see if it is possible
+    for (auto const& j : jugs) {
+        if ((L <= j.low && j.high <= H) || // base case
+            CheckFeasibleHelper(jugs, L - j.low, H - j.high, cache)) {
+            printf("[%d, %d]\n", j.low, j.high);
+            return true;
+        }
+    }
+    cache.emplace(L, H); // marks this as impossible
+    return false;
+}
+
+bool CheckFeasible(vector<Jug> const& jugs, int L, int H) {
+    unordered_set<pair<int, int>, HashPair> cache;
+    return CheckFeasibleHelper(jugs, L, H, cache);
+}
+}
