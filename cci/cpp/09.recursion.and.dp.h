@@ -679,35 +679,108 @@ int CountInversions(vector<T> A) {
 }
 
 namespace epi_17 {
-// epi 17.4
-struct Jug { int low, high; };
-    
-struct HashPair {
-    size_t operator()(pair<int, int> const& p) const {
-        return hash<int>()(p.first) ^ hash<int>()(p.second);
-    }
-};
+    // epi 17.4
+    struct Jug { int low, high; };
 
-bool CheckFeasibleHelper(vector<Jug> const& jugs, int L, int H,
-    unordered_set<pair<int, int>, HashPair>& cache) {
-    if (L > H || cache.find({ L, H }) != cache.end() || (L < 0 && H < 0)) {
+    struct HashPair {
+        size_t operator()(pair<int, int> const& p) const {
+            return hash<int>()(p.first) ^ hash<int>()(p.second);
+        }
+    };
+
+    bool CheckFeasibleHelper(vector<Jug> const& jugs, int L, int H,
+        unordered_set<pair<int, int>, HashPair>& cache) {
+        if (L > H || cache.find({ L, H }) != cache.end() || (L < 0 && H < 0)) {
+            return false;
+        }
+
+        // checks the volume for each judge to see if it is possible
+        for (auto const& j : jugs) {
+            if ((L <= j.low && j.high <= H) || // base case
+                CheckFeasibleHelper(jugs, L - j.low, H - j.high, cache)) {
+                printf("[%d, %d]\n", j.low, j.high);
+                return true;
+            }
+        }
+        cache.emplace(L, H); // marks this as impossible
         return false;
     }
 
-    // checks the volume for each judge to see if it is possible
-    for (auto const& j : jugs) {
-        if ((L <= j.low && j.high <= H) || // base case
-            CheckFeasibleHelper(jugs, L - j.low, H - j.high, cache)) {
-            printf("[%d, %d]\n", j.low, j.high);
+    bool CheckFeasible(vector<Jug> const& jugs, int L, int H) {
+        unordered_set<pair<int, int>, HashPair> cache;
+        return CheckFeasibleHelper(jugs, L, H, cache);
+    }
+    // *****************************************************************
+    //
+    // 17.8
+    //
+    int const UNASSIGNED = 0;
+    bool ValidToAdd(vvi const& A, int row, int col, int val) {
+        // check that the value does not already appear on the row
+        for (int k = 0; k < A[row].size(); ++k)  {
+            if (val == A[row][k]) {
+                return false;
+            }
+        }
+
+        // check that the value does not already appear on the same column
+        for (int k = 0; k < A.size(); ++k) {
+            if (val == A[k][col]) {
+                return false;
+            }
+        }
+
+        // check that the value does not appear on the the 3 x 3 grid that this value 
+        // belongs to
+        int region_size = sqrt(A.size());
+        int row_region = row / region_size; // 0, 1, 2
+        int col_region = col / region_size; // 0, 1, 2
+        for (int r = 0; r < region_size; ++r) {
+            for (int c = 0; c < region_size; ++c) {
+                if (val == A[region_size * row_region + r][region_size * col_region + c]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    bool _SolveSudoku(vvi &A, int row, int col) {
+        if (col == A[row].size()) { // we have filled the current row (note row is walked col by col)
+            col = 0; // reset col count to zero ...
+            if (++row == A.size()) { // .. and move to the next row. check if we are done
+                return true; // entire matrix was successfully filled
+            }
+        }
+
+        // skip already filled entries
+        if (A[row][col] != 0) return _SolveSudoku(A, row, col + 1); // go to next col on same row
+
+        for (int val = 1; val <= A.size(); ++val) {
+            if (ValidToAdd(A, row, col, val)) {
+                A[row][col] = val;
+                if (_SolveSudoku(A, row, col + 1)) { // same row next column
+                    return true;
+                }
+                
+            }
+        }
+        A[row][col] = UNASSIGNED; // clear for backtrack
+        return false;
+    }
+
+    bool SolveSudoku(vvi &A) {
+        // TODO: check if the initial sudoku game is valid
+        if (_SolveSudoku(A, 0, 0)) {
+            for (int i = 0; i < A.size(); ++i) {
+                copy(begin(A[i]), end(A[i]), ostream_iterator<int>(cout, " "));
+                cout << endl;
+            }
             return true;
+        } else {
+            cout << "No solution exists" << endl;
+            return false;
         }
     }
-    cache.emplace(L, H); // marks this as impossible
-    return false;
-}
 
-bool CheckFeasible(vector<Jug> const& jugs, int L, int H) {
-    unordered_set<pair<int, int>, HashPair> cache;
-    return CheckFeasibleHelper(jugs, L, H, cache);
-}
 }

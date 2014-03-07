@@ -645,6 +645,27 @@ int main(){
     vector<epi_17::Jug> jugs = { { 230, 240 }, { 290, 310 }, { 500, 515 } };
     epi_17::CheckFeasible(jugs, 2100, 2300);
 #endif 
+#if 0
+    //
+    // 17.8
+    //
+    // 0 means unassigned cells
+    // Complexity O(n^m) where n is the number of values [1, 9] and m is the number of blank
+    // spaces to be filled
+    vvi sudoku = 
+    {
+        { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
+        { 5, 2, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 8, 7, 0, 0, 0, 0, 3, 1 },
+        { 0, 0, 3, 0, 1, 0, 0, 8, 0 },
+        { 9, 0, 0, 8, 6, 3, 0, 0, 5 },
+        { 0, 5, 0, 0, 9, 0, 6, 0, 0 },
+        { 1, 3, 0, 0, 0, 0, 2, 5, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 7, 4 },
+        { 0, 0, 5, 2, 0, 6, 3, 0, 0 }
+    };
+    epi_17::SolveSudoku(sudoku);
+#endif 
 // *************************************************************************************************
 #if 0
     //
