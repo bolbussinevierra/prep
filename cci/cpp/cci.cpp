@@ -1642,7 +1642,7 @@ int main(){
         cout << endl;
     }
 
-#endif 
+#endif
 #pragma endregion
     cin.get(); // pause console before exit
     return 0;
