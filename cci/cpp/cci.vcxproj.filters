@@ -93,6 +93,9 @@
     <ClInclude Include="union_find.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="epi.18.parrallel.computing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

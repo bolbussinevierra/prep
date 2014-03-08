@@ -25,6 +25,10 @@ typedef pair<int, int> Point;
 typedef pair<int, int> ii;
 typedef pair<double, double> DoublePoint;
 typedef unsigned int uint;
+// VS has an annoying habit of auto-indenting content of namespaces
+// This gets around the editor's annoying "feature"
+#define BEGIN_NAMESPACE(x) namespace x {
+#define END_NAMESPACE }
 
 template <typename t>
 void Print(char* tag, vector<t> const& items) {

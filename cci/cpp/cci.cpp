@@ -56,6 +56,9 @@
 #if 0
 #include "epi.12.hashtables.h"
 #endif 
+#if 1
+#include "epi.18.parrallel.computing.h"
+#endif 
 
 int main(){
 #pragma region reviewed
@@ -1140,6 +1143,13 @@ int main(){
     cout << "Maximum_Sum=" << max_sum << endl;
     cout << "t=" << res.t << " l=" << res.l << " b=" << res.b << " r=" << res.r << endl;   
 #endif 
+#if 1
+//
+// epi18.5
+//
+    epi_18::SolveReaderWriterProblem();
+
+#endif
 #pragma endregion --- move along as problems are reviewed ----------------------
 #pragma region dynamic_programming
     /*
