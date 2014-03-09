@@ -94,7 +94,6 @@
     <ClInclude Include="09.recursion.and.dp.h" />
     <ClInclude Include="dp.h" />
     <ClInclude Include="epi.05.primitive.types.h" />
-    <ClInclude Include="epi.06.arrays.strings.h" />
     <ClInclude Include="epi.12.hashtables.h" />
     <ClInclude Include="epi.18.parrallel.computing.h" />
     <ClInclude Include="heap.h" />

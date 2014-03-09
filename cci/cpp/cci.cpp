@@ -1,7 +1,7 @@
 // cci.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
-#if 0
+#if 1
 #include "01.arrays.strings.h"
 #endif
 #if 0
@@ -51,12 +51,9 @@
 #include "epi.05.primitive.types.h"
 #endif 
 #if 0
-#include "epi.06.arrays.strings.h"
-#endif 
-#if 0
 #include "epi.12.hashtables.h"
 #endif 
-#if 0
+#if 1
 #include "epi.18.parrallel.computing.h"
 #endif 
 
@@ -1579,10 +1576,10 @@ int main(){
     //
     cout << epi_5::ColIDToBase26("ABCDZYXW") << endl;
 #endif 
-#if 0
-    BigInt a("56");
-    BigInt b("12");
-    BigInt c = a * b;
+#if 1
+    epi_6::BigInt a("56");
+    epi_6::BigInt b("12");
+    epi_6::BigInt c = a * b;
     cout << c.to_string() << endl;
 #endif 
 #if 0

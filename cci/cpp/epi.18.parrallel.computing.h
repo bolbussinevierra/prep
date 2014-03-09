@@ -79,9 +79,7 @@ void SolveReaderWriterProblem() {
     std::chrono::milliseconds dura(15000);
     std::this_thread::sleep_for(dura);
     stop = true;
-    for (auto& t : readers)
-        t.join();
-    for (auto& t : writers)
-        t.join();
+    for (auto& t : readers) t.join();
+    for (auto& t : writers) t.join();
 }
 END_NAMESPACE

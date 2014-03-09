@@ -52,6 +52,7 @@
 #include <mutex>
 #include <chrono>
 #include <condition_variable>
+#include <atomic>
 using namespace std;
 
 // project level headers
