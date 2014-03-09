@@ -154,4 +154,43 @@ private:
     int sign_;
     vector<int> digits_;
 };
+
+void PrintMatrixLayerClockwise(vvi const& A, int offset) {
+    // last value in an oddsize matrix?
+    if (offset == A.size() - 1 - offset) {
+        cout << A[offset][offset];
+        return;
+    }
+
+    // print right stopping short of last value in row
+    for (int col = offset; col < A.size() - 1 - offset; ++col) {
+        cout << A[offset][col] << " ";
+    }
+
+    // print down stopping short of last value in col
+    for (int row = offset; row < A.size() - 1 - offset; ++row) {
+        cout << A[row][A.size() - 1 - offset] << " ";
+    }
+
+    // print left stopping short of first value in row
+    for (int col = A.size() - 1 - offset; col > offset; --col) {
+        cout << A[A.size() - 1 - offset][col] << " ";
+    }
+
+    // print up stopping short of first value in column 
+    for (int row = A.size() - 1 - offset; row > offset; --row) {
+        cout << A[row][offset] << " ";
+    }
+}
+
+void PrintMatrixSpiral(vvi const& A) {
+    // make sure you use "0.5 *" in ceil to make sure its working with 
+    // a double (if you do / 2 it will work with int down casts and will 
+    // not ceil up
+    for (int offset = 0; offset < ceil(0.5 * A.size()); ++offset) {
+        PrintMatrixLayerClockwise(A, offset);
+    }
+}
+
+
 END_NAMESPACE

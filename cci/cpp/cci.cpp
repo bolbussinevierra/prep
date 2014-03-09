@@ -1,7 +1,7 @@
 // cci.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
-#if 1
+#if 0
 #include "01.arrays.strings.h"
 #endif
 #if 0
@@ -53,7 +53,7 @@
 #if 0
 #include "epi.12.hashtables.h"
 #endif 
-#if 1
+#if 0
 #include "epi.18.parrallel.computing.h"
 #endif 
 
@@ -85,7 +85,20 @@ int main(){
     // RemoveDuplicatesNoBuffer(ll);
     PrintList(ll);
 #endif
-
+// **********************************************************************************************
+#if 0
+    //
+    // epi 6.5
+    // 
+    vvi A = {
+        { 1, 2, 3, 4, 5 },
+        { 16, 17, 18, 19 ,6 },
+        { 15, 24, 25, 20, 7 },
+        { 14, 23, 22, 21, 8 },
+        { 13, 12, 11, 10, 9 }
+    };
+    epi_6::PrintMatrixSpiral(A);
+#endif 
 #if 0
     // 2.2
     int k = 1;
@@ -1576,7 +1589,7 @@ int main(){
     //
     cout << epi_5::ColIDToBase26("ABCDZYXW") << endl;
 #endif 
-#if 1
+#if 0
     epi_6::BigInt a("56");
     epi_6::BigInt b("12");
     epi_6::BigInt c = a * b;
