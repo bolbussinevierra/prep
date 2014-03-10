@@ -586,7 +586,7 @@ void ApproximateSort(istringstream&& sin, int k) {
 
 };
 
-namespace epi_11 {
+BEGIN_NAMESPACE(epi_11)
 //
 // 11.9
 //
@@ -617,10 +617,42 @@ double SquareRoot_via_BinarySearch(double n) {
     }
     return l;
 }
-
+//
+// epi 11.5
+//
+int GetPivot(vi const& v) {
+    if (v.empty()) return -1;
+    int l = 0, r = v.size() - 1;
+    while (l < r) {
+        int m = l + ((r - l) >> 1);
+        if (v[m] > v[r]) {
+            l = m + 1;
+        } else {
+            r = m;
+        }
+    }
+    return l;
+}
+int _GetPivotIfDuplicates(vi const& v, int l, int r)  {
+    if (l == r) return l;
+    int m = l + ((r - l) >> 2);
+    if (v[m] > v[r]) {
+        return _GetPivotIfDuplicates(v, m + 1, r);
+    } else if (v[m] < v[r]) {
+        return _GetPivotIfDuplicates(v, l, m);
+    } else {
+        int l_res = _GetPivotIfDuplicates(v, l, m);
+        int r_res = _GetPivotIfDuplicates(v, m + 1, r);
+        return (v[l_res] < v[r_res] ? l_res : r_res);
+    }
 }
 
-namespace epi_13 {
+int GetPivotIfDuplicates(vi const& v) {
+    return _GetPivotIfDuplicates(v, 0, v.size() - 1);
+}
+END_NAMESPACE
+
+BEGIN_NAMESPACE(epi_13)
 //
 // 13.5
 // 
@@ -667,5 +699,4 @@ vi IntersectUnsorted_N_plus_M(vi const&a, vi const& b) {
     vi res(begin(intersect), end(intersect));
     return res;
 }
-
-}
+END_NAMESPACE

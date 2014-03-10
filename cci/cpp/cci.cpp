@@ -838,6 +838,22 @@ int main(){
 #endif 
 #if 0
     //
+    // epi 11.5
+    // 
+    vi unique1  = {6,7,8,1,2,3,4,5};
+    vi unique2 = {1,2,3,4,5,6,7,8};
+    cout << epi_11::GetPivot(unique1) << endl;
+    cout << epi_11::GetPivot(unique2) << endl;
+    vi dup1 = {0,1,1,1,1,1,1,1,1};
+    vi dup2 = {1,1,1,1,0,1,1,1,1};
+    vi dup3 = {1,1,1,1,1,1,1,1,0};
+    cout << epi_11::GetPivotIfDuplicates(dup1) << endl;
+    cout << epi_11::GetPivotIfDuplicates(dup2) << endl;
+    cout << epi_11::GetPivotIfDuplicates(dup3) << endl;
+#endif 
+//*****************************************************************************************
+#if 0
+    //
     // 13.08
     //
     
