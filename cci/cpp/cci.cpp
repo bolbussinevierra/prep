@@ -1623,9 +1623,10 @@ int main(){
     //
     // 12.14
     // 
-    vector<string> A = { "talk", "to", "the", "boy", "home", "at", "at" };
+    vector<string> A = { "talk", "to", "the", "boy", "home", "at", "boy" };
     vector<string> Q = { "boy", "at" };
     Print(epi_12::FindSmallestSubArrayCoveringSubset(A, Q));
+    Print(epi_12::FindSmallestSubArraySequentiallyCoveringSubset(A, Q));
     istringstream s("talk to the boy home at at");
     Print(epi_12::FindSmallestSubArrayCoveringSubset_Streaming(s, Q));
 #endif 

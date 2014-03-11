@@ -1,6 +1,7 @@
 #pragma once
 
-namespace epi_12 {
+BEGIN_NAMESPACE(epi_12)
+
 const uint PRIME_MOD = 10007;
 const uint HASH_BASE = 101;
 //
@@ -119,4 +120,35 @@ pair<int, int> FindSmallestSubArrayCoveringSubset_Streaming(
     return res;
 }
 
+pair<int, int> FindSmallestSubArraySequentiallyCoveringSubset(
+    vector<string> const& A,
+    vector<string> const& subset) {
+    unordered_map<string, int> reverse_subset_index;
+    vi last_pos_for(subset.size(), -1);
+    vi covering_distance_for(subset.size(), numeric_limits<int>::max());
+
+    for (int i = 0; i < subset.size(); ++i)
+        reverse_subset_index[subset[i]] = i;
+
+    pair<int, int> res(-1, A.size()); // default value
+    for (int i = 0; i < A.size(); ++i) {
+        auto it = reverse_subset_index.find(A[i]); // is this one of the subset items?
+        if (it != reverse_subset_index.end()) {
+            int pos = it->second;
+            if (pos == 0) { // first item in the subset
+                covering_distance_for[0] = 1;
+            } else if (covering_distance_for[pos - 1] != numeric_limits<int>::max()) {
+                covering_distance_for[pos] = covering_distance_for[pos - 1] + (i - last_pos_for[pos - 1]);
+            }
+            last_pos_for[pos] = i;
+
+            if (pos == subset.size() - 1 &&   // last item has been covered? 
+                covering_distance_for.back() < res.second - res.first + 1) { // smaller covering set
+                res = { i - covering_distance_for.back() + 1, i };
+            }
+        }
+    }
+    return res;
 }
+
+END_NAMESPACE
