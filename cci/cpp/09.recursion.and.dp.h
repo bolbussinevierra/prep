@@ -638,7 +638,7 @@ int f(string const& expr, bool result, int s, int e) {
     return _f(expr, result, s, e, cache);
 }
 
-namespace epi_15 {
+BEGIN_NAMESPACE(epi_15) 
 template <typename T>
 int Merge(vector<T>& A, int start, int mid, int end) {
     vector<T> sorted_A;
@@ -676,7 +676,82 @@ int CountInversions(vector<T> A) {
     return CountInversionsHelper(A, 0, A.size());
 }
 
+//
+// 15.10 - My Solution O(|S| * |rows| * 4*|cols|)
+//
+struct HashTuple3 {
+    size_t operator() (tuple<int, int, int> const& t) const {
+        return hash<int>()(get<0>(t)) ^ hash<int>()(get<1>(t)) ^ hash<int>()(get<2>(t));
+    }
+};
+
+bool _WithinBounds(pair<int, int> c, vvi const& A) {
+    return (c.first >= 0 && c.first < A.size() && c.second >= 0 && c.second < A[c.first].size());
 }
+bool _NborSet(unordered_set<tuple<int, int, int>, HashTuple3>& cache, vvi const& A, int i, int j, int last_val) {
+    array<array<int, 2>, 4> adj = { { { { -1, 0 } }, { { 0, 1 } }, { { 1, 0 } }, { { 0, -1 } } } };
+    for (auto & n : adj) {
+        pair<int, int> nbor = { i + n[0], j + n[1] };
+        if (_WithinBounds(nbor, A) && cache.find(make_tuple(last_val, nbor.first, nbor.second)) != cache.end())  {
+            return true;
+        }
+    }
+    return false;
+}
+
+vector<pair<int, int>> FindSequenceInArray_Mine(vvi const& A, vi & S) {
+    unordered_set<tuple<int, int, int>, HashTuple3> cache;
+    vector<pair<int, int>> p(S.size());
+
+    for (int s = 0; s < S.size(); ++s) {
+        for (int i = 0; i < A.size(); ++i) {
+            for (int j = 0; j < A[i].size(); ++j) {
+                if ((s == 0 && A[i][j] == S[0]) || (A[i][j] == S[s] && _NborSet(cache, A, i, j, s - 1))) {
+                    p[s] = { i, j };
+                    cache.emplace(s, i, j);
+                    if (s == S.size() - 1) {
+                        return p;
+                    }
+                }
+            }
+        }
+    }
+    return {};
+}
+
+bool _MatchHelper(vvi const& A, vi const& S, unordered_set<tuple<int, int, int>, HashTuple3>& cache,
+    int i, int j, int pos, vector<pair<int, int>>& p) {
+    if (S.size() == pos) {
+        return true;
+    }
+
+    if (!_WithinBounds({ i, j }, A) || cache.find(make_tuple(pos, i, j)) != cache.end()) {
+        return false;
+    }
+
+    if (A[i][j] == S[pos] &&
+        (_MatchHelper(A, S, cache, i - 1, j, pos + 1, p) ||
+        _MatchHelper(A, S, cache, i + 1, j, pos + 1, p) ||
+        _MatchHelper(A, S, cache, i, j - 1, pos + 1, p) ||
+        _MatchHelper(A, S, cache, i, j + 1, pos + 1, p))) {
+        p[pos] = { i, j };
+        return true;
+    }
+    return false;
+}
+vector<pair<int, int>> FindSequenceInArray_EPI(vvi const& A, vi const& S) {
+    unordered_set<tuple<int, int, int>, HashTuple3> cache;
+    vector<pair<int, int>> p(S.size());
+    for (int i = 0; i < A.size(); ++i) {
+        for (int j = 0; j < A[i].size(); ++j) {
+            if (_MatchHelper(A, S, cache, i, j, 0, p)) {
+                return p; // we dont need to reverse this since we are not doing a push_back on p (rather indexing)
+            }
+        }
+    }
+    return{};
+}
+END_NAMESPACE
 
 namespace epi_17 {
     // epi 17.4

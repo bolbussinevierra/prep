@@ -652,6 +652,20 @@ int main(){
     cout << epi_15::CountInversions(A) << endl;
 #endif 
 #if 0
+    vvi A = {
+        { 1, 2, 3 },
+        { 3, 4, 5 },
+        { 5, 6, 7}
+    };
+    vi S = {1, 3, 4, 6};
+    vi S2 = {1, 3, 4, 6, 4};
+    vector<pair<int, int>> out = epi_15::FindSequenceInArray_Mine(A,  S2);
+    vector<pair<int, int>> out2 = epi_15::FindSequenceInArray_EPI(A, S2);
+    for_each(begin(out), end(out), Print);
+    cout << endl;
+    for_each(begin(out2), end(out2), Print);
+#endif 
+#if 0
     //
     // epi 17.4
     //
