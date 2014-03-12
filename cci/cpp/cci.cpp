@@ -361,6 +361,30 @@ int main(){
     cout << boolalpha << epi_16::CanPartition(graph) << endl;
 #endif 
 #if 0
+    /* Let us create the following weighted graph
+    10
+    (0)------->(3)
+    |         /|\
+  5 |          |
+    |          | 1
+   \|/         |
+    (1)------->(2)
+    3           */
+
+    epi_16::vertex v0, v1, v2, v3;
+    v0.d = 0, v0.adj = { &v1, &v3 };
+    v1.d = 1, v1.adj = { &v2 };
+    v2.d = 2, v2.adj = { &v3 };
+    v3.d = 3, v3.adj = {};
+
+    epi_16::graph g = {{&v0, &v1, &v2, &v3}};  
+    epi_16::closure cl = epi_16::TransitiveClosure(g);
+    epi_16::PrintClosure(cl);
+
+    epi_16::TransitiveClosureByFloydWarshall(epi_16::ConvertToClosureMatrix(g));
+
+#endif 
+#if 0
     //
     // KRUSKAL, PRIM, DJIKSTRA, FLOYD-WARSHALL
     // 

@@ -526,7 +526,7 @@ public:
     }
 };
 
-namespace epi_16 {
+BEGIN_NAMESPACE(epi_16) 
 //
 // 16.1
 // 
@@ -606,6 +606,10 @@ struct vertex {
     vector<vertex*> adj;
 };
 
+struct graph {
+    vector<vertex*> v_list;
+};
+
 bool _BFSPartitionStartingAt(vertex& v) {
     queue<vertex*> q;
     q.emplace(&v);
@@ -636,7 +640,78 @@ bool CanPartition(vector<vertex>& graph) {
     return true;
 }
 
+// ----------------------------------------------------------------------------------
+// 16.5
+// ----------------------------------------------------------------------------------
+typedef unordered_map<vertex*, unordered_set<vertex*>> closure;
+void DFS(vertex* v, unordered_set<vertex*>& ex) {
+    for (auto & n : v->adj) {
+        if (ex.find(n) == ex.end()) {
+            ex.insert(n);
+            DFS(n, ex);
+        }
+    }
 }
+
+closure TransitiveClosure(graph const& g) {
+    closure list_e;
+    for (auto & v : g.v_list) {
+        unordered_set<vertex*> ex;
+        DFS(v, ex);
+        list_e[v] = ex;
+    }
+    return list_e;
+}
+
+void PrintClosure(closure & c) {
+    for (auto & p : c) {
+        cout << p.first->d << ": ";
+        for (auto & n : p.second) {
+            cout << n->d << " ";
+        }
+        cout << endl;
+    }
+}
+
+vector<vector<bool>> ConvertToClosureMatrix(graph & g) {
+    vector<vector<bool>> am(g.v_list.size(), vector<bool>(g.v_list.size(), false));
+    for (auto & v : g.v_list) {
+        for (auto & n : v->adj) {
+            am[v->d][n->d] = true;
+        }
+    }
+    return am;
+}
+
+void PrintClosureGraph(vector<vector<bool>> const& g) {
+    
+    for (int i = 0; i < g.size(); ++i) {
+        for (int j = 0; j < g.size(); j++) {
+            if (g[i][j])
+                printf("%7d", 1);
+            else
+                printf("%7d", 0);
+        }
+        cout << endl;
+    }
+}
+
+vector<vector<bool>> TransitiveClosureByFloydWarshall(vector<vector<bool>> const& g) {
+    vector<vector<bool>> tc(g); // starts out as a copy of the graph
+    PrintClosureGraph(tc);
+    for (int k = 0; k < g.size(); ++k) {
+        for (int s = 0; s < g.size(); ++s) {
+            for (int e = 0; e < g.size(); ++e) {
+                tc[s][e] = tc[s][e] || (tc[s][k] && tc[k][e]);
+            }
+        }
+    }
+    cout << endl;
+    PrintClosureGraph(tc);
+    return tc;
+}
+
+END_NAMESPACE
 
 // -------------------------------------------------------------------------------------------
 // KRUSKAL'S ALGORITHM
