@@ -9,7 +9,6 @@ const uint HASH_BASE = 101;
 // 
 template <typename T>
 T _modpow(T base, T exp, T modulus) {
-    base %= modulus;
     T result = 1;
     while (exp > 0) {
         if (exp & 1) result = (result * base) % modulus;
@@ -20,7 +19,6 @@ T _modpow(T base, T exp, T modulus) {
 }
 template <typename T>
 T _modpow2(T base, T exp, T modulus) {
-    base %= modulus;
     T result = 1;
     for (uint i = 1; i <= exp; ++i) {
         result *= base;
@@ -37,13 +35,45 @@ uint get_hash(string const& s) {
     }
     return val; 
 }
-// TODO: Look into rabin-karp algorithm!
-uint roll_hash_broken(string const& s, char n) {
-    uint add_char = ((get_hash(s) * HASH_BASE) + n) % PRIME_MOD;
-    printf("%u == %d\n", add_char, get_hash(s + string(1, n)));
-    uint size = s.size() + 1;
-    uint rem_char = (s[0] * _modpow(HASH_BASE, size-1, PRIME_MOD));
-    return (add_char - rem_char) % PRIME_MOD;
+
+uint roll_hash(string const& s, char n) {
+    int update_hash = get_hash(s);
+    // remove the first charater
+    update_hash -= (s[0] * _modpow2(HASH_BASE, s.size() - 1, PRIME_MOD)) % PRIME_MOD;
+    
+    if (update_hash < 0) 
+        update_hash += PRIME_MOD;
+
+    // add the new character
+    update_hash = ((update_hash * HASH_BASE) + n) % PRIME_MOD;
+    return update_hash;
+}
+
+int RabinKarp(string const& text, string const& pattern) {
+    if (pattern.size() > text.size()) {
+        return -1; // pattern cannot be a substring of text
+    }
+
+    int text_hash = 0, pattern_hash = 0;
+    text_hash = get_hash(text.substr(0, pattern.size()));
+    pattern_hash = get_hash(pattern);
+
+    for (int i = pattern.size(); i < text.size(); ++i) {
+        if (text_hash == pattern_hash && 
+            (0 == text.compare(i - pattern.size(), pattern.size(), pattern))) {
+            return i - pattern.size(); // found a match at this location
+        }
+
+        // use rolling hash to computer the new hash code
+        text_hash = roll_hash(text.substr(i - pattern.size(), pattern.size()), text[i]);
+    }
+
+    // try to match pattern and text[text.size() - pattern.size():  text.size() - 1]
+    if (text_hash == pattern_hash && 
+        (0 == text.compare(text.size() - pattern.size(), pattern.size(), pattern))) {
+        return text.size() - pattern.size(); // found a match at this location
+    }
+    return -1; // pattern is not a substring of text
 }
 
 //

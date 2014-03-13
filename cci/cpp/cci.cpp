@@ -1655,7 +1655,8 @@ int main(){
     // 
     cout << epi_12::get_hash("abc") << endl;
     cout << epi_12::get_hash("bcd") << endl;
-    cout << epi_12::roll_hash_broken("abc", 'd') << endl;
+    cout << epi_12::roll_hash("abc", 'd') << endl;
+    cout << epi_12::RabinKarp("Exclamation Mark", "on Ma");
 #endif 
 #if 0
     //
