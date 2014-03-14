@@ -594,6 +594,13 @@ int main(){
 #endif
 #if 0
     //
+    // epi 15 15
+    // 
+    cout << epi_15::ScoreCombinations(12, { 3, 7, 2 }, 0);
+    // -- permutations same as ways DP above
+#endif 
+#if 0
+    //
     // 9.2
     //
     int width = 3;

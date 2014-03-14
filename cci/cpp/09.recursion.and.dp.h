@@ -2,7 +2,7 @@
 
 //
 // 9.1
-// DP runs in linear order! 
+// DP runs in linear order! This computes permutations
 int steps[3] = {1, 2, 3};
 int WaysDP(int n) {
     
@@ -16,6 +16,22 @@ int WaysDP(int n) {
 
     return table[n];
 }
+
+BEGIN_NAMESPACE(epi_15)
+int ScoreCombinations(int score, vi const& score_ways, int type_score) {
+    if (score == 0) return 1;
+    if (type_score == score_ways.size() - 1) { // last way to score? only 1 if we can evenly divide
+        return (score % score_ways[type_score]) == 0 ? 1 : 0;
+    }
+   
+    int combinations = 0;
+    for (int i = 0; i*score_ways[type_score] <= score; ++i) {
+        int scored = i*score_ways[type_score];
+        combinations += ScoreCombinations(score - scored, score_ways, type_score + 1);
+    }
+    return combinations;
+}
+END_NAMESPACE
 
 /// INEFFICIENT!!! Needs to be memoized! better implementation is 
 /// to do a bottom up recursive implementation of this 0(3N)
