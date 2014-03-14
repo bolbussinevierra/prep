@@ -883,3 +883,32 @@ int Kadane2D(vvi const& m, Rect& result) {
     return max_sum;
 }
 
+BEGIN_NAMESPACE(epi_15)
+//
+// 15.5
+// 
+int Kadane_CircularArray(vi A) { // pass by value since we are going to need a copy anyway
+    // max sum array is max of the non-circular max_sum and the circular
+    // maximum sum
+    // step 1 - get the maximum sum non-circular array sum
+    int first = 0, last = 0;
+    int non_circular_sum = Kadane(A, first, last);
+
+    // now for the circular case. First note that the a circular sum implies a 
+    // non-circular "exemption list" of elements that do not participate in the circular array. 
+    // Finding the elements that would be left out is equivalent to finding the subset of the array
+    // Once we find these elements, we can subtract them from the total sum of the array to find
+    // the sum of the circular bit
+    int total_array_sum = accumulate(begin(A), end(A), 0); // get total sum of array
+    for_each(begin(A), end(A), [](int& val) { val *= -1; }); // negate all the elements
+
+    // find the max sum array of negated elements
+    int negated_excluded_sum = Kadane(A, first, last);
+    // need to re-negate the excluded sum to get actual value before its elements were negated
+    int circular_sum = total_array_sum -(-negated_excluded_sum);
+    
+    printf("non_circular_sum:%d, circular_sum:%d \n", non_circular_sum, circular_sum);
+    return max(non_circular_sum, circular_sum);
+}
+
+END_NAMESPACE

@@ -1209,6 +1209,13 @@ int main(){
 #endif 
 #if 0
     //
+    // epi 15 5
+    // 
+    vector<int> v = { 12, -5, 4, -8, 11 };
+    cout << epi_15::Kadane_CircularArray(v);
+#endif 
+#if 0
+    //
     // epi18.5
     //
     epi_18::SolveReaderWriterProblem();
