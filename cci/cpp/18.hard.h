@@ -912,3 +912,52 @@ int Kadane_CircularArray(vi A) { // pass by value since we are going to need a c
 }
 
 END_NAMESPACE
+BEGIN_NAMESPACE(epi_17)
+//
+// epi 17.9
+//
+// WORKS BUT NOT REALLY THE QUESTION THE BOOK ASKED!
+// BOOK CAN GROUP DIGITS TOGETHER. THIS SOLUTION TREATS
+// EACH DIGITS SEPARATELY SO THERE MUST BE AN OPERATOR
+// BETWEEN EACH TWO DIGITS
+typedef vector<vector<pair<int, string>>> Sol;
+bool CanSat(int k, vi const& d, int first, int last, Sol& s) {
+    if (first == last)
+        return d[first] == k;
+
+    for (int i = 0; i <= k; ++i) {
+        for (int m = first; m < last; ++m) {
+            if (i != 0 && k % i == 0 && CanSat(i, d, first, m, s) && CanSat(k / i, d, m + 1, last, s)) {
+                s[first][last] = { m, "x" };
+                return true;
+            }
+            if (CanSat(i, d, first, m, s) && CanSat(k - i, d, m + 1, last, s)) {
+                s[first][last] = { m, "+" };
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+string GetSolution(vi const& d, Sol& s, int first, int last) {
+    if (first == last)
+        return to_string(d[first]);
+    else {
+        auto result = s[first][last];
+        string left_part = GetSolution(d, s, first, result.first);
+        string right_part = GetSolution(d, s, result.first + 1, last);
+        return left_part + " " + result.second + " " + right_part;
+    }
+}
+
+bool CanSat(int k, vi const& d) {
+    Sol s(d.size(), vector<pair<int, string>>(d.size(), { -1, "" }));
+    if (CanSat(k, d, 0, d.size() - 1, s)) {
+        cout << GetSolution(d, s, 0, d.size() - 1); 
+        return true;
+    }
+    return false;
+}
+
+END_NAMESPACE

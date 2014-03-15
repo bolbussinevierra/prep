@@ -1223,6 +1223,15 @@ int main(){
 #endif 
 #if 0
     //
+    // 17.9
+    // WORKS BUT NOT REALLY THE QUESTION THE BOOK ASKED!
+    // BOOK CAN GROUP DIGITS TOGETHER. THIS SOLUTION TREATS
+    // EACH DIGITS SEPARATELY SO THERE MUST BE AN OPERATOR
+    // BETWEEN EACH TWO DIGITS
+    epi_17::CanSat(9, {3, 3, 3});
+#endif 
+#if 0
+    //
     // epi18.5
     //
     epi_18::SolveReaderWriterProblem();
