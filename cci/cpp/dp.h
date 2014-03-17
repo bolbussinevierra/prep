@@ -1041,7 +1041,8 @@ tuple<int, vi> nlog_n_LongestIncreasingSubsequence(vi const& v) {
         }
         else {
             // A[i] is a potential candidate for a future subsequence
-            // it will replace ceil value in tail_indices
+            // it will take the last of the next tail value that is larger than it
+            // (i.e ceil value)
             int pos = _GetLowestHigherValue(v, tail_indices, 0, lis_len-1, v[i]);
             prev_indices[i] = tail_indices[pos-1];
             tail_indices[pos] = i;
