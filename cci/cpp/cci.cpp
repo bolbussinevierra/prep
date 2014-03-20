@@ -13,7 +13,7 @@
 #if 0
 #include "04.trees.graphs.h"
 #endif
-#if 0
+#if 1
 #include "05.bits.h"
 #endif
 #if 0
@@ -559,6 +559,12 @@ int main(){
     for (int i = 1; i <= 20; ++i) 
         printf("GetClosestSameBits(%d)=%d\n", i, epi_5::ClosestIntSameBits(i));
 #endif
+#if 1
+    //
+    // epi 15:13
+    // 
+    cout << epi_5::BitMult(9, 8) << endl;
+#endif 
 // ****************************************************************************
 #if 0
     //

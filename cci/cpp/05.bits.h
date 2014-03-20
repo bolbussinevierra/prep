@@ -209,15 +209,35 @@ int FindMissingInteger(vector<ThreeBitInt> const& input) {
 //
 // EPI: 5.4
 //
-namespace epi_5 {
-    int ClosestIntSameBits(unsigned int n) {
-        for (int i = 0; i < 30; i++) {
-            // find first pair of least signficant bits that differ
-            if (((n >> i) & 1) ^ ((n >> (i+1)) & 1)) {
-                n ^= (1 << i) | (1 << (i+1));
-                return n;
-            }
+BEGIN_NAMESPACE(epi_5) 
+int ClosestIntSameBits(unsigned int n) {
+    for (int i = 0; i < 30; i++) {
+        // find first pair of least signficant bits that differ
+        if (((n >> i) & 1) ^ ((n >> (i+1)) & 1)) {
+            n ^= (1 << i) | (1 << (i+1));
+            return n;
         }
-        throw invalid_argument("all bits are 0 or 1");
-    }    
+    }
+    throw invalid_argument("all bits are 0 or 1");
+}    
+
+uint _BitAdd(uint a, uint b) {
+    if (!b) return a;
+    int add = a ^ b;
+    int carry = (a & b) << 1;
+    return _BitAdd(add, carry);
 }
+
+uint BitMult(uint a, uint b) {
+    if (!b) return 0;
+    int running_product = 0, pos = 0;
+    while (b) {
+        if (b & 1) {
+            running_product = _BitAdd(running_product, a << pos);
+        }
+        b >>= 1;
+        pos++;
+    }
+    return running_product;
+}
+END_NAMESPACE
