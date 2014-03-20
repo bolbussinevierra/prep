@@ -76,6 +76,18 @@ int main(){
     cout << "IsPermutation(" << a << ", " << b << ")=" << std::boolalpha << IsPermutation(a, b);  
 #endif 
 #if 0
+    //
+    // 6.12
+    //
+    // should print "4 1 8 5 7 6 3 2 --> 4 1 8 6 2 3 5 7"
+    vi cp = { 4,  1,  8,  5,  7,  6,  3, 2};
+    vi np = epi_6::NextPermutation(cp);
+    copy(begin(cp), end(cp), ostream_iterator<int>(cout, " "));
+    cout << "--> ";
+    copy(begin(np), end(np), ostream_iterator<int>(cout, " "));
+#endif
+// ***************************************************************************************
+#if 0
     //2.1
     int data[] = {13,6,5,4,1,0,3,3,2,1};
     Node* ll = MakeList(data, AS(data));

@@ -192,5 +192,33 @@ void PrintMatrixSpiral(vvi const& A) {
     }
 }
 
+//
+// 6.12
+// 
+vi NextPermutation(vector<int> p) {
+    int furthest_larger = -1;
+    // for each i down from the second last, find one with a larger element to its
+    // right, and get the largest element to the right that we can find for that i
+    int i = p.size() - 2;
+    for ( ; i >= 0; --i) {
+        for (int j = i + 1; j < p.size(); ++j) {
+            if (p[j] > p[i]) {
+                furthest_larger = j;
+            }
+        }
+        if (furthest_larger != -1) {
+            break;
+        }
+    }
+
+    if (furthest_larger == -1)
+        return {};
+
+    // swap the position of the two and then reserve the elements at i+1 to end to
+    // get the lowest lexicographic permutation of those elements
+    swap(p[i], p[furthest_larger]);
+    reverse(begin(p) + i + 1, end(p));
+    return p;
+}
 
 END_NAMESPACE
