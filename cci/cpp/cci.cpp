@@ -77,9 +77,10 @@ int main(){
 #endif 
 #if 0
     //
-    // 6.12
+    // epi 6.12
     //
     // should print "4 1 8 5 7 6 3 2 --> 4 1 8 6 2 3 5 7"
+    // http://www.abecedarical.com/javascript/script_permutations2.html
     vi cp = { 4,  1,  8,  5,  7,  6,  3, 2};
     vi np = epi_6::NextPermutation(cp);
     copy(begin(cp), end(cp), ostream_iterator<int>(cout, " "));
@@ -146,6 +147,7 @@ int main(){
     PrintList(ll27);
     IsPalindrome(ll27);
 #endif
+ //********************************************************************************************
 #if 0
     //
     // 3.4
@@ -161,7 +163,13 @@ int main(){
         q.push(i);
     while (q.size())
         cout << q.pop() << endl;
-#endif 
+#endif
+#if 0
+    //
+    // EPI 8.2
+    //
+    cout << epi_8::RPN_Eval("5,1,2,+,4,*,+,3,-");
+#endif
 #if 0
     //
     // 4.4
