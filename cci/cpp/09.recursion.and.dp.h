@@ -213,59 +213,59 @@ void SubsetsBinary(vi& items, vector<vi>& sets) {
     }
 }
 
-namespace epi_5 {    
-    // generate a powerset using binary approaches and otherwise
-    typedef unsigned long long ull;
-    void SubsetsBinary(vector<int> const& set) {
-        ull powerset_size = (1ULL << set.size());
-        for (ull i = 0; i < powerset_size; ++i) {
-            ull set_mask = i;
-            while (set_mask) {
-                // isolate the 1-LSB (all other bits are zeroed)
-                ull lsb = set_mask & ~(set_mask - 1);
-                // get the index of the bit
-                int idx = 0;
-                ull lsb_shift = (lsb >> 1);
-                while (lsb_shift) {
-                    lsb_shift >>= 1;
-                    idx++;
-                }
-                assert(idx == Log2(lsb));
-
-                // print the value
-                cout << set[idx];
-                
-                // clear the least significant bit that we just processed
-                set_mask &= (set_mask - 1);
-
-                // if there are still 1 bits remaining ...
-                if (set_mask)
-                    cout << " ";
+BEGIN_NAMESPACE(epi_5)    
+// generate a powerset using binary approaches and otherwise
+typedef unsigned long long ull;
+void SubsetsBinary(vector<int> const& set) {
+    ull powerset_size = (1ULL << set.size());
+    for (ull i = 0; i < powerset_size; ++i) {
+        ull set_mask = i;
+        while (set_mask) {
+            // isolate the 1-LSB (all other bits are zeroed)
+            ull lsb = set_mask & ~(set_mask - 1);
+            // get the index of the bit
+            int idx = 0;
+            ull lsb_shift = (lsb >> 1);
+            while (lsb_shift) {
+                lsb_shift >>= 1;
+                idx++;
             }
-            cout << endl;
+            assert(idx == Log2(lsb));
+
+            // print the value
+            cout << set[idx];
+                
+            // clear the least significant bit that we just processed
+            set_mask &= (set_mask - 1);
+
+            // if there are still 1 bits remaining ...
+            if (set_mask)
+                cout << " ";
         }
-        printf("Items=[%d], Subsets=[%d]\n", set.size(), powerset_size);
+        cout << endl;
     }
+    printf("Items=[%d], Subsets=[%d]\n", set.size(), powerset_size);
+}
 
     
-    void _SubsetRecursive(vector<int> const& v, int idx, vector<int>& subset)
-    {
-        if (!subset.empty()) 
-            for_each(subset.begin(), subset.end(), [](int n){ cout << n << " "; });
-        if (!subset.empty()) cout << endl;
+void _SubsetRecursive(vector<int> const& v, int idx, vector<int>& subset)
+{
+    if (!subset.empty()) 
+        for_each(subset.begin(), subset.end(), [](int n){ cout << n << " "; });
+    if (!subset.empty()) cout << endl;
             
-        for (int i = idx; i < v.size(); ++i) {
-            subset.push_back(v[i]);
-            _SubsetRecursive(v, i+1, subset);
-            subset.pop_back();
-        }
-    }
-    // generate a powerset using recursion
-    void SubsetRecursive(vector<int> const& v) {
-        vector<int> subset;
-        return _SubsetRecursive(v, 0, subset);
+    for (int i = idx; i < v.size(); ++i) {
+        subset.push_back(v[i]);
+        _SubsetRecursive(v, i+1, subset);
+        subset.pop_back();
     }
 }
+// generate a powerset using recursion
+void SubsetRecursive(vector<int> const& v) {
+    vector<int> subset;
+    return _SubsetRecursive(v, 0, subset);
+}
+END_NAMESPACE
 
 void SubsetsBinary(int arr[], int length) {
     vi items(arr, arr+length);

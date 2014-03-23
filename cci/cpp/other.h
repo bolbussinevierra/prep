@@ -241,18 +241,18 @@ bool IsWall(Point const& p) {
 }
 
 // specialize hash for Point
-namespace std {
-    template<>
-    class hash<Point> {
-    public:
-        size_t operator()(Point const& p) const {
-            size_t h = hash<int>()(p.first ^ hash<int>()(p.second));
-            //cout << "hash(Point(" << p.first << "," << p.second << ")) is " << h 
-            //    << endl;
-            return h;
-        }
-    };
+BEGIN_NAMESPACE(std)
+template<>
+class hash<Point> {
+public:
+    size_t operator()(Point const& p) const {
+        size_t h = hash<int>()(p.first ^ hash<int>()(p.second));
+        //cout << "hash(Point(" << p.first << "," << p.second << ")) is " << h 
+        //    << endl;
+        return h;
+    }
 };
+END_NAMESPACE
 
 typedef unordered_map<Point, bool> PathCache;
 

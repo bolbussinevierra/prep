@@ -243,20 +243,20 @@ int _GetIndexOfNthSmallest(vi& a, int n) {
     }
     throw invalid_argument("n is larger than items in array");
 }
-namespace deprecated {
-    int _GetIndexOfNthSmallestRecursive(vi& a, int n, int left, int right) {
-        int pivot_index = _partition(a, left, right);
+BEGIN_NAMESPACE(deprecated)
+int _GetIndexOfNthSmallestRecursive(vi& a, int n, int left, int right) {
+    int pivot_index = _partition(a, left, right);
 
-        int left_size = pivot_index - left + 1;
-        if (left_size == n)  // pivot is the nth number
-            return pivot_index;
-        else if (left_size > n)
-            return _GetIndexOfNthSmallestRecursive(a, n, left, pivot_index-1);
-        else
-            // if going right make sure we adjust rank
-            return _GetIndexOfNthSmallestRecursive(a, n - left_size, pivot_index+1, right);
-    }
+    int left_size = pivot_index - left + 1;
+    if (left_size == n)  // pivot is the nth number
+        return pivot_index;
+    else if (left_size > n)
+        return _GetIndexOfNthSmallestRecursive(a, n, left, pivot_index-1);
+    else
+        // if going right make sure we adjust rank
+        return _GetIndexOfNthSmallestRecursive(a, n - left_size, pivot_index+1, right);
 }
+END_NAMESPACE
 
 void _test_print_nth(vi& a, int n) {
     cout << n << " smallest=" << a[_GetIndexOfNthSmallest(a, n)];
@@ -274,7 +274,7 @@ void print_n_smallest(vi a, int n) {
     cout << endl;
 }
 
-namespace epi_11 {
+BEGIN_NAMESPACE(epi_11)
 //
 // 11.13
 // 
@@ -318,7 +318,7 @@ void PrintKthLargest(vi && a, int k) {
     }
     
 }
-}
+END_NAMESPACE
 
 //
 // 18.7
@@ -597,7 +597,7 @@ void OnlineMedianAlgorithm() {
     }
 };
 
-namespace epi_10 {
+BEGIN_NAMESPACE(epi_10)
 void OnlineMedian(istringstream&& sin) {
     priority_queue<int, vi, less<int>> low_max_heap;
     priority_queue<int, vi, greater<int>> high_min_heap;
@@ -632,7 +632,7 @@ void OnlineMedian(istringstream&& sin) {
 
 }
 
-}
+END_NAMESPACE
 
 //
 // 18.10

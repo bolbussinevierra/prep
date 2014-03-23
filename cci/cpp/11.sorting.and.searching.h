@@ -468,7 +468,7 @@ public:
     }
 };
 
-namespace epi_10 {
+BEGIN_NAMESPACE(epi_10)
 //
 // 10.1
 //
@@ -584,7 +584,7 @@ void ApproximateSort(istringstream&& sin, int k) {
     }
 }
 
-};
+END_NAMESPACE
 
 BEGIN_NAMESPACE(epi_11)
 //

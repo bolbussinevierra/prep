@@ -1,5 +1,5 @@
 #pragma once
-namespace epi_5 {
+BEGIN_NAMESPACE(epi_5)
 /*
 5.6 Implement string/integer inter-conversation functions. Use the following function signatures. string IntToString(int x) and int StringToInt(String s)
 */
@@ -73,4 +73,4 @@ int ColIDToBase26(const string& col) {
     return num;
 }
 
-}
+END_NAMESPACE

@@ -18,7 +18,7 @@ struct TreeNode {
         Print(root->left, indent + 1);
     }
 };
-namespace epi_9 {
+BEGIN_NAMESPACE(epi_9) 
 template<typename T>
 TreeNode* _BuildTreeFromPreInTraversal(
     vector<T> const& pre, int pre_s, int pre_e,
@@ -58,29 +58,30 @@ TreeNode* BuildFromPreOrderSpec(vector<string> const& spec) {
     return s.top();
 }
 
-}
+END_NAMESPACE
 
-namespace epi_8 {
-    void PrintBinaryTreeLevelOrder(TreeNode* root) {
-        if (!root) return;
-        queue<TreeNode*> q;
-        q.push(root);
-        size_t count = 1;
-        while (!q.empty()) {
-            cout << q.front()->value << ' ';
-            if (q.front()->left)
-                q.push(q.front()->left);
-            if (q.front()->right)
-                q.push(q.front()->right);
-            q.pop();
-            if (--count == 0) {
-                cout << endl;
-                count = q.size();
-            }
+BEGIN_NAMESPACE(epi_8)
+void PrintBinaryTreeLevelOrder(TreeNode* root) {
+    if (!root) return;
+    queue<TreeNode*> q;
+    q.push(root);
+    size_t count = 1;
+    while (!q.empty()) {
+        cout << q.front()->value << ' ';
+        if (q.front()->left)
+            q.push(q.front()->left);
+        if (q.front()->right)
+            q.push(q.front()->right);
+        q.pop();
+        if (--count == 0) {
+            cout << endl;
+            count = q.size();
         }
     }
 }
-namespace epi_9 {
+END_NAMESPACE
+
+BEGIN_NAMESPACE(epi_9)
 void PrintInOrderIterUsingParentPtr(TreeNode* root) {
     if (!root) return;
     TreeNode* curr = root, *next = nullptr, *prev = nullptr;
@@ -107,7 +108,7 @@ void PrintInOrderIterUsingParentPtr(TreeNode* root) {
         curr = next;
     }
 }
-}
+END_NAMESPACE
 /*
  * In order iterator
  */
@@ -957,7 +958,7 @@ struct EPIGraph {
     vector<EPIVertex*> v;
 };
 
-namespace epi_15 {
+BEGIN_NAMESPACE(epi_15)
 // pair = height, diameter
 pair<double, double> ComputeHeightAndDiameter(EPIVertex* root, unordered_set<EPIVertex*>& visited) {
     double child_diameter = numeric_limits<double>::min();
@@ -990,9 +991,9 @@ double ComputerDiameter(EPIGraph const& g) {
     return ComputeHeightAndDiameter(g.v[0], visited).second;
 }
 
-}
+END_NAMESPACE
 
-namespace epi_15 {
+BEGIN_NAMESPACE(epi_15)
 //
 // epi 15.26 
 //
@@ -1050,4 +1051,4 @@ void HuffmanEncode(vector<Symbol>& symbols) {
     PrintHuffmanCodes(min_heap.top());
 }
 
-}
+END_NAMESPACE
