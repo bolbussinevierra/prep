@@ -650,6 +650,38 @@ int _GetPivotIfDuplicates(vi const& v, int l, int r)  {
 int GetPivotIfDuplicates(vi const& v) {
     return _GetPivotIfDuplicates(v, 0, v.size() - 1);
 }
+//
+// 11.7
+// 
+double CompletionSearch(vector<double>&& A, double budget) {
+    sort(begin(A), end(A)); // NlogN
+
+    // calculate the prefix sum of A;
+    vector<double> prefix_sum(A.size(), 0);
+    partial_sum(A.cbegin(), A.cend(), prefix_sum.begin());
+
+    // costs[i] represents the total payroll if the cap is A[i]
+    vector<double> costs(A.size(), 0);
+    for (int i = 0; i < prefix_sum.size(); ++i) {
+        costs[i] = prefix_sum[i] + (A.size() - i - 1)*A[i];
+    }
+
+    // get the the highest lowest cost[i] that is less than budget
+    auto lower = lower_bound(costs.cbegin(), costs.cend(), budget);
+    if (lower == costs.cend()) {
+        return -1.0; // no solution since budget is too large
+    }
+
+    if (lower == costs.cbegin()) {
+        return budget / A.size();
+    }
+    auto idx = distance(costs.cbegin(), lower) - 1;
+    // A[idx] gives us a lower bound. To get the actual value, we need to see how much room we would have
+    // in budget if everyone was paid A[idx] and then take that surplus and divide it by the number of 
+    // people that are making more than A[idx]. The best value is then A[idx] plus this new amount
+    return A[idx] + ((budget - costs[idx]) / (A.size() - idx - 1));
+}
+
 END_NAMESPACE
 
 BEGIN_NAMESPACE(epi_13)

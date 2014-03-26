@@ -922,6 +922,12 @@ int main(){
     cout << epi_11::GetPivotIfDuplicates(dup2) << endl;
     cout << epi_11::GetPivotIfDuplicates(dup3) << endl;
 #endif 
+#if 0
+    //
+    // epi 11.7
+    // 
+    cout << epi_11::CompletionSearch({ 90, 30, 100, 40, 20 }, 210) << endl;
+#endif
 //*****************************************************************************************
 #if 0
     //
