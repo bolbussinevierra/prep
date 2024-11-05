@@ -4,7 +4,7 @@ public class Chapter6 {
     public static void main(String[] args) {
         // 6.1
         System.out.println("6.1 (intToString) -> " + intToString(-341));
-        System.out.println("6.1 (stringToInt) -> " + stringToInt("-341s"));
+        System.out.println("6.1 (stringToInt) -> " + stringToInt("-341"));
 
     }
 
