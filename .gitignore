@@ -213,5 +213,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-/out/production/prep/java_prep/Chapter10.class
-/out/production/prep/java_prep/Chapter10$ArrayEntry.class
+*.class
