@@ -6,7 +6,7 @@ public class Chapter11 {
         System.out.println(bSearch(6, A));
 
         int[] B = new int[]{1, 3, 3, 3, 5, 6, 7, 9};
-        System.out.println("11.1 -> " + bSearchFirst(3, A));
+        System.out.println("11.1 -> " + bSearchFirst(3, B));
     }
 
     public static int bSearch(int t, int[] A) {
