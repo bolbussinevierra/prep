@@ -9,6 +9,10 @@ public class Chapter6 {
         // 6.2
         System.out.println("6.2 -> " + convertBase("615", 7, 13));
 
+        // 6.4
+        char[] s = new char[]{'a', 'c', 'd', 'b', 'b', 'c', 'a'};
+        replaceAndRemove(s.length, s);
+        System.out.println("6.4 -> " + new String(s));
     }
 
     public static String intToString(int x) {
@@ -53,4 +57,28 @@ public class Chapter6 {
                 (char) (rem >= 10 ? 'A' + rem - 10 : '0' + rem);
     }
 
+    // 6.4
+    public static void replaceAndRemove(int size, char[] s) {
+        // Forward iteration: remove b's and count a's
+        int writeIdx= 0, aCount = 0;
+        for (int i = 0; i < size; ++i) {
+            if (s[i] != 'b') {
+                s[writeIdx++] = s[i];
+            }
+            if (s[i] == 'a') {
+                ++aCount;
+            }
+        }
+        // Backward iteration: replace a's with dd's starting at the end
+        int end = writeIdx - 1; // writeIdx terminated at off by +1 above
+        writeIdx = end + aCount;
+        for (int readIdx = end; readIdx >= 0; --readIdx) {
+            if (s[readIdx] == 'a') {
+                s[writeIdx--] = 'd';
+                s[writeIdx--] = 'd';
+            } else {
+                s[writeIdx--] = s[readIdx];
+            }
+        }
+    }
 }
