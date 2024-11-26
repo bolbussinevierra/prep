@@ -1,6 +1,8 @@
 package java_prep;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Chapter10 {
     private static class ArrayEntry {
@@ -13,16 +15,46 @@ public class Chapter10 {
         }
     }
 
+    private static class Star implements Comparable<Star> {
+        private final double x, y, z;
+
+        public Star(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public double distance() {
+            return Math.sqrt(x * x + y * y + z * z);
+        }
+
+        @Override
+        public int compareTo(Star that) {
+            return Double.compare(this.distance(), that.distance());
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(%.1f, %.1f, %.1f)", x, y, z);
+        }
+    }
+
     public static void main(String[] args) {
         ArrayList<String> strings = new ArrayList<>(
                 Arrays.asList("1", "11", "111", "1111", "11111"));
         List<String> results = topK(3, strings.iterator());
         System.out.println(results);
 
+        //10.1
         ArrayList<Integer> a1 = new ArrayList<>(Arrays.asList(3, 5, 7));
         ArrayList<Integer> a2 = new ArrayList<>(Arrays.asList(0, 6));
         ArrayList<Integer> a3 = new ArrayList<>(Arrays.asList(0, 6, 28));
         System.out.println("10.1 -> " + mergeSortedArrays(Arrays.asList(a1, a2, a3)));
+
+        // 10.4
+        List<Star> stars = List.of(new Star(1, 1, 1), new Star(2, 2, 2),
+                new Star(3, 3, 3), new Star(4, 4, 4));
+        System.out.println("10.4 -> " + findClosestKStars(stars.iterator(), 2));
     }
 
     // 10.1
@@ -62,5 +94,23 @@ public class Chapter10 {
             }
         }
         return new ArrayList<>(minHeap);
+    }
+
+    // 10.4
+    private static List<Star> findClosestKStars(Iterator<Star> stars, int k) {
+        // Max heap to store the k closest stars seen right now
+        PriorityQueue<Star> maxHeap = new PriorityQueue<>(k, Collections.reverseOrder());
+        // Store all the stars in the heap, evicting largest at k+1
+        while (stars.hasNext()) {
+            maxHeap.add(stars.next());
+            if (maxHeap.size() == k + 1) {
+                maxHeap.remove();
+            }
+        }
+
+        return Stream.generate(maxHeap::remove)
+                .limit(maxHeap.size())
+                .collect(Collectors.toList());
+
     }
 }
