@@ -1,5 +1,7 @@
 package java_prep;
 
+import java.util.*;
+
 public class Chapter11 {
     public static void main(String[] args) {
         int[] A = new int[]{1, 3, 5, 6, 7, 9};
@@ -11,6 +13,12 @@ public class Chapter11 {
 
         // 11.4
         System.out.println("11.4 -> " + integerSquareRoot(300));
+
+        // 11.8: TODO: does not work as expected for all values. Revisit
+        ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
+        for (int i = 1; i <=5; ++i) {
+            System.out.println("11.8 -> " + findKthLargest(i, C));
+        }
     }
 
     public static int bSearch(int t, int[] A) {
@@ -60,5 +68,39 @@ public class Chapter11 {
             }
         }
         return (int) left - 1;
+    }
+
+    // 11.8
+    private static int findKthLargest(int k, List<Integer> A) {
+       int left = 0, right = A.size() - 1;
+        Random r = new Random(0);
+        while (left <= right) {
+            int pivotIdx = r.nextInt(right - left + 1) + left;
+            int newPivotIdx = partitionAroundPivot(left, right, pivotIdx, A);
+            int kIndex = A.size() - k; // kth largest in sorted order.
+            if (newPivotIdx == kIndex) {
+                return A.get(newPivotIdx);
+            } else if (newPivotIdx < kIndex ) {
+                left = newPivotIdx + 1;
+            } else {  // newPivotIndex > kIndex
+                right = newPivotIdx - 1;
+            }
+        }
+        // Should never get here.
+        throw new RuntimeException();
+    }
+
+    private static int partitionAroundPivot(int left, int right, int pivotIdx,
+                                            List<Integer> A) {
+        int newPivotIndex = left;
+        int pivotValue = A.get(pivotIdx);
+        for (int i = left; i < right; ++i) {
+            // means greater than here due to cmp definition passed in
+            if (A.get(i) <= pivotValue) {
+                Collections.swap(A, i, newPivotIndex++);
+            }
+        }
+        Collections.swap(A, right, newPivotIndex);
+        return newPivotIndex;
     }
 }
