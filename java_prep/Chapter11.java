@@ -14,9 +14,10 @@ public class Chapter11 {
         // 11.4
         System.out.println("11.4 -> " + integerSquareRoot(300));
 
-        // 11.8: TODO: does not work as expected for all values. Revisit
+        // 11.8: Uses neetcode version of the solution not the one in the book
+        // TODO: can you make work with random()
         ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
-        for (int i = 1; i <=5; ++i) {
+        for (int i = 1; i <= 5; ++i) {
             System.out.println("11.8 -> " + findKthLargest(i, C));
         }
     }
@@ -72,28 +73,30 @@ public class Chapter11 {
 
     // 11.8
     private static int findKthLargest(int k, List<Integer> A) {
-       int left = 0, right = A.size() - 1;
-        Random r = new Random(0);
+        int left = 0, right = A.size() - 1;
+        k = A.size() - k; // kth largest in sorted order.
         while (left <= right) {
-            int pivotIdx = r.nextInt(right - left + 1) + left;
-            int newPivotIdx = partitionAroundPivot(left, right, pivotIdx, A);
-            int kIndex = A.size() - k; // kth largest in sorted order.
-            if (newPivotIdx == kIndex) {
-                return A.get(newPivotIdx);
-            } else if (newPivotIdx < kIndex ) {
-                left = newPivotIdx + 1;
+            int pivotIdx = partitionAroundPivot(left, right, A);
+            if (pivotIdx == k) {
+                return A.get(pivotIdx);
+            } else if (pivotIdx < k) {
+                left = pivotIdx + 1;
             } else {  // newPivotIndex > kIndex
-                right = newPivotIdx - 1;
+                right = pivotIdx - 1;
             }
         }
         // Should never get here.
         throw new RuntimeException();
     }
 
-    private static int partitionAroundPivot(int left, int right, int pivotIdx,
+    private static int partitionAroundPivot(int left, int right,
                                             List<Integer> A) {
         int newPivotIndex = left;
-        int pivotValue = A.get(pivotIdx);
+        Random r = new Random(0);
+        // int pivotValue = A.get(right);
+        //int p = r.nextInt(left, right + 1);
+        int pivotValue = A.get(right);
+
         for (int i = left; i < right; ++i) {
             // means greater than here due to cmp definition passed in
             if (A.get(i) <= pivotValue) {
