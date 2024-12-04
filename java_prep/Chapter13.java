@@ -11,7 +11,8 @@ public class Chapter13 {
         System.out.println("13.1 -> " + intersect(A, B));
 
         List<Integer> C = new ArrayList<>(7);
-        C.addAll(List.of(3,13,17, 0, 0, 0, 0)); // trailing zeros are placeholders; accounted for by size passed in.
+        // trailing zeros are placeholders; accounted for by size passed in.
+        C.addAll(List.of(3,13,17, 0, 0, 0, 0));
         List<Integer> D = new ArrayList<>(Arrays.asList(3, 7, 11, 19));
         mergeTwoSortedArrays(C, 3,  D, 4);
         System.out.println("13.2 -> " + C);
