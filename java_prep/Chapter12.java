@@ -14,6 +14,10 @@ public class Chapter12 {
         // 12.2
         System.out.println("12.2 (a) -> " + isLetterConstructibleFromMagazine("aaaa", "aa"));
         System.out.println("12.2 (b) -> " + isLetterConstructibleFromMagazine("aab", "aab"));
+
+        // 12.5
+        List<String> paragraph = List.of("a", "b", "a", "c", "c", "d");
+        System.out.println("12.5 -> " + findNearestRepetition(paragraph));
     }
 
     private static List<List<String>> findAnagrams(List<String> dictionary) {
@@ -57,5 +61,18 @@ public class Chapter12 {
             }
         }
         return charFrequencyForLetter.isEmpty();
+    }
+
+    // 12.5
+    public static int findNearestRepetition(List<String> paragraph) {
+        Map<String, Integer> entryToLastIndex = new HashMap<>();
+        int nearestDist = Integer.MAX_VALUE;
+        for (int i = 0; i < paragraph.size(); ++i) {
+            if (entryToLastIndex.containsKey(paragraph.get(i))) {
+                nearestDist = Math.min(nearestDist, i - entryToLastIndex.get(paragraph.get(i)));
+            }
+            entryToLastIndex.put(paragraph.get(i), i);
+        }
+        return nearestDist == Integer.MAX_VALUE ? -1 : nearestDist;
     }
 }
