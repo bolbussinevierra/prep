@@ -8,7 +8,13 @@ public class Chapter13 {
     public static void main(String[] args) {
         List<Integer> A = new ArrayList<>(Arrays.asList(1, 2, 3, 5, 7));
         List<Integer> B = new ArrayList<>(Arrays.asList(2, 5, 9));
-        System.out.print("13.1 -> " + intersect(A, B));
+        System.out.println("13.1 -> " + intersect(A, B));
+
+        List<Integer> C = new ArrayList<>(7);
+        C.addAll(List.of(3,13,17, 0, 0, 0, 0)); // trailing zeros are placeholders; accounted for by size passed in.
+        List<Integer> D = new ArrayList<>(Arrays.asList(3, 7, 11, 19));
+        mergeTwoSortedArrays(C, 3,  D, 4);
+        System.out.println("13.2 -> " + C);
     }
 
     public static List<Integer> intersect(List<Integer> A, List<Integer> B) {
@@ -27,5 +33,16 @@ public class Chapter13 {
             }
         }
         return intersectionAB;
+    }
+
+    public static void mergeTwoSortedArrays(List<Integer> A, int aCount, List<Integer> B, int bCount) {
+        int a = aCount - 1, b = bCount - 1, writeIdx = aCount + bCount - 1;
+        while (a >= 0 && b >= 0) {
+            A.set(writeIdx--, A.get(a) > B.get(b) ? A.get(a--) : B.get(b--));
+        }
+
+        while (b >= 0) {
+            A.set(writeIdx--, B.get(b--));
+        }
     }
 }
