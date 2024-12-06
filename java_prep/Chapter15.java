@@ -47,26 +47,26 @@ public class Chapter15 {
     }
 
     private static void solveNQueens(int n, int row,
-                                     List<Integer> colPlacementForRow,
+                                     List<Integer> colPlacementPerRow,
                                      List<List<Integer>> result) {
         if (row == n) {
             // All queens are legally placed.
-            result.add(new ArrayList<>(colPlacementForRow));
+            result.add(new ArrayList<>(colPlacementPerRow));
         } else {
             for (int col = 0; col < n; ++col) {
-                colPlacementForRow.add(col);
-                if (isValid(colPlacementForRow)) {
-                    solveNQueens(n, row + 1, colPlacementForRow, result);
+                colPlacementPerRow.add(col);
+                if (isValid(colPlacementPerRow)) {
+                    solveNQueens(n, row + 1, colPlacementPerRow, result);
                 }
-                colPlacementForRow.removeLast();
+                colPlacementPerRow.removeLast();
             }
         }
     }
 
-    private static boolean isValid(List<Integer> colPlacementForRow) {
-        int rowID = colPlacementForRow.size() - 1;
+    private static boolean isValid(List<Integer> colPlacementPerRow) {
+        int rowID = colPlacementPerRow.size() - 1;
         for (int i = 0; i < rowID; ++i) {
-            int colDiff = Math.abs(colPlacementForRow.get(i) - colPlacementForRow.get(rowID));
+            int colDiff = Math.abs(colPlacementPerRow.get(i) - colPlacementPerRow.get(rowID));
             int rowDiff = rowID - i; // No need for abs as larger value is always rowID.
             boolean sameDiagonal = colDiff == rowDiff;
             if (colDiff == 0 || sameDiagonal) {
