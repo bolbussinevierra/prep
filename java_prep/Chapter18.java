@@ -5,26 +5,11 @@ import java.util.List;
 
 public class Chapter18 {
     public static void main(String[] args) {
-
+        // 18.1
+        searchMaze(List.of(), new Coordinate(0, 0), new Coordinate(0, 0));
     }
-    private static class Coordinate {
-        private final int x, y;
 
-        public Coordinate(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || o.getClass() != getClass()) return false;
-
-            Coordinate that = (Coordinate) o;
-            if (x != that.x || y != that.y) return false;
-            return true;
-        }
-    }
+    private record Coordinate(int x, int y) {}
 
     public enum Color {WHITE, BLACK}
 
