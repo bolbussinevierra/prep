@@ -35,7 +35,7 @@ public class Chapter18 {
         return path;
     }
 
-    // Perform a DFS to find a feasible path
+    // Perform a DFS to find a feasible path.
     private static boolean searchMazeHelper(List<List<Color>> maze, Coordinate c,
                                             Coordinate e, List<Coordinate> path) {
         // Ensure within maze and white cell
