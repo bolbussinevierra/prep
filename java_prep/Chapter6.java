@@ -16,6 +16,11 @@ public class Chapter6 {
 
         // 6.5
         System.out.println("6.5 -> " + isPalindrome("A man, a plan, a canal, Panama."));
+
+        // 6.6
+        char[] str = "ram is costly".toCharArray();
+        reverseWords(str);
+        System.out.println("6.6 -> " + new String(str));
     }
 
     public static String intToString(int x) {
@@ -101,5 +106,35 @@ public class Chapter6 {
             }
         }
         return true;
+    }
+
+    // 6.6
+    public static void reverseWords(char[] input) {
+        // Reverse the whole string
+        int end = input.length;
+        reverse(input, 0, end - 1);
+
+        // Reverse-restore each of the words.
+        int ws = 0; // Starting letter of a word.
+        int we = 0; // Space terminating the word.
+        while (ws < end) {
+            // Skip leading spaces, or pass we to the start of the next word.
+            while (ws < end && input[ws] == ' ' || ws < we ) {
+                ++ws;
+            }
+            // Skip non-space chars
+            while (we < ws || we < end && input[we] != ' ') {
+                ++we;
+            }
+            reverse(input, ws, we - 1);
+        }
+    }
+
+    public static void reverse(char[] input, int start, int end) {
+        while (start < end) {
+            char tmp = input[start];
+            input[start++] = input[end];
+            input[end--] = tmp;
+        }
     }
 }
