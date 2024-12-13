@@ -13,6 +13,9 @@ public class Chapter6 {
         char[] s = new char[]{'a', 'c', 'd', 'b', 'b', 'c', 'a'};
         replaceAndRemove(s.length, s);
         System.out.println("6.4 -> " + new String(s));
+
+        // 6.5
+        System.out.println("6.5 -> " + isPalindrome("A man, a plan, a canal, Panama."));
     }
 
     public static String intToString(int x) {
@@ -80,5 +83,23 @@ public class Chapter6 {
                 s[writeIdx--] = s[readIdx];
             }
         }
+    }
+
+    // 6.5
+    public static boolean isPalindrome(String s) {
+        int i = 0, j = s.length() - 1;
+        while (i < j) {
+            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
+                ++i;
+            }
+            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
+                --j;
+            }
+            if (Character.toLowerCase(s.charAt(i++)) !=
+                Character.toLowerCase(s.charAt(j--))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
