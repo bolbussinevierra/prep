@@ -11,6 +11,10 @@ public class Chapter11 {
         int[] B = new int[]{1, 3, 3, 3, 5, 6, 7, 9};
         System.out.println("11.1 -> " + bSearchFirst(3, B));
 
+        // 11.3
+        int[] D = new int[]{378, 478, 550, 631, 103, 203, 220, 234, 279, 368};
+        System.out.println("11.3 -> " + findSmallest(D));
+
         // 11.4
         System.out.println("11.4 -> " + integerSquareRoot(300));
 
@@ -53,6 +57,21 @@ public class Chapter11 {
             }
         }
         return result;
+    }
+
+    // 11.3
+    public static int findSmallest(int[] a) {
+        int left = 0, right = a.length - 1;
+        while (left < right) {
+            int mid = left + ((right - left)/2);
+            if (a[mid] > a[right] ) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        // Loop ends when left == right
+        return left;
     }
 
     // 11.4
