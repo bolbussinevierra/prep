@@ -51,6 +51,10 @@ public class Chapter10 {
         ArrayList<Integer> a3 = new ArrayList<>(Arrays.asList(0, 6, 28));
         System.out.println("10.1 -> " + mergeSortedArrays(Arrays.asList(a1, a2, a3)));
 
+        // 10.3
+        List<Integer> l1 = List.of(3, -1, 2, 6, 4, 5, 8);
+        System.out.println("10.3 -> " + sortApproximatelySorted(l1.iterator(), 2));
+
         // 10.4
         List<Star> stars = List.of(new Star(1, 1, 1), new Star(2, 2, 2),
                 new Star(3, 3, 3), new Star(4, 4, 4));
@@ -94,6 +98,28 @@ public class Chapter10 {
             }
         }
         return new ArrayList<>(minHeap);
+    }
+    // 10.3
+    private static List<Integer> sortApproximatelySorted(Iterator<Integer> s, int k) {
+        PriorityQueue<Integer> minH = new PriorityQueue<>();
+
+        // Load k items in minHeap
+        for (int i = 0; i < k && s.hasNext(); ++i) {
+            minH.add(s.next());
+        }
+
+        // Add 1 item to go to k+1 then start removing items in smallest->largest order
+        List<Integer> result = new ArrayList<>();
+        while (s.hasNext()) {
+            minH.add(s.next());
+            result.add(minH.remove());
+        }
+
+        // Remaining tail of elements lef tin minHeap
+        result.addAll(Stream.generate(minH::remove)
+                .limit(minH.size())
+                .toList());
+        return result;
     }
 
     // 10.4
