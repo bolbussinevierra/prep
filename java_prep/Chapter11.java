@@ -15,6 +15,7 @@ public class Chapter11 {
         int[] D = new int[]{378, 478, 550, 631, 103, 203, 220, 234, 279, 368};
         System.out.println("11.3 -> " + findSmallest(D));
 
+
         // 11.4
         System.out.println("11.4 -> " + integerSquareRoot(300));
 
@@ -24,6 +25,9 @@ public class Chapter11 {
         for (int i = 1; i <= 5; ++i) {
             System.out.println("11.8 -> " + findKthLargest(i, C));
         }
+
+        // 11.19
+        System.out.println("11.19 ->" + findMissingIP(List.of(0,1,2,3)));
     }
 
     public static int bSearch(int t, int[] A) {
@@ -106,6 +110,51 @@ public class Chapter11 {
         }
         // Should never get here.
         throw new RuntimeException();
+    }
+
+    // 11.9
+    public static int findMissingIP(Iterable<Integer> stream) {
+        final int NUM_BUCKET = 1 << 16; // 65536;
+        int [] counter = new int[NUM_BUCKET];
+
+        // Isolate 16 higher bits and count how many IPs exist
+        // with those bits set
+        for (Integer i : stream) {
+            int idx = i >>> 16;  // triple shift to fill left side with 0s
+            ++counter[idx];
+        }
+
+        // Look for a bucket that contains less than 1 << 16 elements
+        final int BUCKET_CAPACITY = 1 << 16;
+        int candidateBucket = 0;
+        for (int i = 0; i < NUM_BUCKET; ++i) {
+            if (counter[i] < BUCKET_CAPACITY) {
+                candidateBucket = i;
+                break;
+            }
+        }
+
+        // Find all IP address in the stream whose first 16 bits are equal to
+        // candidate bucket
+        BitSet candidates = new BitSet(BUCKET_CAPACITY);
+        for (Integer i : stream) {
+            int upperPart = i >>> 16;
+            if (candidateBucket == upperPart) {
+                // Records the presence of the 16 LSB of x.
+                // First part is a bit mask to clear top 16 bits.
+                int lowerPart = ((1 << 16) - 1) & i;
+                candidates.set(lowerPart);
+            }
+        }
+
+        // Now identity an integer that is absent for this bucket
+        for (int i = 0; i < BUCKET_CAPACITY; ++i) {
+            if (!candidates.get(i)) {
+                return (candidateBucket << 16) | i;
+            }
+        }
+        // Should not be reachable unless there is a bug
+        return -1;
     }
 
     private static int partitionAroundPivot(int left, int right,
