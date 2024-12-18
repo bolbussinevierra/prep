@@ -10,6 +10,9 @@ public class Chapter12 {
                 Arrays.asList("debitcard", "elvis", "silent", "badcredit",
                         "lives", "freedom", "listen", "levis", "money"));
         System.out.println(findAnagrams(dictionary));
+        // 12.1
+        System.out.println("12.1 (a) ->" + canFormPalindrome("rotator"));
+        System.out.println("12.1 (b) ->" + canFormPalindrome("rotaator"));
 
         // 12.2
         System.out.println("12.2 (a) -> " + isLetterConstructibleFromMagazine("aaaa", "aa"));
@@ -19,6 +22,21 @@ public class Chapter12 {
         List<String> paragraph = List.of("a", "b", "a", "c", "c", "d");
         System.out.println("12.5 -> " + findNearestRepetition(paragraph));
     }
+
+    // 12.1
+    private static boolean canFormPalindrome(String s) {
+        Set<Character> charsWithOddFrequency = new HashSet<>();
+        for (Character c : s.toCharArray()) {
+            if (charsWithOddFrequency.contains(c)) {
+                charsWithOddFrequency.remove(c);
+            } else {
+                charsWithOddFrequency.add(c);
+            }
+        }
+
+        return charsWithOddFrequency.size() <= 1;
+    }
+
 
     private static List<List<String>> findAnagrams(List<String> dictionary) {
         Map<String, List<String>> sortedStringToAnagrams = new HashMap<>();
