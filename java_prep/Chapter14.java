@@ -7,10 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Chapter14 {
-    public record BST<T>(T data, BST<T> left, BST<T> right) {
-    }
-
     public static void main(String[] args) {
+        printTree(makeBST());
         BST<Integer> lca = findLCA(makeBST(), new BST<>(2, null, null), new BST<>(107, null, null));
         System.out.println("14.4 -> " + lca.data);
     }
@@ -75,14 +73,18 @@ public class Chapter14 {
     }
 
     private static void printTree(BST<Integer> t) {
-        ArrayDeque<BST<Integer>> bfs = new ArrayDeque<>();
-        bfs.addFirst(t);
+        ArrayDeque<DisplayState> bfs = new ArrayDeque<>();
+        bfs.addFirst(new DisplayState(t, 0));
 
         while (!bfs.isEmpty()) {
-            BST<Integer> c = bfs.removeFirst();
-            System.out.println(c.data);
-            if (c.left != null) bfs.addLast(c.left);
-            if (c.right != null) bfs.addLast(c.right);
+            DisplayState c = bfs.removeFirst();
+            System.out.println("h" + c.level + ":" + c.n.data);
+            if (c.n.left != null) {
+                bfs.addLast(new DisplayState(c.n.left, c.level + 1));
+            }
+            if (c.n.right != null) {
+                bfs.addLast(new DisplayState(c.n.right, c.level + 1));
+            }
         }
     }
 
@@ -92,4 +94,9 @@ public class Chapter14 {
         List<Integer> preorder =  List.of(108, 106, -10, -14,   2, 107, 285, 243, 286, 401);
         return bstFrom(preorder, inorder);
     }
+
+    public record BST<T>(T data, BST<T> left, BST<T> right) {
+    }
+
+    record DisplayState(BST<Integer> n, int level) {}
 }
