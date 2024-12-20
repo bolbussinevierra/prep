@@ -61,7 +61,8 @@ public class Chapter16 {
     return computeNumberOfWaysTo(n - 1, m - 1, new int[n][m]);
   }
 
-  private static int computeNumberOfWaysTo(int x, int y, int[][] numberOfWays) {
+  private static int computeNumberOfWaysTo(
+          int x, int y, int[][] numberOfWays) {
     if (x == 0 && y == 0) {
       return 1;
     }
