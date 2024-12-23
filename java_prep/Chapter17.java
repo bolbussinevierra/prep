@@ -1,6 +1,7 @@
 package java_prep;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,6 +13,10 @@ public class Chapter17 {
 
         // 17.4
         System.out.println("17.4 -> " + hasThreeSum(List.of(1, 5, 7, 9), 15));
+
+        // 17.5
+        List<String> e = List.of("b", "a", "c", "a", "a", "b", "a", "a", "c", "a");
+        System.out.println("17.5 -> " + majorityElement(e.iterator()));
 
 //        // 17.6
 //        List<Integer> g = List.of(50, 20, 5, 30, 25, 10 ,10);
@@ -66,5 +71,23 @@ public class Chapter17 {
 
     private static boolean hasThreeSum(List<Integer> a, int s) {
         return a.stream().anyMatch(i -> hasTwoSum(a, s - i));
+    }
+
+    // 17.5
+    private static String majorityElement(Iterator<String> stream) {
+        String candidate = "";
+        int candidateCount = 0;
+        while (stream.hasNext()) {
+            String it = stream.next();
+            if (candidateCount == 0) {
+                candidate = it;
+                candidateCount = 1;
+            } else if (candidate.equals(it)) {
+                candidateCount++;
+            } else {
+                candidateCount--;
+            }
+        }
+        return candidate;
     }
 }
