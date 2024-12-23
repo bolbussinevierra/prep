@@ -112,5 +112,5 @@ public class Chapter16 {
     return V[k][availableCapacity];
   }
 
-  record Item(int weight, int value) {}
+  public record Item(int weight, int value) {}
 }
