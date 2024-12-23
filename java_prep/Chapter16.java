@@ -11,6 +11,15 @@ public class Chapter16 {
     System.out.println("16.2 -> " + editDistance("Carthorse", "Orchestra"));
     // 16.3
     System.out.println("16.3 -> " + numberOfWays(5, 5));
+
+    // 16.6
+    List<Item> items = List.of(
+      new Item(5, 60),
+      new Item(3, 50),
+      new Item(4, 70),
+      new Item(2, 30)
+    );
+    System.out.println("16.6 -> " + optimumKnapsack(items, 5));
   }
 
   // 16.1
@@ -61,8 +70,7 @@ public class Chapter16 {
     return computeNumberOfWaysTo(n - 1, m - 1, new int[n][m]);
   }
 
-  private static int computeNumberOfWaysTo(
-          int x, int y, int[][] numberOfWays) {
+  private static int computeNumberOfWaysTo(int x, int y, int[][] numberOfWays) {
     if (x == 0 && y == 0) {
       return 1;
     }
@@ -73,4 +81,36 @@ public class Chapter16 {
     }
     return numberOfWays[x][y];
   }
+
+  // 16.6
+  public static int optimumKnapsack(List<Item> items, int capacity) {
+    // V[i][j] holds the optimum value when we chose from items i and have a
+    // capacity j.
+    int[][] V = new int[items.size()][capacity + 1];
+    for (int[] v : V) {
+      Arrays.fill(v, -1);
+    }
+    return optimumKnapsackHelper(items, items.size() - 1, capacity, V);
+  }
+
+  public static int optimumKnapsackHelper(
+      List<Item> items, int k, int availableCapacity, int[][] V) {
+    if (k < 0) {
+      // No items can be chosen.
+      return 0;
+    }
+
+    if (V[k][availableCapacity] == -1) {
+      int without = optimumKnapsackHelper(items, k - 1, availableCapacity, V);
+      int with =
+          availableCapacity < items.get(k).weight
+              ? 0
+              : items.get(k).value
+                  + optimumKnapsackHelper(items, k - 1, availableCapacity - items.get(k).weight, V);
+      V[k][availableCapacity] = Math.max(without, with);
+    }
+    return V[k][availableCapacity];
+  }
+
+  record Item(int weight, int value) {}
 }
