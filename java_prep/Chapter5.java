@@ -11,6 +11,9 @@ public class Chapter5 {
         // 5.2
         System.out.println("5.2 -> " + plusOne(new ArrayList<>(List.of(9, 9, 9))));
 
+        // 5.5
+        System.out.println("5.5 -> " + deletedDuplicates(new ArrayList<>(Arrays.asList(2,3,5,5,7,11,11,11,13))));
+
         // 5.6
         ArrayList<Double> arr2
                 = new ArrayList<>(Arrays.asList(310.0, 315.0, 275.0, 295.0, 260.0, 270.0, 290.0, 230.0, 255.0, 250.0));
@@ -73,6 +76,21 @@ public class Chapter5 {
             A.add(0);
         }
         return A;
+    }
+
+    // 5.5
+    // returns valid count of elements
+    public static int deletedDuplicates(List<Integer> A) {
+        if (A.isEmpty()) return 0;
+
+        int writeIdx = 1;
+        for (int i = 1; i < A.size(); ++i) {
+            if (!A.get(writeIdx - 1).equals(A.get(i))) {
+                A.set(writeIdx++, A.get(i));
+            }
+        }
+        System.out.println(A);
+        return writeIdx;
     }
 
     public static List<Integer> dutchFlags(int pivotIndex, List<Integer> A) {
