@@ -19,6 +19,9 @@ public class Chapter5 {
                 = new ArrayList<>(Arrays.asList(310.0, 315.0, 275.0, 295.0, 260.0, 270.0, 290.0, 230.0, 255.0, 250.0));
         System.out.println("5.6 -> " + computeMaxProfit(arr2));
 
+        // 5.9
+        System.out.println("5.9 -> " + generatePrimes(50));
+
         // 5.12
         ArrayList<Integer> arr3 = new ArrayList<>(Arrays.asList(3, 5, 7, 11));
         randomSampling(3, arr3);
@@ -91,6 +94,24 @@ public class Chapter5 {
         }
         System.out.println(A);
         return writeIdx;
+    }
+
+    // 5.9
+    public static List<Integer> generatePrimes(int n) {
+        List<Integer> primes = new ArrayList<>();
+        List<Boolean> isPrime = new ArrayList<>(Collections.nCopies(n + 1, true));
+        isPrime.set(0, false);
+        isPrime.set(0, false);
+        for (int p = 2; p <= n; ++p) {
+            if (isPrime.get(p)) {
+                primes.add(p);
+                // Sieve out multiples of the prime.
+                for (int i = p * 2; i <= n; i += p) {
+                    isPrime.set(i, false);
+                }
+            }
+        }
+        return primes;
     }
 
     public static List<Integer> dutchFlags(int pivotIndex, List<Integer> A) {
