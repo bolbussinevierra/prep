@@ -1,5 +1,8 @@
 package java_prep;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Chapter7 {
     static class ListNode<T> {
         public T data;
@@ -31,6 +34,10 @@ public class Chapter7 {
         // 7.7
         ListNode<Integer> list3 = makeLinkedList(new int[]{6, 5, 4, 3, 2, 1});
         printList("7.7", removeKthLast(list3, 3));
+
+        // 7.10
+        ListNode<Integer> list4 = makeLinkedList(new int[]{0, 1, 2, 3, 4, 5, 6, 7});
+        printList("7.10", evenOddMerge(list4));
     }
 
     private static ListNode<Integer> firstOverlappingNode(
@@ -87,6 +94,30 @@ public class Chapter7 {
         current.next = L1 != null ? L1 : L2;
         return dummyHead.next;
     }
+
+    // 7.10
+    static ListNode<Integer> evenOddMerge(ListNode<Integer> L) {
+        if (L == null) return L;
+
+        ListNode<Integer> evenDummyHead = new ListNode<>(0, null);
+        ListNode<Integer> oddDummyHead = new ListNode<>(0, null);
+
+        // Keep reference to the tails of the lists.
+        List<ListNode<Integer>> tails = Arrays.asList(evenDummyHead, oddDummyHead);
+        int turn = 0; // Starts even.
+        for (ListNode<Integer> node = L; node != null; node = node.next) {
+            // Make the new even/odd tail at position 0, 1.
+            tails.get(turn).next = node;
+            tails.set(turn, tails.get(turn).next);
+            turn ^= 1;
+        }
+        // Odd tail is the real tail.
+        tails.get(1).next = null;
+        // Even tail points to the odd tail.
+        tails.get(0).next = oddDummyHead.next;
+        return evenDummyHead.next;
+    }
+
     private static ListNode<Integer> makeLinkedList(int[] values) {
         ListNode<Integer> current = new ListNode<>(0, null);
         ListNode<Integer> head = current;
