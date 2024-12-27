@@ -21,6 +21,9 @@ public class Chapter6 {
         char[] str = "ram is costly".toCharArray();
         reverseWords(str);
         System.out.println("6.6 -> " + new String(str));
+
+        // 6.7
+        System.out.println("6.7 -> " + countAndSay(8));
     }
 
     public static String intToString(int x) {
@@ -136,5 +139,29 @@ public class Chapter6 {
             input[start++] = input[end];
             input[end--] = tmp;
         }
+    }
+
+    // 6.7
+    public static String countAndSay(int n) {
+        if (n <=0) return "";
+
+        String s = "1";
+        for (int i = 1; i < n; ++i) {
+            s = nextNumber(s);
+        }
+        return s;
+    }
+
+    public static String nextNumber(String s) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < s.length(); ++i) {
+            int count = 1;
+            while (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
+                ++i;
+                ++count;
+            }
+            result.append(count).append(s.charAt(i));
+        }
+        return result.toString();
     }
 }
