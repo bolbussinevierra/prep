@@ -26,6 +26,19 @@ public class Chapter8 {
         q.enqueue(12);
         q.enqueue(13);
         System.out.println("8.7 -> " + q);
+
+        Queue2 q2 = new Queue2();
+        q2.enqueue(1);
+        q2.enqueue(2);
+        q2.enqueue(3);
+        q2.enqueue(4);
+        q2.enqueue(5);
+        int count = 5;
+        System.out.print("8.8 -> [ ");
+        while (count-- > 0) {
+            System.out.print(q2.dequeue() + " ");
+        }
+        System.out.println("]");
     }
 
     public static int eval(String expression) {
@@ -145,6 +158,26 @@ public class Chapter8 {
             return "Queue{"
                     + "head=" + head + ", tail=" + tail +
                     ", entries=" + Arrays.toString(entries) + '}';
+        }
+    }
+
+    // 8.8 : Queue based on stacks
+    private static class Queue2 {
+        private Deque<Integer> enqueue = new ArrayDeque<>();
+        private Deque<Integer> dequeue = new ArrayDeque<>();
+
+        public void enqueue(Integer x) {
+            enqueue.addFirst(x);
+        }
+
+        public Integer dequeue() {
+            while (dequeue.isEmpty()) {
+                // Transfers the elements from enqueue to dequeue
+                while (!enqueue.isEmpty()) {
+                    dequeue.addFirst(enqueue.removeFirst());
+                }
+            }
+            return dequeue.removeFirst();
         }
     }
 }
