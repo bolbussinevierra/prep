@@ -59,6 +59,9 @@ public class Chapter10 {
         List<Star> stars = List.of(new Star(1, 1, 1), new Star(2, 2, 2),
                 new Star(3, 3, 3), new Star(4, 4, 4));
         System.out.println("10.4 -> " + findClosestKStars(stars.iterator(), 2));
+
+        // 10.5
+        System.out.println("10.5 -> " + onlineMedian(List.of(1, 0, 3, 5, 2, 0, 1).iterator()));
     }
 
     // 10.1
@@ -138,5 +141,31 @@ public class Chapter10 {
                 .limit(maxHeap.size())
                 .collect(Collectors.toList());
 
+    }
+
+    // 10.5
+    public static List<Double> onlineMedian(Iterator<Integer> sequence) {
+        // Max heap for the lower half of values
+        PriorityQueue<Integer> lowSeqMaxH = new PriorityQueue<>(16, Collections.reverseOrder());
+        // Min heap for the higher half of values
+        PriorityQueue<Integer> highSeqMinH = new PriorityQueue<>();
+        List<Double> result = new ArrayList<>();
+
+        while (sequence.hasNext()) {
+            // Add next number to the high sequence. Will be inserted in order
+            highSeqMinH.add(sequence.next());
+            // Take the least element from the high sequence and move it to the lower one
+            lowSeqMaxH.add(highSeqMinH.remove());
+
+            if (lowSeqMaxH.size() > highSeqMinH.size()) {
+                highSeqMinH.add(lowSeqMaxH.remove());
+            }
+
+            result.add((lowSeqMaxH.size() == highSeqMinH.size()
+                    ? 0.5 * (lowSeqMaxH.peek() + highSeqMinH.peek())
+                    : (double)highSeqMinH.peek()));
+
+        }
+        return result;
     }
 }

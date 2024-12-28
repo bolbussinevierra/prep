@@ -57,6 +57,7 @@ public class Chapter9 {
 
         while (!bfs.isEmpty()) {
             BTN<Integer> c = bfs.removeFirst();
+
             System.out.println((char)('A' + c.data - 1));
             if (c.left != null) bfs.addLast(c.left);
             if (c.right != null) bfs.addLast(c.right);
