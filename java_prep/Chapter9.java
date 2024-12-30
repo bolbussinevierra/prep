@@ -24,7 +24,6 @@ public class Chapter9 {
         List<Integer> preorder =  List.of(8, 2, 6, 5, 1, 3, 4, 7, 9);
         BTN<Integer> tree = bTreeFrom(preorder, inorder);
         printTree(tree);
-
     }
 
     // 9.11

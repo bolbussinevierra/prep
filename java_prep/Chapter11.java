@@ -19,6 +19,9 @@ public class Chapter11 {
         // 11.4
         System.out.println("11.4 -> " + integerSquareRoot(300));
 
+        // 11.5
+        System.out.println("11.5 -> " + squareRoot(4.4));
+
         // 11.8: Uses neetcode version of the solution not the one in the book
         // TODO: can you make work with random()
         ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
@@ -92,6 +95,30 @@ public class Chapter11 {
             }
         }
         return (int) left - 1;
+    }
+
+    // 11.5
+    private static double squareRoot(double x) {
+        double left, right;
+
+        if (x < 1.0) {
+            left = x;
+            right = 1;
+        } else {
+            left = 1;
+            right = x;
+        }
+
+        while (compare(left, right) != CompareResult.EQUAL) {
+            double mid = left + 0.5 * (right - left);
+            double midSquared = mid * mid;
+            if (compare(midSquared, x) == CompareResult.LARGER) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        return left;
     }
 
     // 11.8
@@ -173,5 +200,16 @@ public class Chapter11 {
         }
         Collections.swap(A, right, newPivotIndex);
         return newPivotIndex;
+    }
+
+    private enum CompareResult { SMALLER, EQUAL, LARGER }
+    private static CompareResult compare(double a, double b) {
+        final double EPSILON = 0.000001;
+        // Uses normalization for precision problem. Otherwise for very large
+        // and small numbers gets weird e.g a = 0.000000000101 and b = 0.0000000001
+        double diff = (a - b) / Math.max(Math.abs(a), Math.abs(b));
+        return diff < -EPSILON
+                ? CompareResult.SMALLER
+                : (diff > EPSILON ? CompareResult.LARGER : CompareResult.EQUAL);
     }
 }
