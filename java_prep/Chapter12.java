@@ -1,6 +1,7 @@
 package java_prep;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,6 +22,12 @@ public class Chapter12 {
         // 12.5
         List<String> paragraph = List.of("a", "b", "a", "c", "c", "d");
         System.out.println("12.5 -> " + findNearestRepetition(paragraph));
+
+        // 12.6
+        List<String> paragraph2 = List.of("apple", "banana", "apple", "apple", "dog", "cat",
+                                          "apple", "dog", "banana", "apple", "cat", "dog");
+        Set<String> cover = Set.of("banana", "cat");
+        System.out.println("12.6 -> " + findSmallestSubarrayCoveringSet(paragraph2, cover));
     }
 
     // 12.1
@@ -92,5 +99,73 @@ public class Chapter12 {
             entryToLastIndex.put(paragraph.get(i), i);
         }
         return nearestDist == Integer.MAX_VALUE ? -1 : nearestDist;
+    }
+
+    private static Subarray findSmallestSubarrayCoveringSet(
+            List<String> paragraph, Set<String> keywords) {
+
+        // Keywords to cover.
+        Map<String, Long> keywordsToCover = keywords.stream().collect(
+                Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        // Sliding window tracking the characters in the current view.
+        Map<String, Long> slidingWindow = new HashMap<>();
+
+        int remainingToCover = keywordsToCover.size();
+
+        Subarray result = new Subarray();
+        int l = 0;
+        for (int r = 0; r < paragraph.size(); ++r) {
+            String wr = paragraph.get(r);
+            // Slide the window front and if we encounter a relevant word, update the count
+            // of words remaining to cover.
+            if (keywordsToCover.containsKey(wr)) {
+                slidingWindow.put(wr, slidingWindow.getOrDefault(wr, 0L) + 1);
+
+                if (slidingWindow.get(wr) >= (keywordsToCover.get(wr))) {
+                    --remainingToCover;
+                }
+            }
+
+
+            while (remainingToCover == 0) {
+                if (result.notSet() || result.longerThan(l, r)) {
+                    result = new Subarray(l, r);
+                }
+
+                // Shrink the window from the back (left) as long as we retain coverage.
+                String wl = paragraph.get(l);
+                if (keywordsToCover.containsKey(wl)) {
+                    slidingWindow.put(wl, slidingWindow.get(wl) - 1);
+
+                    // Have we dropped a relevant word by shrinking left?
+                    if (slidingWindow.get(wl) < keywordsToCover.get(wl)) {
+                        ++remainingToCover;
+                    }
+                }
+                ++l;
+            }
+        }
+        return result;
+    }
+
+    // 12.6
+    private record Subarray(int start, int end){
+        public Subarray() {
+            this(-1, -1);
+        }
+
+        @Override
+        public String toString() {
+            return "[" + start + ", " + end + "]";
+        }
+
+        public boolean notSet() {
+            return start == -1 && end == -1;
+        }
+
+        public boolean longerThan(int start, int end) {
+            return this.end - this.start + 1 > end - start + 1;
+        }
     }
 }
