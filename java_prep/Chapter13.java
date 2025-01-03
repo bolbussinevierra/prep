@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Chapter13 {
-    public record Event(String tag, int start, int finish) {
-    }
-
-    record Endpoint(int time, boolean isStart) {
-    }
-
     public static void main(String[] args) {
         List<Integer> A = new ArrayList<>(Arrays.asList(1, 2, 3, 5, 7));
         List<Integer> B = new ArrayList<>(Arrays.asList(2, 5, 9));
@@ -102,5 +96,11 @@ public class Chapter13 {
             }
         }
         return maxOverlap;
+    }
+
+    public record Event(String tag, int start, int finish) {
+    }
+
+    record Endpoint(int time, boolean isStart) {
     }
 }
