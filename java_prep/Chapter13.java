@@ -1,5 +1,6 @@
 package java_prep;
 
+import java_prep.Chapter7.ListNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,6 +51,10 @@ public class Chapter13 {
             new Interval(16, false, 17, false)
     ));
     System.out.println("13.8 -> " + unionOfIntervals(intervals));
+
+    // 13.11
+    ListNode<Integer> list = Chapter7.makeLinkedList(new int[]{10, 8, 9, 6, 7, 4, 5, 1, 3, 2});
+    Chapter7.printList("13.11 ", stableSort(list));
   }
 
   public static List<Integer> intersect(List<Integer> A, List<Integer> B) {
@@ -163,6 +168,29 @@ public class Chapter13 {
       }
     }
     return result;
+  }
+
+  // 13.11
+  public static ListNode<Integer> stableSort(ListNode<Integer> L) {
+    // Base case; L is empty or a single node, nothing to do.
+    if (L == null || L.next == null) {
+      return L;
+    }
+
+    // Find the midpoint of L using a slow and fast pointer. Also a pointer to split
+    // the list into two behind the slow pointer.
+    ListNode<Integer> preSlow = null, slow = L, fast = L;
+    while (fast != null && fast.next != null) {
+      preSlow = slow;
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+
+    // Split the list into two parts
+    preSlow.next = null;
+
+    // Merge the sorted lists, recursively.
+    return Chapter7.mergeSorted(stableSort(L), stableSort(slow));
   }
 
   public record Event(String tag, int start, int finish) {}

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Chapter7 {
-    static class ListNode<T> {
+    public static class ListNode<T> {
         public T data;
         public ListNode<T> next;
 
@@ -74,7 +74,7 @@ public class Chapter7 {
         return l;
     }
 
-    static ListNode<Integer> mergeSorted(ListNode<Integer> L1,
+    public static ListNode<Integer> mergeSorted(ListNode<Integer> L1,
                                          ListNode<Integer> L2) {
         // Make a dummyHead to simply starting condition.
         ListNode<Integer> dummyHead = new ListNode<>(0, null);
@@ -118,7 +118,7 @@ public class Chapter7 {
         return evenDummyHead.next;
     }
 
-    private static ListNode<Integer> makeLinkedList(int[] values) {
+    public static ListNode<Integer> makeLinkedList(int[] values) {
         ListNode<Integer> current = new ListNode<>(0, null);
         ListNode<Integer> head = current;
         for (int i = 0; i < values.length; i++) {
@@ -132,7 +132,8 @@ public class Chapter7 {
         return head;
     }
 
-    private static void printList(String tag, ListNode<Integer> l) {
+
+    public static void printList(String tag, ListNode<Integer> l) {
         System.out.print("\n" + tag + " -> [ ");
         while (l != null) {
             System.out.print(l.data + " ");
