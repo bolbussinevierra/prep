@@ -2,105 +2,199 @@ package java_prep;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Chapter13 {
-    public static void main(String[] args) {
-        List<Integer> A = new ArrayList<>(Arrays.asList(1, 2, 3, 5, 7));
-        List<Integer> B = new ArrayList<>(Arrays.asList(2, 5, 9));
-        System.out.println("13.1 -> " + intersect(A, B));
-
-        // 13.2
-        List<Integer> C = new ArrayList<>(7);
-        // trailing zeros are placeholders; accounted for by size passed in.
-        C.addAll(List.of(3, 13, 17, 0, 0, 0, 0));
-        List<Integer> D = new ArrayList<>(Arrays.asList(3, 7, 11, 19));
-        mergeTwoSortedArrays(C, 3, D, 4);
-        System.out.println("13.2 -> " + C);
-
-        // 13.6
-        List<Event> events = List.of(
-          new Event("E1", 1, 5),
-          new Event("E2", 2, 7),
-          new Event("E8", 4, 5),
-          new Event("E2", 6, 10),
-          new Event("E6", 8, 9),
-          new Event("E9", 9, 17),
-          new Event("E3", 11, 13),
-          new Event("E7", 12, 15),
-          new Event("E4", 14, 15)
-        );
-        System.out.println("13.6 -> " + findMaxSimultaneousEvents(events));
-    }
-
-    public static List<Integer> intersect(List<Integer> A, List<Integer> B) {
-        List<Integer> intersectionAB = new ArrayList<>();
-        int i = 0, j = 0;
-        while (i < A.size() && j < B.size()) {
-            if (A.get(i).equals(B.get(j)) &&
-                    (i == 0 || !A.get(i).equals(A.get(i - 1)))) {
-                intersectionAB.add(A.get(i));
-                ++i;
-                ++j;
-            } else if (A.get(i) < B.get(j)) {
-                ++i;
-            } else {
-                ++j;
-            }
-        }
-        return intersectionAB;
-    }
+  public static void main(String[] args) {
+    List<Integer> A = new ArrayList<>(Arrays.asList(1, 2, 3, 5, 7));
+    List<Integer> B = new ArrayList<>(Arrays.asList(2, 5, 9));
+    System.out.println("13.1 -> " + intersect(A, B));
 
     // 13.2
-    public static void mergeTwoSortedArrays(List<Integer> A, int aCount, List<Integer> B, int bCount) {
-        int a = aCount - 1, b = bCount - 1, writeIdx = aCount + bCount - 1;
-        while (a >= 0 && b >= 0) {
-            A.set(writeIdx--, A.get(a) > B.get(b) ? A.get(a--) : B.get(b--));
-        }
-
-        while (b >= 0) {
-            A.set(writeIdx--, B.get(b--));
-        }
-    }
+    List<Integer> C = new ArrayList<>(7);
+    // trailing zeros are placeholders; accounted for by size passed in.
+    C.addAll(List.of(3, 13, 17, 0, 0, 0, 0));
+    List<Integer> D = new ArrayList<>(Arrays.asList(3, 7, 11, 19));
+    mergeTwoSortedArrays(C, 3, D, 4);
+    System.out.println("13.2 -> " + C);
 
     // 13.6
-    public static int findMaxSimultaneousEvents(List<Event> A) {
-        // Builds an array of all endpoints
-        List<Endpoint> events = A.stream()
-                .map(e -> List.of(new Endpoint(e.start, true),
-                                  new Endpoint(e.finish, false)))
-                .flatMap(List::stream)
-        .collect(Collectors.toList());
+    List<Event> events =
+        List.of(
+            new Event("E1", 1, 5),
+            new Event("E2", 2, 7),
+            new Event("E8", 4, 5),
+            new Event("E2", 6, 10),
+            new Event("E6", 8, 9),
+            new Event("E9", 9, 17),
+            new Event("E3", 11, 13),
+            new Event("E7", 12, 15),
+            new Event("E4", 14, 15));
+    System.out.println("13.6 -> " + findMaxSimultaneousEvents(events));
 
-        // Sorts the endpoint array according to the time, breaking ties by putting
-        // start times before end times.
-        events.sort((a, b) -> {
-            if (a.time != b.time) {
-                return Integer.compare(a.time, b.time);
-            }
-            // If times are equal, endpoint that starts at the interval comes first.
-            return a.isStart && !b.isStart ? -1 : !a.isStart && b.isStart ? 1 : 0;
+    // 13.8
+    List<Interval> intervals = new ArrayList<>(List.of(
+            new Interval(0, false, 3, false),
+            new Interval(1, true, 1, true),
+            new Interval(2, true, 4, true),
+            new Interval(3, true, 4, false),
+            new Interval(5, true, 7, false),
+            new Interval(7, true, 8, false),
+            new Interval(8, true, 11, false),
+            new Interval(9, false, 11, true),
+            new Interval(12, true, 14, true),
+            new Interval(12, false, 16, true),
+            new Interval(13, false, 15, false),
+            new Interval(16, false, 17, false)
+    ));
+    System.out.println("13.8 -> " + unionOfIntervals(intervals));
+  }
+
+  public static List<Integer> intersect(List<Integer> A, List<Integer> B) {
+    List<Integer> intersectionAB = new ArrayList<>();
+    int i = 0, j = 0;
+    while (i < A.size() && j < B.size()) {
+      if (A.get(i).equals(B.get(j)) && (i == 0 || !A.get(i).equals(A.get(i - 1)))) {
+        intersectionAB.add(A.get(i));
+        ++i;
+        ++j;
+      } else if (A.get(i) < B.get(j)) {
+        ++i;
+      } else {
+        ++j;
+      }
+    }
+    return intersectionAB;
+  }
+
+  // 13.2
+  public static void mergeTwoSortedArrays(
+      List<Integer> A, int aCount, List<Integer> B, int bCount) {
+    int a = aCount - 1, b = bCount - 1, writeIdx = aCount + bCount - 1;
+    while (a >= 0 && b >= 0) {
+      A.set(writeIdx--, A.get(a) > B.get(b) ? A.get(a--) : B.get(b--));
+    }
+
+    while (b >= 0) {
+      A.set(writeIdx--, B.get(b--));
+    }
+  }
+
+  // 13.6
+  public static int findMaxSimultaneousEvents(List<Event> A) {
+    // Builds an array of all endpoints
+    List<Endpoint> events =
+        A.stream()
+            .map(e -> List.of(new Endpoint(e.start, true), new Endpoint(e.finish, false)))
+            .flatMap(List::stream)
+            .collect(Collectors.toList());
+
+    // Sorts the endpoint array according to the time, breaking ties by putting
+    // start times before end times.
+    events.sort(
+        (a, b) -> {
+          if (a.time != b.time) {
+            return Integer.compare(a.time, b.time);
+          }
+          // If times are equal, endpoint that starts at the interval comes first.
+          return a.isStart && !b.isStart ? -1 : !a.isStart && b.isStart ? 1 : 0;
         });
 
-        // Track the number of simultaneous events, and record the maximum number of
-        // simultaneous events. Note that after the sort operation above, all the
-        // starts come before all the ends which the below relies on.
-        int maxOverlap = 0, currentOverlap = 0;
-        for (Endpoint e : events) {
-            if (e.isStart) {
-                ++currentOverlap;
-                maxOverlap = Math.max(currentOverlap, maxOverlap);
-            } else {
-                --currentOverlap;
-            }
+    // Track the number of simultaneous events, and record the maximum number of
+    // simultaneous events. Note that after the sort operation above, all the
+    // starts come before all the ends which the below relies on.
+    int maxOverlap = 0, currentOverlap = 0;
+    for (Endpoint e : events) {
+      if (e.isStart) {
+        ++currentOverlap;
+        maxOverlap = Math.max(currentOverlap, maxOverlap);
+      } else {
+        --currentOverlap;
+      }
+    }
+    return maxOverlap;
+  }
+
+  // 13.8
+  public static List<Interval> unionOfIntervals(List<Interval> intervals) {
+    // Empty input.
+    if (intervals.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    // Sort the intervals according to the left endpoints of intervals
+    intervals.sort(
+        (a, b) -> {
+          if (a.left.val != b.left.val) {
+            return a.left.val - b.left.val;
+          }
+
+          // Left endpoints are equal, so now see if one is closed and the other is open.
+          // Closed intervals appear first.
+          if (a.left.isClosed && !b.left.isClosed) {
+            return -1;
+          } else if (!a.left.isClosed && b.left.isClosed) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+
+    // Start with the first interval.
+    List<Interval> result = new ArrayList<>(List.of(intervals.getFirst()));
+
+    // Because we have already sorted all the left intervals relative to each other, we can now
+    // consider only left intervals relative to right ones.
+    for (Interval i : intervals) {
+      if (!result.isEmpty()
+          && (i.left.val < result.getLast().right.val
+              || (i.left.val == result.getLast().right.val
+                  && (i.left.isClosed || result.getLast().right.isClosed)))) {
+        // Check if we need to extend the right of the current interval (otherwise, it already
+        // covers the interval we are considering.
+        if (i.right.val > result.getLast().right.val
+            || (i.right.val == result.getLast().right.val && i.right.isClosed)) {
+          result.getLast().right = i.right;
         }
-        return maxOverlap;
+      } else {
+        result.add(i);
+      }
+    }
+    return result;
+  }
+
+  public record Event(String tag, int start, int finish) {}
+
+  record Endpoint(int time, boolean isStart) {}
+
+  public static class Interval {
+    public Interval.Endpoint left;
+    public Interval.Endpoint right;
+
+    public Interval(int left, boolean leftClosed, int right, boolean rightClosed) {
+      this.left = new Endpoint(left, leftClosed);
+      this.right = new Endpoint(right, rightClosed);
     }
 
-    public record Event(String tag, int start, int finish) {
+    @Override
+    public String toString() {
+        return (left.isClosed ? "[" : "(") +
+                left.val +
+                ", " +
+                right.val +
+                (right.isClosed ? "]" : ")");
     }
 
-    record Endpoint(int time, boolean isStart) {
+    public static class Endpoint {
+      public int val;
+      public boolean isClosed;
+
+      public Endpoint(int val, boolean isClosed) {
+        this.val = val;
+        this.isClosed = isClosed;
+      }
     }
+  }
 }
