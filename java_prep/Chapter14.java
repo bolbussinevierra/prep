@@ -7,10 +7,18 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Chapter14 {
+    public static int rootIdx;
+
     public static void main(String[] args) {
         printTree(makeBST());
         BST<Integer> lca = findLCA(makeBST(), new BST<>(2, null, null), new BST<>(107, null, null));
         System.out.println("14.4 -> " + lca.data);
+
+        List<Integer> preorder = List.of(43, 23, 37, 29, 31, 41, 47, 53);
+        BST<Integer> t = rebuildBSTFromPreorder(preorder);
+        System.out.println("14.5 [-----");
+        printTree(t);
+        System.out.println("14.5 -----]");
     }
 
     // 14.4
@@ -34,6 +42,27 @@ public class Chapter14 {
             }
         }
         return t;
+    }
+
+    // 14.5
+    public static BST<Integer> rebuildBSTFromPreorder(List<Integer> preorder) {
+        rootIdx = 0;
+        return rebuildBSTFromPreorderOnValueRange(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private static BST<Integer> rebuildBSTFromPreorderOnValueRange(
+            List<Integer> preorder, Integer lowerBound, Integer upperBound) {
+        if (rootIdx == preorder.size()) return null;
+
+        Integer root = preorder.get(rootIdx);
+        if (root < lowerBound || root > upperBound) {
+            return null;
+        }
+        ++rootIdx;
+
+        BST<Integer> leftSubtree = rebuildBSTFromPreorderOnValueRange(preorder, lowerBound, root);
+        BST<Integer> rightSubtree = rebuildBSTFromPreorderOnValueRange(preorder, root, upperBound);
+        return new BST<>(root, leftSubtree, rightSubtree);
     }
 
     private static BST<Integer> bstFrom(
