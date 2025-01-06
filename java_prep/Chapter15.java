@@ -8,6 +8,8 @@ public class Chapter15 {
     System.out.println("15.3 -> " + nQueens(4));
     System.out.println("15.4 (swap) -> " + permutationsSwap(new ArrayList<>(List.of(1, 2, 3))));
     System.out.println("15.4 (backtracking) -> " + permutationsBt(new ArrayList<>(List.of(1, 2, 3))));
+    System.out.println("15.5 (backtracking) -> " + generatePowerSetRecursive(List.of(1,2,3)));
+    System.out.println("15.5 (iterative) -> " + generatePowerSetIterative(List.of(1, 2, 3)));
   }
 
   public static List<List<Integer>> computeHanoi(int numRings, int numPegs) {
@@ -93,6 +95,43 @@ public class Chapter15 {
     List<Integer> permutation = new ArrayList<>();
     directedPermutationsBt(A, results, permutation);
     return results;
+  }
+
+  // 15.5
+  public static List<List<Integer>> generatePowerSetRecursive(List<Integer> inputSet) {
+    List<List<Integer>> powerSet = new ArrayList<>();
+    directedPowerSetRecursive(inputSet, 0, new ArrayList<>(), powerSet);
+    return powerSet;
+  }
+
+  public static List<List<Integer>> generatePowerSetIterative(List<Integer> inputSet) {
+    List<List<Integer>> powerSet = new ArrayList<>();
+    for (int i = 0; i < (1 << inputSet.size()); ++i) {
+      int bitArray = i;
+      List<Integer> subset = new ArrayList<>();
+      while (bitArray != 0) {
+        subset.add(inputSet.get(Integer.numberOfTrailingZeros(bitArray)));
+        bitArray &= bitArray - 1;
+      }
+      powerSet.add(subset);
+    }
+    return powerSet;
+  }
+
+  private static void directedPowerSetRecursive(
+          List<Integer> inputSet, int select, List<Integer> selectedSoFar, List<List<Integer>> powerSet) {
+    if (select == inputSet.size()) {
+      powerSet.add(new ArrayList<>(selectedSoFar));
+      return;
+    }
+
+    // Include.
+    selectedSoFar.add(inputSet.get(select));
+    directedPowerSetRecursive(inputSet, select + 1, selectedSoFar, powerSet);
+
+    // Exclude.
+    selectedSoFar.removeLast();
+    directedPowerSetRecursive(inputSet, select + 1, selectedSoFar, powerSet);
   }
 
   private static void directedPermutationsBt(
