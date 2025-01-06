@@ -3,13 +3,33 @@ package java_prep;
 import java.util.*;
 
 public class Chapter15 {
+  private static final int EMPTY_ENTRY = 0;
+
   public static void main(String[] args) {
     System.out.println("15.1 -> " + computeHanoi(3, 3));
     System.out.println("15.3 -> " + nQueens(4));
     System.out.println("15.4 (swap) -> " + permutationsSwap(new ArrayList<>(List.of(1, 2, 3))));
-    System.out.println("15.4 (backtracking) -> " + permutationsBt(new ArrayList<>(List.of(1, 2, 3))));
-    System.out.println("15.5 (backtracking) -> " + generatePowerSetRecursive(List.of(1,2,3)));
+    System.out.println(
+        "15.4 (backtracking) -> " + permutationsBt(new ArrayList<>(List.of(1, 2, 3))));
+    System.out.println("15.5 (backtracking) -> " + generatePowerSetRecursive(List.of(1, 2, 3)));
     System.out.println("15.5 (iterative) -> " + generatePowerSetIterative(List.of(1, 2, 3)));
+
+    // 15.10
+    List<List<Integer>> partialAssignment =
+        new ArrayList<>(
+            List.of(
+                new ArrayList<>(Arrays.asList(5, 3, 0, 0, 7, 0, 0, 0, 0)),
+                new ArrayList<>(Arrays.asList(6, 0, 0, 1, 9, 5, 0, 0, 0)),
+                new ArrayList<>(Arrays.asList(0, 9, 8, 0, 0, 0, 0, 6, 0)),
+                new ArrayList<>(Arrays.asList(8, 0, 0, 0, 6, 0, 0, 0, 3)),
+                new ArrayList<>(Arrays.asList(4, 0, 0, 8, 0, 3, 0, 0, 1)),
+                new ArrayList<>(Arrays.asList(7, 0, 0, 0, 2, 0, 0, 0, 6)),
+                new ArrayList<>(Arrays.asList(0, 6, 0, 0, 0, 0, 2, 8, 0)),
+                new ArrayList<>(Arrays.asList(0, 0, 0, 4, 1, 9, 0, 0, 5)),
+                new ArrayList<>(Arrays.asList(0, 0, 0, 0, 8, 0, 0, 7, 9))));
+    System.out.println("15.10 [---");
+    System.out.println(solveSudoku(partialAssignment));
+    System.out.println("---]");
   }
 
   public static List<List<Integer>> computeHanoi(int numRings, int numPegs) {
@@ -118,8 +138,72 @@ public class Chapter15 {
     return powerSet;
   }
 
+  // 15.10
+  public static boolean solveSudoku(List<List<Integer>> partialAssignment) {
+    if (solvePartialSudoku(0, 0, partialAssignment)) {
+      partialAssignment.forEach(System.out::println);
+      return true;
+    }
+    return false;
+  }
+
+  private static boolean solvePartialSudoku(int i, int j, List<List<Integer>> partialAssignment) {
+    if (i == partialAssignment.size()) {
+      // Start new row
+      i = 0;
+      if (++j == partialAssignment.get(i).size()) {
+        return true; // Entire matrix has been filled without conflict.
+      }
+    }
+
+    // Skip non-empty entries.
+    if (partialAssignment.get(i).get(j) != EMPTY_ENTRY) {
+      return solvePartialSudoku(i + 1, j, partialAssignment);
+    }
+
+    for (int val = 1; val <= partialAssignment.size(); ++val) {
+      if (validToAddVal(partialAssignment, i, j, val)) {
+        partialAssignment.get(i).set(j, val);
+        if (solvePartialSudoku(i + 1, j, partialAssignment)) {
+          return true;
+        }
+      }
+    }
+
+    partialAssignment.get(i).set(j, EMPTY_ENTRY); // Undo assignment for backtracking.
+    return false;
+  }
+
+  private static boolean validToAddVal(
+      List<List<Integer>> partialAssignment, int i, int j, int val) {
+    // Check row constraints.
+    if (partialAssignment.stream().anyMatch(row -> row.get(j) == val)) {
+      return false;
+    }
+
+    // Check column constraints.
+    if (partialAssignment.get(i).contains(val)) {
+      return false;
+    }
+
+    // Check region constraints.
+    int regionSize = (int) Math.sqrt(partialAssignment.size());
+    int I = i / regionSize, J = j / regionSize;
+    for (int a = 0; a < regionSize; ++a) {
+      for (int b = 0; b < regionSize; ++b) {
+        if (val == partialAssignment.get(regionSize * I + a).get(regionSize * J + b)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   private static void directedPowerSetRecursive(
-          List<Integer> inputSet, int select, List<Integer> selectedSoFar, List<List<Integer>> powerSet) {
+      List<Integer> inputSet,
+      int select,
+      List<Integer> selectedSoFar,
+      List<List<Integer>> powerSet) {
     if (select == inputSet.size()) {
       powerSet.add(new ArrayList<>(selectedSoFar));
       return;
@@ -135,9 +219,7 @@ public class Chapter15 {
   }
 
   private static void directedPermutationsBt(
-          List<Integer> A,
-          List<List<Integer>> result,
-          List<Integer> permutation) {
+      List<Integer> A, List<List<Integer>> result, List<Integer> permutation) {
     if (permutation.size() == A.size()) {
       result.add(List.copyOf(permutation));
     }
@@ -150,12 +232,9 @@ public class Chapter15 {
       directedPermutationsBt(A, result, permutation);
       permutation.removeLast();
     }
-
-
   }
 
-  private static void directedPermutationsSwap(
-          int i, List<Integer> A, List<List<Integer>> result) {
+  private static void directedPermutationsSwap(int i, List<Integer> A, List<List<Integer>> result) {
     if (i == A.size() - 1) {
       result.add(new ArrayList<>(A));
       return;
