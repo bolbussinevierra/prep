@@ -1,7 +1,6 @@
 package java_prep;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Chapter16 {
   public static void main(String[] args) {
@@ -11,15 +10,19 @@ public class Chapter16 {
     System.out.println("16.2 -> " + editDistance("Carthorse", "Orchestra"));
     // 16.3
     System.out.println("16.3 -> " + numberOfWays(5, 5));
+    // 16.5
+    List<Integer> pattern = List.of(1, 3, 4, 6);
+    List<List<Integer>> grid = List.of(List.of(1, 2, 3), List.of(3, 4, 5), List.of(5, 6, 7));
+    System.out.println("16.5 -> " + isPatternContainedInGrid(grid, pattern));
 
     // 16.6
-    List<Item> items = List.of(
-      new Item(5, 60),
-      new Item(3, 50),
-      new Item(4, 70),
-      new Item(2, 30)
-    );
+    List<Item> items = List.of(new Item(5, 60), new Item(3, 50), new Item(4, 70), new Item(2, 30));
     System.out.println("16.6 -> " + optimumKnapsack(items, 5));
+    // 16.7
+    System.out.println(
+        "16.7 -> "
+            + decomposeIntoDictionaryWords(
+                "amanaplanacanal", Set.of("a", "man", "plan", "canal", "foo")));
   }
 
   // 16.1
@@ -82,6 +85,49 @@ public class Chapter16 {
     return numberOfWays[x][y];
   }
 
+  // 16.5
+  public static boolean isPatternContainedInGrid(List<List<Integer>> grid, List<Integer> pattern) {
+    for (int i = 0; i < grid.size(); ++i) {
+      for (int j = 0; j < grid.get(i).size(); ++j) {
+        if (isPatternSuffixContainedStartingAtXY(
+            grid, i, j, pattern, /* offset= */ 0, new HashSet<>())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private static boolean isPatternSuffixContainedStartingAtXY(
+      List<List<Integer>> grid,
+      int x,
+      int y,
+      List<Integer> pattern,
+      int offset,
+      Set<Attempt> previousAttempts) {
+    if (pattern.size() == offset) return true;
+
+    if (x < 0
+        || x >= grid.size()
+        || y < 0
+        || y >= grid.get(x).size()
+        || previousAttempts.contains(new Attempt(x, y, offset))
+        || !grid.get(x).get(y).equals(pattern.get(offset))) {
+      return false;
+    }
+
+    for (List<Integer> nextXY :
+        List.of(List.of(x - 1, y), List.of(x + 1, y), List.of(x, y - 1), List.of(x, y + 1))) {
+      if (isPatternSuffixContainedStartingAtXY(
+          grid, nextXY.get(0), nextXY.get(1), pattern, offset + 1, previousAttempts)) {
+        return true;
+      }
+    }
+
+    previousAttempts.add(new Attempt(x, y, offset));
+    return false;
+  }
+
   // 16.6
   public static int optimumKnapsack(List<Item> items, int capacity) {
     // V[i][j] holds the optimum value when we chose from items i and have a
@@ -93,7 +139,40 @@ public class Chapter16 {
     return optimumKnapsackHelper(items, items.size() - 1, capacity, V);
   }
 
-  public static int optimumKnapsackHelper(
+  // 16.7
+  public static List<String> decomposeIntoDictionaryWords(String domain, Set<String> dict) {
+    // lastLength[i] != -1 indicates domain.substring(0, i + 1) has a valid decomposition, and the
+    // length of the last string in the decomposition will be lastLength[i].
+    int[] lastLength = new int[domain.length()];
+    Arrays.fill(lastLength, -1);
+
+    for (int i = 0; i < domain.length(); ++i) {
+      if (dict.contains(domain.substring(0, i + 1))) {
+        lastLength[i] = i + 1;
+        continue;
+      }
+
+      for (int j = 0; j < i; ++j) {
+        if (lastLength[j] != -1 && dict.contains(domain.substring(j + 1, i + 1))) {
+          lastLength[i] = i - j;
+          break;
+        }
+      }
+    }
+
+    List<String> decompositions = new ArrayList<>();
+    if (lastLength[lastLength.length - 1] != -1) {
+      int idx = domain.length() - 1;
+      while (idx >= 0) {
+        decompositions.add(domain.substring(idx + 1 - lastLength[idx], idx + 1));
+        idx -= lastLength[idx];
+      }
+      Collections.reverse(decompositions);
+    }
+    return decompositions;
+  }
+
+  private static int optimumKnapsackHelper(
       List<Item> items, int k, int availableCapacity, int[][] V) {
     if (k < 0) {
       // No items can be chosen.
@@ -113,4 +192,6 @@ public class Chapter16 {
   }
 
   public record Item(int weight, int value) {}
+
+  public record Attempt(int x, int y, int offset) {}
 }
