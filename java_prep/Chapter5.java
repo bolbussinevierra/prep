@@ -28,6 +28,11 @@ public class Chapter5 {
     // 5.9
     System.out.println("5.9 -> " + generatePrimes(50));
 
+    // 5.10
+    List<Character> arr4 = Arrays.asList('a', 'b', 'c', 'd');
+    applyPermutation(Arrays.asList(2, 0, 1, 3), arr4);
+    System.out.println("5.10 -> " + arr4);
+
     // 5.12
     ArrayList<Integer> arr3 = new ArrayList<>(Arrays.asList(3, 5, 7, 11));
     randomSampling(3, arr3);
@@ -149,6 +154,16 @@ public class Chapter5 {
       }
     }
     return primes;
+  }
+
+  // 5.10
+  public static void applyPermutation(List<Integer> perm, List<Character> A) {
+    for (int i = 0; i < A.size(); ++i) {
+      while (perm.get(i) != i) {
+        Collections.swap(A, i, perm.get(i));
+        Collections.swap(perm, i, perm.get(i));
+      }
+    }
   }
 
   public static List<Integer> dutchFlags(int pivotIndex, List<Integer> A) {
