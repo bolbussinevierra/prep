@@ -101,13 +101,9 @@ public class Chapter5 {
     List<Integer> result = new ArrayList<>(Collections.nCopies(num1.size() + num2.size(), 0));
     for (int i = num1.size() - 1; i >= 0; --i) {
       for (int j = num2.size() - 1; j >= 0; --j) {
-        int resIdx = i + j + 1;  // multiply the current digits.
-        int resCarryIdx = i + j; // carry over result from resIdx.
-        int a = num1.get(i);
-        int b = num2.get(j);
-        result.set(resIdx, result.get(resIdx) + a * b);
-        result.set(resCarryIdx, result.get(resCarryIdx) + result.get(resIdx) / 10);
-        result.set(resIdx, result.get(resIdx) % 10);
+        result.set(i + j + 1, result.get(i + j + 1) + num1.get(i) * num2.get(j));
+        result.set(i + j, result.get(i + j) + result.get(i + j + 1) / 10);
+        result.set(i + j + 1, result.get(i + j + 1) % 10);
       }
     }
     // Remove the leading zeroes.
