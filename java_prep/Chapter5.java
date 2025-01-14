@@ -39,7 +39,7 @@ public class Chapter5 {
     System.out.println("5.12 -> " + arr3);
 
     // 5.15
-    System.out.println("5.15 -> " + randomSubset(10, 5));
+    System.out.println("5.15 -> " + randomSubset(6, 5));
 
     // 5.17
     ArrayList<List<Integer>> sudoku =
