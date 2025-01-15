@@ -38,6 +38,9 @@ public class Chapter7 {
         // 7.10
         ListNode<Integer> list4 = makeLinkedList(new int[]{0, 1, 2, 3, 4, 5, 6, 7});
         printList("7.10", evenOddMerge(list4));
+
+        ListNode<Integer> list5 = makeLinkedList(new int[]{2, 3, 5, 3, 2});
+        System.out.println("7.11 -> " + isLinkedListPalindrome(list5));
     }
 
     private static ListNode<Integer> firstOverlappingNode(
@@ -118,6 +121,32 @@ public class Chapter7 {
         return evenDummyHead.next;
     }
 
+    // 7.11
+    public static boolean isLinkedListPalindrome(ListNode<Integer> L) {
+        ListNode<Integer> slow = L, fast = L;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        ListNode<Integer> firstHalfIter = L;
+        ListNode<Integer> secondHalfIter = reverseList(slow);
+        ListNode<Integer> reversedSecondHalf = secondHalfIter;  // to help restore the reversal.
+        while (secondHalfIter != null && firstHalfIter != null) {
+            if (!secondHalfIter.data.equals(firstHalfIter.data)) {
+                // Restore reversal.
+                reverseList(reversedSecondHalf);
+                return false;
+            }
+            secondHalfIter = secondHalfIter.next;
+            firstHalfIter = firstHalfIter.next;
+        }
+
+        // restore reversed list.
+        reverseList(reversedSecondHalf);
+        return true;
+    }
+
     public static ListNode<Integer> makeLinkedList(int[] values) {
         ListNode<Integer> current = new ListNode<>(0, null);
         ListNode<Integer> head = current;
@@ -140,6 +169,22 @@ public class Chapter7 {
             l = l.next;
         }
         System.out.print("]\n");
+    }
+
+    private static ListNode<Integer> reverseList(ListNode<Integer> l) {
+        if (l.next == null) return l;
+
+        ListNode<Integer> prev = null;
+        ListNode<Integer> curr = l;
+        ListNode<Integer> next = null;
+
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
     }
 
     private static ListNode<Integer> removeKthLast(ListNode<Integer> l, int k) {
