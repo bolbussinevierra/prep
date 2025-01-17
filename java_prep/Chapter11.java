@@ -21,6 +21,18 @@ public class Chapter11 {
     // 11.5
     System.out.println("11.5 -> " + squareRoot(4.4));
 
+    // 11.6
+    List<List<Integer>> matrix =
+        List.of(
+            List.of(-1, 2, 4, 4, 6),
+            List.of(1, 5, 5, 9, 21),
+            List.of(3, 6, 6, 9, 22),
+            List.of(3, 6, 8, 10, 24),
+            List.of(6, 8, 9, 12, 25),
+            List.of(8, 10, 12, 13, 40));
+    System.out.println("11.6 (a) -> " + matrixSearch(matrix, 7));
+    System.out.println("11.6 (b) -> " + matrixSearch(matrix, 8));
+
     // 11.8: Uses neetcode version of the solution not the one in the book
     // TODO: can you make work with random()
     ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
@@ -213,12 +225,6 @@ public class Chapter11 {
         : (diff > EPSILON ? CompareResult.LARGER : CompareResult.EQUAL);
   }
 
-  private enum CompareResult {
-    SMALLER,
-    EQUAL,
-    LARGER
-  }
-
   public static DuplicateAndMissing findDuplicateMissing(List<Integer> A) {
     // Compute the XOR of all numbers from 0 to |A| - 1 and all entries in A.
     // This cancels out all elements except the duplicated one (d) or missing one (m).
@@ -227,13 +233,16 @@ public class Chapter11 {
       xorOfMissingAndDupe ^= i ^ A.get(i);
     }
 
-    // xorOfMissingAndDupe has a 1 somewhere since d and m are distinct. Isolate the least significant 1 (there
+    // xorOfMissingAndDupe has a 1 somewhere since d and m are distinct. Isolate the least
+    // significant 1 (there
     // could be several
-    int leastDiffBit = xorOfMissingAndDupe & (~(xorOfMissingAndDupe - 1));
+    @SuppressWarnings("PointlessBitwiseExpression")
+    int leastDiffBit = xorOfMissingAndDupe & ~(xorOfMissingAndDupe - 1);
     int missOrDup = 0;
 
     for (int i = 0; i < A.size(); ++i) {
-      // Cancel out all numbers in the range that shame the same leastDiffBit (wont include the duplicate) and
+      // Cancel out all numbers in the range that shame the same leastDiffBit (wont include the
+      // duplicate) and
       // all the present numbers in the array (wont include the missing one).
       if ((i & leastDiffBit) != 0) {
         // Cancel out numbers in the range which share the same leastDiffBit.
@@ -248,8 +257,27 @@ public class Chapter11 {
 
     // This is either the missing element or duplicated number, one more pass figures it out.
     return A.contains(missOrDup)
-            ? new DuplicateAndMissing(missOrDup, missOrDup ^ xorOfMissingAndDupe)
-            : new DuplicateAndMissing(missOrDup ^ xorOfMissingAndDupe, missOrDup);
+        ? new DuplicateAndMissing(missOrDup, missOrDup ^ xorOfMissingAndDupe)
+        : new DuplicateAndMissing(missOrDup ^ xorOfMissingAndDupe, missOrDup);
+  }
+
+  // 11.6
+  public static boolean matrixSearch(List<List<Integer>> A, int val) {
+    // Start from the top right corner.
+    int r = 0, c = A.getFirst().size() - 1;
+
+    while (r < A.size() && c >= 0) {
+      if (A.get(r).get(c) == val) return true;
+      else if (A.get(r).get(c) < val) ++r; // Eliminate row.
+      else if (A.get(r).get(c) > val) --c; // Eliminate col.
+    }
+    return false;
+  }
+
+  private enum CompareResult {
+    SMALLER,
+    EQUAL,
+    LARGER
   }
 
   public record DuplicateAndMissing(int duplicate, int missing) {
