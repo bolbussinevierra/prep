@@ -33,6 +33,10 @@ public class Chapter11 {
     System.out.println("11.6 (a) -> " + matrixSearch(matrix, 7));
     System.out.println("11.6 (b) -> " + matrixSearch(matrix, 8));
 
+    // 11.7
+    List<Integer> E = List.of(3, 2, 5, 1, 2, 4);
+    System.out.println("11.7 -> " + getMinMax(E));
+
     // 11.8: Uses neetcode version of the solution not the one in the book
     // TODO: can you make work with random()
     ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
@@ -274,6 +278,28 @@ public class Chapter11 {
     return false;
   }
 
+  // 11.7
+  public static MinMax getMinMax(List<Integer> A) {
+    if (A.size() <= 1) return new MinMax(A.getFirst(), A.getFirst());
+
+    MinMax globalMinMax = MinMax.build(A.get(0), A.get(1));
+
+    for (int i = 2; i < A.size(); i += 2) {
+      MinMax localMinMax =
+              new MinMax(Math.min(A.get(i), A.get(i + 1)), Math.max(A.get(i), A.get(i + 1)));
+      globalMinMax = new MinMax(
+              Math.min(localMinMax.min(), globalMinMax.min()),
+              Math.max(localMinMax.max(), globalMinMax.max()));
+    }
+
+    if (A.size() %2 == 1) {
+      globalMinMax = new MinMax(
+              Math.min(globalMinMax.min(), A.getLast()),
+              Math.max(globalMinMax.max(), A.getLast()));
+    }
+    return globalMinMax;
+  }
+
   private enum CompareResult {
     SMALLER,
     EQUAL,
@@ -284,6 +310,12 @@ public class Chapter11 {
     @Override
     public String toString() {
       return "[" + duplicate + ", " + missing + "]";
+    }
+  }
+
+  public record MinMax(int min, int max){
+    public static MinMax build(int a, int b) {
+      return a < b ? new MinMax(a, b) : new MinMax(b, a);
     }
   }
 }
