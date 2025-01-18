@@ -28,6 +28,10 @@ public class Chapter12 {
                                           "apple", "dog", "banana", "apple", "cat", "dog");
         Set<String> cover = Set.of("banana", "cat");
         System.out.println("12.6 -> " + findSmallestSubarrayCoveringSet(paragraph2, cover));
+
+        // 12.9
+        List<Integer> A = List.of(10, 5, 3, 11, 6, 100, 4);
+        System.out.println("12.9 -> " + longestContainedRange(A));
     }
 
     // 12.1
@@ -167,5 +171,32 @@ public class Chapter12 {
         public boolean longerThan(int start, int end) {
             return this.end - this.start + 1 > end - start + 1;
         }
+    }
+
+    // 12.9
+    public static int longestContainedRange(List<Integer> A) {
+        Set<Integer> unprocessed = new HashSet<>(A);
+
+        int maxIntervalSize = 0;
+        while (!unprocessed.isEmpty()) {
+            int i = unprocessed.iterator().next();
+            unprocessed.remove(i);
+
+            int lowerBound = i - 1;
+            while (unprocessed.contains(lowerBound)) {
+                unprocessed.remove(lowerBound);
+                --lowerBound;
+            }
+
+            int upperBound = i + 1;
+            while (unprocessed.contains(upperBound)) {
+                unprocessed.remove(upperBound);
+                ++upperBound;
+            }
+
+            // NOTE: lowerbound and upperbound both terminate the above loops off by 1
+            maxIntervalSize = Math.max(upperBound - lowerBound - 1, maxIntervalSize);
+        }
+        return maxIntervalSize;
     }
 }
