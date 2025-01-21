@@ -1,10 +1,8 @@
 package java_prep;
 
 import java_prep.Chapter7.ListNode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Chapter13 {
@@ -52,6 +50,19 @@ public class Chapter13 {
     ));
     System.out.println("13.8 -> " + unionOfIntervals(intervals));
 
+    // 13.9
+    List<Person> people = Arrays.asList(
+            new Person(14, "Greg"),
+            new Person(12, "John"),
+            new Person(11, "Andy"),
+            new Person(13, "Jim"),
+            new Person(12, "Phil"),
+            new Person(13, "Bob"),
+            new Person(13, "Chip"),
+            new Person(14, "Tim"));
+    groupByAge(people);
+    System.out.println("13.9 -> " + people);
+
     // 13.11
     ListNode<Integer> list = Chapter7.makeLinkedList(new int[]{10, 8, 9, 6, 7, 4, 5, 1, 3, 2});
     Chapter7.printList("13.11 ", stableSort(list));
@@ -90,7 +101,7 @@ public class Chapter13 {
   // 13.6
   public static int findMaxSimultaneousEvents(List<Event> A) {
     // Builds an array of all endpoints
-    List<Endpoint> events =
+    @SuppressWarnings("FuseStreamOperations") List<Endpoint> events =
         A.stream()
             .map(e -> List.of(new Endpoint(e.start, true), new Endpoint(e.finish, false)))
             .flatMap(List::stream)
@@ -170,6 +181,38 @@ public class Chapter13 {
     return result;
   }
 
+  // 13.9
+  public static void groupByAge(List<Person> people) {
+    Map<Integer, Integer> ageToCount = new HashMap<>();
+
+    for (Person p : people) {
+      ageToCount.put(p.age(), ageToCount.getOrDefault(p.age(), 0) + 1);
+    }
+
+    int offset = 0;
+    Map<Integer, Integer> ageToOffset = new HashMap<>();
+    for (Map.Entry<Integer, Integer> kc : ageToCount.entrySet()) {
+      ageToOffset.put(kc.getKey(), offset);
+      offset += kc.getValue();
+    }
+
+    while (!ageToOffset.isEmpty()) {
+      Map.Entry<Integer, Integer> from = ageToOffset.entrySet().iterator().next();
+      Integer fromIndex = from.getValue();
+      Integer toAge = people.get(fromIndex).age;  // object sitting where we want to move.
+      Integer toIndex = ageToOffset.get(toAge);
+      Collections.swap(people, from.getValue(), toIndex);
+      // Use ageToCount to see when we are finished with a particular age.
+      Integer count = ageToCount.get(toAge) - 1;
+      ageToCount.put(toAge, count);
+      if (count > 0) {
+        ageToOffset.put(toAge, toIndex + 1);  // shift offset forward by 1;
+      } else {
+        ageToOffset.remove(toAge);
+      }
+    }
+  }
+
   // 13.11
   public static ListNode<Integer> stableSort(ListNode<Integer> L) {
     // Base case; L is empty or a single node, nothing to do.
@@ -192,6 +235,8 @@ public class Chapter13 {
     // Merge the sorted lists, recursively.
     return Chapter7.mergeSorted(stableSort(L), stableSort(slow));
   }
+
+  public record Person(int age, String name) {}
 
   public record Event(String tag, int start, int finish) {}
 
