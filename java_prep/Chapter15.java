@@ -14,6 +14,8 @@ public class Chapter15 {
     System.out.println("15.5 (backtracking) -> " + generatePowerSetRecursive(List.of(1, 2, 3)));
     System.out.println("15.5 (iterative) -> " + generatePowerSetIterative(List.of(1, 2, 3)));
 
+    System.out.println("15.7 -> " + generateParens(3));
+
     // 15.10
     List<List<Integer>> partialAssignment =
         new ArrayList<>(
@@ -136,6 +138,28 @@ public class Chapter15 {
       powerSet.add(subset);
     }
     return powerSet;
+  }
+
+  // 15.7
+  public static List<String> generateParens(int numPairs) {
+    List<String> result = new ArrayList<>();
+    directedGenerateParens(numPairs, numPairs, "", result);
+    return result;
+  }
+
+  private static void directedGenerateParens(
+      int openRemaining, int closedRemaining, String generated, List<String> result) {
+    if (closedRemaining == 0) {
+      result.add(generated);
+      return;
+    }
+    if (openRemaining > 0) {
+      directedGenerateParens(openRemaining - 1, closedRemaining, generated + "(", result);
+    }
+
+    if (closedRemaining > openRemaining) {
+      directedGenerateParens(openRemaining, closedRemaining - 1, generated + ")", result);
+    }
   }
 
   // 15.10
