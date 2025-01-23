@@ -18,16 +18,16 @@ public class Chapter15 {
 
     // 15.10
     List<List<Integer>> partialAssignment =
-            List.of(
-                Arrays.asList(5, 3, 0, 0, 7, 0, 0, 0, 0),
-                Arrays.asList(6, 0, 0, 1, 9, 5, 0, 0, 0),
-                Arrays.asList(0, 9, 8, 0, 0, 0, 0, 6, 0),
-                Arrays.asList(8, 0, 0, 0, 6, 0, 0, 0, 3),
-                Arrays.asList(4, 0, 0, 8, 0, 3, 0, 0, 1),
-                Arrays.asList(7, 0, 0, 0, 2, 0, 0, 0, 6),
-                Arrays.asList(0, 6, 0, 0, 0, 0, 2, 8, 0),
-                Arrays.asList(0, 0, 0, 4, 1, 9, 0, 0, 5),
-                Arrays.asList(0, 0, 0, 0, 8, 0, 0, 7, 9));
+        List.of(
+            Arrays.asList(5, 3, 0, 0, 7, 0, 0, 0, 0),
+            Arrays.asList(6, 0, 0, 1, 9, 5, 0, 0, 0),
+            Arrays.asList(0, 9, 8, 0, 0, 0, 0, 6, 0),
+            Arrays.asList(8, 0, 0, 0, 6, 0, 0, 0, 3),
+            Arrays.asList(4, 0, 0, 8, 0, 3, 0, 0, 1),
+            Arrays.asList(7, 0, 0, 0, 2, 0, 0, 0, 6),
+            Arrays.asList(0, 6, 0, 0, 0, 0, 2, 8, 0),
+            Arrays.asList(0, 0, 0, 4, 1, 9, 0, 0, 5),
+            Arrays.asList(0, 0, 0, 0, 8, 0, 0, 7, 9));
     System.out.println("15.10 [---");
     System.out.println(solveSudoku(partialAssignment));
     System.out.println("---]");
