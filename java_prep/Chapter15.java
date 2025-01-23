@@ -18,17 +18,16 @@ public class Chapter15 {
 
     // 15.10
     List<List<Integer>> partialAssignment =
-        new ArrayList<>(
             List.of(
-                new ArrayList<>(Arrays.asList(5, 3, 0, 0, 7, 0, 0, 0, 0)),
-                new ArrayList<>(Arrays.asList(6, 0, 0, 1, 9, 5, 0, 0, 0)),
-                new ArrayList<>(Arrays.asList(0, 9, 8, 0, 0, 0, 0, 6, 0)),
-                new ArrayList<>(Arrays.asList(8, 0, 0, 0, 6, 0, 0, 0, 3)),
-                new ArrayList<>(Arrays.asList(4, 0, 0, 8, 0, 3, 0, 0, 1)),
-                new ArrayList<>(Arrays.asList(7, 0, 0, 0, 2, 0, 0, 0, 6)),
-                new ArrayList<>(Arrays.asList(0, 6, 0, 0, 0, 0, 2, 8, 0)),
-                new ArrayList<>(Arrays.asList(0, 0, 0, 4, 1, 9, 0, 0, 5)),
-                new ArrayList<>(Arrays.asList(0, 0, 0, 0, 8, 0, 0, 7, 9))));
+                Arrays.asList(5, 3, 0, 0, 7, 0, 0, 0, 0),
+                Arrays.asList(6, 0, 0, 1, 9, 5, 0, 0, 0),
+                Arrays.asList(0, 9, 8, 0, 0, 0, 0, 6, 0),
+                Arrays.asList(8, 0, 0, 0, 6, 0, 0, 0, 3),
+                Arrays.asList(4, 0, 0, 8, 0, 3, 0, 0, 1),
+                Arrays.asList(7, 0, 0, 0, 2, 0, 0, 0, 6),
+                Arrays.asList(0, 6, 0, 0, 0, 0, 2, 8, 0),
+                Arrays.asList(0, 0, 0, 4, 1, 9, 0, 0, 5),
+                Arrays.asList(0, 0, 0, 0, 8, 0, 0, 7, 9));
     System.out.println("15.10 [---");
     System.out.println(solveSudoku(partialAssignment));
     System.out.println("---]");
