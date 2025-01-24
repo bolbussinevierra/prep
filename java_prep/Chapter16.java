@@ -23,6 +23,8 @@ public class Chapter16 {
         "16.7 -> "
             + decomposeIntoDictionaryWords(
                 "amanaplanacanal", Set.of("a", "man", "plan", "canal", "foo")));
+    // 16.12
+    System.out.println("16.12 -> " + longestNonDecreasingSubsequence(List.of(0, 8, 4, 12, 2, 10, 6, 14, 1, 9)));
   }
 
   // 16.1
@@ -170,6 +172,21 @@ public class Chapter16 {
       Collections.reverse(decompositions);
     }
     return decompositions;
+  }
+
+  // 16.12
+  private static int longestNonDecreasingSubsequence(List<Integer> A) {
+    Integer[] maxLength = new Integer[A.size()];
+    Arrays.fill(maxLength, 1);
+
+    for (int i = 1; i < A.size(); ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (A.get(i) >= A.get(j)) {
+          maxLength[i] = Math.max(maxLength[i], maxLength[j] + 1);
+        }
+      }
+    }
+    return Collections.max(List.of(maxLength));
   }
 
   private static int optimumKnapsackHelper(
