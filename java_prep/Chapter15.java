@@ -31,6 +31,9 @@ public class Chapter15 {
     System.out.println("15.10 [---");
     System.out.println(solveSudoku(partialAssignment));
     System.out.println("---]");
+
+    // 15.11
+    grayCode(3);
   }
 
   public static List<List<Integer>> computeHanoi(int numRings, int numPegs) {
@@ -169,6 +172,25 @@ public class Chapter15 {
     }
     return false;
   }
+
+  // 15.11
+  public static List<Integer> grayCode(int numBits) {
+    if (numBits == 0) return new ArrayList<>(List.of(0));
+
+    // These implicitly begin with 0 at bit-index (numBIts - 1)
+    List<Integer> grayCodeNumBitsMinus1 = grayCode(numBits - 1);
+
+    int leadingBitsOne = 1 << (numBits - 1);
+    // Process the reverse order to achieve reflection of grayCodeNumBitsMinus1
+    for (int i = grayCodeNumBitsMinus1.size() - 1; i >= 0; --i) {
+      grayCodeNumBitsMinus1.add(leadingBitsOne | grayCodeNumBitsMinus1.get(i));
+    }
+    System.out.println("numBits = " + numBits);
+    grayCodeNumBitsMinus1.forEach(i -> System.out.print(Integer.toBinaryString(i) + " "));
+    System.out.print("\n");
+    return grayCodeNumBitsMinus1;
+  }
+
 
   private static boolean solvePartialSudoku(int i, int j, List<List<Integer>> partialAssignment) {
     if (i == partialAssignment.size()) {
