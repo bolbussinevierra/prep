@@ -1,8 +1,6 @@
 package java_prep;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Chapter17 {
   public static void main(String[] args) {
@@ -25,6 +23,9 @@ public class Chapter17 {
     System.out.println(
         "17.7 -> "
             + getMaxTrappedWater(List.of(1, 2, 1, 3, 4, 4, 5, 6, 2, 1, 3, 1, 3, 2, 1, 2, 4, 1)));
+
+    // 17.8
+    System.out.println("17.8 -> " + calculateLargestRectangle(List.of(1, 4, 2, 5, 6, 3, 2, 6, 6, 5, 2, 1, 3)));
   }
 
   //    private static int findAmpleCity(List<Integer> gallons, List<Integer> distances, int mpg) {
@@ -107,5 +108,27 @@ public class Chapter17 {
       }
     }
     return maxWater;
+  }
+
+  // 17.8
+  public static int calculateLargestRectangle(List<Integer> heights) {
+    Deque<Integer> pillarIndices = new ArrayDeque<>();
+    int maxRectangleArea = 0;
+
+    // Iterate to heights.size() instead of heights.size() - i, to uniformly handle computation by
+    // rectangle area calculation.
+    for (int i = 0; i <= heights.size(); ++i) {
+      while (!pillarIndices.isEmpty() && isNewPillarOrEnd(heights, i, pillarIndices.peekFirst())) {
+        int height = heights.get(pillarIndices.removeFirst());
+        int width = pillarIndices.isEmpty() ? i : i - pillarIndices.peekFirst() - 1;
+        maxRectangleArea = Math.max(maxRectangleArea, height * width);
+      }
+      pillarIndices.addFirst(i);
+    }
+    return maxRectangleArea;
+  }
+
+  private static boolean isNewPillarOrEnd(List<Integer> heights, int currIdx, int lastPillarIdx) {
+    return currIdx >= heights.size() || heights.get(lastPillarIdx) >= heights.get(currIdx);
   }
 }
