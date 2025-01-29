@@ -24,6 +24,17 @@ public class Chapter18 {
     }
     System.out.println("-------------" );
 
+    // 18.5
+    Vertex one = new Vertex(1);
+    Vertex two = new Vertex(2);
+    Vertex three = new Vertex(3);
+    one.edges.add(two);
+    two.edges.add(three);
+    three.edges.add(one);
+
+    Vertex cloned = cloneGraph(one);
+    System.out.println("18.5 -> " + cloned.edges + " " + cloned.edges.getFirst().edges);
+
     // 18.7
     Set<String> D = new HashSet<>(List.of("bat", "cot", "dog", "dag", "dot", "cat"));
     String s = "cat";
@@ -108,6 +119,28 @@ public class Chapter18 {
     }
   }
 
+  // 18.5
+  public static Vertex cloneGraph(Vertex graph) {
+    if (graph == null) return null;
+    Map<Vertex, Vertex> vertexMap = new HashMap<>();
+    Queue<Vertex> q = new ArrayDeque<>();
+
+    q.add(graph);
+    vertexMap.put(graph, new Vertex(graph.label));
+
+    while (!q.isEmpty()) {
+      Vertex v = q.remove();
+      for (Vertex e : v.edges) {
+        if (vertexMap.putIfAbsent(e, new Vertex(e.label)) == null) {
+          q.add(e);
+        }
+        // Copy edge.
+        vertexMap.get(v).edges.add(vertexMap.get(e));
+      }
+    }
+    return vertexMap.get(graph);
+  }
+
   // 18.7
   public static int transformString(Set<String> D, String s, String t) {
     Set<String> unvisited = new HashSet<>(D);
@@ -174,6 +207,16 @@ public class Chapter18 {
   public enum Color {
     WHITE,
     BLACK
+  }
+
+  public static class Vertex {
+    public int label;
+    public List<Vertex> edges;
+
+    public Vertex(int label) {
+      this.label = label;
+      edges = new ArrayList<>();
+    }
   }
 
   public record Coordinate(int x, int y) {}
