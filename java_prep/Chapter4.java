@@ -5,6 +5,12 @@ public class Chapter4 {
     // 4.3
     System.out.println(
         "4.3 -> " + Long.toBinaryString(12L) + " -> " + Long.toBinaryString(reverseBits(12L)));
+    // 4.7
+    for (int i = 1; i <= 5; ++i) {
+      System.out.println("4.7 -> " + power(4.0, i) + " " + powerIter(4.0, i));
+      System.out.println("4.7 -> " + power(4.0, -i) + " " + powerIter(4.0, -i));
+    }
+
     // 4.8
     System.out.println("4.8 -> " + reverse(-4326));
     // 4.9
@@ -14,6 +20,37 @@ public class Chapter4 {
     Rect r1 = new Rect(2, 1, 2, 2);
     Rect r2 = new Rect(1, 1, 2, 1);
     System.out.println("4.11 -> " + intersectRectange(r1, r2));
+  }
+
+  // 4.7
+  public static double power(double x, int power) {
+    if (x == 0) return 0;
+    if (power == 0) return 1;
+    if (power == 1) return x;
+
+    double result = power(x*x, Math.abs(power/2));
+    // Account for odd power (since odd does not divide cleanly by 2)
+    result = power % 2 == 0 ? result : x * result;
+    // Negative power?
+    return power > 0 ? result : 1/result;
+  }
+
+  public static double powerIter(double x, int power) {
+    if (power < 0) {
+      x = 1/x;
+      power = Math.abs(power);
+    }
+    double result = 1.0;
+
+    while (power != 0) {
+      if (power % 2 == 1) {
+        result *= x;
+      }
+      x *= x;
+      power /= 2;
+    }
+
+    return result;
   }
 
   // 4.8
