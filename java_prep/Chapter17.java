@@ -1,6 +1,7 @@
 package java_prep;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Chapter17 {
   public static void main(String[] args) {
@@ -14,10 +15,10 @@ public class Chapter17 {
     List<String> e = List.of("b", "a", "c", "a", "a", "b", "a", "a", "c", "a");
     System.out.println("17.5 -> " + majorityElement(e.iterator()));
 
-    //        // 17.6
-    //        List<Integer> g = List.of(50, 20, 5, 30, 25, 10 ,10);
-    //        List<Integer> d = List.of(900, 600, 200, 400, 600, 200, 100);
-    //        System.out.println("17.6 -> " + findAmpleCity(g, d, 20));
+    // 17.6
+    List<Integer> g = List.of(50, 20, 5, 30, 25, 10, 10);
+    List<Integer> d = List.of(900, 600, 200, 400, 600, 200, 100);
+    System.out.println("17.6 -> " + findAmpleCity(g, d, 20));
 
     // 17.7
     System.out.println(
@@ -25,27 +26,37 @@ public class Chapter17 {
             + getMaxTrappedWater(List.of(1, 2, 1, 3, 4, 4, 5, 6, 2, 1, 3, 1, 3, 2, 1, 2, 4, 1)));
 
     // 17.8
-    System.out.println("17.8 -> " + calculateLargestRectangle(List.of(1, 4, 2, 5, 6, 3, 2, 6, 6, 5, 2, 1, 3)));
+    System.out.println(
+        "17.8 -> " + calculateLargestRectangle(List.of(1, 4, 2, 5, 6, 3, 2, 6, 6, 5, 2, 1, 3)));
   }
 
-  //    private static int findAmpleCity(List<Integer> gallons, List<Integer> distances, int mpg) {
-  //        List<Integer> cost = IntStream.range(0, gallons.size())
-  //                .mapToObj(i -> gallons.get(i) - (distances.get(i)/mpg))
-  //                .collect(Collectors.toList());
-  //
-  //        int numCities = gallons.size();
-  //        int remainingGas = 0;
-  //        int currentSum = 0;
-  //        int ampleCity = -1;
-  //        for (int i = 0; i < numCities; ++i) {
-  //            remainingGas += gallons.get(i) - cost.get(i);
-  //            if (remainingGas < currentSum) {
-  //                currentSum = remainingGas ;
-  //                ampleCity = i+1;
-  //            }
-  //        }
-  //        return ampleCity;
-  //    }
+  private static int findAmpleCity(List<Integer> gallons, List<Integer> distances, int mpg) {
+    // Cost to get to i+1 city from i
+    List<Integer> cost =
+        IntStream.range(0, gallons.size())
+            .mapToObj(i -> distances.get(i) / mpg)
+            .toList();
+
+    // Ensure there is a solution (total gas must at least be as much as total cost).
+    int totalGas = gallons.stream().reduce(Integer::sum).orElse(0);
+    int totalCost = cost.stream().reduce(Integer::sum).orElse(0);
+    if (totalGas == 0 || totalCost == 0 || totalGas < totalCost ) return -1;
+
+    System.out.println("gas:  " + gallons);
+    System.out.println("cost: " + cost);
+    int numCities = gallons.size();
+    int remainingGas = 0;
+    int ampleCity = -1;
+    for (int i = 0; i < numCities; ++i) {
+      remainingGas += gallons.get(i) - cost.get(i);
+      if (remainingGas < 0) {
+        remainingGas = 0;
+        ampleCity = i + 1;
+      }
+    }
+    return ampleCity;
+  }
+
   private static boolean hasTwoSum(List<Integer> a, int s) {
     HashSet<Integer> prev = new HashSet<>();
     for (int i : a) {
