@@ -1,8 +1,6 @@
 package java_prep;
 
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -17,6 +15,10 @@ public class Chapter14 {
     List<Integer> preorder = List.of(43, 23, 37, 29, 31, 41, 47, 53);
     BST<Integer> t = rebuildBSTFromPreorder(preorder);
     printTree("14.5", t);
+
+    // 14.7
+    System.out.println("14.7 (klogk)  -> " + generateFirstKABSqrt(10));
+    System.out.println("14.7 (linear) -> " + generateFirstKABSqrtLinear(10));
 
     BST<Integer> balancedTree = buildMinHeightBST(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
     printTree("14.8", balancedTree);
@@ -61,6 +63,54 @@ public class Chapter14 {
     BST<Integer> leftSubtree = rebuildBSTFromPreorderOnValueRange(preorder, lowerBound, root);
     BST<Integer> rightSubtree = rebuildBSTFromPreorderOnValueRange(preorder, root, upperBound);
     return new BST<>(root, leftSubtree, rightSubtree);
+  }
+
+  public static class ABSqrt2Number {
+    public final int a, b;
+    public final double val;
+
+    public ABSqrt2Number(int a, int b) {
+      this.a = a;
+      this.b = b;
+      val = a + b * Math.sqrt(2);
+    }
+  }
+
+  // 14.7
+  public static List<Double> generateFirstKABSqrt(int k) {
+    SortedSet<ABSqrt2Number> candidates = new TreeSet<>((a, b) -> Double.compare(a.val, b.val));
+    // Initial for 0 + 0 * sqrt(2);
+    candidates.add(new ABSqrt2Number(0, 0));
+
+    List<Double> result = new ArrayList<>();
+    while (result.size() < k) {
+      ABSqrt2Number nextSmallest = candidates.first();
+      result.add(nextSmallest.val);
+
+      // Add the next two numbers derived from next smallest.
+      candidates.add(new ABSqrt2Number(nextSmallest.a + 1, nextSmallest.b));
+      candidates.add(new ABSqrt2Number(nextSmallest.a, nextSmallest.b + 1));
+      candidates.remove(nextSmallest);
+    }
+    return result;
+  }
+
+  // 14.7 (version two, linear)
+  public static List<Double> generateFirstKABSqrtLinear(int k) {
+    List<ABSqrt2Number> result = new ArrayList<>();
+    result.add(new ABSqrt2Number(0, 0));
+    int i = 0, j = 0;
+
+    for (int n = 1; n < k; ++n) {
+      ABSqrt2Number iPlus1 = new ABSqrt2Number(result.get(i).a + 1, result.get(i).b);
+      ABSqrt2Number jPlusSqrt2 = new ABSqrt2Number(result.get(j).a, result.get(j).b +1);
+      result.add(iPlus1.val < jPlusSqrt2.val ? iPlus1 : jPlusSqrt2);
+
+      // NOTE: values from both i and j may land on the same value so need to increment both.
+      if (Double.compare(iPlus1.val, result.getLast().val) == 0) ++i;
+      if (Double.compare(jPlusSqrt2.val, result.getLast().val) == 0) ++j;
+    }
+    return result.stream().map(c -> c.val).toList();
   }
 
   // 14.8
