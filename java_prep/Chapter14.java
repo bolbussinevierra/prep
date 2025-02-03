@@ -78,6 +78,8 @@ public class Chapter14 {
 
   // 14.7
   public static List<Double> generateFirstKABSqrt(int k) {
+    // NOTE: Using TreeSet instead of PriorityQueue (minheap) since TreeSet does not allow duplicated elements
+    // i.e. "Set" part).
     SortedSet<ABSqrt2Number> candidates = new TreeSet<>((a, b) -> Double.compare(a.val, b.val));
     // Initial for 0 + 0 * sqrt(2);
     candidates.add(new ABSqrt2Number(0, 0));
