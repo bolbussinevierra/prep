@@ -37,8 +37,7 @@ public class Chapter11 {
     List<Integer> E = List.of(3, 2, 5, 1, 2, 4);
     System.out.println("11.7 -> " + getMinMax(E));
 
-    // 11.8: Uses neetcode version of the solution not the one in the book
-    // TODO: can you make work with random()
+    // 11.8: Uses neetcode version of the solution not the one in the book (very similar but is simplified)
     ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
     for (int i = 1; i <= 5; ++i) {
       System.out.println("11.8 -> " + findKthLargest(i, C));
@@ -205,12 +204,12 @@ public class Chapter11 {
   private static int partitionAroundPivot(int left, int right, List<Integer> A) {
     int newPivotIndex = left;
     Random r = new Random(0);
-    // int pivotValue = A.get(right);
-    // int p = r.nextInt(left, right + 1);
+    int pivotIdx = r.nextInt(left, right + 1);
+    // Move the pivot value to the right most spot.
+    Collections.swap(A, right, pivotIdx);
     int pivotValue = A.get(right);
 
     for (int i = left; i < right; ++i) {
-      // means greater than here due to cmp definition passed in
       if (A.get(i) <= pivotValue) {
         Collections.swap(A, i, newPivotIndex++);
       }
