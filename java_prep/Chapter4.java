@@ -104,7 +104,7 @@ public class Chapter4 {
   }
 
   // 4.11
-  public static Rect intersectRectange(Rect r1, Rect r2) {
+  private static Rect intersectRectange(Rect r1, Rect r2) {
     if (!doIntersect(r1, r2)) {
       return new Rect(0, 0, -1, -1); // No intersection.
     }
