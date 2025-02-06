@@ -2,6 +2,9 @@ package java_prep;
 
 public class Chapter4 {
   public static void main(String[] args) {
+    // 4.2
+    System.out.println("4.2 -> " + swapBits(42L, 2, 5));
+
     // 4.3
     System.out.println(
         "4.3 -> " + Long.toBinaryString(12L) + " -> " + Long.toBinaryString(reverseBits(12L)));
@@ -20,6 +23,14 @@ public class Chapter4 {
     Rect r1 = new Rect(2, 1, 2, 2);
     Rect r2 = new Rect(1, 1, 2, 1);
     System.out.println("4.11 -> " + intersectRectange(r1, r2));
+  }
+
+  public static long swapBits(long n, int i, int j) {
+    if (((n >>> i) & 1) != ((n >>> j) & 1)) {
+      long bitMask = (1L << i) | (1L << j);
+      n ^= bitMask;
+    }
+    return n;
   }
 
   // 4.7
