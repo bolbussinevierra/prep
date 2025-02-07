@@ -14,6 +14,10 @@ public class Chapter5 {
     // 5.3
     System.out.println("5.3 -> " + multiply(Arrays.asList(1, 2, 3), Arrays.asList(9, 8, 7)));
 
+    // 5.4
+    System.out.println("5.4 (a) -> " + canReachEnd(List.of(3, 3, 1, 0, 2, 0, 1)));
+    System.out.println("5.4 (b) -> " + canReachEnd(List.of(3, 2, 0, 0, 2, 0, 1)));
+
     // 5.5
     System.out.println(
         "5.5 -> "
@@ -120,6 +124,18 @@ public class Chapter5 {
     }
     result.set(0, result.getFirst() * sign);
     return result;
+  }
+
+  // 5.4
+  public static boolean canReachEnd(List<Integer> maxSteps) {
+    int maxReachSoFar = 0;
+    int lastIndex = maxSteps.size() - 1;
+    // Consider i within reach so far, and only if we have already proved we can reach
+    // the last index.
+    for (int i = 0; i <= maxReachSoFar && maxReachSoFar < lastIndex; ++i) {
+      maxReachSoFar = Math.max(maxReachSoFar, i + maxSteps.get(i));
+    }
+    return maxReachSoFar >= lastIndex;
   }
 
   // 5.5
