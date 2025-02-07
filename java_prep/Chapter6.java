@@ -12,6 +12,9 @@ public class Chapter6 {
     // 6.2
     System.out.println("6.2 -> " + convertBase("615", 7, 13));
 
+    // 6.3
+    System.out.println("6.3 -> " + colIDToInt("ZZ"));
+
     // 6.4
     char[] s = new char[] {'a', 'c', 'd', 'b', 'b', 'c', 'a'};
     replaceAndRemove(s.length, s);
@@ -71,6 +74,19 @@ public class Chapter6 {
     if (numDec == 0) return "0";
 
     return (isNegative ? "-" : "") + constructFromBase(numDec, b2);
+  }
+
+  // 6.3
+  public static long colIDToInt(String colID) {
+    long multiplier = 1, result = 0L;
+    for (char c : colID.toCharArray()) {
+      result += (c - 'A' + 1) * multiplier;
+      multiplier *= 26;
+    }
+    return result;
+
+    // Also answer:
+    // return colID.chars().reduce(0, (result, c) -> result * 26 + c - 'A' + 1);
   }
 
   public static String constructFromBase(int num, int b) {
