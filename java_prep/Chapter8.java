@@ -21,6 +21,7 @@ public class Chapter8 {
         System.out.println("8.3 (b) -> " + isValid("{]()"));
 
         System.out.println("8.4 -> " + shortestEquivalentPath("sc//./../tc/awk/././"));
+        System.out.println("8.5 -> " + getBuildingsWithSunsetView(List.of(1, 2, 4, 3).iterator()));
 
         Queue q = new Queue(5);
         q.enqueue(10);
@@ -127,6 +128,22 @@ public class Chapter8 {
         }
         return result.toString();
     }
+    // 8.5
+    private static List<Building> getBuildingsWithSunsetView(Iterator<Integer> sequence) {
+        int id = 0;
+        Deque<Building> candidates = new ArrayDeque<>();
+
+        while (sequence.hasNext()) {
+            int bldgHeight = sequence.next();
+            while (!candidates.isEmpty() && bldgHeight >= candidates.peekFirst().height()) {
+                candidates.removeFirst();
+            }
+            candidates.addFirst(new Building(id++, bldgHeight));
+        }
+        return candidates.stream().toList();
+    }
+
+    private record Building(int id, int height) {}
 
     private static class ElementWithCachedMax {
         public Integer element;
