@@ -12,19 +12,43 @@ public class Chapter9 {
   private static Integer subtreeIdx;
 
   public static void main(String[] args) {
+    // 9.3
+    System.out.println("9.3");
+    List<Integer> inorder = List.of(3, 2, 4, 1, 5);
+    List<Integer> preorder = List.of(1, 2, 3, 4, 5);
+    BTN<Integer> tree = bTreeFrom(preorder, inorder);
+    printTree(tree);
+    System.out.println("9.3 lca -> " + lca(tree, tree.left.left, tree.right).data);
+
     // 9.11
     System.out.println("9.11");
-    List<Integer> inorder = List.of(6, 2, 1, 5, 8, 3, 4, 9, 7);
-    List<Integer> preorder = List.of(8, 2, 6, 5, 1, 3, 4, 7, 9);
-    BTN<Integer> tree = bTreeFrom(preorder, inorder);
+    inorder = List.of(6, 2, 1, 5, 8, 3, 4, 9, 7);
+    preorder = List.of(8, 2, 6, 5, 1, 3, 4, 7, 9);
+    tree = bTreeFrom(preorder, inorder);
     printTree(tree);
 
     // 9.12
     System.out.println("9.12");
-    List<Integer> preorder1 =
+    preorder =
         Arrays.asList(
             8, 2, 6, null, null, 5, 1, null, null, null, 3, null, 4, null, 7, 9, null, null, null);
-    printTree(reconstructPreorder(preorder1));
+    printTree(reconstructPreorder(preorder));
+  }
+  // 9.3
+  private static BTN<Integer> lca(BTN<Integer> tree, BTN<Integer> n0, BTN<Integer> n1) {
+    return lcaHelper(tree, n0, n1).lca();
+  }
+
+  private static LcaResult lcaHelper(BTN<Integer> tree, BTN<Integer> n0, BTN<Integer> n1) {
+    if (tree == null) return new LcaResult(0, null);
+
+    LcaResult leftResult = lcaHelper(tree.left, n0, n1);
+    if (leftResult.numFound == 2) return leftResult;
+    LcaResult rightResult = lcaHelper(tree.right, n0, n1);
+    if (rightResult.numFound == 2) return rightResult;
+
+    int numFound = leftResult.numFound() + rightResult.numFound() + (tree == n0 ? 1 : 0) + (tree == n1 ? 1: 0);
+    return new LcaResult(numFound, numFound == 2 ? tree : null);
   }
 
   // 9.11
@@ -84,6 +108,8 @@ public class Chapter9 {
             inOrderEnd,
             mapInorder));
   }
+
+  private record LcaResult(int numFound, BTN<Integer> lca) {}
 
   private static void printTree(BTN<Integer> t) {
     ArrayDeque<BTN<Integer>> bfs = new ArrayDeque<>();
