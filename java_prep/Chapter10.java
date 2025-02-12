@@ -16,6 +16,12 @@ public class Chapter10 {
     ArrayList<Integer> a3 = new ArrayList<>(Arrays.asList(0, 6, 28));
     System.out.println("10.1 -> " + mergeSortedArrays(Arrays.asList(a1, a2, a3)));
 
+    // 10.2
+    System.out.println(
+        "10.2 -> "
+            + sortKIncreasingDecreasingArray(
+                Arrays.asList(57, 131, 493, 294, 221, 339, 418, 452, 442, 190)));
+
     // 10.3
     List<Integer> l1 = List.of(3, -1, 2, 6, 4, 5, 8);
     System.out.println("10.3 -> " + sortApproximatelySorted(l1.iterator(), 2));
@@ -29,7 +35,8 @@ public class Chapter10 {
     System.out.println("10.5 -> " + onlineMedian(List.of(1, 0, 3, 5, 2, 0, 1).iterator()));
 
     // 10.6
-    System.out.println("10.6 -> " + getLargestK(List.of(561, 314, 401, 28, 156, 359, 271, 11, 3), 4));
+    System.out.println(
+        "10.6 -> " + getLargestK(List.of(561, 314, 401, 28, 156, 359, 271, 11, 3), 4));
   }
 
   // 10.1
@@ -57,6 +64,27 @@ public class Chapter10 {
       }
     }
     return result;
+  }
+
+  // 10.2
+  public static List<Integer> sortKIncreasingDecreasingArray(List<Integer> A) {
+    List<List<Integer>> sortedSubarrays = new ArrayList<>();
+    boolean increasing = true;
+    int startIndex = 0;
+    for (int i = 1; i <= A.size(); ++i) {
+      if (i == A.size()
+          || A.get(i - 1) < A.get(i) && !increasing
+          || A.get(i - 1) >= A.get(i) && increasing) {
+        List<Integer> subList = A.subList(startIndex, i);
+        if (!increasing) {
+          Collections.reverse(subList);
+        }
+        sortedSubarrays.add(subList);
+        startIndex = i;
+        increasing = !increasing;
+      }
+    }
+    return mergeSortedArrays(sortedSubarrays);
   }
 
   public static List<String> topK(int k, Iterator<String> iter) {
