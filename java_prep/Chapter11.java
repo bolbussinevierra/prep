@@ -11,6 +11,9 @@ public class Chapter11 {
     int[] B = new int[] {1, 3, 3, 3, 5, 6, 7, 9};
     System.out.println("11.1 -> " + bSearchFirst(3, B));
 
+    // 11.2
+    System.out.println("11.2 -> " + searchEntryEqualToItsIndex(List.of(-2, 0, 2, 6, 7, 8, 9)));
+
     // 11.3
     int[] D = new int[] {378, 478, 550, 631, 103, 203, 220, 234, 279, 368};
     System.out.println("11.3 -> " + findSmallest(D));
@@ -81,6 +84,22 @@ public class Chapter11 {
       }
     }
     return result;
+  }
+
+  // 11.2
+  public static int searchEntryEqualToItsIndex(List<Integer> A) {
+    int left = 0, right = A.size() - 1;
+    while (left <= right) {
+      int mid = left + ((right - left) / 2);
+      if (mid == A.get(mid)) {
+        return mid;
+      } else if (mid < A.get(mid)) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return -1;
   }
 
   // 11.3
