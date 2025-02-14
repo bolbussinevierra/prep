@@ -29,6 +29,11 @@ public class Chapter12 {
         Set<String> cover = Set.of("banana", "cat");
         System.out.println("12.6 -> " + findSmallestSubarrayCoveringSet(paragraph2, cover));
 
+        // 12.7
+        List<String> paragraph3 = List.of("apple", "banana", "cat", "apple");
+        List<String> cover3 = List.of("banana", "apple");
+        System.out.println("12.7 -> " + findSmallestSequentiallyCoveringSubset(paragraph3, cover3));
+
         // 12.9
         List<Integer> A = List.of(10, 5, 3, 11, 6, 100, 4);
         System.out.println("12.9 -> " + longestContainedRange(A));
@@ -105,6 +110,7 @@ public class Chapter12 {
         return nearestDist == Integer.MAX_VALUE ? -1 : nearestDist;
     }
 
+    // 12.6
     private static Subarray findSmallestSubarrayCoveringSet(
             List<String> paragraph, Set<String> keywords) {
 
@@ -148,6 +154,41 @@ public class Chapter12 {
                     }
                 }
                 ++l;
+            }
+        }
+        return result;
+    }
+
+    // 12.7
+    private static Subarray findSmallestSequentiallyCoveringSubset(List<String> p, List<String> keywords) {
+        Map<String, Integer> kwToIdx = new HashMap<>();
+        List<Integer> latestOccurrence = new ArrayList<>(keywords.size());
+        List<Integer> shortestSubarrayLength = new ArrayList<>(keywords.size());
+
+        for (int i = 0; i < keywords.size(); ++i) {
+            latestOccurrence.add(-1);
+            shortestSubarrayLength.add(Integer.MAX_VALUE);
+            kwToIdx.put(keywords.get(i), i);
+        }
+
+        int shortestDistance = Integer.MAX_VALUE;
+        Subarray result = new Subarray(-1, -1);
+        for (int i = 0; i < p.size(); ++i) {
+            Integer kwIdx = kwToIdx.get(p.get(i));
+            if (kwIdx != null) {
+                if (kwIdx == 0) { // First keyword
+                    shortestSubarrayLength.set(0, 1);
+                } else if (shortestSubarrayLength.get(kwIdx -1) != Integer.MAX_VALUE) {
+                    int distanceToPrevKw = i - latestOccurrence.get(kwIdx - 1);
+                    shortestSubarrayLength.set(kwIdx, distanceToPrevKw + shortestSubarrayLength.get(kwIdx - 1));
+                }
+                latestOccurrence.set(kwIdx, i);
+
+                // lastKeyword, look for improved subarray.
+                if (kwIdx == keywords.size() - 1 && shortestSubarrayLength.getLast() < shortestDistance) {
+                    shortestDistance = shortestSubarrayLength.getLast();
+                    result = new Subarray(i - shortestSubarrayLength.getLast() + 1, i);
+                }
             }
         }
         return result;
