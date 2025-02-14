@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class Chapter13 {
   public static void main(String[] args) {
+    // 13.1
     List<Integer> A = new ArrayList<>(Arrays.asList(1, 2, 3, 5, 7));
     List<Integer> B = new ArrayList<>(Arrays.asList(2, 5, 9));
     System.out.println("13.1 -> " + intersect(A, B));
@@ -18,6 +19,9 @@ public class Chapter13 {
     List<Integer> D = new ArrayList<>(Arrays.asList(3, 7, 11, 19));
     mergeTwoSortedArrays(C, 3, D, 4);
     System.out.println("13.2 -> " + C);
+
+    // 13.3
+    System.out.println("13.3 -> " + hIndex(Arrays.asList(2, 4, 6, 8, 10, 12)));
 
     // 13.6
     List<Event> events =
@@ -96,6 +100,18 @@ public class Chapter13 {
     while (b >= 0) {
       A.set(writeIdx--, B.get(b--));
     }
+  }
+
+  // 13.3
+  public static int hIndex(List<Integer> citations) {
+    Collections.sort(citations);
+    final int n = citations.size();
+    for (int i = 0; i < n; ++i) {
+      if (citations.get(i) >= n - i) {
+        return n - i;
+      }
+    }
+    return 0;
   }
 
   // 13.6
