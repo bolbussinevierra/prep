@@ -72,16 +72,6 @@ public class Chapter14 {
     return new BST<>(root, leftSubtree, rightSubtree);
   }
 
-  public static class ABSqrt2Number {
-    public final int a, b;
-    public final double val;
-
-    public ABSqrt2Number(int a, int b) {
-      this.a = a;
-      this.b = b;
-      val = a + b * Math.sqrt(2);
-    }
-  }
   // 14.6
   public static Integer shortedIntervalContainingItemInEachArray(List<List<Integer>> A) {
     PriorityQueue<ArrayData> minHeap = new PriorityQueue<>(A.size(), ArrayData::compareTo);
@@ -94,26 +84,21 @@ public class Chapter14 {
       minHeap.add(new ArrayData(firstValue, 0, i));
     }
 
-    shortestInterval = Math.min(shortestInterval, maxElementInInterval - minHeap.peek().val());
+    ArrayData smallestElement = minHeap.peek();
+    shortestInterval = Math.min(shortestInterval, maxElementInInterval - smallestElement.val());
 
-    while (true) {
-      ArrayData smallestElement = minHeap.peek();
-      // if the array containing the smallest element is finished, then
-      // we have can't move further.
-      if (smallestElement.idx() == A.get(smallestElement.arrayId()).size() - 1) {
-        break;
-      }
-
-      // If there are still more elements in the array of the smallest item, get next item.
+    // if the array containing the smallest element is finished, then
+    // we have can't move further.
+    while (smallestElement.idx() != A.get(smallestElement.arrayId()).size() - 1) {
+      // Drop the smallest item and fetch the next from the same array
+      minHeap.remove();
       int arrayId = smallestElement.arrayId();
-      if (smallestElement.idx() < A.get(arrayId).size() - 1) {
-        minHeap.remove();
-        int nextIndex = smallestElement.idx() + 1;
-        int nextValue = A.get(arrayId).get(nextIndex);
-        maxElementInInterval = Math.max(maxElementInInterval, nextValue);
-        minHeap.add(new ArrayData(nextValue, nextIndex, arrayId));
-        shortestInterval = Math.min(shortestInterval, maxElementInInterval - minHeap.peek().val());
-      }
+      int nextIndex = smallestElement.idx() + 1;
+      int nextValue = A.get(arrayId).get(nextIndex);
+      maxElementInInterval = Math.max(maxElementInInterval, nextValue);
+      minHeap.add(new ArrayData(nextValue, nextIndex, arrayId));
+      smallestElement = minHeap.peek();
+      shortestInterval = Math.min(shortestInterval, maxElementInInterval - smallestElement.val());
     }
     System.out.println(minHeap.stream().toList());
     return shortestInterval;
@@ -121,7 +106,8 @@ public class Chapter14 {
 
   // 14.7
   public static List<Double> generateFirstKABSqrt(int k) {
-    // NOTE: Using TreeSet instead of PriorityQueue (minheap) since TreeSet does not allow duplicated elements
+    // NOTE: Using TreeSet instead of PriorityQueue (minheap) since TreeSet does not allow
+    // duplicated elements
     // i.e. "Set" part).
     SortedSet<ABSqrt2Number> candidates = new TreeSet<>((a, b) -> Double.compare(a.val, b.val));
     // Initial for 0 + 0 * sqrt(2);
@@ -148,7 +134,7 @@ public class Chapter14 {
 
     for (int n = 1; n < k; ++n) {
       ABSqrt2Number iPlus1 = new ABSqrt2Number(result.get(i).a + 1, result.get(i).b);
-      ABSqrt2Number jPlusSqrt2 = new ABSqrt2Number(result.get(j).a, result.get(j).b +1);
+      ABSqrt2Number jPlusSqrt2 = new ABSqrt2Number(result.get(j).a, result.get(j).b + 1);
       result.add(iPlus1.val < jPlusSqrt2.val ? iPlus1 : jPlusSqrt2);
 
       // NOTE: values from both i and j may land on the same value so need to increment both.
@@ -233,7 +219,6 @@ public class Chapter14 {
     }
 
     if (!tag.isEmpty()) System.out.println("---- " + tag + " ]");
-
   }
 
   /** Make BST figure 14.2 on page 226 */
@@ -241,6 +226,17 @@ public class Chapter14 {
     List<Integer> inorder = List.of(-14, -10, 2, 106, 107, 108, 243, 285, 286, 401);
     List<Integer> preorder = List.of(108, 106, -10, -14, 2, 107, 285, 243, 286, 401);
     return bstFrom(preorder, inorder);
+  }
+
+  public static class ABSqrt2Number {
+    public final int a, b;
+    public final double val;
+
+    public ABSqrt2Number(int a, int b) {
+      this.a = a;
+      this.b = b;
+      val = a + b * Math.sqrt(2);
+    }
   }
 
   public record BST<T>(T data, BST<T> left, BST<T> right) {}
