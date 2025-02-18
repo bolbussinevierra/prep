@@ -16,6 +16,13 @@ public class Chapter14 {
     BST<Integer> t = rebuildBSTFromPreorder(preorder);
     printTree("14.5", t);
 
+    // 14.6
+    List<List<Integer>> lists = new ArrayList<>();
+    lists.add(List.of(5, 10, 15));
+    lists.add(List.of(3, 6, 9, 12, 15));
+    lists.add(List.of(8, 16, 24));
+    System.out.println("14.6 -> " + shortedIntervalContainingItemInEachArray(lists));
+
     // 14.7
     System.out.println("14.7 (klogk)  -> " + generateFirstKABSqrt(10));
     System.out.println("14.7 (linear) -> " + generateFirstKABSqrtLinear(10));
@@ -74,6 +81,42 @@ public class Chapter14 {
       this.b = b;
       val = a + b * Math.sqrt(2);
     }
+  }
+  // 14.6
+  public static Integer shortedIntervalContainingItemInEachArray(List<List<Integer>> A) {
+    PriorityQueue<ArrayData> minHeap = new PriorityQueue<>(A.size(), ArrayData::compareTo);
+    int maxElementInInterval = Integer.MIN_VALUE;
+    int shortestInterval = Integer.MAX_VALUE;
+
+    for (int i = 0; i < A.size(); ++i) {
+      int firstValue = A.get(i).getFirst();
+      maxElementInInterval = Math.max(maxElementInInterval, firstValue);
+      minHeap.add(new ArrayData(firstValue, 0, i));
+    }
+
+    shortestInterval = Math.min(shortestInterval, maxElementInInterval - minHeap.peek().val());
+
+    while (true) {
+      ArrayData smallestElement = minHeap.peek();
+      // if the array containing the smallest element is finished, then
+      // we have can't move further.
+      if (smallestElement.idx() == A.get(smallestElement.arrayId()).size() - 1) {
+        break;
+      }
+
+      // If there are still more elements in the array of the smallest item, get next item.
+      int arrayId = smallestElement.arrayId();
+      if (smallestElement.idx() < A.get(arrayId).size() - 1) {
+        minHeap.remove();
+        int nextIndex = smallestElement.idx() + 1;
+        int nextValue = A.get(arrayId).get(nextIndex);
+        maxElementInInterval = Math.max(maxElementInInterval, nextValue);
+        minHeap.add(new ArrayData(nextValue, nextIndex, arrayId));
+        shortestInterval = Math.min(shortestInterval, maxElementInInterval - minHeap.peek().val());
+      }
+    }
+    System.out.println(minHeap.stream().toList());
+    return shortestInterval;
   }
 
   // 14.7
@@ -203,4 +246,15 @@ public class Chapter14 {
   public record BST<T>(T data, BST<T> left, BST<T> right) {}
 
   record DisplayState(BST<Integer> n, int level) {}
+
+  record ArrayData(int val, int idx, int arrayId) implements Comparable<ArrayData> {
+    @Override
+    public int compareTo(ArrayData o) {
+      int result = Integer.compare(val, o.val);
+      if (result == 0) {
+        result = Integer.compare(idx, o.val);
+      }
+      return result;
+    }
+  }
 }
