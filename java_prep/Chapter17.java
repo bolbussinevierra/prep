@@ -7,6 +7,9 @@ public class Chapter17 {
   public static void main(String[] args) {
     System.out.println("TwoSum -> " + hasTwoSum(List.of(1, 5, 7, 9), 14));
     System.out.println("TwoSumSorted -> " + hasTwoSumSorted(List.of(1, 5, 7, 9), 14));
+    // 17.1
+    System.out.println("17.1a -> " + optimumTaskAssignments(Arrays.asList(5, 2, 1, 6, 4, 4)));
+    System.out.println("17.1b -> " + optimumTaskAssignments(Arrays.asList(1, 8, 9, 10)));
 
     // 17.4
     System.out.println("17.4 -> " + hasThreeSum(List.of(1, 5, 7, 9), 15));
@@ -30,17 +33,25 @@ public class Chapter17 {
         "17.8 -> " + calculateLargestRectangle(List.of(1, 4, 2, 5, 6, 3, 2, 6, 6, 5, 2, 1, 3)));
   }
 
+  // 17.1
+  private static List<PairedTasks> optimumTaskAssignments(List<Integer> taskDurations) {
+    Collections.sort(taskDurations);
+    List<PairedTasks> assignments = new ArrayList<>();
+    for (int i = 0, j = taskDurations.size() - 1; i < j; ++i, --j) {
+      assignments.add(new PairedTasks(taskDurations.get(i), taskDurations.get(j)));
+    }
+    return assignments;
+  }
+
   private static int findAmpleCity(List<Integer> gallons, List<Integer> distances, int mpg) {
     // Cost to get to i+1 city from i
     List<Integer> cost =
-        IntStream.range(0, gallons.size())
-            .mapToObj(i -> distances.get(i) / mpg)
-            .toList();
+        IntStream.range(0, gallons.size()).mapToObj(i -> distances.get(i) / mpg).toList();
 
     // Ensure there is a solution (total gas must at least be as much as total cost).
     int totalGas = gallons.stream().reduce(Integer::sum).orElse(0);
     int totalCost = cost.stream().reduce(Integer::sum).orElse(0);
-    if (totalGas == 0 || totalCost == 0 || totalGas < totalCost ) return -1;
+    if (totalGas == 0 || totalCost == 0 || totalGas < totalCost) return -1;
 
     System.out.println("gas:  " + gallons);
     System.out.println("cost: " + cost);
@@ -142,4 +153,6 @@ public class Chapter17 {
   private static boolean isNewPillarOrEnd(List<Integer> heights, int currIdx, int lastPillarIdx) {
     return currIdx >= heights.size() || heights.get(lastPillarIdx) >= heights.get(currIdx);
   }
+
+  record PairedTasks(int task1, int task2) {}
 }
