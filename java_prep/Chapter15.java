@@ -4,9 +4,14 @@ import java.util.*;
 
 public class Chapter15 {
   private static final int EMPTY_ENTRY = 0;
+  private static final String[] phoneMapping = {"0", "1", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV",
+                                                "WXYZ"};
 
   public static void main(String[] args) {
     System.out.println("15.1 -> " + computeHanoi(3, 3));
+    System.out.println("15.2a -> " + getPhoneMnemonics("2276696"));
+    System.out.println("15.2b -> " + getPhoneMnemonics("4257702668"));
+    System.out.println("15.2c -> " + getPhoneMnemonics("4073190478"));
     System.out.println("15.3 -> " + nQueens(4));
     System.out.println("15.4 (swap) -> " + permutationsSwap(new ArrayList<>(List.of(1, 2, 3))));
     System.out.println(
@@ -34,6 +39,25 @@ public class Chapter15 {
 
     // 15.11
     grayCode(3);
+  }
+
+  public static List<String> getPhoneMnemonics(String phoneNumber) {
+    List<String> mnemonics = new ArrayList<>();
+    phoneMnemonicHelper(phoneNumber,0, new char[phoneNumber.length()], mnemonics);
+    return mnemonics;
+  }
+
+  public static void phoneMnemonicHelper(String phoneNumber, int digit, char[] partial, List<String> mnemonics) {
+    if (digit == phoneNumber.length()) {
+      mnemonics.add(new String(partial));
+      return;
+    }
+    String digitMapping = phoneMapping[phoneNumber.charAt(digit) - '0'];
+    for (int i = 0; i < digitMapping.length(); ++i) {
+      char c = digitMapping.charAt(i);
+      partial[digit] = c;
+      phoneMnemonicHelper(phoneNumber, digit + 1, partial, mnemonics);
+    }
   }
 
   public static List<List<Integer>> computeHanoi(int numRings, int numPegs) {

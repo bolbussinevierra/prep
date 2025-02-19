@@ -10,6 +10,8 @@ public class Chapter16 {
     System.out.println("16.2 -> " + editDistance("Carthorse", "Orchestra"));
     // 16.3
     System.out.println("16.3 -> " + numberOfWays(5, 5));
+    // 16.4
+    System.out.println("16.4 -> " + computeBinomialCoefficient(5, 2));
     // 16.5
     List<Integer> pattern = List.of(1, 3, 4, 6);
     List<List<Integer>> grid = List.of(List.of(1, 2, 3), List.of(3, 4, 5), List.of(5, 6, 7));
@@ -73,6 +75,23 @@ public class Chapter16 {
   // 16.3
   public static int numberOfWays(int n, int m) {
     return computeNumberOfWaysTo(n - 1, m - 1, new int[n][m]);
+  }
+
+  // 16.4
+  public static int computeBinomialCoefficient(int n, int k) {
+    return computeXChooseY(n, k, new int[n + 1][k + 1]);
+  }
+
+  private static int computeXChooseY(int x, int y, int[][] xChooseY) {
+    if (y == 0 || x == y) return 1;
+
+    if (xChooseY[x][y] == 0) {
+      int withY = computeXChooseY(x - 1, y - 1, xChooseY);
+      int withoutY = computeXChooseY(x - 1, y, xChooseY);
+      xChooseY[x][y] = withY + withoutY;
+    }
+
+    return xChooseY[x][y];
   }
 
   private static int computeNumberOfWaysTo(int x, int y, int[][] numberOfWays) {
