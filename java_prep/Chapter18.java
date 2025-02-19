@@ -24,6 +24,22 @@ public class Chapter18 {
     }
     System.out.println("-------------" );
 
+    // 18.4
+    Vertex A = new Vertex('A');
+    Vertex B = new Vertex('B');
+    Vertex C = new Vertex('C');
+    A.edges.add(B);
+    C.edges.add(B);
+    System.out.println("18.4a -> " + isDeadlocked(List.of(A, B, C)));
+
+    A.edges.clear();
+    B.edges.clear();
+    C.edges.clear();
+    A.edges.add(B);
+    B.edges.add(C);
+    C.edges.add(A);
+    System.out.println("18.4b -> " + isDeadlocked(List.of(A, B, C)));
+
     // 18.5
     Vertex one = new Vertex(1);
     Vertex two = new Vertex(2);
@@ -97,6 +113,25 @@ public class Chapter18 {
         board.get(row).set(col, board.get(row).get(col) != 'R' ? 'B' : 'W');
       }
     }
+  }
+
+  // 18.4
+  public static boolean isDeadlocked(List<Vertex> graph) {
+    Set<Vertex> processed = new HashSet<>();
+    Set<Vertex> processing = new HashSet<>();
+    return graph.stream().anyMatch(v -> hasCycle(v, processing, processed));
+  }
+
+  private static boolean hasCycle(Vertex v, Set<Vertex> processing, Set<Vertex> processed){
+    if (processing.contains(v)) return true;
+
+    processing.add(v);
+    if (v.edges.stream().anyMatch(u -> !processed.contains(u) && hasCycle(u, processing, processed))) {
+      return true;
+    }
+    processing.remove(v);
+    processed.add(v);
+    return false;
   }
 
   private static void markBoundaryRegion(int row, int col, List<List<Character>> board) {
