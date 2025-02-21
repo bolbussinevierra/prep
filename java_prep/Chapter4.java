@@ -8,6 +8,10 @@ public class Chapter4 {
     // 4.3
     System.out.println(
         "4.3 -> " + Long.toBinaryString(12L) + " -> " + Long.toBinaryString(reverseBits(12L)));
+
+    // 4.4
+    System.out.println("4.4 -> " + closestIntSameBitCount(7));
+
     // 4.7
     for (int i = 1; i <= 5; ++i) {
       System.out.println("4.7 -> " + power(4.0, i) + " " + powerIter(4.0, i));
@@ -25,6 +29,21 @@ public class Chapter4 {
     System.out.println("4.11 -> " + intersectRectange(r1, r2));
   }
 
+  // 4.4
+  public static long closestIntSameBitCount(long x) {
+    final int NUM_UNSIGNED_BITS = 63;
+    // Signed bit (63) is assumed to be 0 since its non-negative so
+    // concentrate on 62 lower bits
+    for (int i = 0; i < NUM_UNSIGNED_BITS - 1; ++i) {
+      if (((x >>> i) & 1) != ((x >>> (i + 1)) & 1)) {
+        long swapMask = (1L << i) | (1L << (i + 1));
+        return x ^ swapMask;
+      }
+    }
+    throw new IllegalArgumentException("All bits are 0 or 1");
+  }
+
+  // 4.3
   public static long swapBits(long n, int i, int j) {
     if (((n >>> i) & 1) != ((n >>> j) & 1)) {
       long bitMask = (1L << i) | (1L << j);
@@ -39,16 +58,16 @@ public class Chapter4 {
     if (power == 0) return 1;
     if (power == 1) return x;
 
-    double result = power(x*x, Math.abs(power/2));
+    double result = power(x * x, Math.abs(power / 2));
     // Account for odd power (since odd does not divide cleanly by 2)
     result = power % 2 == 0 ? result : x * result;
     // Negative power?
-    return power > 0 ? result : 1/result;
+    return power > 0 ? result : 1 / result;
   }
 
   public static double powerIter(double x, int power) {
     if (power < 0) {
-      x = 1/x;
+      x = 1 / x;
       power = Math.abs(power);
     }
     double result = 1.0;
@@ -88,7 +107,7 @@ public class Chapter4 {
       }
       x %= msdMask; // Remove the most significant digit.
       x /= 10; // Remove the least significant digit.
-      msdMask /= 100;  // Since we just removed two digits.
+      msdMask /= 100; // Since we just removed two digits.
     }
     return true;
   }
