@@ -29,6 +29,11 @@ public class Chapter5 {
             Arrays.asList(310.0, 315.0, 275.0, 295.0, 260.0, 270.0, 290.0, 230.0, 255.0, 250.0));
     System.out.println("5.6 -> " + computeMaxProfit(arr2));
 
+    // 5.7
+    System.out.println(
+        "5.7 -> "
+            + buyAndSellAStockTwice(List.of(12.0, 11.0, 13.0, 9.0, 12.0, 8.0, 14.0, 13.0, 15.0)));
+
     // 5.9
     System.out.println("5.9 -> " + generatePrimes(50));
 
@@ -151,6 +156,31 @@ public class Chapter5 {
     }
     System.out.println(A);
     return writeIdx;
+  }
+
+  // 5.7
+  public static double buyAndSellAStockTwice(List<Double> prices) {
+    List<Double> firstBuyProfits = new ArrayList<>();
+    double minBuyPriceSoFar = Double.MAX_VALUE;
+    double maxTotalProfit = 0.0;
+
+    // First: calculate max profit for first buy; for each index, we calculate max profit
+    // selling on that day.
+    for (int i = 0; i < prices.size(); ++i) {
+      minBuyPriceSoFar = Math.min(minBuyPriceSoFar, prices.get(i));
+      maxTotalProfit = Math.max(maxTotalProfit, prices.get(i) - minBuyPriceSoFar);
+      firstBuyProfits.add(maxTotalProfit);
+    }
+
+    // Second: working backwards, calculate max profit for second buy. For each index, we
+    // calculate max profit from buying on that day and selling on a future date.
+    double maxSellPriceSoFar = Double.MIN_VALUE;
+    for (int i = prices.size() - 1; i > 0; --i) {
+      maxSellPriceSoFar = Math.max(maxSellPriceSoFar, prices.get(i));
+      maxTotalProfit =
+          Math.max(maxTotalProfit, maxSellPriceSoFar - prices.get(i) + firstBuyProfits.get(i));
+    }
+    return maxTotalProfit;
   }
 
   // 5.9
