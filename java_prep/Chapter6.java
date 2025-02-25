@@ -1,5 +1,7 @@
 package java_prep;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +36,9 @@ public class Chapter6 {
     // 6.8
     System.out.println("6.8 (a) -> " + romanToInt("LIX"));
     // System.out.println("6.8 (b) -> " + romanToInt("IC")); // Expected: Throws illegalArgumentException.
+
+    // 6.9
+    System.out.println("6.9 -> " + getValidIPAddress("19216811"));
 
     // 6.10
     System.out.println("6.10 -> " + snakeString("Hello World!"));
@@ -199,6 +204,25 @@ public class Chapter6 {
     }
     return sum;
   }
+  // 6.9
+  public static List<String> getValidIPAddress(String s) {
+    List<String> result = new ArrayList<>();
+    for (int i = 1; i < 4 && i < s.length(); ++i) {
+      final String first = s.substring(0, i);  // i is exclusive, so start here next time.
+      if (!isValidIPPart(first)) continue;
+      for (int j = 1; j < 4 && i + j < s.length(); ++j) {
+        final String second = s.substring(i, i + j);
+        if (!isValidIPPart(second)) continue;
+        for (int k = 1; k < 4 && i + j + k < s.length(); ++k) {
+          final String third = s.substring(i + j, i + j + k);
+          final String fourth = s.substring(i + j + k);
+          if (!isValidIPPart(third) || !isValidIPPart(fourth)) continue;
+          result.add(String.join(".", List.of(first, second, third, fourth)));
+        }
+      }
+    }
+    return result;
+  }
 
   // 6.10
   public static String snakeString(String s) {
@@ -226,5 +250,13 @@ public class Chapter6 {
       result.append(count).append(s.charAt(i));
     }
     return result.toString();
+  }
+
+  private static boolean isValidIPPart(String s) {
+    if (s.length() > 3) return false;
+    if (s.startsWith("0") && s.length() > 1) return false;
+
+    int val = Integer.parseInt(s);
+    return 0 <= val && val <= 255;
   }
 }
