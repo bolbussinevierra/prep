@@ -35,7 +35,8 @@ public class Chapter6 {
 
     // 6.8
     System.out.println("6.8 (a) -> " + romanToInt("LIX"));
-    // System.out.println("6.8 (b) -> " + romanToInt("IC")); // Expected: Throws illegalArgumentException.
+    // System.out.println("6.8 (b) -> " + romanToInt("IC")); // Expected: Throws
+    // illegalArgumentException.
 
     // 6.9
     System.out.println("6.9 -> " + getValidIPAddress("19216811"));
@@ -204,11 +205,12 @@ public class Chapter6 {
     }
     return sum;
   }
+
   // 6.9
   public static List<String> getValidIPAddress(String s) {
     List<String> result = new ArrayList<>();
     for (int i = 1; i < 4 && i < s.length(); ++i) {
-      final String first = s.substring(0, i);  // i is exclusive, so start here next time.
+      final String first = s.substring(0, i); // i is exclusive, so start here next time.
       if (!isValidIPPart(first)) continue;
       for (int j = 1; j < 4 && i + j < s.length(); ++j) {
         final String second = s.substring(i, i + j);
