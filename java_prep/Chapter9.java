@@ -1,9 +1,6 @@
 package java_prep;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,6 +17,43 @@ public class Chapter9 {
     printTree(tree);
     System.out.println("9.3 lca -> " + lca(tree, tree.left.left, tree.right).data);
 
+    // 9.5
+    System.out.println("9.5");
+    BTN<Integer> A = new BTN<>(1);
+    BTN<Integer> B = new BTN<>(0);
+    BTN<Integer> C = new BTN<>(0);
+    BTN<Integer> D = new BTN<>(0);
+    BTN<Integer> E = new BTN<>(1);
+    BTN<Integer> F = new BTN<>(1);
+    BTN<Integer> G = new BTN<>(1);
+    BTN<Integer> H = new BTN<>(0);
+    BTN<Integer> I = new BTN<>(1);
+    BTN<Integer> J = new BTN<>(0);
+    BTN<Integer> K = new BTN<>(0);
+    BTN<Integer> L = new BTN<>(1);
+    BTN<Integer> M = new BTN<>(1);
+    BTN<Integer> N = new BTN<>(0);
+    BTN<Integer> O = new BTN<>(0);
+    BTN<Integer> P = new BTN<>(0);
+    tree = A;
+    A.left = B;
+    A.right = I;
+    B.left = C;
+    B.right = F;
+    C.left = D;
+    C.right = E;
+    F.right = G;
+    G.left = H;
+    I.left = J;
+    I.right = O;
+    J.right = K;
+    O.right = P;
+    K.left = L;
+    K.right = N;
+    L.right = M;
+    printTree(tree, /* characterize= */false);
+    System.out.println("9.5 -> " + sumRootToLeafPaths(tree));
+
     // 9.11
     System.out.println("9.11");
     inorder = List.of(6, 2, 1, 5, 8, 3, 4, 9, 7);
@@ -34,9 +68,31 @@ public class Chapter9 {
             8, 2, 6, null, null, 5, 1, null, null, null, 3, null, 4, null, 7, 9, null, null, null);
     printTree(reconstructPreorder(preorder));
   }
+
   // 9.3
   private static BTN<Integer> lca(BTN<Integer> tree, BTN<Integer> n0, BTN<Integer> n1) {
     return lcaHelper(tree, n0, n1).lca();
+  }
+
+  // 9.5
+  public static int sumRootToLeafPaths(BTN<Integer> tree) {
+    return sumRootToLeafPathsHelper(tree, 0);
+  }
+
+  public static int sumRootToLeafPathsHelper(BTN<Integer> tree, int partialSum) {
+    if (tree == null) {
+      return 0;
+    }
+
+    partialSum = partialSum << 1 | tree.data;
+
+    // Leaf
+    if (tree.left == null && tree.right == null) {
+      System.out.println("<tree_value> = " + partialSum);
+      return partialSum;
+    }
+    // Non-leaf
+    return sumRootToLeafPathsHelper(tree.left, partialSum) + sumRootToLeafPathsHelper(tree.right, partialSum);
   }
 
   private static LcaResult lcaHelper(BTN<Integer> tree, BTN<Integer> n0, BTN<Integer> n1) {
@@ -47,7 +103,11 @@ public class Chapter9 {
     LcaResult rightResult = lcaHelper(tree.right, n0, n1);
     if (rightResult.numFound == 2) return rightResult;
 
-    int numFound = leftResult.numFound() + rightResult.numFound() + (tree == n0 ? 1 : 0) + (tree == n1 ? 1: 0);
+    int numFound =
+        leftResult.numFound()
+            + rightResult.numFound()
+            + (tree == n0 ? 1 : 0)
+            + (tree == n1 ? 1 : 0);
     return new LcaResult(numFound, numFound == 2 ? tree : null);
   }
 
@@ -109,24 +169,33 @@ public class Chapter9 {
             mapInorder));
   }
 
-  private record LcaResult(int numFound, BTN<Integer> lca) {}
-
   private static void printTree(BTN<Integer> t) {
+    printTree(t, /*characterize= */true);
+  }
+  private static void printTree(BTN<Integer> t, boolean characterize) {
     ArrayDeque<BTN<Integer>> bfs = new ArrayDeque<>();
     bfs.addFirst(t);
 
     while (!bfs.isEmpty()) {
       BTN<Integer> c = bfs.removeFirst();
 
-      System.out.println((char) ('A' + c.data - 1));
+      System.out.println(characterize ? (char) ('A' + c.data - 1) : c.data);
       if (c.left != null) bfs.addLast(c.left);
       if (c.right != null) bfs.addLast(c.right);
     }
   }
 
+  private record LcaResult(int numFound, BTN<Integer> lca) {}
+
   public static class BTN<T> {
     public T data;
     public BTN<T> left, right;
+
+    public BTN(T data) {
+      this.data = data;
+      left = null;
+      right = null;
+    }
 
     public BTN(T data, BTN<T> left, BTN<T> right) {
       this.data = data;
