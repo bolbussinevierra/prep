@@ -23,6 +23,15 @@ public class Chapter13 {
     // 13.3
     System.out.println("13.3 -> " + hIndex(Arrays.asList(2, 4, 6, 8, 10, 12)));
 
+    // 13.4
+    List<Name> names = List.of(new Name("Ian", "Botham"), new Name("David", "Gower"), new Name("Ian", "Bell"), new Name("Ian", "Chappell"));
+    List<Name> names1 = new ArrayList<>(names);
+    eliminateDuplicatesUsingHashtable(names1);
+    List<Name> names2 = new ArrayList<>(names);
+    eliminateDuplicatesUsingSorting(names2);
+    System.out.println("13.4 (a) -> " + names1);
+    System.out.println("13.4 (b) -> " + names2);
+
     // 13.6
     List<Event> events =
         List.of(
@@ -112,6 +121,27 @@ public class Chapter13 {
       }
     }
     return 0;
+  }
+
+  // 13.4(a)
+  public static void eliminateDuplicatesUsingHashtable(List<Name> names) {
+    HashMap<String, Name> uniqueFirstNames = new HashMap<>();
+    names.forEach(n -> uniqueFirstNames.put(n.firstName(), n));
+    names.clear();
+    names.addAll(uniqueFirstNames.values());
+  }
+
+  // 13.4(b)
+  public static void eliminateDuplicatesUsingSorting(List<Name> names) {
+    Collections.sort(names);
+    int writeIdx = 0;
+    for (int i = 1; i < names.size(); i++) {
+      if (!names.get(i).firstName().equals(names.get(writeIdx).firstName())) {
+        names.set(++writeIdx, names.get(i));
+      }
+    }
+    // Shrink the array down.
+    names.subList(++writeIdx, names.size()).clear();
   }
 
   // 13.6
@@ -250,6 +280,15 @@ public class Chapter13 {
 
     // Merge the sorted lists, recursively.
     return Chapter7.mergeSorted(stableSort(L), stableSort(slow));
+  }
+
+  public record Name(String firstName, String lastName) implements Comparable<Name> {
+    @Override
+    public int compareTo(Name other) {
+      int cmpFirst = firstName.compareTo(other.firstName);
+      if (cmpFirst != 0) return cmpFirst;
+      return lastName.compareTo(other.lastName);
+    }
   }
 
   public record Person(int age, String name) {}
