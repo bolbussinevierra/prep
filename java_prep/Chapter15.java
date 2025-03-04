@@ -4,8 +4,9 @@ import java.util.*;
 
 public class Chapter15 {
   private static final int EMPTY_ENTRY = 0;
-  private static final String[] phoneMapping = {"0", "1", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV",
-                                                "WXYZ"};
+  private static final String[] phoneMapping = {
+    "0", "1", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ"
+  };
 
   public static void main(String[] args) {
     System.out.println("15.1 -> " + computeHanoi(3, 3));
@@ -18,7 +19,7 @@ public class Chapter15 {
         "15.4 (backtracking) -> " + permutationsBt(new ArrayList<>(List.of(1, 2, 3))));
     System.out.println("15.5 (backtracking) -> " + generatePowerSetRecursive(List.of(1, 2, 3)));
     System.out.println("15.5 (iterative) -> " + generatePowerSetIterative(List.of(1, 2, 3)));
-
+    System.out.println("15.6 -> " + combinations(5, 2));
     System.out.println("15.7 -> " + generateParens(3));
 
     // 15.10
@@ -43,11 +44,12 @@ public class Chapter15 {
 
   public static List<String> getPhoneMnemonics(String phoneNumber) {
     List<String> mnemonics = new ArrayList<>();
-    phoneMnemonicHelper(phoneNumber,0, new char[phoneNumber.length()], mnemonics);
+    phoneMnemonicHelper(phoneNumber, 0, new char[phoneNumber.length()], mnemonics);
     return mnemonics;
   }
 
-  public static void phoneMnemonicHelper(String phoneNumber, int digit, char[] partial, List<String> mnemonics) {
+  public static void phoneMnemonicHelper(
+      String phoneNumber, int digit, char[] partial, List<String> mnemonics) {
     if (digit == phoneNumber.length()) {
       mnemonics.add(new String(partial));
       return;
@@ -166,6 +168,31 @@ public class Chapter15 {
     return powerSet;
   }
 
+  // 15.6
+  public static List<List<Integer>> combinations(int n, int k) {
+    List<List<Integer>> result = new ArrayList<>();
+    directedCombinations(n, k, 1, new ArrayList<>(), result);
+    return result;
+  }
+
+  private static void directedCombinations(
+      int n,
+      int k,
+      int nextNumToConsider,
+      List<Integer> partialCombination,
+      List<List<Integer>> result) {
+    if (partialCombination.size() == k) {
+      result.add(new ArrayList<>(partialCombination));
+    }
+
+    final int numRemaining = k - partialCombination.size();
+    for (int i = nextNumToConsider; i <= n && numRemaining <= n - i + 1; ++i) {
+      partialCombination.add(i);
+      directedCombinations(n, k, i + 1, partialCombination, result);
+      partialCombination.removeLast();
+    }
+  }
+
   // 15.7
   public static List<String> generateParens(int numPairs) {
     List<String> result = new ArrayList<>();
@@ -214,7 +241,6 @@ public class Chapter15 {
     System.out.print("\n");
     return grayCodeNumBitsMinus1;
   }
-
 
   private static boolean solvePartialSudoku(int i, int j, List<List<Integer>> partialAssignment) {
     if (i == partialAssignment.size()) {
