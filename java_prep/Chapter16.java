@@ -25,8 +25,19 @@ public class Chapter16 {
         "16.7 -> "
             + decomposeIntoDictionaryWords(
                 "amanaplanacanal", Set.of("a", "man", "plan", "canal", "foo")));
+    // 16.8
+    List<List<Integer>> triangle =
+        List.of(
+            List.of(2),
+            Arrays.asList(4, 4),
+            Arrays.asList(8, 5, 6),
+            Arrays.asList(4, 2, 6, 2),
+            Arrays.asList(1, 5, 2, 3, 4));
+    System.out.println("16.8 -> " + minimumTotalPath(triangle));
+
     // 16.12
-    System.out.println("16.12 -> " + longestNonDecreasingSubsequence(List.of(0, 8, 4, 12, 2, 10, 6, 14, 1, 9)));
+    System.out.println(
+        "16.12 -> " + longestNonDecreasingSubsequence(List.of(0, 8, 4, 12, 2, 10, 6, 14, 1, 9)));
   }
 
   // 16.1
@@ -191,6 +202,30 @@ public class Chapter16 {
       Collections.reverse(decompositions);
     }
     return decompositions;
+  }
+
+  // 16.8
+  public static int minimumTotalPath(List<List<Integer>> triangle) {
+    if (triangle.isEmpty()) return 0;
+
+    // Go row by row, building minimum prefix path for each i in the row.
+    List<Integer> prevRow = triangle.getFirst();
+    for (int i = 1; i < triangle.size(); ++i) {
+      List<Integer> currentRow = triangle.get(i);
+      // First element.
+      currentRow.set(0, currentRow.getFirst() + prevRow.getFirst());
+
+      // Middle elements.
+      for (int j = 1; j < currentRow.size() - 1; ++j) {
+        currentRow.set(j, currentRow.get(j) + Math.min(prevRow.get(j - 1), prevRow.get(j)));
+      }
+
+      // Last element.
+      currentRow.set(currentRow.size() - 1, currentRow.getLast() + prevRow.getLast());
+
+      prevRow = currentRow;
+    }
+    return Collections.min(prevRow);
   }
 
   // 16.12
