@@ -10,6 +10,8 @@ public class Chapter17 {
     // 17.1
     System.out.println("17.1a -> " + optimumTaskAssignments(Arrays.asList(5, 2, 1, 6, 4, 4)));
     System.out.println("17.1b -> " + optimumTaskAssignments(Arrays.asList(1, 8, 9, 10)));
+    // 17.2
+    System.out.println("17.2 -> " + minimumTotalWaitTime(Arrays.asList(1, 2, 3, 5)));
 
     // 17.4
     System.out.println("17.4 -> " + hasThreeSum(List.of(1, 5, 7, 9), 15));
@@ -41,6 +43,21 @@ public class Chapter17 {
       assignments.add(new PairedTasks(taskDurations.get(i), taskDurations.get(j)));
     }
     return assignments;
+  }
+
+  // 17.2
+  private static int minimumTotalWaitTime(List<Integer> serviceTimes) {
+    Collections.sort(serviceTimes);
+
+    // No wait time for first query.
+    int totalWaitTime = 0;
+
+    // Service times for item i adds wait time for subsequent items, except the i = last
+    for (int i = 0; i < serviceTimes.size(); ++i) {
+      int remainingItems = serviceTimes.size() - (i + 1);
+      totalWaitTime += serviceTimes.get(i) * remainingItems;
+    }
+    return totalWaitTime;
   }
 
   private static int findAmpleCity(List<Integer> gallons, List<Integer> distances, int mpg) {
