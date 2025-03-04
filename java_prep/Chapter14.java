@@ -8,8 +8,9 @@ public class Chapter14 {
   public static int rootIdx;
 
   public static void main(String[] args) {
-    printTree("", makeBST());
-    BST<Integer> lca = findLCA(makeBST(), new BST<>(2, null, null), new BST<>(107, null, null));
+    printTree("", makeFigure142());
+    BST<Integer> lca =
+        findLCA(makeFigure142(), new BST<>(2, null, null), new BST<>(107, null, null));
     System.out.println("14.4 -> " + lca.data);
 
     List<Integer> preorder = List.of(43, 23, 37, 29, 31, 41, 47, 53);
@@ -29,6 +30,15 @@ public class Chapter14 {
 
     BST<Integer> balancedTree = buildMinHeightBST(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
     printTree("14.8", balancedTree);
+
+    // 14.9
+    BST<Integer> A = makeFigure141();
+    BST<Integer> I = A.right;
+    BST<Integer> K = I.left.right;
+    BST<Integer> M = K.left.right;
+    BST<Integer> middle = I.left;
+    System.out.println("14.9a -> " + pairIncludesAncestorAndDescendantOfM(A, K, middle));
+    System.out.println("14.9b -> " + pairIncludesAncestorAndDescendantOfM(I, M, middle));
   }
 
   // 14.4
@@ -169,7 +179,49 @@ public class Chapter14 {
         IntStream.range(0, inOrder.size()).boxed().collect(Collectors.toMap(inOrder::get, i -> i)));
   }
 
+  // 14.9
+  public static boolean pairIncludesAncestorAndDescendantOfM(
+      BST<Integer> possibleAncOrDec0, BST<Integer> possibleAncOrDec1, BST<Integer> middle) {
+    BST<Integer> search0 = possibleAncOrDec0, search1 = possibleAncOrDec1;
+    // Perform interleaved searching from either of the above for middle.
+    while (search0 != possibleAncOrDec1
+        && search0 != middle
+        && search1 != possibleAncOrDec0
+        && search1 != middle
+        && (search0 != null
+        || search1 != null)) {
+      if (search0 != null) {
+        search0 = search0.data > middle.data ? search0.left : search0.right;
+      }
+
+      if (search1 != null) {
+        search1 = search1.data > middle.data ? search1.left : search1.right;
+      }
+    }
+
+    // If we arrived from one of the starter nodes to the other, or did not find the middle from
+    // either
+    // search, middle cannot lie in between.
+    if (search0 == possibleAncOrDec1
+        || search1 == possibleAncOrDec0
+        || (search0 != middle && search1 != middle)) {
+      return false;
+    }
+
+    // if we get here, one of the searches found the middle. So look for either nodes from middle.
+    return search0 == middle
+        ? searchTarget(middle, possibleAncOrDec1)
+        : searchTarget(middle, possibleAncOrDec0);
+  }
+
   /** Helper utilities. */
+  private static boolean searchTarget(BST<Integer> from, BST<Integer> target) {
+    while (from != null && from != target) {
+      from = from.data > target.data ? from.left : from.right;
+    }
+    return from == target;
+  }
+
   private static BST<Integer> bstFrom(
       List<Integer> preorder,
       int preorderStart,
@@ -221,8 +273,45 @@ public class Chapter14 {
     if (!tag.isEmpty()) System.out.println("---- " + tag + " ]");
   }
 
+  private static BST<Integer> makeFigure141() {
+    BST<Integer> A = new BST<>(19);
+    BST<Integer> B = new BST<>(7);
+    BST<Integer> C = new BST<>(3);
+    BST<Integer> D = new BST<>(2);
+    BST<Integer> E = new BST<>(5);
+    BST<Integer> F = new BST<>(11);
+    BST<Integer> G = new BST<>(17);
+    BST<Integer> H = new BST<>(11);
+    BST<Integer> I = new BST<>(43);
+    BST<Integer> J = new BST<>(23);
+    BST<Integer> K = new BST<>(37);
+    BST<Integer> L = new BST<>(29);
+    BST<Integer> M = new BST<>(31);
+    BST<Integer> N = new BST<>(41);
+    BST<Integer> O = new BST<>(47);
+    BST<Integer> P = new BST<>(53);
+
+    A.left = B;
+    A.right = I;
+    B.left = C;
+    B.right = F;
+    C.left = D;
+    C.right = E;
+    F.right = G;
+    G.left = H;
+    I.left = J;
+    I.right = O;
+    J.right = K;
+    K.left = L;
+    K.right = N;
+    L.right = M;
+    O.right = P;
+
+    return A;
+  }
+
   /** Make BST figure 14.2 on page 226 */
-  private static BST<Integer> makeBST() {
+  private static BST<Integer> makeFigure142() {
     List<Integer> inorder = List.of(-14, -10, 2, 106, 107, 108, 243, 285, 286, 401);
     List<Integer> preorder = List.of(108, 106, -10, -14, 2, 107, 285, 243, 286, 401);
     return bstFrom(preorder, inorder);
@@ -239,7 +328,20 @@ public class Chapter14 {
     }
   }
 
-  public record BST<T>(T data, BST<T> left, BST<T> right) {}
+  public static class BST<T> {
+    T data;
+    BST<T> left, right;
+
+    public BST(T data, BST<T> left, BST<T> right) {
+      this.data = data;
+      this.left = left;
+      this.right = right;
+    }
+
+    public BST(T data) {
+      this(data, null, null);
+    }
+  }
 
   record DisplayState(BST<Integer> n, int level) {}
 
