@@ -51,11 +51,15 @@ public class Chapter18 {
     Vertex cloned = cloneGraph(one);
     System.out.println("18.5 -> " + cloned.edges + " " + cloned.edges.getFirst().edges);
 
+    // 18.6
+    System.out.println("18.6 -> " + isBipartite(List.of(makeFigure188())));
+
     // 18.7
     Set<String> D = new HashSet<>(List.of("bat", "cot", "dog", "dag", "dot", "cat"));
     String s = "cat";
     String t = "dog";
     System.out.println("18.7 -> " + transformString(D, s, t));
+
   }
 
   // 18.1
@@ -176,6 +180,30 @@ public class Chapter18 {
     return vertexMap.get(graph);
   }
 
+  // 18.6
+  public static boolean isBipartite(List<Vertex> g) {
+    return g.stream().allMatch(v -> v.label != -1 || isBipartiteHelperBfs(v));
+  }
+
+  private static boolean isBipartiteHelperBfs(Vertex v) {
+    v.label = 0; // even (vs odd for children)
+    Queue<Vertex> q = new ArrayDeque<>();
+    q.add(v);
+
+    while (!q.isEmpty()) {
+      for (Vertex u : q.peek().edges) {
+        if (u.label == -1) { // unvisited
+          u.label = q.peek().label + 1;
+          q.add(u);
+        } else if (u.label == q.peek().label) {
+          return false;
+        }
+      }
+      q.remove();
+    }
+    return true;
+  }
+
   // 18.7
   public static int transformString(Set<String> D, String s, String t) {
     Set<String> unvisited = new HashSet<>(D);
@@ -257,4 +285,54 @@ public class Chapter18 {
   public record Coordinate(int x, int y) {}
 
   private record StringDistance(String candidate, Integer distance) {}
+
+  private static Vertex makeFigure188() {
+    Vertex A = new Vertex(-1);
+    Vertex B = new Vertex(-1);
+    Vertex C = new Vertex(-1);
+    Vertex D = new Vertex(-1);
+    Vertex E = new Vertex(-1);
+    Vertex F = new Vertex(-1);
+    Vertex G = new Vertex(-1);
+    Vertex H = new Vertex(-1);
+    Vertex I = new Vertex(-1);
+    Vertex J = new Vertex(-1);
+    Vertex K = new Vertex(-1);
+    Vertex L = new Vertex(-1);
+    Vertex M = new Vertex(-1);
+    Vertex N = new Vertex(-1);
+    Vertex O = new Vertex(-1);
+    Vertex P = new Vertex(-1);
+    Vertex Q = new Vertex(-1);
+    Vertex R = new Vertex(-1);
+    Vertex S = new Vertex(-1);
+    Vertex T = new Vertex(-1);
+    Vertex U = new Vertex(-1);
+    Vertex V = new Vertex(-1);
+
+    A.edges.addAll(List.of(B, J));
+    B.edges.addAll(List.of(C, K));
+    C.edges.addAll(List.of(D, L));
+    D.edges.addAll(List.of(E, M));
+    E.edges.add(F);
+    F.edges.addAll(List.of(G, N));
+    G.edges.add(H);
+    H.edges.addAll(List.of(I, N));
+    I.edges.addAll(List.of(H, V));
+    J.edges.addAll(List.of(K, O));
+    K.edges.addAll(List.of(P, L));
+    L.edges.addAll(List.of(M, Q));
+    M.edges.addAll(List.of(R, F));
+    N.edges.addAll(List.of(F, H, T));
+    O.edges.addAll(List.of(J, P));
+    P.edges.addAll(List.of(K, Q));
+    Q.edges.addAll(List.of(P, L, R));
+    R.edges.addAll(List.of(M, S));
+    S.edges.addAll(List.of(R, T));
+    T.edges.addAll(List.of(S, N, U));
+    U.edges.addAll(List.of(T, V));
+    V.edges.addAll(List.of(U, N, I));
+
+    return A;
+  }
 }
