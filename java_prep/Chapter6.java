@@ -43,6 +43,11 @@ public class Chapter6 {
 
     // 6.10
     System.out.println("6.10 -> " + snakeString("Hello World!"));
+
+    // 6.11
+    String s1 = "aaaabcccaa";
+    System.out.println("6.11 (encode) -> " + encode(s1));
+    System.out.println("6.11 (decode) -> " + decode(encode(s1)));
   }
 
   public static String intToString(int x) {
@@ -239,6 +244,38 @@ public class Chapter6 {
       builder.append(s.charAt(i));
     }
     return builder.toString();
+  }
+
+  // 6.11 encode
+  public static String encode(String s) {
+    int count = 1;
+    StringBuilder ss = new StringBuilder();
+    for (int i = 1; i <= s.length(); ++i) {
+      if (i == s.length() || s.charAt(i - 1) != s.charAt(i)) {
+        ss.append(count).append(s.charAt(i - 1));
+        count = 1;
+      } else {
+        ++count;
+      }
+    }
+    return ss.toString();
+  }
+  // 6.11 decode
+  public static String decode(String s) {
+    int count = 0;
+    StringBuilder ss = new StringBuilder();
+    for (int i = 0; i < s.length(); ++i) {
+      char c = s.charAt(i);
+      if (Character.isDigit(c)) {
+        count = count * 10 + c - '0';
+      } else {
+        while (count > 0) {
+          ss.append(c);
+          count--;
+        }
+      }
+    }
+    return ss.toString();
   }
 
   public static String nextNumber(String s) {
