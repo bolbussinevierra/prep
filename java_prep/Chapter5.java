@@ -33,6 +33,11 @@ public class Chapter5 {
     System.out.println(
         "5.7 -> "
             + buyAndSellAStockTwice(List.of(12.0, 11.0, 13.0, 9.0, 12.0, 8.0, 14.0, 13.0, 15.0)));
+    // 5.8
+    List<Integer> r = Arrays.asList(3, 2, 9, 1, 8, 5, 4, 6, 7);
+    rearrange(r);
+    System.out.print("5.8 -> ");
+    System.out.println(r);
 
     // 5.9
     System.out.println("5.9 -> " + generatePrimes(50));
@@ -181,6 +186,15 @@ public class Chapter5 {
           Math.max(maxTotalProfit, maxSellPriceSoFar - prices.get(i) + firstBuyProfits.get(i));
     }
     return maxTotalProfit;
+  }
+
+  // 5.8
+  public static void rearrange(List<Integer> A) {
+    for (int i = 1; i < A.size(); ++i) {
+      if (((i % 2) == 0 && A.get(i - 1) < A.get(i)) || ((i % 2) != 0 && A.get(i - 1) > A.get(i))) {
+        Collections.swap(A, i - 1, i);
+      }
+    }
   }
 
   // 5.9
