@@ -4,43 +4,38 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Chapter7 {
-    public static class ListNode<T> {
-        public T data;
-        public ListNode<T> next;
-
-        public ListNode(T data, ListNode<T> next) {
-            this.data = data;
-            this.next = next;
-        }
-    }
-
     public static void main(String[] args) {
         // 7.1
-        ListNode<Integer> L1 = makeLinkedList(new int[]{1, 4, 6});
-        ListNode<Integer> L2 = makeLinkedList(new int[]{2, 3, 5});
-        ListNode<Integer> sorted = mergeSorted(L1, L2);
-        printList("7.1", sorted);
+        ListNode<Integer> list71_i = makeLinkedList(new int[]{1, 4, 6});
+        ListNode<Integer> list71_ii = makeLinkedList(new int[]{2, 3, 5});
+        ListNode<Integer> ans71 = mergeSorted(list71_i, list71_ii);
+        printList("7.1", ans71);
 
         // 7.4
-        ListNode<Integer> list1 = makeLinkedList(new int[]{1, 2, 3, 4, 5});
-        ListNode<Integer> list2 = makeLinkedList(new int[]{1, 2, 3});
-        ListNode<Integer> tmp1 = list1;
-        ListNode<Integer> tmp2 = list2;
+        ListNode<Integer> list74_i = makeLinkedList(new int[]{1, 2, 3, 4, 5});
+        ListNode<Integer> list74_ii = makeLinkedList(new int[]{1, 2, 3});
+        ListNode<Integer> tmp1 = list74_i;
+        ListNode<Integer> tmp2 = list74_ii;
         while (tmp1.data != 4) tmp1 = tmp1.next;
         while (tmp2.data != 3) tmp2 = tmp2.next;
         tmp2.next = tmp1;
-        System.out.println("7.4 -> " + firstOverlappingNode(list1, list2).data);
+        System.out.println("7.4 -> " + firstOverlappingNode(list74_i, list74_ii).data);
 
         // 7.7
-        ListNode<Integer> list3 = makeLinkedList(new int[]{6, 5, 4, 3, 2, 1});
-        printList("7.7", removeKthLast(list3, 3));
+        ListNode<Integer> list77 = makeLinkedList(new int[]{6, 5, 4, 3, 2, 1});
+        printList("7.7", removeKthLast(list77, 3));
+
+        // 7.8
+        ListNode<Integer> list78 = makeLinkedList(new int[]{1, 2,2, 3, 4,4,4, 5, 6});
+        removeDuplicates(list78);
+        printList("7.8", list78);
 
         // 7.10
-        ListNode<Integer> list4 = makeLinkedList(new int[]{0, 1, 2, 3, 4, 5, 6, 7});
-        printList("7.10", evenOddMerge(list4));
+        ListNode<Integer> list710 = makeLinkedList(new int[]{0, 1, 2, 3, 4, 5, 6, 7});
+        printList("7.10", evenOddMerge(list710));
 
-        ListNode<Integer> list5 = makeLinkedList(new int[]{2, 3, 5, 3, 2});
-        System.out.println("7.11 -> " + isLinkedListPalindrome(list5));
+        ListNode<Integer> list711 = makeLinkedList(new int[]{2, 3, 5, 3, 2});
+        System.out.println("7.11 -> " + isLinkedListPalindrome(list711));
     }
 
     private static ListNode<Integer> firstOverlappingNode(
@@ -98,9 +93,22 @@ public class Chapter7 {
         return dummyHead.next;
     }
 
+    // 7.8
+    static void removeDuplicates(ListNode<Integer> L) {
+        ListNode<Integer> iter = L;
+        while (iter != null) {
+            ListNode<Integer> nextDistinct = iter.next;
+            while (nextDistinct != null && nextDistinct.data.equals(iter.data)) {
+                nextDistinct = nextDistinct.next;
+            }
+            iter.next = nextDistinct;
+            iter = nextDistinct;
+        }
+    }
+
     // 7.10
     static ListNode<Integer> evenOddMerge(ListNode<Integer> L) {
-        if (L == null) return L;
+        if (L == null) return null;
 
         ListNode<Integer> evenDummyHead = new ListNode<>(0, null);
         ListNode<Integer> oddDummyHead = new ListNode<>(0, null);
@@ -161,7 +169,6 @@ public class Chapter7 {
         return head;
     }
 
-
     public static void printList(String tag, ListNode<Integer> l) {
         System.out.print("\n" + tag + " -> [ ");
         while (l != null) {
@@ -205,6 +212,16 @@ public class Chapter7 {
         // Second points to the (k + 1)-th last node, deletes its successor
         second.next = second.next.next;
         return dummyHead.next;
+    }
+
+    public static class ListNode<T> {
+        public T data;
+        public ListNode<T> next;
+
+        public ListNode(T data, ListNode<T> next) {
+            this.data = data;
+            this.next = next;
+        }
     }
 }
 
