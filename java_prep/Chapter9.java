@@ -51,8 +51,11 @@ public class Chapter9 {
     K.left = L;
     K.right = N;
     L.right = M;
-    printTree(tree, /* characterize= */false);
+    printTree(tree, /* characterize= */ false);
     System.out.println("9.5 -> " + sumRootToLeafPaths(tree));
+
+    // 9.6
+    System.out.println("9.6 -> " + hasPathSum(makeFigure91(), 591));
 
     // 9.11
     System.out.println("9.11");
@@ -92,7 +95,15 @@ public class Chapter9 {
       return partialSum;
     }
     // Non-leaf
-    return sumRootToLeafPathsHelper(tree.left, partialSum) + sumRootToLeafPathsHelper(tree.right, partialSum);
+    return sumRootToLeafPathsHelper(tree.left, partialSum)
+        + sumRootToLeafPathsHelper(tree.right, partialSum);
+  }
+
+  // 9.6
+  public static boolean hasPathSum(BTN<Integer> tree, int sumTo) {
+    if (tree == null) return false;
+    if (tree.left == null && tree.right == null) return tree.data == sumTo;
+    return hasPathSum(tree.left, sumTo - tree.data) || hasPathSum(tree.right, sumTo - tree.data);
   }
 
   private static LcaResult lcaHelper(BTN<Integer> tree, BTN<Integer> n0, BTN<Integer> n1) {
@@ -170,8 +181,9 @@ public class Chapter9 {
   }
 
   private static void printTree(BTN<Integer> t) {
-    printTree(t, /*characterize= */true);
+    printTree(t, /* characterize= */ true);
   }
+
   private static void printTree(BTN<Integer> t, boolean characterize) {
     ArrayDeque<BTN<Integer>> bfs = new ArrayDeque<>();
     bfs.addFirst(t);
@@ -183,6 +195,41 @@ public class Chapter9 {
       if (c.left != null) bfs.addLast(c.left);
       if (c.right != null) bfs.addLast(c.right);
     }
+  }
+
+  private static BTN<Integer> makeFigure91() {
+    BTN<Integer> A = new BTN<>(314);
+    BTN<Integer> B = new BTN<>(6);
+    BTN<Integer> C = new BTN<>(271);
+    BTN<Integer> D = new BTN<>(28);
+    BTN<Integer> E = new BTN<>(0);
+    BTN<Integer> F = new BTN<>(561);
+    BTN<Integer> G = new BTN<>(3);
+    BTN<Integer> H = new BTN<>(17);
+    BTN<Integer> I = new BTN<>(6);
+    BTN<Integer> J = new BTN<>(2);
+    BTN<Integer> K = new BTN<>(1);
+    BTN<Integer> L = new BTN<>(401);
+    BTN<Integer> M = new BTN<>(641);
+    BTN<Integer> N = new BTN<>(257);
+    BTN<Integer> O = new BTN<>(271);
+    BTN<Integer> P = new BTN<>(28);
+    A.left = B;
+    A.right = I;
+    B.left = C;
+    B.right = F;
+    C.left = D;
+    C.right = E;
+    F.right = G;
+    G.left = H;
+    I.left = J;
+    I.right = O;
+    J.right = K;
+    K.left = L;
+    K.right = N;
+    L.right = M;
+    O.right = P;
+    return A;
   }
 
   private record LcaResult(int numFound, BTN<Integer> lca) {}
