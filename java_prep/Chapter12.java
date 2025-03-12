@@ -53,10 +53,13 @@ public class Chapter12 {
     List<Integer> list129 = List.of(10, 5, 3, 11, 6, 100, 4);
     System.out.println("12.9 -> " + longestContainedRange(list129));
 
-    // 12.10(my custom generalization)
-    System.out.println(
-        "12.10 (mine) -> "
-            + findAllMatchingSubstrings("amanaplanacanal", List.of("can", "apl", "ana")));
+    // 12.10 (a)
+    String string1210 = "amanaplanacanal";
+    List<String> words1210 = List.of("can", "apl", "ana");
+    System.out.println("12.10 (EPI) -> " + findAllSubstrings(string1210, words1210));
+
+    // 12.10 (b; my custom generalization)
+    System.out.println("12.10 (mine) -> " + findAllMatchingSubstrings(string1210, words1210));
   }
 
   // 12.1
@@ -263,12 +266,45 @@ public class Chapter12 {
     return maxIntervalSize;
   }
 
+  // 12.10 (a)
+  public static List<Integer> findAllSubstrings(String s, List<String> words) {
+    Map<String, Long> wordsToFreq =
+        words.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+    int wordSize = words.getFirst().length();
+    List<Integer> result = new ArrayList<>();
+    for (int i = 0; i + wordSize * words.size() <= s.length(); ++i) {
+      if (matchAllWordsInDict(s, wordsToFreq, i, words.size(), wordSize)) {
+        result.add(i);
+      }
+    }
+    return result;
+  }
+
+  private static boolean matchAllWordsInDict(
+      String s, Map<String, Long> wordToFreq, int start, int numWords, int wordSize) {
+    Map<String, Integer> currStringToFreq = new HashMap<>();
+    for (int i = 0; i < numWords; ++i) {
+      String currWord = s.substring(start + i *  wordSize, start + (i + 1) * wordSize);
+      Long freq = wordToFreq.get(currWord);
+      if (freq == null) {
+        // This string includes a word not in the match set.
+        return false;
+      }
+      currStringToFreq.put(currWord, currStringToFreq.getOrDefault(currWord, 0) + 1);
+      if (currStringToFreq.get(currWord) > freq) {
+        // currWord occurs too many times for a match to be possible.
+        return false;
+      }
+    }
+    return true;
+  }
+
   // 12.10 (b)
   public static List<List<Integer>> findAllMatchingSubstrings(String s, List<String> words) {
     List<List<Integer>> result = new ArrayList<>();
     Set<String> matchSet = new HashSet<>(words);
     List<Integer> partialDecomposition = new ArrayList<>();
-    int offset = 0;
     findAllMatchingSubstringsHelper(s, matchSet, 0, partialDecomposition, result);
     return result;
   }
