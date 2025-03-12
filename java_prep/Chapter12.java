@@ -29,29 +29,34 @@ public class Chapter12 {
     System.out.println("12.2 (b) -> " + isLetterConstructibleFromMagazine("aab", "aab"));
 
     // 12.5
-    List<String> paragraph = List.of("a", "b", "a", "c", "c", "d");
-    System.out.println("12.5 -> " + findNearestRepetition(paragraph));
+    List<String> list125 = List.of("a", "b", "a", "c", "c", "d");
+    System.out.println("12.5 -> " + findNearestRepetition(list125));
 
     // 12.6
-    List<String> paragraph2 =
+    List<String> paragraph126 =
         List.of(
             "apple", "banana", "apple", "apple", "dog", "cat", "apple", "dog", "banana", "apple",
             "cat", "dog");
-    Set<String> cover = Set.of("banana", "cat");
-    System.out.println("12.6 -> " + findSmallestSubarrayCoveringSet(paragraph2, cover));
+    Set<String> cover126 = Set.of("banana", "cat");
+    System.out.println("12.6 -> " + findSmallestSubarrayCoveringSet(paragraph126, cover126));
 
     // 12.7
-    List<String> paragraph3 = List.of("apple", "banana", "cat", "apple");
-    List<String> cover3 = List.of("banana", "apple");
-    System.out.println("12.7 -> " + findSmallestSequentiallyCoveringSubset(paragraph3, cover3));
+    List<String> paragraph127 = List.of("apple", "banana", "cat", "apple");
+    List<String> cover127 = List.of("banana", "apple");
+    System.out.println("12.7 -> " + findSmallestSequentiallyCoveringSubset(paragraph127, cover127));
 
     // 12.8
-    List<Integer> entries = List.of(6, 19, 6, 5, 20, 23, 5, 14, 23, 5);
-    System.out.println("12.8 -> " + longestSubarrayWithoutDuplicateEntries(entries));
+    List<Integer> entries128 = List.of(6, 19, 6, 5, 20, 23, 5, 14, 23, 5);
+    System.out.println("12.8 -> " + longestSubarrayWithoutDuplicateEntries(entries128));
 
     // 12.9
-    List<Integer> A = List.of(10, 5, 3, 11, 6, 100, 4);
-    System.out.println("12.9 -> " + longestContainedRange(A));
+    List<Integer> list129 = List.of(10, 5, 3, 11, 6, 100, 4);
+    System.out.println("12.9 -> " + longestContainedRange(list129));
+
+    // 12.10(my custom generalization)
+    System.out.println(
+        "12.10 (mine) -> "
+            + findAllMatchingSubstrings("amanaplanacanal", List.of("can", "apl", "ana")));
   }
 
   // 12.1
@@ -256,6 +261,40 @@ public class Chapter12 {
       maxIntervalSize = Math.max(upperBound - lowerBound - 1, maxIntervalSize);
     }
     return maxIntervalSize;
+  }
+
+  // 12.10 (b)
+  public static List<List<Integer>> findAllMatchingSubstrings(String s, List<String> words) {
+    List<List<Integer>> result = new ArrayList<>();
+    Set<String> matchSet = new HashSet<>(words);
+    List<Integer> partialDecomposition = new ArrayList<>();
+    int offset = 0;
+    findAllMatchingSubstringsHelper(s, matchSet, 0, partialDecomposition, result);
+    return result;
+  }
+
+  private static void findAllMatchingSubstringsHelper(
+      String s,
+      Set<String> matchSet,
+      int offset,
+      List<Integer> partialDecomposition,
+      List<List<Integer>> result) {
+    for (int i = offset; i < s.length(); ++i) {
+      for (int j = i + 1; j <= s.length(); ++j) {
+        String candidate = s.substring(i, j);
+        if (matchSet.contains(candidate)) {
+          partialDecomposition.addAll(List.of(i, j - 1));
+          Set<String> remainingSet = new HashSet<>(matchSet);
+          remainingSet.remove(candidate);
+          if (remainingSet.isEmpty()) {
+            result.add(new ArrayList<>(partialDecomposition));
+          } else if (j < s.length()) {
+            findAllMatchingSubstringsHelper(s, remainingSet, j, partialDecomposition, result);
+          }
+          partialDecomposition.clear();
+        }
+      }
+    }
   }
 
   // 12.6
