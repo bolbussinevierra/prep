@@ -21,6 +21,7 @@ public class Chapter15 {
     System.out.println("15.5 (iterative) -> " + generatePowerSetIterative(List.of(1, 2, 3)));
     System.out.println("15.6 -> " + combinations(5, 2));
     System.out.println("15.7 -> " + generateParens(3));
+    System.out.println("15.8 -> " + palindromeDecomposition("0204451881"));
 
     // 15.10
     List<List<Integer>> partialAssignment =
@@ -200,6 +201,30 @@ public class Chapter15 {
     return result;
   }
 
+  // 15.8
+  public static List<List<String>> palindromeDecomposition(String s) {
+    List<List<String>> results = new ArrayList<>();
+    palindromeDecompositionsHelper(s, new ArrayList<>(), results);
+    return results;
+  }
+
+  public static void palindromeDecompositionsHelper(
+          String s, List<String> partialDecomposition, List<List<String>> results) {
+    if (s.isEmpty()) {
+      results.add(new ArrayList<>(partialDecomposition));
+      return;
+    }
+
+    for (int i = 1; i <= s.length(); ++i) {
+      String candidate = s.substring(0, i);
+      if (isPalindrome(candidate)) {
+        partialDecomposition.add(candidate);
+        palindromeDecompositionsHelper(s.substring(i), partialDecomposition, results);
+        partialDecomposition.removeLast();
+      }
+    }
+  }
+
   private static void directedGenerateParens(
       int openRemaining, int closedRemaining, String generated, List<String> result) {
     if (closedRemaining == 0) {
@@ -340,5 +365,14 @@ public class Chapter15 {
       directedPermutationsSwap(i + 1, A, result);
       Collections.swap(A, i, j);
     }
+  }
+
+  private static boolean isPalindrome(String s) {
+    for (int i = 0, j = s.length() - 1; i < j ; ++i, --j) {
+      if (s.charAt(i) != s.charAt(j)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
