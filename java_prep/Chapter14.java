@@ -39,6 +39,9 @@ public class Chapter14 {
     BST<Integer> middle = I.left;
     System.out.println("14.9a -> " + pairIncludesAncestorAndDescendantOfM(A, K, middle));
     System.out.println("14.9b -> " + pairIncludesAncestorAndDescendantOfM(I, M, middle));
+
+    // 14.10
+    System.out.println("14.10 -> " + rangeLookupInBST(makeFigure141(), new Interval(16, 31)));
   }
 
   // 14.4
@@ -214,6 +217,29 @@ public class Chapter14 {
         : searchTarget(middle, possibleAncOrDec0);
   }
 
+  // 14.10
+  private static List<Integer> rangeLookupInBST(BST<Integer> tree, Interval interval) {
+    List<Integer> result = new ArrayList<>();
+    rangeLookupInBSTHelper(tree, interval, result);
+    return result;
+  }
+
+  private static void rangeLookupInBSTHelper(BST<Integer> tree, Interval interval, List<Integer> result) {
+    if (tree == null) return;
+
+    if (interval.left <= tree.data) {
+      rangeLookupInBSTHelper(tree.left, interval, result);
+    }
+
+    if (interval.left <= tree.data && tree.data <= interval.right) {
+      result.add(tree.data);
+    }
+
+    if (interval.right >= tree.data) {
+      rangeLookupInBSTHelper(tree.right, interval, result);
+    }
+  }
+
   /** Helper utilities. */
   private static boolean searchTarget(BST<Integer> from, BST<Integer> target) {
     while (from != null && from != target) {
@@ -342,6 +368,8 @@ public class Chapter14 {
       this(data, null, null);
     }
   }
+
+  record Interval(int left, int right) {}
 
   record DisplayState(BST<Integer> n, int level) {}
 

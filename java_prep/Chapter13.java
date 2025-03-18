@@ -32,6 +32,9 @@ public class Chapter13 {
     System.out.println("13.4 (a) -> " + names1);
     System.out.println("13.4 (b) -> " + names2);
 
+    // 13.5
+    System.out.println("13.5 -> " + smallestNonconstructibleValue(new ArrayList<>(List.of(12, 2, 1, 15, 2, 4))));
+
     // 13.6
     List<Event> events =
         List.of(
@@ -142,6 +145,19 @@ public class Chapter13 {
     }
     // Shrink the array down.
     names.subList(++writeIdx, names.size()).clear();
+  }
+
+  // 13.5
+  public static int smallestNonconstructibleValue(List<Integer> A) {
+    Collections.sort(A);
+    int smallestMissing = 0;
+    for (int a : A) {
+      if (a > smallestMissing + 1) {
+        break;
+      }
+      smallestMissing += a;
+    }
+    return smallestMissing + 1;
   }
 
   // 13.6
