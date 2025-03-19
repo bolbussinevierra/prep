@@ -191,8 +191,7 @@ public class Chapter14 {
         && search0 != middle
         && search1 != possibleAncOrDec0
         && search1 != middle
-        && (search0 != null
-        || search1 != null)) {
+        && (search0 != null || search1 != null)) {
       if (search0 != null) {
         search0 = search0.data > middle.data ? search0.left : search0.right;
       }
@@ -224,7 +223,8 @@ public class Chapter14 {
     return result;
   }
 
-  private static void rangeLookupInBSTHelper(BST<Integer> tree, Interval interval, List<Integer> result) {
+  private static void rangeLookupInBSTHelper(
+      BST<Integer> tree, Interval interval, List<Integer> result) {
     if (tree == null) return;
 
     if (interval.left <= tree.data) {

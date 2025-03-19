@@ -35,6 +35,10 @@ public class Chapter16 {
             Arrays.asList(1, 5, 2, 3, 4));
     System.out.println("16.8 -> " + minimumTotalPath(triangle));
 
+    // 16.9
+    List<Integer> coins = List.of(25, 5, 10, 5, 10, 5, 10, 25, 1, 25, 1, 25, 1, 25, 5, 10);
+    System.out.println("16.9 -> " + pickUpCoins(coins) + " out of " + coins.stream().reduce(Integer::sum).get());
+
     // 16.12
     System.out.println(
         "16.12 -> " + longestNonDecreasingSubsequence(List.of(0, 8, 4, 12, 2, 10, 6, 14, 1, 9)));
@@ -226,6 +230,33 @@ public class Chapter16 {
       prevRow = currentRow;
     }
     return Collections.min(prevRow);
+  }
+
+  // 16.9
+  public static int pickUpCoins(List<Integer> coins) {
+    return pickupCoinsHelper(coins, 0, coins.size() - 1, new int[coins.size()][coins.size()]);
+  }
+
+  private static int pickupCoinsHelper(
+      List<Integer> coins, int left, int right, int[][] maxRevenueForRange) {
+    if (left > right) {
+      return 0;
+    }
+
+    if (maxRevenueForRange[left][right] == 0) {
+      int picksLeft =
+          coins.get(left)
+              + Math.min(
+                  pickupCoinsHelper(coins, left + 2, right, maxRevenueForRange),
+                  pickupCoinsHelper(coins, left + 1, right - 1, maxRevenueForRange));
+      int pickRight =
+          coins.get(right)
+              + Math.min(
+                  pickupCoinsHelper(coins, left, right - 2, maxRevenueForRange),
+                  pickupCoinsHelper(coins, left + 1, right - 1, maxRevenueForRange));
+      maxRevenueForRange[left][right] = Math.max(picksLeft, pickRight);
+    }
+    return maxRevenueForRange[left][right];
   }
 
   // 16.12

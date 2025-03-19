@@ -209,7 +209,7 @@ public class Chapter15 {
   }
 
   public static void palindromeDecompositionsHelper(
-          String s, List<String> partialDecomposition, List<List<String>> results) {
+      String s, List<String> partialDecomposition, List<List<String>> results) {
     if (s.isEmpty()) {
       results.add(new ArrayList<>(partialDecomposition));
       return;
@@ -368,7 +368,7 @@ public class Chapter15 {
   }
 
   private static boolean isPalindrome(String s) {
-    for (int i = 0, j = s.length() - 1; i < j ; ++i, --j) {
+    for (int i = 0, j = s.length() - 1; i < j; ++i, --j) {
       if (s.charAt(i) != s.charAt(j)) {
         return false;
       }

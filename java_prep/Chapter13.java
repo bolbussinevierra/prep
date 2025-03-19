@@ -1,9 +1,8 @@
 package java_prep;
 
-import java_prep.Chapter7.ListNode;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import java_prep.Chapter7.ListNode;
 
 public class Chapter13 {
   public static void main(String[] args) {
