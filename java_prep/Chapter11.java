@@ -40,7 +40,8 @@ public class Chapter11 {
     List<Integer> E = List.of(3, 2, 5, 1, 2, 4);
     System.out.println("11.7 -> " + getMinMax(E));
 
-    // 11.8: Uses neetcode version of the solution not the one in the book (very similar but is simplified)
+    // 11.8: Uses neetcode version of the solution not the one in the book (very similar but is
+    // simplified)
     ArrayList<Integer> C = new ArrayList<>(Arrays.asList(3, 2, 1, 5, 4));
     for (int i = 1; i <= 5; ++i) {
       System.out.println("11.8 -> " + findKthLargest(i, C));
@@ -304,16 +305,17 @@ public class Chapter11 {
 
     for (int i = 2; i < A.size(); i += 2) {
       MinMax localMinMax =
-              new MinMax(Math.min(A.get(i), A.get(i + 1)), Math.max(A.get(i), A.get(i + 1)));
-      globalMinMax = new MinMax(
+          new MinMax(Math.min(A.get(i), A.get(i + 1)), Math.max(A.get(i), A.get(i + 1)));
+      globalMinMax =
+          new MinMax(
               Math.min(localMinMax.min(), globalMinMax.min()),
               Math.max(localMinMax.max(), globalMinMax.max()));
     }
 
-    if (A.size() %2 == 1) {
-      globalMinMax = new MinMax(
-              Math.min(globalMinMax.min(), A.getLast()),
-              Math.max(globalMinMax.max(), A.getLast()));
+    if (A.size() % 2 == 1) {
+      globalMinMax =
+          new MinMax(
+              Math.min(globalMinMax.min(), A.getLast()), Math.max(globalMinMax.max(), A.getLast()));
     }
     return globalMinMax;
   }
@@ -331,7 +333,7 @@ public class Chapter11 {
     }
   }
 
-  public record MinMax(int min, int max){
+  public record MinMax(int min, int max) {
     public static MinMax build(int a, int b) {
       return a < b ? new MinMax(a, b) : new MinMax(b, a);
     }

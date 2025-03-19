@@ -23,7 +23,12 @@ public class Chapter13 {
     System.out.println("13.3 -> " + hIndex(Arrays.asList(2, 4, 6, 8, 10, 12)));
 
     // 13.4
-    List<Name> names = List.of(new Name("Ian", "Botham"), new Name("David", "Gower"), new Name("Ian", "Bell"), new Name("Ian", "Chappell"));
+    List<Name> names =
+        List.of(
+            new Name("Ian", "Botham"),
+            new Name("David", "Gower"),
+            new Name("Ian", "Bell"),
+            new Name("Ian", "Chappell"));
     List<Name> names1 = new ArrayList<>(names);
     eliminateDuplicatesUsingHashtable(names1);
     List<Name> names2 = new ArrayList<>(names);
@@ -32,7 +37,8 @@ public class Chapter13 {
     System.out.println("13.4 (b) -> " + names2);
 
     // 13.5
-    System.out.println("13.5 -> " + smallestNonconstructibleValue(new ArrayList<>(List.of(12, 2, 1, 15, 2, 4))));
+    System.out.println(
+        "13.5 -> " + smallestNonconstructibleValue(new ArrayList<>(List.of(12, 2, 1, 15, 2, 4))));
 
     // 13.6
     List<Event> events =
@@ -49,24 +55,26 @@ public class Chapter13 {
     System.out.println("13.6 -> " + findMaxSimultaneousEvents(events));
 
     // 13.8
-    List<Interval> intervals = new ArrayList<>(List.of(
-            new Interval(0, false, 3, false),
-            new Interval(1, true, 1, true),
-            new Interval(2, true, 4, true),
-            new Interval(3, true, 4, false),
-            new Interval(5, true, 7, false),
-            new Interval(7, true, 8, false),
-            new Interval(8, true, 11, false),
-            new Interval(9, false, 11, true),
-            new Interval(12, true, 14, true),
-            new Interval(12, false, 16, true),
-            new Interval(13, false, 15, false),
-            new Interval(16, false, 17, false)
-    ));
+    List<Interval> intervals =
+        new ArrayList<>(
+            List.of(
+                new Interval(0, false, 3, false),
+                new Interval(1, true, 1, true),
+                new Interval(2, true, 4, true),
+                new Interval(3, true, 4, false),
+                new Interval(5, true, 7, false),
+                new Interval(7, true, 8, false),
+                new Interval(8, true, 11, false),
+                new Interval(9, false, 11, true),
+                new Interval(12, true, 14, true),
+                new Interval(12, false, 16, true),
+                new Interval(13, false, 15, false),
+                new Interval(16, false, 17, false)));
     System.out.println("13.8 -> " + unionOfIntervals(intervals));
 
     // 13.9
-    List<Person> people = Arrays.asList(
+    List<Person> people =
+        Arrays.asList(
             new Person(14, "Greg"),
             new Person(12, "John"),
             new Person(11, "Andy"),
@@ -79,7 +87,7 @@ public class Chapter13 {
     System.out.println("13.9 -> " + people);
 
     // 13.11
-    ListNode<Integer> list = Chapter7.makeLinkedList(new int[]{10, 8, 9, 6, 7, 4, 5, 1, 3, 2});
+    ListNode<Integer> list = Chapter7.makeLinkedList(new int[] {10, 8, 9, 6, 7, 4, 5, 1, 3, 2});
     Chapter7.printList("13.11 ", stableSort(list));
   }
 
@@ -162,7 +170,8 @@ public class Chapter13 {
   // 13.6
   public static int findMaxSimultaneousEvents(List<Event> A) {
     // Builds an array of all endpoints
-    @SuppressWarnings("FuseStreamOperations") List<Endpoint> events =
+    @SuppressWarnings("FuseStreamOperations")
+    List<Endpoint> events =
         A.stream()
             .map(e -> List.of(new Endpoint(e.start, true), new Endpoint(e.finish, false)))
             .flatMap(List::stream)
@@ -230,7 +239,7 @@ public class Chapter13 {
               || (i.left.val == result.getLast().right.val
                   && (i.left.isClosed || result.getLast().right.isClosed)))) {
         // Check if we need to extend the right of the current interval (otherwise, it already
-        // covers the interval we are considering.
+        // covers the interval we are considering).
         if (i.right.val > result.getLast().right.val
             || (i.right.val == result.getLast().right.val && i.right.isClosed)) {
           result.getLast().right = i.right;
@@ -260,14 +269,14 @@ public class Chapter13 {
     while (!ageToOffset.isEmpty()) {
       Map.Entry<Integer, Integer> from = ageToOffset.entrySet().iterator().next();
       Integer fromIndex = from.getValue();
-      Integer toAge = people.get(fromIndex).age;  // object sitting where we want to move.
+      Integer toAge = people.get(fromIndex).age; // object sitting where we want to move.
       Integer toIndex = ageToOffset.get(toAge);
       Collections.swap(people, from.getValue(), toIndex);
       // Use ageToCount to see when we are finished with a particular age.
       Integer count = ageToCount.get(toAge) - 1;
       ageToCount.put(toAge, count);
       if (count > 0) {
-        ageToOffset.put(toAge, toIndex + 1);  // shift offset forward by 1;
+        ageToOffset.put(toAge, toIndex + 1); // shift offset forward by 1;
       } else {
         ageToOffset.remove(toAge);
       }
@@ -281,7 +290,7 @@ public class Chapter13 {
       return L;
     }
 
-    // Find the midpoint of L using a slow and fast pointer. Also a pointer to split
+    // Find the midpoint of L using a slow and fast pointer. Also, a pointer to split
     // the list into two behind the slow pointer.
     ListNode<Integer> preSlow = null, slow = L, fast = L;
     while (fast != null && fast.next != null) {
@@ -323,11 +332,11 @@ public class Chapter13 {
 
     @Override
     public String toString() {
-        return (left.isClosed ? "[" : "(") +
-                left.val +
-                ", " +
-                right.val +
-                (right.isClosed ? "]" : ")");
+      return (left.isClosed ? "[" : "(")
+          + left.val
+          + ", "
+          + right.val
+          + (right.isClosed ? "]" : ")");
     }
 
     public static class Endpoint {

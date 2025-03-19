@@ -285,7 +285,7 @@ public class Chapter12 {
       String s, Map<String, Long> wordToFreq, int start, int numWords, int wordSize) {
     Map<String, Integer> currStringToFreq = new HashMap<>();
     for (int i = 0; i < numWords; ++i) {
-      String currWord = s.substring(start + i *  wordSize, start + (i + 1) * wordSize);
+      String currWord = s.substring(start + i * wordSize, start + (i + 1) * wordSize);
       Long freq = wordToFreq.get(currWord);
       if (freq == null) {
         // This string includes a word not in the match set.

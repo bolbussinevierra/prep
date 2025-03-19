@@ -18,11 +18,11 @@ public class Chapter18 {
             Arrays.asList('B', 'W', 'W', 'B'),
             Arrays.asList('B', 'B', 'B', 'B'));
     fillSorroundedRegions(board);
-    System.out.println("--- 18.3 ----" );
+    System.out.println("--- 18.3 ----");
     for (int row = 0; row < board.size(); ++row) {
       System.out.println(board.get(row));
     }
-    System.out.println("-------------" );
+    System.out.println("-------------");
 
     // 18.4
     Vertex A = new Vertex('A');
@@ -59,7 +59,6 @@ public class Chapter18 {
     String s = "cat";
     String t = "dog";
     System.out.println("18.7 -> " + transformString(D, s, t));
-
   }
 
   // 18.1
@@ -126,11 +125,12 @@ public class Chapter18 {
     return graph.stream().anyMatch(v -> hasCycle(v, processing, processed));
   }
 
-  private static boolean hasCycle(Vertex v, Set<Vertex> processing, Set<Vertex> processed){
+  private static boolean hasCycle(Vertex v, Set<Vertex> processing, Set<Vertex> processed) {
     if (processing.contains(v)) return true;
 
     processing.add(v);
-    if (v.edges.stream().anyMatch(u -> !processed.contains(u) && hasCycle(u, processing, processed))) {
+    if (v.edges.stream()
+        .anyMatch(u -> !processed.contains(u) && hasCycle(u, processing, processed))) {
       return true;
     }
     processing.remove(v);

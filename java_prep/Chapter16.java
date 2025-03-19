@@ -37,7 +37,8 @@ public class Chapter16 {
 
     // 16.9
     List<Integer> coins = List.of(25, 5, 10, 5, 10, 5, 10, 25, 1, 25, 1, 25, 1, 25, 5, 10);
-    System.out.println("16.9 -> " + pickUpCoins(coins) + " out of " + coins.stream().reduce(Integer::sum).get());
+    System.out.println(
+        "16.9 -> " + pickUpCoins(coins) + " out of " + coins.stream().reduce(Integer::sum).get());
 
     // 16.12
     System.out.println(

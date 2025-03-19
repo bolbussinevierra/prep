@@ -260,6 +260,7 @@ public class Chapter6 {
     }
     return ss.toString();
   }
+
   // 6.11 decode
   public static String decode(String s) {
     int count = 0;
